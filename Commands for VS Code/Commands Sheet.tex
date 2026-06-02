@@ -1,0 +1,151 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{array}
+
+\title{VS Code + Git + Terminal Cheat Sheet}
+\date{}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+% =========================================================
+\section*{VS Code Shortcuts}
+
+\renewcommand{\arraystretch}{1.3}
+
+\begin{tabular}{|p{4cm}|p{11cm}|}
+\hline
+\textbf{Command/Shortcut} & \textbf{Meaning / What it does} \\
+\hline
+Cmd + S & Save current file \\
+Cmd + N & Create new file \\
+Cmd + O & Open file or folder \\
+Cmd + P & Quickly open file by name \\
+Cmd + Shift + P & Command palette (all VS Code commands) \\
+Cmd + Shift + F & Search across entire project \\
+Cmd + Option + S & Save all open files \\
+Ctrl + ` & Open/close terminal in VS Code \\
+Cmd + B & Toggle sidebar \\
+Cmd + W & Close current tab \\
+Cmd + / & Comment/uncomment line \\
+\hline
+\end{tabular}
+
+\vspace{0.6cm}
+
+% =========================================================
+\section*{Terminal Basics}
+
+\begin{tabular}{|p{4.5cm}|p{10cm}|}
+\hline
+\textbf{Command} & \textbf{Meaning / What it does} \\
+\hline
+pwd & Shows current directory location \\
+ls & Lists files and folders \\
+ls -la & Lists all files including hidden ones \\
+cd folder & Moves into a folder \\
+cd .. & Moves one folder up \\
+cd ~ & Goes to home directory \\
+mkdir name & Creates a new folder \\
+touch file.txt & Creates a new file \\
+clear & Clears terminal screen \\
+open . & Opens current folder in Finder (Mac) \\
+\hline
+\end{tabular}
+
+\vspace{0.6cm}
+
+% =========================================================
+\section*{Git Basics (Version Control)}
+
+\begin{tabular}{|p{5.5cm}|p{9cm}|}
+\hline
+\textbf{Command} & \textbf{Meaning / What it does} \\
+\hline
+git status & Shows file changes and tracking status \\
+git add . & Stages all changes for commit \\
+git add file & Stages specific file \\
+git commit -m "msg" & Saves snapshot with message \\
+git push & Uploads changes to GitHub \\
+git pull & Downloads latest changes from GitHub \\
+git log & Shows commit history \\
+git diff & Shows changes before commit \\
+git remote -v & Shows GitHub connection URL \\
+git init & Initializes Git repository \\
+git clone URL & Copies repo from GitHub \\
+\hline
+\end{tabular}
+
+\vspace{0.6cm}
+
+% =========================================================
+\section*{Folder Management}
+
+\begin{tabular}{|p{5.5cm}|p{9cm}|}
+\hline
+\textbf{Command} & \textbf{Meaning / What it does} \\
+\hline
+mkdir folder & Creates a folder \\
+mkdir A B C & Creates multiple folders \\
+mv A B/ & Moves folder A into folder B \\
+mv old new & Renames file or folder \\
+rm -r folder & Deletes folder and contents \\
+rm file.txt & Deletes a file \\
+cp file.txt folder/ & Copies file into folder \\
+\hline
+\end{tabular}
+
+\vspace{0.6cm}
+
+% =========================================================
+\section*{Git Recovery (IMPORTANT SAFETY COMMANDS)}
+
+\begin{tabular}{|p{6cm}|p{8.5cm}|}
+\hline
+\textbf{Command} & \textbf{Meaning / What it does} \\
+\hline
+git restore file & Undo changes in file (before commit) \\
+git reset --soft HEAD~1 & Undo last commit (keep changes) \\
+git reset --hard HEAD~1 & Delete last commit completely \\
+git checkout -- file & Revert file to last commit state \\
+git stash & Temporarily save unfinished work \\
+git stash pop & Restore stashed work \\
+\hline
+\end{tabular}
+
+\vspace{0.6cm}
+\newpage
+% =========================================================
+\section*{Daily Workflow (Recommended)}
+
+\begin{enumerate}
+\item Save file (Cmd + S)
+\item Check changes: \texttt{git status}
+\item Stage changes: \texttt{git add .}
+\item Commit changes: \texttt{git commit -m "message"}
+\item Sync to GitHub: \texttt{git push}
+\end{enumerate}
+
+\vspace{0.6cm}
+
+% =========================================================
+\section*{Mental Model}
+
+\begin{tabular}{|p{4cm}|p{10cm}|}
+\hline
+\textbf{Tool} & \textbf{Meaning} \\
+\hline
+VS Code & Code editor where you write and edit files \\
+Terminal & Direct control of computer via commands \\
+Folder & Local project storage \\
+Git & Version control system (history tracker) \\
+GitHub & Cloud storage and collaboration platform \\
+Repository & A project tracked by Git \\
+\hline
+\end{tabular}
+
+\end{document}

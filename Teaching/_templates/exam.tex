@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{array, booktabs}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+
+% Economics notation
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\MC}{\mathrm{MC}}
+\newcommand{\MR}{\mathrm{MR}}
+\newcommand{\TC}{\mathrm{TC}}
+\newcommand{\TR}{\mathrm{TR}}
+
+% -------------------------------------------------------
+% Question environment with points
+\newcounter{question}
+\newenvironment{question}[1][]{%
+  \stepcounter{question}%
+  \medskip
+  \noindent\textbf{Question \thequestion.}\ifx&#1&\else\quad[\textit{#1 points}]\fi\par\noindent\ignorespaces
+}{%
+  \medskip
+}
+
+% -------------------------------------------------------
+% Header — update each exam
+\newcommand{\COURSE}{ECON [XXX]}
+\newcommand{\EXAMNAME}{Midterm [N] / Final Exam}
+\newcommand{\EXAMDATE}{[Date]}
+\newcommand{\TIMELIMIT}{[X] minutes}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\COURSE}
+\chead{\EXAMNAME}
+\rhead{\EXAMDATE}
+\cfoot{\thepage}
+
+% ============================================================
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries \COURSE}\\[0.4em]
+  {\large \EXAMNAME}\\[0.2em]
+  {\normalsize \EXAMDATE \quad Time: \TIMELIMIT}
+\end{center}
+\medskip\hrule\medskip
+
+\noindent\textbf{Name:}\underline{\hspace{8cm}} \hfill \textbf{Student ID:}\underline{\hspace{4cm}}
+
+\vspace{0.8em}
+
+\noindent\textbf{Instructions:}
+\begin{itemize}[nosep]
+  \item This exam is closed book and closed notes.
+  \item Show all work. Unsupported answers receive no credit.
+  \item Write legibly. If the grader cannot read it, it will not receive credit.
+  \item Budget your time: \TIMELIMIT{} total.
+\end{itemize}
+
+\vspace{0.8em}
+
+% Point distribution table
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{|c|c|c|}
+  \hline
+  \textbf{Question} & \textbf{Points} & \textbf{Score} \\
+  \hline
+  1 & [XX] & \\
+  \hline
+  2 & [XX] & \\
+  \hline
+  3 & [XX] & \\
+  \hline
+  \textbf{Total} & \textbf{[XX]} & \\
+  \hline
+\end{tabular}
+\end{center}
+
+\newpage
+
+% -------------------------------------------------------
+\begin{question}[XX]
+  Question text here.
+  \begin{enumerate}[(a)]
+    \item Subpart (a). \vspace{4cm}
+    \item Subpart (b). \vspace{4cm}
+  \end{enumerate}
+\end{question}
+
+\newpage
+
+\begin{question}[XX]
+  Question text here.
+  \begin{enumerate}[(a)]
+    \item Subpart (a). \vspace{4cm}
+    \item Subpart (b). \vspace{4cm}
+  \end{enumerate}
+\end{question}
+
+\newpage
+
+\begin{question}[XX]
+  Question text here.
+\end{question}
+
+\end{document}

@@ -1,0 +1,344 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx, booktabs}
+\usepackage[shortlabels]{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, intersections}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+\newcommand{\MC}{\mathrm{MC}}
+\newcommand{\MR}{\mathrm{MR}}
+\newcommand{\CS}{\mathrm{CS}}
+\newcommand{\PS}{\mathrm{PS}}
+\newcommand{\Qd}{Q^{d}}
+\newcommand{\Qs}{Q^{s}}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{ECON 101 --- Introduction to Economics}
+\chead{Lecture 2}
+\rhead{Fall 2026}
+\cfoot{\thepage}
+
+% -------------------------------------------------------
+% Helper: basic S&D diagram
+% Usage: \SDdiagram{title}{extra tikz code}
+\newcommand{\blankSDdiagram}[1]{%
+\begin{center}
+\begin{tikzpicture}[scale=0.9,
+  >=Stealth,
+  every node/.style={font=\small}]
+  % Axes
+  \draw[->] (0,0) -- (6.5,0) node[right] {$Q$};
+  \draw[->] (0,0) -- (0,6.5) node[above] {$P$};
+  #1
+\end{tikzpicture}
+\end{center}}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries ECON 101: Introduction to Economics}\\[0.4em]
+  {\large Lecture 2: Supply and Demand}
+\end{center}
+\medskip\hrule\medskip
+
+% -------------------------------------------------------
+\section{Motivation}
+
+Last lecture we established that economics is about allocating scarce resources.
+\textit{How} does a decentralised economy coordinate those decisions?
+The answer, in most markets, is the \textbf{price system}: prices rise and fall
+until the quantity sellers want to sell equals the quantity buyers want to buy.
+Supply and demand is the workhorse model for understanding that process.
+
+% -------------------------------------------------------
+\section{Demand}
+
+\begin{definition}
+  The \textbf{quantity demanded} of a good is the amount buyers are willing and
+  able to purchase at a given price, holding all other factors constant
+  (\textit{ceteris paribus}).
+\end{definition}
+
+\begin{definition}
+  The \textbf{Law of Demand}: as the price of a good rises, the quantity demanded
+  falls; as the price falls, the quantity demanded rises.  All else equal,
+  $P \uparrow \Rightarrow \Qd \downarrow$.
+\end{definition}
+
+Two complementary reasons underlie the law of demand:
+\begin{itemize}
+  \item \textbf{Substitution effect:} a higher price makes other goods relatively
+    cheaper, so buyers substitute away.
+  \item \textbf{Income effect:} a higher price erodes real purchasing power,
+    reducing consumption of normal goods.
+\end{itemize}
+
+\subsection{The Demand Curve}
+
+A \textbf{demand curve} plots the quantity demanded at each price.  It slopes
+downward by the law of demand.  A linear example:
+\[
+  \Qd = a - bP, \qquad a,b > 0.
+\]
+
+\blankSDdiagram{%
+  % Demand line: passes through (1,5) and (5,1)
+  \draw[blue, thick, name path=D] (0.5,5.5) -- (5.5,0.5)
+    node[right] {$D$};
+  \node[blue] at (1.2,5.2) {};
+}
+
+\subsection{Shifters of Demand}
+
+A \textit{change in price} causes a \textbf{movement along} the demand curve.
+A \textit{change in any other determinant} causes a \textbf{shift} of the entire
+curve.  The main shifters are:
+
+\begin{enumerate}[(1)]
+  \item \textbf{Income.} For a \textit{normal good}, higher income $\Rightarrow$
+    demand shifts right.  For an \textit{inferior good}, it shifts left.
+  \item \textbf{Prices of related goods.}
+    \begin{itemize}
+      \item \textit{Substitutes} (e.g.\ coffee and tea): $P_{\text{coffee}} \uparrow
+        \Rightarrow D_{\text{tea}}$ shifts right.
+      \item \textit{Complements} (e.g.\ coffee and cream): $P_{\text{coffee}} \uparrow
+        \Rightarrow D_{\text{cream}}$ shifts left.
+    \end{itemize}
+  \item \textbf{Tastes and preferences.}  Advertising, trends, new information.
+  \item \textbf{Expectations.}  If buyers expect a future price rise, current
+    demand increases.
+  \item \textbf{Number of buyers.}  More buyers $\Rightarrow$ market demand shifts
+    right.
+\end{enumerate}
+
+\begin{example}
+  A health report links red meat to cardiovascular disease.  Tastes shift: demand
+  for beef falls (curve shifts left) and demand for chicken rises (curve shifts
+  right), even though neither price changed.
+\end{example}
+
+% -------------------------------------------------------
+\section{Supply}
+
+\begin{definition}
+  The \textbf{quantity supplied} is the amount sellers are willing and able to
+  offer for sale at a given price, ceteris paribus.
+\end{definition}
+
+\begin{definition}
+  The \textbf{Law of Supply}: as price rises, quantity supplied rises; as price
+  falls, quantity supplied falls.  $P \uparrow \Rightarrow \Qs \uparrow$.
+\end{definition}
+
+The intuition: a higher price raises the profitability of production, inducing
+existing firms to expand output and attracting new entrants.
+
+\subsection{The Supply Curve}
+
+A \textbf{supply curve} slopes upward.  A linear example:
+\[
+  \Qs = -c + dP, \qquad c,d > 0, \quad P \geq c/d.
+\]
+
+\blankSDdiagram{%
+  % Supply line: passes through (1,1) and (5,5)
+  \draw[red, thick, name path=S] (0.5,0.5) -- (5.5,5.5)
+    node[right] {$S$};
+}
+
+\subsection{Shifters of Supply}
+
+\begin{enumerate}[(1)]
+  \item \textbf{Input prices.}  Cheaper inputs $\Rightarrow$ supply shifts right.
+  \item \textbf{Technology.}  Improved technology lowers production costs and
+    shifts supply right.
+  \item \textbf{Expectations.}  Sellers who expect higher future prices may
+    withhold supply today (shift left now).
+  \item \textbf{Number of sellers.}  More producers $\Rightarrow$ market supply
+    shifts right.
+  \item \textbf{Government policies.}  Taxes raise costs (shift left); subsidies
+    lower costs (shift right).
+\end{enumerate}
+
+% -------------------------------------------------------
+\section{Market Equilibrium}
+
+\begin{definition}
+  A market is in \textbf{equilibrium} when quantity demanded equals quantity
+  supplied:
+  \[
+    \Qd(P^*) = \Qs(P^*).
+  \]
+  The price $P^*$ is the \textbf{equilibrium price} (market-clearing price) and
+  $Q^* \equiv \Qd(P^*)$ is the \textbf{equilibrium quantity}.
+\end{definition}
+
+\subsection{Solving for Equilibrium}
+
+Given
+\[
+  \Qd = a - bP \quad \text{and} \quad \Qs = -c + dP,
+\]
+set $\Qd = \Qs$:
+\[
+  a - bP^* = -c + dP^* \implies P^* = \frac{a+c}{b+d}, \qquad
+  Q^* = a - b\cdot\frac{a+c}{b+d} = \frac{ad - bc}{b+d}.
+\]
+
+\blankSDdiagram{%
+  % Demand
+  \draw[blue, thick, name path=D] (0.5,5.5) -- (5.5,0.5)
+    node[right] {$D$};
+  % Supply
+  \draw[red, thick, name path=S] (0.5,0.5) -- (5.5,5.5)
+    node[right] {$S$};
+  % Equilibrium intersection
+  \fill (3,3) circle (2.5pt) node[above right] {$(Q^*, P^*)$};
+  % Dashed lines to axes
+  \draw[dashed, gray] (3,3) -- (3,0) node[below] {$Q^*$};
+  \draw[dashed, gray] (3,3) -- (0,3) node[left]  {$P^*$};
+}
+
+\subsection{Surplus and Shortage}
+
+\begin{itemize}
+  \item \textbf{Surplus} ($P > P^*$): $\Qs > \Qd$.  Unsold inventory
+    accumulates; sellers cut prices, restoring equilibrium.
+  \item \textbf{Shortage} ($P < P^*$): $\Qd > \Qs$.  Buyers bid prices up,
+    restoring equilibrium.
+\end{itemize}
+
+The market mechanism self-corrects: deviations from $P^*$ generate pressures
+that push prices back toward equilibrium.
+
+% -------------------------------------------------------
+\section{Comparative Statics}
+
+Comparative statics asks: \textit{if one determinant changes, how do $P^*$ and
+$Q^*$ change?}  The procedure is:
+\begin{enumerate}[(1)]
+  \item Determine whether the event shifts $D$, $S$, or both, and in which
+    direction.
+  \item Draw the new curve.
+  \item Read off the change in equilibrium.
+\end{enumerate}
+
+\begin{example}[Demand increase]
+  A rise in consumer income (normal good) shifts $D$ rightward to $D'$,
+  raising both $P^*$ and $Q^*$.
+
+  \blankSDdiagram{%
+    % Supply
+    \draw[red, thick] (0.5,0.5) -- (5.5,5.5) node[right] {$S$};
+    % Original demand
+    \draw[blue, thick] (0.5,5.5) -- (5.5,0.5) node[right] {$D$};
+    \fill (3,3) circle (2pt);
+    \draw[dashed, gray] (3,3) -- (3,0) node[below] {$Q_1^*$};
+    \draw[dashed, gray] (3,3) -- (0,3) node[left]  {$P_1^*$};
+    % New demand (shifted right by 1.5 units)
+    \draw[blue, thick, dashed] (2,5.5) -- (6.2,1.3) node[right] {$D'$};
+    \fill (4.25,4.25) circle (2pt);
+    \draw[dashed, gray] (4.25,4.25) -- (4.25,0) node[below] {$Q_2^*$};
+    \draw[dashed, gray] (4.25,4.25) -- (0,4.25) node[left] {$P_2^*$};
+  }
+\end{example}
+
+\begin{example}[Supply decrease]
+  An increase in input costs shifts $S$ leftward to $S'$, raising $P^*$ but
+  lowering $Q^*$.
+
+  \blankSDdiagram{%
+    % Demand
+    \draw[blue, thick] (0.5,5.5) -- (5.5,0.5) node[right] {$D$};
+    % Original supply
+    \draw[red, thick] (0.5,0.5) -- (5.5,5.5) node[right] {$S$};
+    \fill (3,3) circle (2pt);
+    \draw[dashed, gray] (3,3) -- (3,0) node[below] {$Q_1^*$};
+    \draw[dashed, gray] (3,3) -- (0,3) node[left]  {$P_1^*$};
+    % New supply (shifted left by 1.5 units)
+    \draw[red, thick, dashed] (2,0.5) -- (5.5,4) node[right] {$S'$};
+    \fill (2.35,4.15) circle (2pt);
+    \draw[dashed, gray] (2.35,4.15) -- (2.35,0) node[below] {$Q_2^*$};
+    \draw[dashed, gray] (2.35,4.15) -- (0,4.15) node[left] {$P_2^*$};
+  }
+\end{example}
+
+Table~\ref{tab:comstats} summarises all four single-shift cases.
+
+\begin{table}[h]
+\centering
+\caption{Comparative statics: direction of change in equilibrium}
+\label{tab:comstats}
+\begin{tabular}{lcc}
+\toprule
+Event & $\Delta P^*$ & $\Delta Q^*$ \\
+\midrule
+Demand increases ($D$ shifts right) & $+$ & $+$ \\
+Demand decreases ($D$ shifts left)  & $-$ & $-$ \\
+Supply increases ($S$ shifts right) & $-$ & $+$ \\
+Supply decreases ($S$ shifts left)  & $+$ & $-$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{remark}
+  When \textit{both} curves shift simultaneously, the direction of one of the
+  two equilibrium variables becomes ambiguous without knowing the magnitudes of
+  the shifts.
+\end{remark}
+
+% -------------------------------------------------------
+\section{Applications: Price Controls}
+
+Governments sometimes prevent prices from reaching $P^*$.
+
+\begin{definition}
+  A \textbf{price ceiling} is a legal maximum price.  It is binding only when
+  set below $P^*$, creating a \textbf{shortage}: $\Qd > \Qs$.
+
+  A \textbf{price floor} is a legal minimum price.  It is binding only when
+  set above $P^*$, creating a \textbf{surplus}: $\Qs > \Qd$.
+\end{definition}
+
+\begin{example}[Rent control]
+  A city caps apartment rent below the market-clearing level (a binding price
+  ceiling).  Quantity demanded of apartments exceeds quantity supplied, producing
+  a housing shortage.  Non-price rationing mechanisms (waiting lists, connections)
+  emerge.
+\end{example}
+
+\begin{example}[Minimum wage]
+  A binding minimum wage sets the wage floor above the market wage.
+  Quantity of labour supplied exceeds quantity demanded, producing unemployment.
+\end{example}
+
+% -------------------------------------------------------
+\section{Summary}
+
+\begin{itemize}
+  \item The \textbf{law of demand}: $P \uparrow \Rightarrow \Qd \downarrow$
+    (downward-sloping demand curve).
+  \item The \textbf{law of supply}: $P \uparrow \Rightarrow \Qs \uparrow$
+    (upward-sloping supply curve).
+  \item \textbf{Equilibrium} ($\Qd = \Qs$) determines $P^*$ and $Q^*$.
+    Surpluses and shortages push prices back to $P^*$.
+  \item Shifts in $D$ or $S$ change equilibrium; use comparative statics to
+    determine the direction.
+  \item \textbf{Price controls} prevent market clearing, generating persistent
+    shortages (ceilings) or surpluses (floors).
+\end{itemize}
+
+\end{document}

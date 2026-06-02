@@ -1,0 +1,79 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage[shortlabels]{enumitem}
+\usepackage{hyperref}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+
+% Economics notation
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\MC}{\mathrm{MC}}
+\newcommand{\MR}{\mathrm{MR}}
+\newcommand{\TC}{\mathrm{TC}}
+\newcommand{\TR}{\mathrm{TR}}
+
+% -------------------------------------------------------
+% Problem environment
+\newcounter{problem}
+\newenvironment{problem}[1][]{%
+  \stepcounter{problem}%
+  \medskip
+  \noindent\textbf{Problem \theproblem.}\ifx&#1&\else\quad(\textit{#1 pts})\fi\par\noindent\ignorespaces
+}{%
+  \medskip
+}
+
+% -------------------------------------------------------
+% Header — update each semester
+\newcommand{\COURSE}{ECON [XXX]}
+\newcommand{\PSNUM}{[X]}
+\newcommand{\DUEDATE}{[Due Date]}
+\newcommand{\INSTRUCTOR}{[Instructor Name]}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\COURSE}
+\chead{Problem Set \PSNUM}
+\rhead{\DUEDATE}
+\cfoot{\thepage}
+
+% ============================================================
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries \COURSE}\\[0.4em]
+  {\large Problem Set \PSNUM}\\[0.2em]
+  {\normalsize Due: \DUEDATE \quad Instructor: \INSTRUCTOR}
+\end{center}
+\medskip\hrule\medskip
+
+\noindent\textbf{Instructions:} Show all work. Clearly state any assumptions you make. Partial credit is awarded for correct reasoning.
+
+\vspace{1em}
+
+% -------------------------------------------------------
+\begin{problem}[10]
+  Problem text here.
+  \begin{enumerate}[(a)]
+    \item Subpart (a).
+    \item Subpart (b).
+    \item Subpart (c).
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[15]
+  Problem text here.
+  \begin{enumerate}[(a)]
+    \item Subpart (a).
+    \item Subpart (b).
+  \end{enumerate}
+\end{problem}
+
+\begin{problem}[10]
+  Problem text here.
+\end{problem}
+
+\end{document}
