@@ -1,0 +1,603 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{ragged2e}
+
+% Accent color
+\definecolor{AccentBlue}{RGB}{0,92,184}
+\setbeamercolor{structure}{fg=AccentBlue}
+\setbeamercolor{frametitle}{fg=AccentBlue}
+\setbeamercolor{title}{fg=white,bg=AccentBlue}
+\setbeamercolor{block title}{fg=white,bg=AccentBlue}
+\setbeamercolor{block body}{bg=gray!5}
+
+\setbeamertemplate{navigation symbols}{}
+
+% Placeholder macro for figures/diagrams
+\newcommand{\figplaceholder}[1]{%
+  \begin{center}
+    \begin{tikzpicture}
+      \draw[dashed] (0,0) rectangle (10,5);
+      \node[align=center] at (5,2.5) {\Large #1};
+    \end{tikzpicture}
+  \end{center}
+}
+
+
+
+\title[Housing Affordability]{Housing Affordability and Real Estate Market in Canada}
+\subtitle{ECON 204 -- Contemporary Economic Issues}
+\author{Muhebullah Karimzada}
+%\institute{Winter 2026}
+\date{Winter 2026}
+
+\begin{document}
+
+\maketitle
+
+%================================================
+\section{Introduction}
+
+%------------------------------------------------
+\begin{frame}{Introduction}
+\transfade
+\begin{itemize}
+  \item Housing affordability has become one of the most pressing economic challenges in Canada.
+  \item Housing costs directly shape daily living standards, long-term financial security, and wealth accumulation.
+  \item Housing is the largest single expenditure for most households and the dominant asset on household balance sheets.
+  \item Changes in affordability affect inequality, intergenerational mobility, and financial stability.
+  \item Since the mid-2000s, and especially after the COVID-19 pandemic, prices and rents rose faster than incomes in many regions.
+  \item After 2022, higher interest rates slowed price growth, but affordability remained strained due to higher borrowing costs and tighter rental markets.
+\end{itemize}
+\end{frame}
+
+%================================================
+\section{What Is Housing Affordability?}
+
+%------------------------------------------------
+\begin{frame}{What Is Housing Affordability?}
+\transfade
+\begin{block}{Key Concept}
+Housing affordability refers to the ability of households to obtain adequate housing without excessive financial strain, given their income, wealth, and access to credit.
+\end{block}
+
+\begin{itemize}
+  \item Affordability is a relationship, not a price level.
+  \item High prices do not automatically imply unaffordability if incomes are high or financing costs are low.
+  \item Moderate prices can be unaffordable if incomes are low or credit conditions are tight.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Price-to-Income Measures}
+\transfade
+\begin{itemize}
+  \item A widely used indicator is the price-to-income ratio:
+\end{itemize}
+
+\vspace{0.2cm}
+\[
+PTI = \frac{\text{House Price}}{\text{Annual Household Income}}.
+\]
+
+\vspace{0.2cm}
+\begin{itemize}
+  \item Historically, PTI ratios around 3--4 were common in many Canadian cities.
+  \item Ratios above 7--8 reflect a breakdown in the traditional link between incomes and housing prices.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Worked Numerical Example: Price-to-Income Ratio}
+\transfade
+\begin{block}{Worked Numerical Example}
+Suppose the median house price in a Canadian city is \$900{,}000 and the median household income is \$110{,}000. The price-to-income ratio is:
+\[
+PTI = \frac{900{,}000}{110{,}000} \approx 8.18.
+\]
+This implies that the price of a typical home is more than eight times annual household income, a level widely regarded as severely unaffordable.
+\end{block}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Payment-Based Affordability}
+\transfade
+\begin{itemize}
+  \item Many households experience affordability through monthly cash flow rather than prices.
+  \item Payment-based measures focus on the shelter-cost-to-income ratio:
+\end{itemize}
+
+\vspace{0.2cm}
+\[
+\text{Shelter Burden} = \frac{\text{Monthly Housing Costs}}{\text{Monthly Income}}.
+\]
+
+\vspace{0.2cm}
+\begin{itemize}
+  \item This measure is especially important in Canada, where mortgage payments can change significantly at renewal.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Worked Numerical Example: Shelter Burden}
+\transfade
+\begin{block}{Worked Numerical Example}
+A household earns \$6{,}000 per month after tax. If mortgage payments, property taxes, and utilities sum to \$2{,}700 per month, the shelter burden is:
+\[
+\frac{2{,}700}{6{,}000} = 45\%.
+\]
+This household is housing-cost burdened even if the home value is high.
+\end{block}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Affordability Metrics: Summary Table}
+\transfade
+\begin{center}
+\small
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{p{0.26\linewidth} p{0.34\linewidth} p{0.34\linewidth}}
+\toprule
+\textbf{Metric} & \textbf{Definition} & \textbf{Economic Interpretation} \\
+\midrule
+Price-to-income ratio (PTI) &
+$PTI=\dfrac{\text{House Price}}{\text{Annual Household Income}}$ &
+Captures the gap between prices and incomes; highlights long-run affordability stress. \\
+\addlinespace[0.4em]
+Shelter burden &
+$\text{Burden}=\dfrac{\text{Monthly Housing Costs}}{\text{Monthly Income}}$ &
+Captures cash-flow pressure; central when borrowing costs reset at mortgage renewal. \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+%================================================
+\section{Housing as a Consumption Good and an Asset}
+
+%------------------------------------------------
+\begin{frame}{Housing as a Consumption Good and an Asset}
+\transfade
+\begin{itemize}
+  \item Housing plays two distinct economic roles at the same time.
+  \item First, housing is a consumption good: households consume housing services (shelter, space, safety, location).
+  \item If housing were only a consumption good, prices would be closely tied to fundamentals such as rents and incomes.
+  \item Second, housing is also a store of wealth and an investment asset.
+  \item Expectations about future house prices influence demand, similar to how expected stock returns influence stock demand.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Why Prices Can Diverge from Rents or Incomes}
+\transfade
+\begin{itemize}
+  \item Because housing is both consumption and investment, demand depends on:
+  \begin{itemize}
+    \item current ability to pay for shelter services, and
+    \item expected future returns (expected appreciation).
+  \end{itemize}
+  \item When expected appreciation is high, the perceived long-run cost of ownership falls.
+  \item Buyers may stretch financially today because they expect capital gains tomorrow.
+  \item As a result, housing prices can diverge from fundamentals such as rents or incomes.
+\end{itemize}
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}{Concrete Example: Expectations and Divergence}
+\transfade
+\begin{itemize}
+  \item Suppose two cities have identical rents and incomes.
+  \item In City A, households expect house prices to be stable.
+  \item In City B, households expect prices to rise by 5 percent per year.
+  \item Demand for ownership will be higher in City B because buyers expect capital gains.
+  \item House prices in City B will be higher and the price-to-rent ratio will be larger, even if rental fundamentals are identical.
+\end{itemize}
+\end{frame}
+
+%================================================
+\section{Demand-Side Drivers of Affordability in Canada}
+
+%------------------------------------------------
+\begin{frame}{Demand-Side Drivers of Housing Affordability in Canada}
+\transfade
+\begin{itemize}
+  \item Demand-side drivers increase households' willingness and ability to pay for housing at any given price.
+  \item In Canada, demand forces have been unusually strong and persistent.
+  \item The impact on affordability depends critically on the responsiveness of housing supply.
+  \item When supply adjusts slowly, demand increases show up mainly as higher prices and rents rather than more housing.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Population Growth and Household Formation}
+\transfade
+\begin{itemize}
+  \item Rapid population growth is a major driver (immigration, temporary residents, international students, natural increase).
+  \item Population growth raises housing demand immediately because new households need housing upon arrival.
+  \item Affordability deteriorates when household formation exceeds housing completions.
+  \item Effects are pronounced in large metropolitan areas where inflows are concentrated.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Income Growth and Income Dispersion}
+\transfade
+\begin{itemize}
+  \item Affordability depends on average income growth and the distribution of income.
+  \item Higher-income households often have greater bidding power in desirable locations.
+  \item Housing prices can reflect the purchasing power of the upper part of the income distribution rather than the median household.
+  \item This can generate widespread affordability challenges even when aggregate income indicators appear strong.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Credit Conditions and Interest Rates}
+\transfade
+\begin{itemize}
+  \item Housing affordability depends on income and how much households can borrow.
+  \item Lower interest rates increase the mortgage size that can be serviced at a given payment, raising effective demand.
+  \item Long periods of low rates increased borrowing capacity and allowed households to bid up prices.
+  \item Rate increases reduce borrowing capacity, but can worsen affordability in the short run through renewal payment increases and tighter rental markets.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Expectations of Future House Prices}
+\transfade
+\begin{itemize}
+  \item When households expect prices to rise, ownership becomes more attractive as both shelter and investment.
+  \item Expected appreciation reduces the perceived long-run cost of ownership.
+  \item This can generate self-reinforcing demand: rising prices attract buyers, which pushes prices higher.
+  \item These dynamics can occur even among forward-looking and risk-aware households.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Demographic and Life-Cycle Factors}
+\transfade
+\begin{itemize}
+  \item Life-cycle household formation patterns affect housing demand.
+  \item Large cohorts entering prime home-buying ages increase demand for ownership housing.
+  \item Longer life expectancy and aging in place reduce turnover in the existing housing stock.
+  \item Affordability constraints delay homeownership for younger households, increasing rental demand and raising rents.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Urban Concentration and Location Preferences}
+\transfade
+\begin{itemize}
+  \item Housing demand is increasingly concentrated in large urban centres where jobs and amenities cluster.
+  \item Even if national supply expands, affordability can deteriorate locally when demand is spatially concentrated and supply responses are slow.
+  \item Spillovers occur as households priced out of central cities relocate outward, transmitting demand pressure across regions.
+\end{itemize}
+\end{frame}
+
+%================================================
+\section{Supply Constraints and Price Dynamics}
+
+%------------------------------------------------
+\begin{frame}{Supply Constraints and Price Dynamics}
+\transfade
+\begin{itemize}
+  \item Supply constraints explain why affordability deteriorates sharply when demand increases.
+  \item Housing supply is slow to adjust because housing is durable, land-intensive, and heavily regulated.
+  \item In the short run, supply is relatively fixed, so prices rise to clear the market when demand increases.
+  \item Supply elasticity determines whether adjustment occurs through quantities (construction) or prices.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Housing Supply Elasticity}
+\transfade
+\begin{itemize}
+  \item Housing supply elasticity measures how responsive housing construction is to changes in prices.
+  \item In elastic markets: higher prices lead to substantial increases in construction.
+  \item In inelastic markets: higher prices generate little additional construction; adjustment occurs mostly through prices.
+  \item Evidence indicates supply is relatively inelastic in many large Canadian metropolitan areas.
+\end{itemize}
+\end{frame}
+
+
+%------------------------------------------------
+\begin{frame}{Land-Use Regulation and Permitting}
+\transfade
+\begin{itemize}
+  \item Zoning rules that limit density, building heights, or reserve areas for single-family housing constrain construction.
+  \item Lengthy approval processes and permitting uncertainty discourage rapid supply expansion.
+  \item Developer delays reduce the ability to respond quickly to rising prices, reinforcing affordability pressures.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Geographic Constraints and Construction Capacity}
+\transfade
+\begin{itemize}
+  \item Geography can limit developable land (coastlines, mountains, protected land).
+  \item Expanding supply may require costly redevelopment or higher density, often facing political resistance.
+  \item Construction capacity constraints (labour shortages, materials costs, infrastructure limits) can slow the pace of building.
+  \item These constraints become binding during rapid demand growth.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Persistence and Distributional Effects}
+\transfade
+\begin{itemize}
+  \item When supply responds slowly, prices do not quickly revert after a demand shock dissipates.
+  \item Elevated prices can become embedded if households and investors expect constraints to persist.
+  \item Scarcity rations access through prices: higher-income households absorb increases more easily.
+  \item Lower- and middle-income households shift to smaller dwellings, longer commutes, or renting, increasing inequality and spatial segregation.
+\end{itemize}
+\end{frame}
+
+%================================================
+\section{Canadian Housing Market Case Studies}
+
+%------------------------------------------------
+\begin{frame}{Canadian Housing Market Case Studies}
+\transfade
+\begin{itemize}
+  \item Housing markets in Canada are highly regional; national averages conceal local differences.
+  \item Comparing regions shows how shared forces (population growth, rates, income dynamics) interact with local supply elasticity and policy environments.
+  \item There is no single Canadian housing market; there are distinct local markets responding to common pressures.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Vancouver: Inelastic Supply and Price Capitalization}
+\transfade
+\begin{itemize}
+  \item Strong demand supported by high incomes, amenities, and sustained population growth.
+  \item Supply constrained by geography (mountains and ocean), limited developable land, and restrictive land-use regulation.
+  \item With inelastic supply, even small demand shocks can generate large price increases.
+  \item Prices can become disconnected from local incomes due to investment demand and expectations of appreciation.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Toronto and the Greater Golden Horseshoe: Growth Outpacing the Pipeline}
+\transfade
+\begin{itemize}
+  \item Rapid population growth driven by immigration and employment opportunities.
+  \item Less severe geographic constraints than Vancouver, but supply limited by zoning, infrastructure coordination, and lengthy approvals.
+  \item Large projects take years from approval to completion; starts may be strong while completions lag.
+  \item Affordability can deteriorate if demand growth exceeds delivery, even when construction expands.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Montreal: From Relative Affordability to Tightening Markets}
+\transfade
+\begin{itemize}
+  \item Historically relatively affordable, especially in rentals, due to large rental stock and slower population growth.
+  \item Recent pressures intensified with faster population growth and prolonged low rates.
+  \item Higher rates after 2022 moderated price growth, but affordability challenges persisted via stronger rental demand and higher renewal payments.
+  \item Relative affordability advantages are not permanent; conditions can shift quickly when supply is slow.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Prairie Cities: Elastic Supply with Emerging Pressures}
+\transfade
+\begin{itemize}
+  \item Calgary and Edmonton historically more affordable due to more elastic supply (abundant land, fewer restrictions, faster permitting).
+  \item Recently, strong migration and population growth increased demand sharply.
+  \item Supply responded more than in constrained markets, but not enough to prevent rising prices and rents.
+  \item Even in relatively elastic markets, affordability can deteriorate when demand accelerates rapidly.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Atlantic Canada: Small Markets and Large Shocks}
+\transfade
+\begin{itemize}
+  \item Smaller markets historically had modest price growth.
+  \item Pandemic-era remote work, migration, and demographic shifts raised demand.
+  \item Supply was slow to adjust due to limited construction capacity and smaller pipelines.
+  \item Lower initial price levels made percentage price increases appear especially large.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Case Studies: Comparison Table}
+\transfade
+\begin{center}
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{p{0.18\linewidth} p{0.26\linewidth} p{0.26\linewidth} p{0.24\linewidth}}
+\toprule
+\textbf{Region} & \textbf{Core Demand Forces} & \textbf{Key Supply Constraints} & \textbf{Affordability Dynamics} \\
+\midrule
+Vancouver & Amenities, incomes, population growth, investment demand & Geography + restrictive density constraints & Small demand shocks lead to large price increases; persistent high PTI \\
+\addlinespace[0.35em]
+Toronto GGH & Immigration + jobs, sustained inflows & Approvals, zoning, long project timelines & Pipeline lags demand; prices and rents remain under pressure \\
+\addlinespace[0.35em]
+Montreal & Accelerating demand + low-rate legacy & Slow adjustment in supply; tighter rentals & Shift from relative affordability to strained markets \\
+\addlinespace[0.35em]
+Prairie Cities & Migration-driven demand increases & Capacity constraints when demand surges & More quantity response, but still rising prices/rents recently \\
+\addlinespace[0.35em]
+Atlantic Canada & Remote-work and migration shocks & Limited construction capacity & Outsized percentage price increases in smaller markets \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+%================================================
+\section{Monetary Policy and Mortgage Renewal}
+
+%------------------------------------------------
+\begin{frame}{Monetary Policy and Mortgage Renewal}
+\transfade
+\begin{itemize}
+  \item Monetary policy affects housing affordability through several channels.
+  \item The mortgage renewal channel is particularly important in Canada.
+  \item This channel helps explain why affordability can worsen even if house prices stop rising or fall.
+  \item Canadian mortgages expose households to interest rate risk at renewal rather than locking costs for the full loan life.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Renewal Mechanics in Canada}
+\transfade
+\begin{itemize}
+  \item Many mortgages have fixed rates for short terms (commonly five years), while amortizations are much longer (often 25 or 30 years).
+  \item Households periodically renew at prevailing market rates.
+  \item Rate hikes do not hit all borrowers immediately; impacts arrive as mortgages renew.
+  \item Renewal at higher rates can raise monthly payments substantially even if balances declined modestly.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Price Channel vs. Payment Channel}
+\transfade
+\begin{itemize}
+  \item Higher rates reduce borrowing capacity for new buyers, slowing demand and price growth (price channel).
+  \item For existing borrowers, higher rates raise required payments at renewal (payment channel).
+  \item Prices and affordability can move in opposite directions:
+  \begin{itemize}
+    \item prices stabilize or decline, while
+    \item affordability worsens as monthly payments rise.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+%------------------------------------------------
+\begin{frame}{Distributional Consequences of Renewal Risk}
+\transfade
+\begin{itemize}
+  \item Recently purchased households and highly leveraged borrowers are more exposed to renewal risk.
+  \item These households tend to be younger and more vulnerable to payment increases.
+  \item Long-time homeowners with small balances or no mortgage are largely insulated.
+  \item Monetary tightening can redistribute stress and exacerbate intergenerational inequality.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Renters and the Renewal Channel}
+\transfade
+\begin{itemize}
+  \item Higher interest rates raise financing costs for landlords.
+  \item In tight rental markets, some higher costs may pass through into higher rents.
+  \item Higher rates can delay new construction, constraining future rental supply and reinforcing rent pressure.
+  \item Effects unfold with long and uneven lags; stress can peak well after a tightening cycle begins.
+\end{itemize}
+\end{frame}
+
+%================================================
+\section{International Housing Affordability Crises}
+
+%------------------------------------------------
+\begin{frame}{International Housing Affordability Crises}
+\transfade
+\begin{itemize}
+  \item The international housing affordability crisis refers to widespread and simultaneous deterioration in affordability across many advanced economies over the past two decades.
+  \item Affordability problems have emerged across countries with different institutions and policy frameworks.
+  \item This suggests common economic forces rather than isolated national policy failures.
+  \item A core feature is divergence: housing costs rise faster than household incomes.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{A Common Global Pattern}
+\transfade
+\begin{itemize}
+  \item Demand concentrates in major urban centres with jobs and amenities.
+  \item Supply responds slowly due to zoning, regulation, infrastructure limits, and construction bottlenecks.
+  \item Long periods of low interest rates increased borrowing capacity and raised asset prices.
+  \item With inelastic supply, demand increases translate mainly into higher prices rather than more housing.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{The United States: Regional Divergence}
+\transfade
+\begin{itemize}
+  \item In some cities, supply is highly constrained by zoning, community opposition, and lengthy approvals.
+  \item In these markets, rising demand leads mainly to higher prices and severe affordability pressure.
+  \item In more flexible markets, price increases have been smaller.
+  \item The contrast highlights the central role of supply elasticity.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{United Kingdom: Rental Affordability and Generational Inequality}
+\transfade
+\begin{itemize}
+  \item Rising house prices push more younger households into renting.
+  \item Rental demand rises faster than rental supply, raising rents sharply in major areas.
+  \item Renters can face higher effective inflation than homeowners.
+  \item The result is intensified generational inequality in housing cost burdens.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Australia and New Zealand: Extreme Price-to-Income Ratios}
+\transfade
+\begin{itemize}
+  \item Cities reach exceptionally high price-to-income ratios.
+  \item Drivers include strong population growth, urban concentration, constrained supply, and financial conditions that favor housing as an investment asset.
+  \item These cases show that affordability crises can persist even in high-income countries with stable institutions.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Europe: Different Institutions, Similar Outcomes}
+\transfade
+\begin{itemize}
+  \item European countries vary in tenure systems, yet affordability problems have emerged across many cities.
+  \item In major metropolitan areas, limited supply combined with strong demand pushed prices and rents above income growth.
+  \item Convergence across different systems suggests interaction of global demand pressures with local supply constraints.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Why Affordability Has Become Structural}
+\transfade
+\begin{itemize}
+  \item The current episode is often described as structural rather than purely cyclical.
+  \item Affordability worsened persistently over time.
+  \item Younger and lower-income households are increasingly excluded from homeownership.
+  \item Housing costs reshape labour mobility, family formation, and inequality.
+  \item In many cases, affordability does not return to pre-boom levels even after markets cool.
+\end{itemize}
+\end{frame}
+
+%------------------------------------------------
+\begin{frame}{Implications for Canada}
+\transfade
+\begin{itemize}
+  \item Canada fits the international pattern: strong demand concentrated in large cities, constrained supply, and financial channels amplifying price movements.
+  \item An international lens clarifies that the issue is broader than a single-country policy failure.
+\end{itemize}
+\end{frame}
+
+%================================================
+\section{Conclusion}
+
+%------------------------------------------------
+\begin{frame}{Conclusion}
+\transfade
+\begin{itemize}
+  \item Housing affordability in Canada reflects interaction of strong demand growth, constrained supply, and powerful financial channels.
+  \item Prices, rents, and payments respond differently to economic shocks.
+  \item Affordability can deteriorate even when some indicators improve.
+  \item Understanding these mechanisms is essential for evaluating policy responses and interpreting housing market developments in Canada and abroad.
+\end{itemize}
+\end{frame}
+
+
+
+\end{document}

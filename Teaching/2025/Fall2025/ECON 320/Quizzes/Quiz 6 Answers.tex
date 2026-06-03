@@ -1,0 +1,420 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm, geometry, setspace}
+\geometry{margin=1in}
+\setstretch{1.25}
+\setlength{\parindent}{0pt}
+
+\title{Solutions -- Quiz 6\\ \vspace{5pt}
+\large ECON 320 -- Introduction to Mathematical Economics}
+\author{Instructor: Muhebullah Karimzada}
+\date{December 01, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Part A — Multiple Choice (1 mark each)}
+
+For each question, we give the correct option and a brief explanation.
+
+\begin{enumerate}
+
+\item \textbf{Correct answer: (c)}  
+
+The Envelope Theorem says that when computing the effect of a parameter on the \emph{optimized} value of the objective, the indirect effect via optimal choice variables drops out because the first-order conditions (FOCs) hold. What remains is the \emph{direct} partial derivative. Hence, only the direct partial effect matters; indirect effects cancel at the optimum.
+
+\item \textbf{Correct answer: (b)}  
+
+In constrained optimization, the Lagrange multiplier $\lambda$ measures the change in the maximized value of the objective when the constraint right-hand side is relaxed by one unit. This is the \emph{shadow value} of the constraint. So (b) is correct.
+
+\item \textbf{Correct answer: (a)}  
+
+The \emph{indirect utility function} $V(p,M)$ gives the maximum utility as a function of prices and income. The \emph{expenditure function} $E(p,U)$ gives the minimum income required to achieve a given utility level. These are dual to each other: one maximizes utility given a budget, the other minimizes expenditure given a utility target.
+\newpage
+
+\item \textbf{Correct answer: (b)}  
+
+Shephard's Lemma states that if $C(w,r,Q)$ is the cost function (obtained from cost minimization), then:
+\[
+\frac{\partial C}{\partial w} = L^*(w,r,Q), 
+\quad
+\frac{\partial C}{\partial r} = K^*(w,r,Q),
+\]
+i.e., the partial derivatives of cost with respect to input prices equal the conditional factor demands.
+
+\item \textbf{Correct answer: (c)}  
+
+$\int_0^T I(t)\,dt$ is the continuous-time sum (integral) of the investment flow $I(t)$ between 0 and $T$. It therefore represents the \emph{total accumulated investment} over $[0,T]$.
+
+\item \textbf{Correct answer: (b)}  
+
+A first-order linear differential equation has the standard form:
+\[
+\frac{dx}{dt} + P(t)x = Q(t),
+\]
+where $P(t)$ and $Q(t)$ are given functions of $t$. Option (b) matches this.
+
+\item \textbf{Correct answer: (d)}  
+
+At a steady state of 
+\[
+\frac{dK}{dt} = I - \delta K,
+\]
+we set $\frac{dK}{dt} = 0$, giving:
+\[
+0 = I - \delta K^* \quad \Rightarrow \quad K^* = \frac{I}{\delta}.
+\]
+
+\end{enumerate}
+
+\newpage
+
+\section*{Part B — Short Answer Problems}
+
+\subsection*{Question 1 — Envelope Theorem (4 marks)}
+
+We have:
+\[
+\max_{x,y} U(x,y,a) \quad \text{s.t. } g(x,y,a) = 0,
+\]
+with Lagrangian:
+\[
+\mathcal{L}(x,y,\lambda,a) = U(x,y,a) + \lambda \, g(x,y,a).
+\]
+
+Let $x^*(a), y^*(a), \lambda^*(a)$ denote the optimal choices as functions of $a$, and let the value function be
+\[
+V(a) = U(x^*(a), y^*(a), a).
+\]
+
+\paragraph{(1) Derive $\dfrac{dV}{da}$ using the Envelope Theorem.}
+
+\textbf{Step 1:} Differentiate $V(a)$ by the chain rule:
+\[
+\frac{dV}{da}
+= \frac{\partial U}{\partial x}\frac{dx^*}{da}
++ \frac{\partial U}{\partial y}\frac{dy^*}{da}
++ \frac{\partial U}{\partial a}.
+\]
+
+All partial derivatives of $U$ are evaluated at $(x^*(a),y^*(a),a)$.
+
+\textbf{Step 2:} Use the first-order conditions (FOCs) from the Lagrangian:
+\begin{align*}
+\frac{\partial \mathcal{L}}{\partial x} &= U_x + \lambda g_x = 0,\\
+\frac{\partial \mathcal{L}}{\partial y} &= U_y + \lambda g_y = 0,\\
+\frac{\partial \mathcal{L}}{\partial \lambda} &= g(x,y,a) = 0.
+\end{align*}
+From the first two:
+\[
+U_x = -\lambda g_x, \qquad U_y = -\lambda g_y.
+\]
+
+\textbf{Step 3:} Substitute into the expression for $\dfrac{dV}{da}$:
+\[
+\frac{dV}{da}
+= (-\lambda g_x)\frac{dx^*}{da}
++ (-\lambda g_y)\frac{dy^*}{da}
++ U_a.
+\]
+
+Factor out $-\lambda$ in the first two terms:
+\[
+\frac{dV}{da}
+= U_a - \lambda \left( g_x \frac{dx^*}{da} + g_y \frac{dy^*}{da} \right).
+\]
+
+\textbf{Step 4:} Total differentiate the constraint:
+\[
+g(x^*(a),y^*(a),a) = 0.
+\]
+Then:
+\[
+\frac{dg}{da}
+= g_x \frac{dx^*}{da} + g_y \frac{dy^*}{da} + g_a = 0.
+\]
+So:
+\[
+g_x \frac{dx^*}{da} + g_y \frac{dy^*}{da} = -g_a.
+\]
+
+\textbf{Step 5:} Substitute this into the expression for $\dfrac{dV}{da}$:
+\[
+\frac{dV}{da}
+= U_a - \lambda (-g_a)
+= U_a + \lambda g_a.
+\]
+
+Thus the \textbf{Envelope Theorem} gives:
+\[
+\boxed{
+\frac{dV}{da} 
+= \frac{\partial U}{\partial a} + \lambda \frac{\partial g}{\partial a}
+}
+\]
+evaluated at the optimum.
+
+(If the constraint is written as $k - g(x,y,a) = 0$, the formula becomes $dV/da = U_a - \lambda g_a$.)
+
+\paragraph{(2) Why do the indirect effects through $x^*, y^*$ drop out?}
+
+At the optimum, the FOCs imply $U_x = -\lambda g_x$ and $U_y = -\lambda g_y$. When we differentiate $V(a)$, the terms involving $dx^*/da$ and $dy^*/da$ appear multiplied by $U_x$ and $U_y$, but these are replaced by $-\lambda g_x$ and $-\lambda g_y$ and then combined with the total derivative of the constraint. Because the constraint must continue to hold as $a$ changes, its total derivative is zero, which forces the combination 
+\[
+g_x \frac{dx^*}{da} + g_y \frac{dy^*}{da}
+\]
+to be exactly $-g_a$. This cancels neatly, leaving only the direct $U_a$ and $g_a$ terms. In other words, the optimal adjustment of $x^*$ and $y^*$ ensures that their indirect contributions vanish in the derivative of the value function.
+\newpage
+\paragraph{(3) Economic interpretation of $-\lambda \frac{\partial g}{\partial a}$.}
+
+If we write the constraint as $k - g(x,y,a) = 0$, then:
+\[
+\frac{dV}{da} = U_a - \lambda g_a.
+\]
+The term $-\lambda g_a$ measures how changes in the parameter $a$ tighten or relax the constraint, multiplied by the shadow value $\lambda$. Economically, $g_a$ tells us how the constraint changes with $a$, and $\lambda$ gives the value of relaxing the constraint. Thus $-\lambda g_a$ is the contribution to the change in the optimized value that comes from the way $a$ changes the feasible set, weighted by the marginal value (shadow price) of the constraint.
+
+%----------------------------------------------------
+\subsection*{Question 2 — Duality and Shephard’s Lemma (4 marks)}
+
+We have a cost function:
+\[
+C(w,r,Q) = wL^*(Q) + rK^*(Q),
+\]
+where $w$ is wage, $r$ rental rate of capital, and $L^*(Q),K^*(Q)$ are cost-minimizing demands for labor and capital given $Q$.
+
+\paragraph{(1) Use Shephard’s Lemma to derive factor demands.}
+
+To be precise, $C(w,r,Q)$ arises from the \emph{cost minimization problem}:
+\[
+C(w,r,Q) = \min_{L,K} \{ wL + rK \; : \; F(L,K) \ge Q \}.
+\]
+
+We form the Lagrangian:
+\[
+\mathcal{L}(L,K,\lambda) = wL + rK + \lambda(Q - F(L,K)),
+\]
+where $\lambda \ge 0$ is the multiplier.
+
+\textbf{FOCs:}
+\begin{align*}
+\frac{\partial \mathcal{L}}{\partial L} &= w - \lambda F_L(L,K) = 0,\\
+\frac{\partial \mathcal{L}}{\partial K} &= r - \lambda F_K(L,K) = 0,\\
+\frac{\partial \mathcal{L}}{\partial \lambda} &= Q - F(L,K) = 0.
+\end{align*}
+These conditions define $L^*(w,r,Q)$ and $K^*(w,r,Q)$.
+
+By the \textbf{Envelope Theorem} applied to the minimization problem with respect to $w$ and $r$:
+\[
+\frac{\partial C}{\partial w} = \frac{\partial}{\partial w} \mathcal{L}(L^*,K^*,\lambda^*)
+= L^*,
+\]
+because the derivative of $wL + rK$ with respect to $w$ is $L$, and all terms involving $\partial L^*/\partial w$, $\partial K^*/\partial w$ drop out via the FOCs.
+
+Similarly:
+\[
+\frac{\partial C}{\partial r} = K^*.
+\]
+
+Hence:
+\[
+\boxed{
+\frac{\partial C(w,r,Q)}{\partial w} = L^*(w,r,Q), \qquad
+\frac{\partial C(w,r,Q)}{\partial r} = K^*(w,r,Q).
+}
+\]
+
+\paragraph{(2) Why does cost-minimizing behavior imply duality between cost and production?}
+
+The \textbf{primal} production problem is to choose inputs $(L,K)$ to maximize output $F(L,K)$ subject to input constraints. The \textbf{dual} cost-minimization problem is, given a target output $Q$, to choose $(L,K)$ to minimize total cost $wL + rK$ subject to $F(L,K) \ge Q$. Both problems share the same technology $F(L,K)$ and hence share the same tangency condition $MRTS = w/r$. Therefore, for any given $Q$, the cost-minimizing $(L^*,K^*)$ correspond to the efficient input combination that would arise from the production maximization problem. This one-to-one relationship between the primal and dual problems is the duality in production theory.
+
+\paragraph{(3) Show that marginal cost equals $\partial C/\partial Q$.}
+
+By definition,
+\[
+MC(Q) = \frac{dC}{dQ},
+\]
+the additional cost of producing one more unit of output.
+
+From the cost-minimization problem, the Lagrange multiplier $\lambda$ associated with the constraint $F(L,K)\ge Q$ measures the change in minimum cost when we relax the required output level $Q$ by one unit. By the Envelope Theorem with respect to $Q$:
+\[
+\frac{\partial C}{\partial Q} = \lambda.
+\]
+
+Economically, $\lambda$ is the \emph{marginal cost} of output: increasing required output slightly raises minimal cost by approximately $\lambda$ per unit. Thus:
+\[
+\boxed{MC(Q) = \frac{\partial C}{\partial Q}.}
+\]
+
+%----------------------------------------------------
+\subsection*{Question 3 — Integration and Stock–Flow Dynamics (4 marks)}
+
+We are given:
+\[
+\frac{dK}{dt} = I(t) - \delta K(t),
+\]
+where $I(t)$ is investment and $\delta > 0$ is the depreciation rate.
+
+\paragraph{(1) Integrating factor and solution for $K(t)$.}
+
+Rewrite the equation in standard linear form:
+\[
+\frac{dK}{dt} + \delta K = I(t).
+\]
+
+This matches:
+\[
+\frac{dK}{dt} + P(t)K = Q(t),
+\]
+with $P(t)=\delta$ and $Q(t) = I(t)$.
+
+\textbf{Step 1:} Compute the integrating factor:
+\[
+\mu(t) = e^{\int P(t)dt} = e^{\int \delta dt} = e^{\delta t}.
+\]
+
+\textbf{Step 2:} Multiply both sides of the differential equation by $\mu(t)$:
+\[
+e^{\delta t}\frac{dK}{dt} + \delta e^{\delta t}K = e^{\delta t}I(t).
+\]
+
+\textbf{Step 3:} Recognize the left-hand side as the derivative of a product:
+\[
+\frac{d}{dt}(e^{\delta t}K(t)) 
+= e^{\delta t}\frac{dK}{dt} + \delta e^{\delta t}K(t).
+\]
+
+Hence:
+\[
+\frac{d}{dt}(e^{\delta t}K(t)) = e^{\delta t} I(t).
+\]
+
+\textbf{Step 4:} Integrate both sides from $0$ to $t$:
+\[
+\int_0^t \frac{d}{ds}(e^{\delta s}K(s))ds = \int_0^t e^{\delta s}I(s)ds.
+\]
+
+Left-hand side:
+\[
+e^{\delta t}K(t) - e^{\delta \cdot 0}K(0) 
+= e^{\delta t}K(t) - K(0).
+\]
+
+Thus:
+\[
+e^{\delta t}K(t) - K(0) = \int_0^t e^{\delta s}I(s)ds.
+\]
+
+\textbf{Step 5:} Solve for $K(t)$ by dividing through by $e^{\delta t}$:
+\[
+K(t) = e^{-\delta t}K(0) + e^{-\delta t}\int_0^t e^{\delta s}I(s)ds.
+\]
+
+Equivalently (sometimes written in convolution form):
+\[
+\boxed{
+K(t)
+= K(0)e^{-\delta t} 
++ \int_0^t e^{-\delta (t-s)}I(s)\,ds.
+}
+\]
+
+\paragraph{(2) Long-run (steady-state) value of $K$.}
+
+A steady state $K^*$ is a constant level such that $\frac{dK}{dt}=0$ and the system is in balance. Suppose $I(t)=\bar{I}$ is constant in the long run. Then the dynamic equation becomes:
+\[
+\frac{dK}{dt} = \bar{I} - \delta K.
+\]
+At steady state, $\frac{dK}{dt}=0$, so:
+\[
+0 = \bar{I} - \delta K^*
+\quad\Rightarrow\quad
+K^* = \frac{\bar{I}}{\delta}.
+\]
+
+\paragraph{(3) Economic interpretation of $K(0)e^{-\delta t}$ and $\displaystyle\frac{1}{\delta}\int_0^t e^{-\delta (t-s)}I(s)ds$.}
+
+From the solution
+\[
+K(t) = K(0)e^{-\delta t} + \int_0^t e^{-\delta (t-s)}I(s)\,ds,
+\]
+we can interpret the terms as follows:
+
+\begin{itemize}
+\item $K(0)e^{-\delta t}$: This is the original capital stock decaying exponentially at rate $\delta$. Over time, if no new investment occurred, the capital stock would shrink toward zero due to depreciation.
+
+\item $\displaystyle \int_0^t e^{-\delta (t-s)}I(s)\,ds$: This term accumulates all past investments $I(s)$, each discounted by $e^{-\delta (t-s)}$ to reflect depreciation between the time of investment $s$ and the current time $t$. Recent investments (with $t-s$ small) are discounted less, while older investments are discounted more because they have had more time to depreciate. This integral therefore represents the \emph{effective capital} contributed by all past investment flows, after accounting for depreciation.
+\end{itemize}
+
+%----------------------------------------------------
+\subsection*{Question 4 — Present Value Calculation (4 marks)}
+
+Income process:
+\[
+Y(t) = Y_0 e^{gt},
+\]
+with constant growth rate $g$ and initial level $Y_0>0$. Discount rate is $r>g$.
+
+We want:
+\[
+PV = \int_0^\infty Y(t)e^{-rt}dt = \int_0^\infty Y_0 e^{gt} e^{-rt} dt.
+\]
+
+\paragraph{(1) Compute the present value (step-by-step).}
+
+\textbf{Step 1:} Combine the exponentials:
+\[
+Y_0 e^{gt}e^{-rt} = Y_0 e^{(g-r)t}.
+\]
+
+So:
+\[
+PV = \int_0^\infty Y_0 e^{(g-r)t} dt = Y_0 \int_0^\infty e^{(g-r)t} dt.
+\]
+
+\textbf{Step 2:} Let $k = g - r$. Then:
+\[
+PV = Y_0 \int_0^\infty e^{kt} dt.
+\]
+
+To integrate, first consider the finite upper limit $T$:
+\[
+\int_0^T e^{kt} dt = \left[\frac{1}{k} e^{kt}\right]_0^T 
+= \frac{1}{k} e^{kT} - \frac{1}{k}.
+\]
+
+\textbf{Step 3:} Take the limit as $T \to \infty$.
+
+We have two cases depending on the sign of $k$:
+\begin{itemize}
+\item If $k < 0$ (i.e., $g-r<0$ or $r>g$), then $e^{kT} \to 0$ as $T \to \infty$, and:
+\[
+\lim_{T\to\infty}\left(\frac{1}{k} e^{kT} - \frac{1}{k}\right)
+= 0 - \frac{1}{k} = -\frac{1}{k}.
+\]
+Since $k = g-r$, we have $-1/k = -1/(g-r) = 1/(r-g)$.
+
+\item If $k \ge 0$ (i.e., $r \le g$), then $e^{kT}$ does not go to zero and the integral diverges.
+\end{itemize}
+
+Therefore, when $r>g$:
+\[
+\int_0^\infty e^{(g-r)t} dt = \frac{1}{r-g}.
+\]
+
+\textbf{Step 4:} Multiply by $Y_0$:
+\[
+PV = Y_0 \cdot \frac{1}{r-g} = \boxed{\frac{Y_0}{r-g}}.
+\]
+
+\paragraph{(2) Condition for finiteness and explanation.}
+
+The integral:
+\[
+\int_0^\infty e^{(g-r)t} dt
+\]
+converges only if the exponent $(g-r)t$ goes to $-\infty$ as $t\to\infty$, which requires $g-r<0$, i.e.,
+\[
+\boxed{r > g.}
+\]
+
+If $r>g$, the discount factor $e^{-rt}$ dominates the growth $e^{gt}$ so that the product $e^{(g-r)t}$ tends to zero and the present value is finite. If $r\le g$, the effective growth of $Y(t)e^{-rt}$ is non-negative, causing the integral (present value) to diverge: future income grows too fast (or is insufficiently discounted), and its present value becomes infinite.
+
+\end{document}

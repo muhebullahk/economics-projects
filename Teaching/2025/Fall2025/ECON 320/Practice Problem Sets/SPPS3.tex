@@ -1,0 +1,251 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts, geometry, tcolorbox, setspace}
+\geometry{margin=1in}
+\setstretch{1.2}
+\setlength{\parindent}{0pt}
+\tcbset{colback=gray!5,colframe=black!70,boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,top=4pt,bottom=4pt}
+
+
+
+\title{Solutions -- Practice Problem Set 3}
+\author{ECON 320 -- Introduction to Mathematical Economics}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+
+
+\section*{1. Nonlinear Production Optimization}
+
+\[
+Q(L)=50L^{0.6}e^{-0.02L}
+\]
+
+\textbf{Solution Steps}
+
+\begin{enumerate}
+\item \textbf{Derivative:}
+\[
+\frac{dQ}{dL}=50e^{-0.02L}\left(0.6L^{-0.4}-0.02L^{0.6}\right)
+=50e^{-0.02L}L^{-0.4}(0.6-0.02L)
+\]
+
+\item \textbf{FOC:} \(0.6-0.02L=0 \Rightarrow L^*=30\).
+
+\item \textbf{SOC:} The term \((0.6-0.02L)\) switches from positive to negative, implying \(Q''(30)<0\).  
+Hence \(L^*\) gives a \textbf{maximum}.
+
+\item \textbf{Interpretation:}  
+At \(L<30\), increasing labor raises output; beyond \(L=30\), diminishing returns dominate.
+
+\end{enumerate}
+
+\begin{tcolorbox}
+\textbf{Key Concept:} The product of a power and an exponential term often produces an interior maximum because growth from the power term is eventually offset by exponential decay.
+\end{tcolorbox}
+
+\newpage
+
+\section*{2. Utility with Exponential Preferences}
+
+\[
+U(x)=5x^{0.4}e^{-0.1x}
+\]
+
+\textbf{Steps}
+
+\begin{align*}
+U'(x) &= 5e^{-0.1x}(0.4x^{-0.6}-0.1x^{0.4}) \\
+&= 5e^{-0.1x}x^{-0.6}(0.4-0.1x)
+\end{align*}
+
+\[
+0.4-0.1x=0 \Rightarrow x^*=4
+\]
+
+\[
+U''(x)=5e^{-0.1x}\!\left[-0.24x^{-1.6}-0.04x^{-0.6}+0.01x^{0.4}\right]
+\]
+Since \(U''(4)<0\), a maximum exists.
+
+\[
+U(4)=5(4^{0.4})e^{-0.4}\approx5.84
+\]
+
+\textbf{Economic Meaning:}  
+Utility rises then falls—capturing \textit{satiation}. The exponential term reflects diminishing satisfaction beyond moderate consumption.
+
+
+
+\section*{3. Logarithmic Profit Maximization}
+
+\[
+\pi(Q)=200\ln(Q+1)-30Q
+\]
+
+\textbf{Steps}
+
+\[
+\pi'(Q)=\frac{200}{Q+1}-30=0
+\Rightarrow Q^*=\frac{200}{30}-1=5.67
+\]
+
+\[
+\pi''(Q)=-\frac{200}{(Q+1)^2}<0 \Rightarrow \text{Maximum.}
+\]
+\[
+\pi(5.67)=200\ln(6.67)-170.1\approx209.3
+\]
+
+\begin{tcolorbox}
+\textbf{Interpretation:} The logarithmic form of revenue implies strongly diminishing marginal profit; each additional unit contributes less due to the concavity of $\ln(Q+1)$.
+\end{tcolorbox}
+
+---
+
+\section*{4. Advertising Response with Diminishing Returns}
+
+\[
+S(A)=400(1-e^{-0.05A})-2A
+\]
+
+\textbf{Derivative:}
+\[
+S'(A)=20e^{-0.05A}-2=0\Rightarrow e^{-0.05A}=0.1\Rightarrow A^*=46.05
+\]
+\[
+S''(A)=-1e^{-0.05A}<0\Rightarrow \text{Maximum.}
+\]
+\[
+S(46.05)=400(1-0.1)-92.1=267.9
+\]
+
+\textbf{Interpretation:}  
+The exponential term ensures sales approach an upper limit (saturation). Advertising is most effective at low levels and yields diminishing returns as $A$ grows.
+
+
+
+\section*{5. Elasticity via Logarithmic Differentiation}
+
+\[
+C(Q)=10Q^{0.7}(2+\ln Q)
+\]
+
+Take logs:
+\[
+\ln C=\ln10+0.7\ln Q+\ln(2+\ln Q)
+\]
+Differentiate:
+\[
+\frac{1}{C}\frac{dC}{dQ}=\frac{0.7}{Q}+\frac{1}{Q(2+\ln Q)}
+\]
+\[
+E_{CQ}=\frac{dC}{dQ}\frac{Q}{C}=0.7+\frac{1}{2+\ln Q}
+\]
+At \(Q=10\):
+\[
+E_{CQ}=0.7+\frac{1}{2+2.3026}=0.917
+\]
+
+\begin{tcolorbox}
+\textbf{Interpretation:} The elasticity is less than one—costs rise less than proportionally to output, showing economies of scale.
+\end{tcolorbox}
+
+
+\newpage
+\section*{6. Maximization with Rational Function}
+
+\[
+R(P)=\frac{100P}{4+P^2}
+\]
+
+\[
+R'(P)=\frac{100(4-P^2)}{(4+P^2)^2}=0\Rightarrow P^*=2
+\]
+\[
+R''(P)<0\text{ at } P=2\Rightarrow\text{maximum.}
+\]
+\[
+R(2)=\frac{100(2)}{8}=25
+\]
+
+\textbf{Interpretation:}  
+At $P^*=2$, revenue peaks as further price increases reduce quantity enough to offset higher price.
+
+
+
+\section*{7. Cost Minimization with Logarithmic Term}
+
+\[
+C(x)=20x-50\ln x
+\]
+\[
+C'(x)=20-\frac{50}{x}=0\Rightarrow x^*=2.5
+\]
+\[
+C''(x)=\frac{50}{x^2}>0\Rightarrow \text{minimum.}
+\]
+
+\textbf{Interpretation:}  
+The $-\ln x$ term captures scale economies—average cost decreases initially then increases linearly beyond $x^*$.
+
+
+
+\section*{8. Growth Model with Continuous Time}
+
+\[
+P(t)=800e^{0.03t}-400e^{-0.02t}
+\]
+\[
+P'(t)=24e^{0.03t}+8e^{-0.02t}
+\]
+\[
+P''(t)=0.72e^{0.03t}-0.16e^{-0.02t}=0
+\Rightarrow e^{0.05t}=0.222\Rightarrow t^*=-30.1
+\]
+Growth rate highest initially; declines over time.
+
+\begin{tcolorbox}
+\textbf{Interpretation:} The first exponential drives long-run expansion, while the second captures early-stage decay or adjustment.
+\end{tcolorbox}
+
+
+\newpage
+\section*{9. Logarithmic Demand and Revenue}
+
+\[
+P(Q)=60-5\ln(Q+1),\quad R(Q)=Q(60-5\ln(Q+1))
+\]
+\[
+R'(Q)=60-5\ln(Q+1)-\frac{5Q}{Q+1}=0
+\]
+
+Numerical testing shows revenue rises gradually, approaching an upper limit.  
+Logarithmic demand implies continually decreasing sensitivity; revenue increases slowly but without a sharp interior maximum.
+
+
+
+\section*{10. Challenge: Nonlinear Utility and Elasticity}
+
+\[
+U(x)=\ln(3x+2)-0.5x^2
+\]
+\[
+U'(x)=\frac{3}{3x+2}-x=0\Rightarrow3=3x^2+2x\Rightarrow x^*=0.721
+\]
+\[
+U''(x)=-\frac{9}{(3x+2)^2}-1<0\Rightarrow\text{maximum.}
+\]
+\[
+U(0.721)=\ln(4.163)-0.5(0.721)^2=1.426-0.26=1.166
+\]
+
+\begin{tcolorbox}
+\textbf{Interpretation:} Utility rises with consumption initially but declines for large $x$ as the quadratic term dominates, capturing disutility of overconsumption.
+\end{tcolorbox}
+
+
+
+
+\end{document}

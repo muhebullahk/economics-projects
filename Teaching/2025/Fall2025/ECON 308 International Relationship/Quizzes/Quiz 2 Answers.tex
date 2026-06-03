@@ -1,0 +1,201 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, mathtools}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Quiz 2 -- Solutions\\ \vspace{8pt} \Large ECON 308 -- International Economic Relations}
+\author{Instructor: Muhebullah Karimzada}
+\date{October 02,  2025}
+
+
+\begin{document}
+\maketitle
+
+\section*{Answers to Multiple-Choice Questions}
+
+\noindent 1. \textbf{B) Capital owners.} \\
+When $P_M/P_F$ rises, labor moves toward $M$. The value marginal product of $K$ rises both because of the higher $P_M$ and because $L_M$ increases. Landowners lose; workers are ambiguous.
+
+\bigskip
+
+\noindent 2. \textbf{C) More labor moves into manufactures.} \\
+Equilibrium requires $w=P_M \cdot MPL_M(L_M)=P_F \cdot MPL_F(L_F)$. A higher $P_M$ shifts up the $M$-schedule, so equality holds only with larger $L_M$ (and smaller $L_F$).
+
+\bigskip
+
+\noindent 3. \textbf{C) Because real wage rises in terms of one good and falls in terms of the other.} \\
+Typically $w$ rises less than $P_M$, so $w/P_M$ falls, but $w/P_F$ rises when $P_F$ is unchanged.
+
+\bigskip
+
+\noindent 4. \textbf{C) Specific factors in the export sector gain, specific factors in the import sector lose, labor is ambiguous.} \\
+Classic Ch.~4 distributional result: the specific factor in the sector whose relative price rises gains; the other specific factor loses; labor’s real income is mixed.
+
+\bigskip
+
+\noindent 5. \textbf{B) Home’s opportunity cost of manufactures is lower than Foreign’s.} \\
+Home exports $M$ under free trade only if $OC_M^{Home}<OC_M^{Foreign}$ (equivalently, $P_M/P_F$ under autarky is lower at Home).
+
+\bigskip
+\hrule
+\bigskip
+
+\section*{Solution to the Problem}
+
+
+Two goods, $M$ and $F$. Labor $L$ mobile across sectors; $K$ specific to $M$; $T$ specific to $F$. \\
+Production:
+\[
+Q_M = K^{1/3} L_M^{2/3}, 
+\qquad 
+Q_F = T^{1/2} L_F^{1/2}, 
+\qquad 
+L_M+L_F=L.
+\]
+Endowments: $K=64$, $T=100$, $L=90$. \\
+Prices: initially $P_M=2$, $P_F=1$. Later $P_M$ rises to $3$ (with $P_F=1$).
+
+\bigskip
+
+\noindent \textbf{1. Marginal products of labor.}
+
+\[
+MPL_M \equiv \frac{\partial Q_M}{\partial L_M} 
+= \frac{2}{3}\, K^{1/3} L_M^{-1/3}, 
+\qquad
+MPL_F \equiv \frac{\partial Q_F}{\partial L_F} 
+= \frac{1}{2}\, T^{1/2} L_F^{-1/2}.
+\]
+
+\noindent Both are decreasing in own labor, so moving labor into a sector lowers its marginal product.
+
+\bigskip
+
+\noindent \textbf{2. Initial equilibrium $(L_M,L_F,w)$ with $P_M=2$, $P_F=1$.}
+
+\emph{Wage equalization (labor mobility):}
+\[
+w \;=\; P_M \cdot MPL_M(L_M) \;=\; P_F \cdot MPL_F(L_F), 
+\qquad L_F=90-L_M.
+\]
+Plug constants $K^{1/3}=4$, $T^{1/2}=10$:
+\[
+2 \cdot \frac{2}{3}\cdot 4 \cdot L_M^{-1/3}
+\;=\; 1 \cdot \frac{1}{2}\cdot 10 \cdot (90-L_M)^{-1/2}.
+\]
+Simplify:
+\[
+\frac{16}{3} \, L_M^{-1/3} \;=\; 5 \, (90-L_M)^{-1/2}.
+\]
+This equation is monotone in $L_M$ and has a unique interior solution. Solving numerically:
+\[
+\boxed{\,L_M \approx 74.446,\quad L_F \approx 15.554\,}.
+\]
+The common wage is (either side of the equality):
+\[
+w \;=\; P_M \cdot MPL_M(L_M)
+= \frac{16}{3}\, L_M^{-1/3}
+\;\Rightarrow\;
+\boxed{\,w \approx 1.268\,}.
+\]
+
+\bigskip
+
+\noindent \textbf{3. Outputs and specific-factor returns $(Q_M,Q_F,r_K,r_T)$.}
+
+\emph{Outputs:}
+\[
+Q_M = K^{1/3} L_M^{2/3} = 4\,L_M^{2/3} \;\Rightarrow\; \boxed{\,Q_M \approx 70.787\,},
+\]
+\[
+Q_F = T^{1/2} L_F^{1/2} = 10\,\sqrt{L_F} \;\Rightarrow\; \boxed{\,Q_F \approx 39.438\,}.
+\]
+
+\emph{Specific-factor returns:}
+\[
+r_K = P_M \cdot \frac{\partial Q_M}{\partial K}
+= 2 \cdot \Big(\tfrac{1}{3} K^{-2/3} L_M^{2/3}\Big).
+\]
+Since $K^{2/3}=16$, $K^{-2/3}=1/16$, so
+\[
+r_K = 2 \cdot \frac{1}{3}\cdot \frac{1}{16} \, L_M^{2/3}
+= \frac{1}{24}\, L_M^{2/3}
+\;\Rightarrow\; \boxed{\,r_K \approx 0.737\,}.
+\]
+For land:
+\[
+r_T = P_F \cdot \frac{\partial Q_F}{\partial T}
+= 1 \cdot \Big( \tfrac{1}{2} T^{-1/2} L_F^{1/2} \Big)
+= \frac{1}{20}\, \sqrt{L_F}
+\;\Rightarrow\; \boxed{\,r_T \approx 0.197\,}.
+\]
+
+\noindent With these endowments and prices, most labor goes to $M$. The high $L_M$ raises $M$'s marginal productivity of $K$, so $r_K>r_T$.
+
+\bigskip
+\newpage
+\noindent \textbf{4. Effects of a rise in $P_M$ from $2$ to $3$ (qualitative, then numeric check).}
+
+\emph{Comparative statics (signs):}
+\[
+w = P_M \cdot MPL_M(L_M) = P_F \cdot MPL_F(L_F).
+\]
+When $P_M$ increases:
+\begin{itemize}
+\item The $M$-side wage schedule shifts up $\Rightarrow$ \textbf{$L_M$ rises}, $L_F$ falls.
+\item Because $L_M$ rises, $MPL_M$ falls, so \textbf{$w$ rises less than proportionally} to $P_M$.
+\item \textbf{$r_K$ rises more than proportionally}: it scales with $P_M$ and with $L_M^{2/3}$, which also rises.
+\item \textbf{$r_T$ falls}: $L_F$ falls, lowering $MPL_T$; $P_F$ is unchanged.
+\end{itemize}
+
+\emph{Numerical check (optional but informative):} new equilibrium solves
+\[
+3 \cdot \frac{2}{3}\cdot 4 \, L_M^{-1/3} \;=\; 5 \,(90-L_M)^{-1/2}
+\;\;\Rightarrow\;\;
+8\, L_M^{-1/3} = 5 \,(90-L_M)^{-1/2}.
+\]
+Solution:
+\[
+\boxed{\,L_M' \approx 82.592,\quad L_F' \approx 7.408\,},\qquad
+\boxed{\,w' = 8\,L_M'^{-1/3} \approx 1.837\,}.
+\]
+Specific-factor returns:
+\[
+r_K' = P_M' \cdot \frac{\partial Q_M}{\partial K}
+= 3 \cdot \frac{1}{48} L_M'^{2/3}
+= \frac{1}{16} L_M'^{2/3}
+\;\Rightarrow\; \boxed{\,r_K' \approx 1.185\,},
+\]
+\[
+r_T' = \frac{1}{20}\sqrt{L_F'}
+\;\Rightarrow\; \boxed{\,r_T' \approx 0.136\,}.
+\]
+Percent changes:
+\[
+\Delta P_M = +50\%,\quad 
+\Delta w \approx +44.9\% \ (<50\%),\quad
+\Delta r_K \approx +60.8\%,\quad
+\Delta r_T \approx -30.9\%.
+\]
+\textit{Interpretation:} Capital owners gain the most; landowners lose; workers’ nominal wage rises but less than $P_M$.
+
+\bigskip
+
+\noindent \textbf{5. Labor’s real wage and the “ambiguity.”}
+
+Initial real wages:
+\[
+\frac{w}{P_M} \approx \frac{1.268}{2} = 0.634,
+\qquad
+\frac{w}{P_F} \approx \frac{1.268}{1} = 1.268.
+\]
+After the shock:
+\[
+\frac{w'}{P_M'} \approx \frac{1.837}{3} = 0.612 \quad \text{(falls)},
+\qquad
+\frac{w'}{P_F} \approx \frac{1.837}{1} = 1.837 \quad \text{(rises)}.
+\]
+\textit{Conclusion:} Labor’s purchasing power falls in terms of $M$ but rises in terms of $F$. Without a specified utility function (or consumption basket), the net welfare effect for workers is \emph{ambiguous}, consistent with the core prediction of the specific-factors model in Krugman--Obstfeld--Melitz (Ch.~4).
+
+\end{document}

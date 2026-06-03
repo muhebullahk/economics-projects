@@ -1,0 +1,222 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+\setlist[enumerate]{leftmargin=*, itemsep=0.25em}
+\sisetup{round-mode=places,round-precision=2}
+
+\newcommand{\eq}{\Leftrightarrow}
+
+\title{Tutorial 1}
+\author{ECON 101 -- Macroeconomics}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+
+
+%==========================
+% Q1
+%==========================
+\noindent \textbf{Q1. Market Equilibrium and Price Controls}
+
+Demand and supply for coffee are:
+\[
+Q_d=100-2P,\qquad Q_s=20+3P.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Find the equilibrium price and quantity.
+\item With a price floor at \(P=20\), compute the surplus.
+\item With a price ceiling at \(P=10\), compute the shortage.
+\end{enumerate}
+
+\textbf{Solution.}
+\begin{enumerate}[label=(\alph*)]
+\item Equilibrium: set \(Q_d=Q_s\).
+\[
+100-2P=20+3P \;\eq\; 80=5P \;\eq\; P^\ast=16,\quad Q^\ast=100-2(16)=68.
+\]
+\item At \(P=20\): \(Q_d=100-40=60,\; Q_s=20+60=80\).
+Surplus \(=Q_s-Q_d=20\) units.
+\item At \(P=10\): \(Q_d=100-20=80,\; Q_s=20+30=50\).
+Shortage \(=Q_d-Q_s=30\) units.
+\end{enumerate}
+
+\bigskip
+
+%==========================
+% Q2
+%==========================
+\noindent \textbf{Q2. Shifts in Demand from Income Changes}
+
+Demand: \(Q_d=500-5P+0.5Y\). Supply: \(Q_s=100+3P\).
+\begin{enumerate}[label=(\alph*)]
+\item If \(Y=200\), find the equilibrium price and quantity.
+\item If \(Y=300\), find the new equilibrium price and quantity.
+\item Interpret the income effect.
+\end{enumerate}
+
+\textbf{Solution.}
+\begin{enumerate}[label=(\alph*)]
+\item With \(Y=200\): \(Q_d=600-5P\).
+\[
+600-5P=100+3P \;\eq\; 500=8P \;\eq\; P^\ast=62.5,\quad Q^\ast=100+3(62.5)=287.5.
+\]
+\item With \(Y=300\): \(Q_d=650-5P\).
+\[
+650-5P=100+3P \;\eq\; 550=8P \;\eq\; P^\ast=68.75,\quad Q^\ast=100+3(68.75)=306.25.
+\]
+\item Higher income shifts demand right. Both equilibrium price and quantity rise, indicating laptops behave as a normal good.
+\end{enumerate}
+
+\bigskip
+
+%==========================
+% Q3
+%==========================
+\noindent \textbf{Q3. Elasticity at a Point}
+
+For \(Q_d=200-4P\),
+\begin{enumerate}[label=(\alph*)]
+\item Compute the price elasticity of demand at \(P=30\).
+\item Classify demand at this price.
+\item Predict the effect on total revenue from a small price increase.
+\end{enumerate}
+
+\textbf{Solution.}
+\begin{enumerate}[label=(\alph*)]
+\item At \(P=30\), \(Q=200-4(30)=80\). For linear demand, \(\varepsilon=\dv{Q}{P}\cdot \frac{P}{Q}=-4\cdot \frac{30}{80}=-1.5\).
+\item \(|\varepsilon|=1.5>1\), so demand is elastic.
+\item With elastic demand, a price increase lowers total revenue.
+\end{enumerate}
+
+\bigskip
+
+%==========================
+% Q4
+%==========================
+\noindent \textbf{Q4. Supply Shift from Input Cost Increase (Graphical and Numerical)}
+
+Initial demand and supply:
+\[
+Q_d=80-2P,\qquad Q_s=10+2P.
+\]
+\begin{enumerate}[label=(\alph*))]
+\item Find and graph the initial equilibrium.
+\item An input cost increase shifts supply to \(Q_s=-10+2P\). Find and graph the new equilibrium.
+\item Explain the comparative statics.
+\end{enumerate}
+
+\textbf{Solution.}
+\begin{enumerate}[label=(\alph*)]
+\item Baseline equilibrium:
+\[
+80-2P=10+2P \;\eq\; 70=4P \;\eq\; P^\ast=17.5,\quad Q^\ast=80-2(17.5)=45.
+\]
+\item After the shift:
+\[
+80-2P=-10+2P \;\eq\; 90=4P \;\eq\; P' = 22.5,\quad Q' = 80-2(22.5)=35.
+\]
+\item Higher input costs shift supply left. Equilibrium price rises and equilibrium quantity falls.
+\end{enumerate}
+
+% Optional TikZ sketch (commented): remove % to compile a quick diagram
+% \usepackage{tikz,pgfplots} \pgfplotsset{compat=1.18}
+% \begin{figure}[h]
+% \centering
+% \begin{tikzpicture}
+% \begin{axis}[width=0.7\textwidth, height=6cm, axis lines=left,
+% xlabel={$Q$}, ylabel={$P$}, ymin=0, xmin=0, xmax=90, ymax=40, samples=2, domain=0:90, legend pos=north west]
+% \addplot+[mark=none] ({80-2*x}, x); \addlegendentry{$D: Q=80-2P$}
+% \addplot+[mark=none] ({10+2*x}, x); \addlegendentry{$S_0: Q=10+2P$}
+% \addplot+[mark=none, dashed] ({-10+2*x}, x); \addlegendentry{$S_1: Q=-10+2P$}
+% \end{axis}
+% \end{tikzpicture}
+% \caption{Supply shifts left from $S_0$ to $S_1$.}
+% \end{figure}
+
+\bigskip
+
+%==========================
+% Q5
+%==========================
+\noindent \textbf{Q5. Rent Control: Shortage Quantified (Graphical and Numerical)}
+
+Rental market:
+\[
+Q_d=120-2P,\qquad Q_s=20+2P.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Find and graph the competitive equilibrium.
+\item With a rent ceiling at \(P=20\), show the shortage and compute its size.
+\end{enumerate}
+
+\textbf{Solution.}
+\begin{enumerate}[label=(\alph*)]
+\item Competitive equilibrium:
+\[
+120-2P=20+2P \;\eq\; 100=4P \;\eq\; P^\ast=25,\quad Q^\ast=120-2(25)=70.
+\]
+\item At \(P=20\): \(Q_d=120-40=80,\; Q_s=20+40=60\).
+Shortage \(=80-60=20\) units. On the graph, plot the horizontal gap between \(Q_d\) and \(Q_s\) at \(P=20\).
+\end{enumerate}
+
+% Optional TikZ sketch (commented)
+% \begin{figure}[h]
+% \centering
+% \begin{tikzpicture}
+% \begin{axis}[width=0.7\textwidth, height=6cm, axis lines=left,
+% xlabel={$Q$}, ylabel={$P$}, ymin=0, xmin=0, xmax=130, ymax=40, samples=2, domain=0:130, legend pos=north east]
+% \addplot+[mark=none] ({120-2*x}, x); \addlegendentry{$D$}
+% \addplot+[mark=none] ({20+2*x}, x); \addlegendentry{$S$}
+% \addplot+[mark=none, dashed] coordinates {(0,20) (130,20)}; \addlegendentry{Ceiling $P=20$}
+% \end{axis}
+% \end{tikzpicture}
+% \caption{Rent ceiling creates a shortage of 20 at $P=20$.}
+% \end{figure}
+
+\bigskip
+
+%==========================
+% Q6
+%==========================
+\noindent \textbf{Q6. Comparative Statics of a Demand Shift (Graphical and Numerical)}
+
+Wheat market:
+\[
+Q_d=600-10P,\qquad Q_s=100+5P.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Compute the initial equilibrium.
+\item Demand shifts right to \(Q_d=700-10P\). Compute the new equilibrium.
+\item Explain the movements in price and quantity.
+\end{enumerate}
+
+\textbf{Solution.}
+\begin{enumerate}[label=(\alph*)]
+\item Initial:
+\[
+600-10P=100+5P \;\eq\; 500=15P \;\eq\; P^\ast=\frac{500}{15}\approx 33.33, \quad Q^\ast=600-10(33.33)\approx 266.67.
+\]
+\item After shift:
+\[
+700-10P=100+5P \;\eq\; 600=15P \;\eq\; P' = 40,\quad Q' = 700-10(40)=300.
+\]
+\item A rightward demand shift raises both equilibrium price and quantity.
+\end{enumerate}
+
+\bigskip
+\hrule
+\bigskip
+
+\textit{Notes for graphing across questions:} Always mark intercepts. For a linear inverse demand \(P=a-bQ\), price intercept \(=a\) and quantity intercept \(=a/b\). Analogous logic applies for supply.
+
+\end{document}

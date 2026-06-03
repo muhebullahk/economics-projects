@@ -1,0 +1,160 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{enumitem}
+\setlist[enumerate]{leftmargin=*}
+
+\title{Solutions -- Quiz 2\\ \vspace{10pt}
+\large ECON 320 -- Introduction to Mathematical Economics}
+\author{Instructor: Muhebullah Karimzada}
+\date{September 24, 2025}
+
+
+\begin{document}
+\maketitle
+
+\section*{Instructions}
+\begin{itemize}
+    \item Answer all questions. Show all steps clearly to receive full credit.
+    \item You may use diagrams where appropriate.
+    \item Total time: 20 minutes.
+\end{itemize}
+
+\hrulefill
+\begin{enumerate}
+
+
+\item 
+Consider the system:
+\[
+\begin{cases}
+x^2 + y + z = \alpha \\
+xy - z = \beta \\
+y^2 + z^2 = 1
+\end{cases}
+\]
+\begin{enumerate}[label=(\alph*),topsep=2pt,itemsep=2pt]
+\item (2 pts) Write the Jacobian matrix of the system with respect to $(x,y,z)$.  
+\item (2 pts) State the condition under which the Implicit Function Theorem guarantees the existence of differentiable functions $(x(\alpha,\beta), y(\alpha,\beta), z(\alpha,\beta))$.  
+\item (3 pts) Derive an expression for $\dfrac{\partial (x,y,z)}{\partial \alpha}$ using Cramer’s rule.  
+\end{enumerate}
+
+\textbf{Solution:}  
+(a) 
+\[
+J(x,y,z)=
+\begin{bmatrix}
+2x & 1 & 1\\
+y  & x & -1\\
+0  & 2y & 2z
+\end{bmatrix}.
+\]
+
+(b) IFT condition: $\det J(x,y,z)\neq 0$ at the solution point. Compute:
+\[
+\det J=4x^2z+4xy-2yz+2y^2.
+\]
+
+(c) Differentiating wrt $\alpha$: 
+\[
+J
+\begin{bmatrix}
+\partial x/\partial\alpha\\[2pt]
+\partial y/\partial\alpha\\[2pt]
+\partial z/\partial\alpha
+\end{bmatrix}
+=
+\begin{bmatrix}
+1\\0\\0
+\end{bmatrix}.
+\]
+Cramer’s rule:
+\[
+\frac{\partial x}{\partial\alpha}=\frac{2(xz+y)}{\det J},\quad
+\frac{\partial y}{\partial\alpha}=\frac{-2yz}{\det J},\quad
+\frac{\partial z}{\partial\alpha}=\frac{2y^2}{\det J}.
+\]
+
+
+
+\item
+Suppose the transformation is defined by:
+\[
+u = x^2 + y^2 + z^2, \quad v = xy + yz + zx, \quad w = xyz.
+\]
+\begin{enumerate}[label=(\alph*),topsep=2pt,itemsep=2pt]
+\item (2 pts) Construct the Jacobian $\dfrac{\partial(u,v,w)}{\partial(x,y,z)}$.  
+\item (2 pts) Show that the determinant vanishes when at least two of $(x,y,z)$ are equal.  
+\item (2 pts) Explain the implication for whether the transformation is locally invertible.  
+\end{enumerate}
+
+\textbf{Solution:}  
+(a) 
+\[
+K(x,y,z)=
+\begin{bmatrix}
+2x & 2y & 2z\\
+y+z & x+z & x+y\\
+yz & xz & xy
+\end{bmatrix}.
+\]
+
+(b) If $x=y$, columns 1 and 2 are identical, so $\det K=0$. Similar for $y=z$ or $x=z$.
+
+(c) Implication: the transformation $(x,y,z)\mapsto(u,v,w)$ is not locally invertible when any two variables are equal, since $\det K=0$ there.
+
+
+
+\item 
+Let the system be:
+\[
+\begin{cases}
+F_1(x,y,\theta) = x^2 + y^2 - \theta = 0 \\
+F_2(x,y,\theta) = xy - 1 = 0
+\end{cases}
+\]
+\begin{enumerate}[label=(\alph*),topsep=2pt,itemsep=2pt]
+\item (2 pts) Verify that the Jacobian determinant with respect to $(x,y)$ is nonzero at $(x,y)=(\sqrt{2}, 1/\sqrt{2}), \theta=3$.  
+\item (2 pts) Use the Implicit Function Theorem to argue for local differentiability of $(x(\theta),y(\theta))$.  
+\item (3 pts) Compute $\dfrac{dx}{d\theta}, \dfrac{dy}{d\theta}$ at this point.  
+\end{enumerate}
+
+\textbf{Solution:}  
+(a) 
+\[
+J(x,y)=
+\begin{bmatrix}
+2x & 2y\\
+y & x
+\end{bmatrix},\quad
+\det J=2(x^2-y^2).
+\]
+At $(\sqrt{2},1/\sqrt{2})$, $\det J=3\neq 0$.
+
+(b) Since $\det J\neq 0$, IFT guarantees differentiable functions $x(\theta),y(\theta)$ near $\theta=3$.
+
+(c) Differentiating:
+\[
+J
+\begin{bmatrix}
+dx/d\theta \\ dy/d\theta
+\end{bmatrix}
+=
+\begin{bmatrix}
+1\\0
+\end{bmatrix}.
+\]
+By Cramer’s rule:
+\[
+\frac{dx}{d\theta}=\frac{x}{2(x^2-y^2)},\quad
+\frac{dy}{d\theta}=-\frac{y}{2(x^2-y^2)}.
+\]
+At $(\sqrt{2},1/\sqrt{2})$: 
+\[
+\frac{dx}{d\theta}=\frac{\sqrt{2}}{3},\quad
+\frac{dy}{d\theta}=-\frac{1}{3\sqrt{2}}.
+\]
+
+\end{enumerate}
+
+\end{document}

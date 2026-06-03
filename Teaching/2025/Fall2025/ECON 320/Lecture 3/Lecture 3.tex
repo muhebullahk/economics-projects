@@ -1,0 +1,278 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm, bm, mathtools}
+\usepackage{physics}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+
+% Handy macros
+\newcommand{\R}{\mathbb{R}}
+%\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\pdd}[2]{\frac{\partial^2 #1}{\partial #2^2}}
+\newcommand{\pdmixed}[3]{\frac{\partial^2 #1}{\partial #2\,\partial #3}}
+\newcommand{\dtotal}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+%\newcommand{\grad}{\nabla}
+\newcommand{\Jac}{\mathrm{J}}
+\newcommand{\vect}[1]{\mathbf{#1}}
+
+\title{Rules of Differentiation and Their Use in Comparative Statics\\ \vspace{.5cm}
+\large ECON 320 - Introduction to Mathematical Economics}
+\author{Muhebullah Karimzada}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\newpage
+\section{ Rules of Differentiation for a Function of One Variable}
+
+\subsection*{Constant-Function Rule}
+\textbf{Statement.} If $y=k$ (constant), then $\dtotal{y}{x}=0$.
+\medskip
+
+\textbf{Why?} A flat line has zero slope: changing $x$ leaves $y$ unchanged.
+
+\subsection*{Power-Function Rule}
+\textbf{Statement.} For $y=x^n$ with $n\in\R$, $\dtotal{y}{x}=n x^{n-1}$ whenever the derivative exists.
+
+
+
+\subsection*{Power-Function Rule (Generalized)}
+If $y=c x^{n}$ with constant $c$, then $\dtotal{y}{x}=c n x^{n-1}$. More generally, for $y=[g(x)]^n$ with $n\in\R$, use the chain rule (Section 7.3) to obtain
+\[
+\dtotal{y}{x}= n [g(x)]^{n-1} g'(x).
+\]
+
+\paragraph{Economic example (marginal cost from a polynomial total cost).}
+Let $C(Q)=Q^3-4Q^2+10Q+75$. Then
+\[
+\mathrm{MC}(Q)=\dtotal{C}{Q}=3Q^2-8Q+10.
+\]
+Interpretation: MC is increasing when $Q$ is sufficiently large because the $3Q^2$ term dominates, capturing congestion/capacity effects.
+
+\section{Rules Involving Two or More Functions of the Same Variable}
+
+\subsection*{Sum--Difference Rule}
+If $y=f(x)\pm g(x)$, then $y'=f'(x)\pm g'(x)$.
+\medskip
+
+\textit{Intuition.} Slopes add: the small change in $f+g$ over $\Delta x$ is the sum of the small changes in $f$ and $g$.
+
+\subsection*{Product Rule}
+If $y=f(x)g(x)$, then
+\[
+y'=f'(x)g(x)+f(x)g'(x).
+\]
+\textit{Why?} Over $\Delta x$, the product changes both because $f$ changes while $g$ is held at its old level and because $g$ changes while $f$ is held at its new level.
+
+\subsection*{Finding Marginal-Revenue (MR) from Average-Revenue (AR)}
+Let $\mathrm{AR}(Q)=P(Q)$ be price as a function of quantity. Total revenue is $\mathrm{TR}(Q)=P(Q)\cdot Q$. Then by the product rule,
+\[
+\mathrm{MR}(Q)=\dtotal{\mathrm{TR}}{Q}=P(Q)+Q\,P'(Q).
+\]
+\textbf{Linear-demand case.} If $P(Q)=a-bQ$, then $\mathrm{MR}(Q)=a-2bQ$---twice as steep as $\mathrm{AR}$, crossing the quantity axis at half the intercept.\footnote{This appears in many texts; see also Varian's \textit{Intermediate Microeconomics} for geometric intuition.}
+
+\subsection*{Quotient Rule}
+If $y=\dfrac{f(x)}{g(x)}$ with $g(x)\neq 0$, then
+\[
+y'=\frac{f'(x)g(x)-f(x)g'(x)}{[g(x)]^2}.
+\]
+
+\subsection*{Relationship Between Marginal-Cost and Average-Cost}
+Average cost $\mathrm{AC}(Q)=\dfrac{C(Q)}{Q}$ (for $Q>0$). Differentiate using the quotient rule:
+\[
+\dtotal{\mathrm{AC}}{Q}=\frac{Q\cdot \mathrm{MC}(Q)-C(Q)}{Q^2}
+=\frac{\mathrm{MC}(Q)-\mathrm{AC}(Q)}{Q}.
+\]
+\textbf{Key implication.} $\mathrm{AC}$ is minimized where $\mathrm{MC}=\mathrm{AC}$. If $\mathrm{MC}<\mathrm{AC}$, $\mathrm{AC}$ is falling (the marginal ``pulls'' the average down), and if $\mathrm{MC}>\mathrm{AC}$, $\mathrm{AC}$ is rising.
+
+\paragraph{Worked example.}
+Suppose $C(Q)=100+20Q+Q^2$. Then $\mathrm{MC}=20+2Q$, $\mathrm{AC}=100/Q+20+Q$. Setting $\mathrm{MC}=\mathrm{AC}$:
+\[
+20+2Q=100/Q+20+Q \quad\Rightarrow\quad Q^2=100\ \Rightarrow\ Q^*=10.
+\]
+At $Q^*$, $\mathrm{AC}$ attains its minimum.
+
+\section{Rules Involving Functions of Different Variables}
+
+\subsection*{Chain Rule (single-variable composition)}
+If $y=f(u)$ and $u=g(x)$, then
+\[
+\dtotal{y}{x}=\frac{\mathrm{d}y}{\mathrm{d}u}\cdot \frac{\mathrm{d}u}{\mathrm{d}x}=f'(g(x))\,g'(x).
+\]
+
+\paragraph{Economics example (tax pass-through with compositional dependence).}
+Suppose price $P$ responds to an ad-valorem tax $\tau$ via $P=P^*(1+\tau)$, and demand is $Q=D(P)$; consumer surplus depends on $Q(\tau)=D(P^*(1+\tau))$. Then
+\[
+\dtotal{Q}{\tau}=D'(P^*(1+\tau))\cdot P^*,
+\]
+linking demand slope at the taxed price to pass-through.
+
+\subsection*{Chain Rule (multivariable form / total differential preview)}
+If $y=f(u,v)$ with $u=u(x)$ and $v=v(x)$, then
+\[
+\dtotal{y}{x}=\pd{f}{u}\dtotal{u}{x}+\pd{f}{v}\dtotal{v}{x}.
+\]
+This is the one-dimensional version of the multivariate chain rule and equals the total differential divided by $\dd x$.
+
+\subsection*{Inverse-Function Rule}
+If $y=f(x)$ is differentiable, strictly monotone, and hence invertible with inverse $x=f^{-1}(y)$, then
+\[
+\frac{\mathrm{d}x}{\mathrm{d}y}=\frac{1}{\mathrm{d}y/\mathrm{d}x}=\frac{1}{f'(x)}\quad\text{(evaluate at the corresponding point)}.
+\]
+\textit{Use.} Switching comparative-statics perspectives: sometimes $\dtotal{P}{Q}$ is easier to compute than $\dtotal{Q}{P}$; invert at the end.
+
+\paragraph{Worked example (supply elasticity via inverse rule).}
+If $Q_s=\alpha P^\eta$, then $\dtotal{Q_s}{P}=\alpha\eta P^{\eta-1}$. The inverse supply $P(Q)=\left(\frac{Q}{\alpha}\right)^{1/\eta}$ has
+\[
+\dtotal{P}{Q}=\frac{1}{\alpha^{1/\eta}\eta}\,Q^{1/\eta-1}=\frac{1}{\dtotal{Q}{P}}\quad\text{(at corresponding $P,Q$)}.
+\]
+
+\section{Partial Differentiation}
+
+\subsection*{Partial Derivatives}
+For $z=f(x,y)$, the \emph{partial derivative} with respect to $x$ is
+\[
+\pd{z}{x}=\lim_{h\to 0}\frac{f(x+h,y)-f(x,y)}{h},
+\]
+holding $y$ constant; $\pd{z}{y}$ is analogous.
+
+\paragraph{Economic interpretation.}
+$\pd{z}{x}$ is the marginal effect of $x$ on $z$ when other determinants are held fixed (\textit{ceteris paribus}).
+
+\subsection*{Techniques of Partial Differentiation}
+All single-variable rules apply with the other variables treated as constants. For example,
+\[
+\pd{}{x}\left[x^a y^b\right]=a x^{a-1} y^b,\qquad
+\pd{}{y}\left[\ln(x+y)\right]=\frac{1}{x+y}.
+\]
+\textbf{Cross-partials.} $\pdmixed{f}{x}{y}$ often equals $\pdmixed{f}{y}{x}$ when $f$ is sufficiently smooth (Clairaut's theorem).
+
+\subsection*{Geometric Interpretation}
+For $z=f(x,y)$, partial derivatives are the slopes of the tangent plane in the $x$- and $y$-directions:
+\[
+\mathrm{d}z\approx \pd{f}{x}\dd x+\pd{f}{y}\dd y.
+\]
+
+\subsection*{Gradient Vector}
+The gradient $\grad f(x,y)=\big(\pd{f}{x},\,\pd{f}{y}\big)$ points in the direction of the steepest ascent; its magnitude is the rate of increase per unit step. In constrained optimization (later chapters), gradients are central to the Lagrange multiplier method.
+
+\paragraph{Worked example (Cobb--Douglas marginal products).}
+Let $Q=AK^\alpha L^\beta$. Then
+\[
+\pd{Q}{K}=\alpha A K^{\alpha-1}L^\beta,\quad 
+\pd{Q}{L}=\beta A K^{\alpha}L^{\beta-1}.
+\]
+Diminishing marginal products arise when $\alpha,\beta\in(0,1)$.
+
+\section{Applications to Comparative-Static Analysis}
+
+\subsection*{Market Model}
+Consider linear demand and supply with shifters:
+\begin{align*}
+Q^d &= a - bP + \gamma Y,\\
+Q^s &= c + dP - \delta W,
+\end{align*}
+where $Y$ (income) shifts demand and $W$ (wage) shifts supply. Equilibrium $Q^d=Q^s$ implies
+\[
+(a-c)+\gamma Y+\delta W=(b+d)P \quad\Rightarrow\quad 
+P(Y,W)=\frac{a-c}{b+d}+\frac{\gamma}{b+d}Y+\frac{\delta}{b+d}W.
+\]
+\textbf{Comparative statics.}
+\[
+\pd{P}{Y}=\frac{\gamma}{b+d}>0,\qquad 
+\pd{P}{W}=\frac{\delta}{b+d}>0.
+\]
+\textit{Interpretation.} Positive demand (income) and cost (wage) shocks raise equilibrium price; the adjustment is dampened by the combined slope $b+d$.
+
+\subsection*{National-Income (Keynesian Cross) Model}
+Let $Y=C+I+G$, with $C=c_0+c_1(Y-T)$ and $T=\tau_0+\tau_1 Y$.
+Solving: 
+\[
+Y=\frac{1}{1-c_1(1-\tau_1)}\left[c_0-c_1\tau_0+I+G\right].
+\]
+\textbf{Comparative statics.}
+\[
+\pd{Y}{G}=\frac{1}{1-c_1(1-\tau_1)} \quad\text{(fiscal multiplier)},\qquad
+\pd{Y}{\tau_1}=\frac{c_1(Y-\text{autonomous part})}{[1-c_1(1-\tau_1)]^2}\;(\text{sign depends on $Y$ level}).
+\]
+In standard calibrations with $c_1\in(0,1)$, $\pd{Y}{G}>0$ and increases with $c_1$.
+
+\subsection*{Input--Output Model}
+With technology matrix $A$ and final demand $d$, equilibrium output is
+\[
+x=(I-A)^{-1} d.
+\]
+\textbf{Comparative statics.} A small change $\dd d$ yields $\dd x=(I-A)^{-1}\dd d$, so the sensitivity of sector $i$ to demand in sector $j$ is the $(i,j)$-entry of the Leontief inverse. This maps neatly onto the chain rule idea: total effects combine direct and indirect requirements.
+
+\section{Note on Jacobian Determinants}
+
+\subsection*{Definition and Use}
+For transformations $\vect{y}=\vect{f}(\vect{x})$ with $\vect{x}=(x_1,\dots,x_n)$ and $\vect{y}=(y_1,\dots,y_n)$, the \emph{Jacobian} is
+\[
+\Jac(\vect{f})=\det
+\begin{bmatrix}
+\pd{y_1}{x_1} & \cdots & \pd{y_1}{x_n}\\
+\vdots & \ddots & \vdots\\
+\pd{y_n}{x_1} & \cdots & \pd{y_n}{x_n}
+\end{bmatrix}.
+\]
+If $\Jac\neq 0$ at a point, the inverse-function theorem guarantees a locally unique inverse mapping; in comparative statics, this ensures that small parameter changes map to well-defined changes in endogenous variables.
+
+\subsection*{Two-Equation Linear System (signs via Cramer's Rule)}
+Let
+\[
+\begin{cases}
+a_{11}x_1+a_{12}x_2=u_1,\\
+a_{21}x_1+a_{22}x_2=u_2.
+\end{cases}
+\]
+Then $\Jac=a_{11}a_{22}-a_{12}a_{21}$. If $\Jac\neq 0$, the solution exists and is unique. The sign of $\pd{x_1}{u_1}$ equals $\frac{a_{22}}{\Jac}$ etc., a compact way to determine the direction of comparative-static effects without fully solving.
+
+\paragraph{Worked example (tax--subsidy incidence in linear model).}
+With demand $Q^d=\alpha-\beta P$ and supply $Q^s=\gamma+\delta(P-s)$ (unit subsidy $s$), equilibrium satisfies
+\[
+\begin{cases}
+Q = \alpha-\beta P,\\
+Q = \gamma+\delta(P-s).
+\end{cases}
+\]
+Write as $A\vect{z}=\vect{u}$ with $\vect{z}=(Q,P)$ and $\vect{u}=(\alpha,\gamma+\delta s)$.
+Then
+\[
+A=\begin{bmatrix}
+1 & \beta\\
+1 & -\delta
+\end{bmatrix},\qquad 
+\Jac=\det A=-(\beta+\delta)\neq 0.
+\]
+Hence $\pd{P}{s}=\frac{\partial P}{\partial u_2}\frac{\partial u_2}{\partial s}
+=\frac{1}{\Jac}\cdot\delta \cdot (-1)=\frac{\delta}{\beta+\delta}>0$ (price rises with a producer subsidy), and $\pd{Q}{s}=\frac{\beta\delta}{\beta+\delta}>0$.
+
+\section*{Summary}
+\begin{itemize}
+\item \textbf{Single-variable rules:} constants, powers (and generalized), sums, products, quotients, chain rule, inverse rule.
+\item \textbf{Economic links:} $\mathrm{MR}=P+Q P'$, $\mathrm{AC}'=(\mathrm{MC}-\mathrm{AC})/Q$.
+\item \textbf{Partial derivatives:} ceteris paribus effects; cross-partials and smoothness; gradient gives direction of steepest ascent.
+\item \textbf{Comparative statics:} solve (or use Cramer's Rule/Jacobians) to get signs and magnitudes of $\partial$ effects.
+\item \textbf{Jacobian:} nonzero $\Rightarrow$ local uniqueness and well-defined responses to shocks.
+\end{itemize}
+
+
+
+\newpage
+\section*{References}
+\begin{itemize}
+\item A.\,C. Chiang \& K. Wainwright (2005), \textit{Fundamental Methods of Mathematical Economics} (4th ed.), McGraw--Hill.
+\item C.\,P. Simon \& L. Blume (1994), \textit{Mathematics for Economists}, W.\,W. Norton.
+\item K. Syds\ae ter \& P. Hammond (2022), \textit{Essential Mathematics for Economic Analysis} (6th ed.), Pearson.
+\item H.\,R. Varian (2014), \textit{Intermediate Microeconomics} (9th ed.), W.\,W. Norton.
+\end{itemize}
+
+\end{document}

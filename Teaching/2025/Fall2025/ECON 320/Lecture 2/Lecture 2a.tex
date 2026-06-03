@@ -1,0 +1,359 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm, bm, mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{hyperref}
+\usepackage[most]{tcolorbox}
+
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+% ---------- handy macros ----------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\ve}[1]{\mathbf{#1}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dtotal}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\dqd}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\abs}[1]{\left\lvert #1 \right\rvert}
+\newcommand{\paren}[1]{\left( #1 \right)}
+\newcommand{\brak}[1]{\left[ #1 \right]}
+\newcommand{\curly}[1]{\left\{ #1 \right\}}
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\DeclareMathOperator{\sgn}{sgn}
+
+% ---------- theorem-like environments ----------
+\newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\newtheorem{example}{Example}
+\newtheorem{remark}{Remark}
+
+\title{Comparative Statics and the Concept of Derivative} %\\ \large After Chiang \& Wainwright (4th ed., Ch.~6) with Links to Standard Texts}
+\author{ECON 320 - Introduction to Mathematical Economics}
+\date{Fall 2025}
+
+\tcbset{
+  sectionbox/.style={
+    colback=blue!10!white,
+    colframe=blue!50!black,
+    boxrule=0.8pt,
+    arc=4pt,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt
+  },
+  examplebox/.style={
+    colback=green!10!white,
+    colframe=green!50!black,
+    boxrule=0.8pt,
+    arc=4pt,
+    left=3pt,
+    right=3pt,
+    top=3pt,
+    bottom=3pt
+  }
+}
+  
+\begin{document}
+\maketitle
+
+\begin{tcolorbox}[sectionbox]
+\textbf{Learning objectives.} By the end of this Lecture you should be able to:
+\begin{enumerate}[label=\arabic*.]
+  \item Define and interpret the derivative as a limit and as a marginal concept in economics.
+  \item Apply rules of differentiation (product, quotient, chain) and compute higher-order derivatives.
+  \item Use partial and total derivatives to analyze how endogenous variables respond to parametric changes.
+  \item Perform comparative statics in single-equation models: \(F(x,p)=0 \Rightarrow \dtotal{x}{p} = -\dfrac{F_p}{F_x}\).
+  \item Perform comparative statics in systems: \(\ve F(\ve x,\ve p)=\ve 0 \Rightarrow \dtotal{\ve x}{\ve p}=-J^{-1}B\) where \(J=\pd{\ve F}{\ve x}\), \(B=\pd{\ve F}{\ve p}\).
+  \item Use Cramer's rule for sign analysis and interpret results economically.
+  \item Work through canonical applications (supply--demand, tax incidence, monopoly, Cournot, Cobb--Douglas demand).
+\end{enumerate}
+\end{tcolorbox}
+
+\newpage
+\tableofcontents
+
+\newpage
+
+\section{Why derivatives and comparative statics matter}
+Economic models map \emph{assumptions} (parameters, exogenous variables) into \emph{predictions} (endogenous variables). \textbf{Comparative statics} studies how equilibrium outcomes change when assumptions change. The \textbf{derivative} is the central tool: it converts small parameter changes into approximate outcome changes with clear sign and magnitude interpretations (\emph{marginal effects}).
+
+
+
+\section{The univariate derivative: definition, meaning, and rules}
+
+\subsection{Limit definition and economic interpretation}
+\begin{definition}[Derivative]
+Let \(y=f(x)\). The derivative of \(f\) at \(x\) is
+\[
+f'(x)=\lim_{h\to 0}\frac{f(x+h)-f(x)}{h},
+\]
+provided the limit exists. Economically, \(f'(x)\) is the \emph{marginal} effect of \(x\) on \(y\).
+\end{definition}
+
+\begin{example}[Marginal cost]
+If total cost is \(C(Q)=a+bQ+cQ^2\) with \(a,b,c>0\), then the marginal cost is
+\(
+MC(Q)=C'(Q)=b+2cQ.
+\)
+MC rises with output when \(c>0\) (increasing marginal cost).
+\end{example}
+
+\subsection{Basic rules}
+For differentiable functions \(u(x)\), \(v(x)\) and constant \(k\):
+\[
+\frac{\mathrm{d}}{\mathrm{d}x}\big[ku\big] = ku',\quad
+\frac{\mathrm{d}}{\mathrm{d}x}\big[u\pm v\big] = u'\pm v',\quad
+\frac{\mathrm{d}}{\mathrm{d}x}\big[uv\big]=u'v+uv',
+\]
+\[
+\frac{\mathrm{d}}{\mathrm{d}x}\Big[\frac{u}{v}\Big]=\frac{u'v-uv'}{v^2},\qquad
+\frac{\mathrm{d}}{\mathrm{d}x}f\!\big(g(x)\big)=f'\!\big(g(x)\big)\cdot g'(x) \quad(\text{chain rule}).
+\]
+
+\subsection{Higher-order derivatives, curvature, and Taylor}
+\begin{definition}
+The second derivative \(f''(x)\) measures how the slope changes. If \(f''(x)>0\) locally, \(f\) is \emph{convex}; if \(f''(x)<0\), \(f\) is \emph{concave}.
+\end{definition}
+
+A second-order Taylor approximation around \(x_0\) is
+\[
+f(x)\approx f(x_0)+f'(x_0)(x-x_0)+\tfrac12 f''(x_0)(x-x_0)^2,
+\]
+useful for local welfare and surplus approximations.
+
+\subsection{Elasticities and log-derivatives}
+The (point) elasticity of \(y\) with respect to \(x\) is
+\[
+\varepsilon_{y,x}=\frac{\mathrm{d}y}{\mathrm{d}x}\cdot\frac{x}{y}.
+\]
+If \(y=f(x)\) and both are positive, \(\dtotal{\ln y}{\ln x}=\varepsilon_{y,x}\). For power functions \(y=Ax^\alpha\), \(\varepsilon_{y,x}=\alpha\) everywhere.
+
+\section{Partial and total derivatives}
+
+\subsection{Partial derivatives}
+For \(z=f(x_1,\dots,x_n)\), the partial derivative with respect to \(x_i\) is
+\[
+\pd{z}{x_i}=\lim_{h\to 0}\frac{f(x_1,\dots,x_i+h,\dots,x_n)-f(x_1,\dots,x_n)}{h},
+\]
+holding all other arguments fixed. Cross-partials \(\pd{^2 z}{x_i\,\partial x_j}\) (for \(i\neq j\)) capture interaction effects. If \(f\) is sufficiently smooth, \(\pd{^2 f}{x_i\,\partial x_j}=\pd{^2 f}{x_j\,\partial x_i}\) (Clairaut symmetry).
+
+\subsection{Total derivative and total differential}
+When \(x=x(p)\) depends on parameter \(p\),
+\[
+\frac{\mathrm{d}z}{\mathrm{d}p}=\sum_{i=1}^n \pd{f}{x_i}\frac{\mathrm{d}x_i}{\mathrm{d}p}+\pd{f}{p}.
+\]
+Infinitesimally,
+\[
+\mathrm{d}z=\sum_{i=1}^n \pd{f}{x_i}\,\mathrm{d}x_i+\pd{f}{p}\,\mathrm{d}p.
+\]
+These formulas are the workhorses of comparative statics when equilibria are described implicitly.
+
+\section{Implicit differentiation and the implicit function theorem}
+
+\subsection{Single-equation case}
+Consider equilibrium defined by one equation \(F(x,p)=0\), where \(x\) is endogenous and \(p\) is a parameter.
+
+\begin{proposition}[Chiang's implicit differentiation rule]
+If \(F\) is continuously differentiable and \(F_x\neq 0\) at \((x^\ast,p)\), then locally there is a differentiable function \(x=x(p)\) with
+\[
+\boxed{\;\dtotal{x}{p}=-\frac{F_p}{F_x}\;}.
+\]
+\end{proposition}
+
+\begin{example}[Linear supply--demand (parameter shift)]
+Demand \(D(p,m)=a-bp+\alpha m\), supply \(S(p,w)=c+dp-\beta w\). Equilibrium: \(F(p;m,w)=D(p,m)-S(p,w)=0\).
+Then \(F_p=-b-d<0\), \(F_m=\alpha>0\), \(F_w=-\beta<0\). Hence
+\[
+\dtotal{p^\ast}{m}=-\frac{F_m}{F_p}=\frac{\alpha}{b+d}>0,\qquad
+\dtotal{p^\ast}{w}=-\frac{F_w}{F_p}=-\frac{-\beta}{b+d}=-\frac{\beta}{b+d}<0.
+\]
+Income raises the equilibrium price (normal good), higher input costs shift supply left and \emph{lower} the price here because \(w\) enters supply with a negative sign in \(F\); if one defines \(F=S-D\) instead, signs flip consistently. Always check which side of the equation your parameter enters.
+\end{example}
+
+\subsection{System case and Jacobians}
+Let \(\ve x\in\R^n\) solve the \(n\)-equation system \(\ve F(\ve x,\ve p)=\ve 0\). Define the Jacobian with respect to endogenous variables
+\[
+J = \pd{\ve F}{\ve x}=
+\begin{bmatrix}
+\pd{F_1}{x_1} & \cdots & \pd{F_1}{x_n}\\
+\vdots & \ddots & \vdots\\
+\pd{F_n}{x_1} & \cdots & \pd{F_n}{x_n}
+\end{bmatrix},\qquad
+B=\pd{\ve F}{\ve p}.
+\]
+If \(J\) is nonsingular at the point of interest, then by the implicit function theorem
+\[
+\boxed{\;\dtotal{\ve x}{\ve p}=-J^{-1}B\; }.
+\]
+
+\paragraph{Cramer's rule for signs (2\(\times\)2 illustration).}
+With two equations and one scalar parameter \(p\),
+\[
+\begin{aligned}
+\pd{\ve F}{\ve x}
+&=
+\begin{bmatrix}
+F_{1x_1} & F_{1x_2}\\
+F_{2x_1} & F_{2x_2}
+\end{bmatrix},\quad
+B=
+\begin{bmatrix}
+F_{1p}\\
+F_{2p}
+\end{bmatrix},\quad
+\Delta=\det(J)=F_{1x_1}F_{2x_2}-F_{1x_2}F_{2x_1}\neq 0,\\[4pt]
+\dtotal{x_1}{p}
+&=-\,\frac{\det\big(
+\begin{smallmatrix}
+\boxed{F_{1p}} & F_{1x_2}\\
+\boxed{F_{2p}} & F_{2x_2}
+\end{smallmatrix}\big)}{\Delta}
+=-\,\frac{F_{1p}F_{2x_2}-F_{2p}F_{1x_2}}{\Delta},\qquad
+\dtotal{x_2}{p}
+=-\,\frac{\det\big(
+\begin{smallmatrix}
+F_{1x_1} & \boxed{F_{1p}}\\
+F_{2x_1} & \boxed{F_{2p}}
+\end{smallmatrix}\big)}{\Delta}
+=-\,\frac{F_{1x_1}F_{2p}-F_{2x_1}F_{1p}}{\Delta}.
+\end{aligned}
+\]
+Signs follow from the signs of cofactors and \(\Delta\).
+
+\section{Worked applications}
+
+\subsection{Tax incidence in linear supply--demand}
+Let inverse demand \(p = \alpha - \beta Q\) (\(\beta>0\)) and inverse supply \(p = \gamma + \delta Q\) (\(\delta>0\)). Impose a per-unit \emph{consumer} tax \(t\), so consumers pay \(p_c=p+t\) while producers receive \(p\). Equilibrium satisfies
+\[
+\alpha - \beta Q = (\gamma + \delta Q) + t \quad\Rightarrow\quad Q^\ast(t)=\frac{\alpha-\gamma - t}{\beta+\delta}.
+\]
+Comparative statics:
+\[
+\dtotal{Q^\ast}{t}=-\frac{1}{\beta+\delta}<0,\qquad
+\dtotal{p^\ast}{t}=\frac{\delta}{\beta+\delta}\in(0,1),\qquad
+\dtotal{p_c^\ast}{t}=1-\frac{\delta}{\beta+\delta}=\frac{\beta}{\beta+\delta}\in(0,1).
+\]
+Price received by producers rises by a fraction \(\delta/(\beta+\delta)\) of the tax; the rest is borne by consumers. Incidence falls on the relatively inelastic side (larger slope in levels).
+
+\subsection{Monopoly with linear demand and constant marginal cost}
+Suppose inverse demand \(p=a-bQ\), \(a,b>0\), constant marginal cost \(c\in(0,a)\). Profit \(\pi(Q)=(a-bQ)Q-cQ-F\). FOC: \(\pi'(Q)=a-2bQ-c=0\Rightarrow Q^\ast=\dfrac{a-c}{2b}\), \(p^\ast=\dfrac{a+c}{2}\).
+Comparative statics:
+\[
+\dtotal{Q^\ast}{c}=-\frac{1}{2b}<0,\quad
+\dtotal{p^\ast}{c}=\frac12>0,\quad
+\dtotal{Q^\ast}{a}=\frac{1}{2b}>0,\quad
+\dtotal{p^\ast}{a}=\frac12>0.
+\]
+Interpretation: higher cost reduces output and raises price; stronger demand shifts increase both.
+
+\subsection{Cournot duopoly (best-response system and Jacobian)}
+Two firms choose quantities \(q_1,q_2\), price \(p=A-B(q_1+q_2)\), constant cost \(c_i\). FOCs:
+\[
+\begin{aligned}
+F_1(q_1,q_2;c_1)&=A-B(q_1+q_2)-Bq_1-c_1=0 \ \Rightarrow\ A-c_1 -2Bq_1 -Bq_2=0,\\
+F_2(q_1,q_2;c_2)&=A-c_2 -Bq_1 -2Bq_2=0.
+\end{aligned}
+\]
+Jacobian \(J=\begin{bmatrix}-2B & -B\\ -B & -2B\end{bmatrix}\), \(\Delta=3B^2>0\).
+Parameter matrix for \(c_1\): \(B_{(c_1)}=\big[\,-1,\ 0\,\big]^\top\).
+By Cramer's rule,
+\[
+\dtotal{q_1^\ast}{c_1}=-\frac{\det\big(\begin{smallmatrix}\boxed{-1}&-B\\[1pt]\boxed{0}&-2B\end{smallmatrix}\big)}{\Delta}
+=-\frac{2B}{3B^2}=-\frac{2}{3B}<0,\qquad
+\dtotal{q_2^\ast}{c_1}=-\frac{\det\big(\begin{smallmatrix}-2B&\boxed{-1}\\[1pt]-B&\boxed{0}\end{smallmatrix}\big)}{\Delta}
+=-\frac{-B}{3B^2}=\frac{1}{3B}>0.
+\]
+An increase in firm 1's cost reduces its own output and (strategic substitutability) raises its rival's.
+
+\subsection{Cobb--Douglas demand and elasticities}
+Utility \(u(x,y)=x^\alpha y^{1-\alpha}\) with \(0<\alpha<1\); prices \(p_x,p_y\); income \(I\).
+Marshallian demand:
+\[
+x^\ast=\frac{\alpha I}{p_x},\qquad y^\ast=\frac{(1-\alpha)I}{p_y}.
+\]
+Comparative statics:
+\[
+\pd{x^\ast}{I}=\frac{\alpha}{p_x}>0,\quad \pd{x^\ast}{p_x}=-\frac{\alpha I}{p_x^2}<0,\quad
+\pd{x^\ast}{p_y}=0.
+\]
+Elasticities: \(\varepsilon_{x,I}=1\) (homothetic), \(\varepsilon_{x,p_x}=-1\), and cross-price elasticity \(0\) (gross complements/substitutes determined by other preferences, here it is zero).
+
+\subsection{A general single-equation nonlinearity}
+Let equilibrium be \(F(x,p)=\ln x + x^2 - p=0\) with \(x>0\). Then
+\[
+F_x=\frac{1}{x}+2x>0,\qquad F_p=-1.
+\]
+Hence
+\[
+\dtotal{x^\ast}{p}=-\frac{F_p}{F_x}=\frac{1}{\frac{1}{x^\ast}+2x^\ast}=\frac{x^\ast}{1+2(x^\ast)^2}\in(0,\tfrac12),
+\]
+so \(x^\ast\) rises with \(p\) but at a diminishing rate.
+
+\section{How-to guide for comparative statics}
+\begin{tcolorbox}[sectionbox]
+\textbf{Recipe.}
+\begin{enumerate}[label=\arabic*.]
+  \item \emph{Write} the equilibrium conditions \(F(\cdot)=0\) (or \(\ve F=\ve 0\)) with a clearly labeled endogenous vector \(\ve x\) and parameters \(\ve p\).
+  \item \emph{Differentiate} implicitly: single equation \(\dtotal{x}{p}=-F_p/F_x\); system \(\dtotal{\ve x}{\ve p}=-J^{-1}B\).
+  \item \emph{Sign} the derivatives using economically plausible slope conditions (e.g., \(D_p<0\), \(S_p>0\)) and stability (\(|J|\neq 0\), often \(|J|>0\)).
+  \item \emph{Interpret} magnitudes with elasticities or linearization; check units.
+  \item \emph{Sanity checks}: limit cases (perfectly inelastic/elastic), symmetry, and dimensions.
+\end{enumerate}
+\end{tcolorbox}
+
+\section{Connections and extensions}
+\paragraph{Envelope theorem (preview).} When an optimizer chooses \(x\) to maximize \(f(x,p)\), the effect of \(p\) on the optimal value is \(\pd{f}{p}\) evaluated at the optimum (no need to track \(\dtotal{x^\ast}{p}\)). This complements, but does not replace, comparative statics of \(x^\ast\).
+
+\paragraph{Log-linear comparative statics.} If \(x^\ast(p)\!>\!0\), then \(\dtotal{\ln x^\ast}{p}=\dfrac{1}{x^\ast}\dtotal{x^\ast}{p}\) and \(\dtotal{\ln x^\ast}{\ln p}=\dfrac{p}{x^\ast}\dtotal{x^\ast}{p}\), useful for elasticity interpretations.
+
+\section{Common mistakes}
+\begin{itemize}
+  \item Confusing \emph{partial} with \emph{total} derivatives: \(\pd{y}{p}\) holds other arguments fixed; \(\dtotal{y}{p}\) accounts for induced changes.
+  \item Forgetting the sign of \(F_x\): in \(-F_p/F_x\), the denominator is the slope of the equilibrium condition with respect to the endogenous variable.
+  \item Mixing definitions of \(F\): switching between \(D-S\) and \(S-D\) flips signs consistently; pick one and stick to it.
+  \item Ignoring singular Jacobians: if \(|J|=0\), the local mapping may not exist; revisit model or check stability assumptions.
+\end{itemize}
+
+\section*{Summary}
+\begin{itemize}
+  \item Derivative \(f'(x)\): marginal effect; rules of differentiation; curvature via \(f''(x)\).
+  \item Partial vs total derivatives; elasticities via log-derivatives.
+  \item Implicit differentiation: single equation \(\dtotal{x}{p}=-F_p/F_x\).
+  \item Systems: \(\dtotal{\ve x}{\ve p}=-J^{-1}B\); for \(2\times 2\), use Cramer's rule to sign effects.
+  \item Applications: tax incidence, monopoly, Cournot, Cobb--Douglas.
+\end{itemize}
+
+\section*{Practice (with brief answers)}
+\begin{enumerate}[label=\arabic*.]
+\item Let \(F(x,p)=x^3-p=0\). Compute \(\dtotal{x}{p}\) at \(p>0\). \\
+\emph{Answer:} \(F_x=3x^2\), \(F_p=-1\), so \(\dtotal{x}{p}=1/(3x^2)=1/(3p^{2/3})>0\).
+
+\item IS--LM toy: \(Y=C_0+c(Y-T)+I_0-\alpha r+G\) and \(M/P=kY-hr\). Solve for \(\dtotal{Y}{G}\) sign using Jacobians with \(x_1=Y,x_2=r\).\\
+\emph{Answer (sign):} Under \(0<c<1\), \(h,\alpha,k>0\), \(|J|>0\) and \(\dtotal{Y}{G}>0\).
+
+\item Cournot with symmetric costs \(c\). Show \(\dtotal{q_1^\ast}{A}>0\), \(\dtotal{q_1^\ast}{B}<0\). \\
+\emph{Answer:} From closed forms \(q_i^\ast=\dfrac{A-c}{3B}\), derivatives follow immediately.
+\end{enumerate}
+
+\bigskip
+\hrule
+\bigskip
+
+
+\bigskip
+
+\begin{thebibliography}{9}
+\bibitem{CW}
+Chiang, A.\,C. and Wainwright, K.\ (2005). \emph{Fundamental Methods of Mathematical Economics}, 4th ed., McGraw--Hill.
+
+\bibitem{SB}
+Simon, C.\,P. and Blume, L.\ (2010). \emph{Mathematics for Economists}. W.\,W. Norton.
+
+\bibitem{SH}
+Syds\ae ter, K. and Hammond, P.\ (2022). \emph{Essential Mathematics for Economic Analysis}, 6th ed., Pearson.
+\end{thebibliography}
+
+\end{document}

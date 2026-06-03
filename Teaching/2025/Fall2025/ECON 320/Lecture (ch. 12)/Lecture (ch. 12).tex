@@ -1,0 +1,467 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{setspace,enumitem,hyperref,titlesec,lmodern,booktabs,microtype}
+
+\onehalfspacing
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+
+\titleformat{\section}{\Large\bfseries}{}{0em}{}
+\titleformat{\subsection}{\large\bfseries}{}{0em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{}{0em}{}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\grad}{\nabla}
+\newcommand{\ve}[1]{\boldsymbol{#1}}
+\newcommand{\Lag}{\mathcal{L}}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+
+
+\title{Optimization with Equality Constraints\\[7pt]
+\large ECON 320 - Introduction to Mathematical Economics}
+\author{Muhebullah Karimzada}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+%\tableofcontents
+
+\section*{Introduction}
+
+Optimization under constraints lies at the heart of economic theory. Consumers maximize utility subject to income limitations, firms minimize costs subject to technological restrictions, and governments maximize social welfare under resource constraints. Equality-constrained optimization provides a rigorous mathematical framework for studying such problems.
+
+The general question is: given a differentiable function \( f(x_1, x_2, \dots, x_n) \), how can we find its maximum or minimum when the variables must satisfy one or more equalities \( g_j(x_1, x_2, \dots, x_n) = b_j \)? This leads us to the \textit{method of Lagrange multipliers}.
+
+\section*{Unconstrained Optimization Review}
+
+Before introducing constraints, recall that for a function \( f:\R^n \to \R \), an interior extremum occurs when
+\[
+\frac{\partial f}{\partial x_i} = 0 \quad \text{for all } i = 1, \dots, n.
+\]
+These first-order conditions identify stationary points. To classify them as maxima or minima, we use the Hessian matrix of second derivatives:
+\[
+H_f =
+\begin{bmatrix}
+f_{x_1x_1} & f_{x_1x_2} & \dots \\
+f_{x_2x_1} & f_{x_2x_2} & \dots \\
+\vdots & & \ddots
+\end{bmatrix}.
+\]
+If \( H_f \) is negative definite, \( f \) attains a local maximum; if positive definite, a local minimum. However, when constraints restrict the domain, these simple rules no longer apply directly.
+
+\section*{Optimization with One Equality Constraint}
+
+Suppose an agent maximizes \( f(x,y) \) subject to one constraint \( g(x,y) = b \). The feasible set is the curve of points satisfying the constraint. A key geometric insight is that at the optimum, the contour of \( f \) is tangent to the constraint curve. This implies the gradients \( \grad f \) and \( \grad g \) are parallel.
+
+\subsection*{Deriving the Lagrangian}
+
+We introduce a scalar variable \( \lambda \), called the \textit{Lagrange multiplier}, and construct
+\[
+\Lag(x,y,\lambda) = f(x,y) - \lambda [g(x,y) - b].
+\]
+The first-order conditions (FOCs) are:
+\[
+\frac{\partial f}{\partial x} = \lambda \frac{\partial g}{\partial x}, \qquad
+\frac{\partial f}{\partial y} = \lambda \frac{\partial g}{\partial y}, \qquad
+g(x,y) = b.
+\]
+
+The first two equations show that at the optimum, the gradients of \( f \) and \( g \) are proportional. The last ensures feasibility.
+
+\subsection*{Interpretation of the Multiplier}
+
+Differentiating the value function \( v(b) = \max_{x,y} f(x,y) \text{ s.t. } g(x,y)=b \), the envelope theorem implies
+\[
+\frac{dv}{db} = \lambda^\star.
+\]
+Hence, \( \lambda^\star \) measures how much the maximum attainable value of \( f \) changes if the constraint is relaxed slightly. Economically, this represents the \textit{shadow price} of the constraint.
+
+\subsection*{Example 1: Utility Maximization}
+
+Maximize \( U(x,y) = x^{1/2}y^{1/2} \) subject to the budget \( p_x x + p_y y = I \).
+
+The Lagrangian is
+\[
+\Lag = x^{1/2}y^{1/2} - \lambda(p_x x + p_y y - I).
+\]
+FOCs:
+\[
+\frac{1}{2}x^{-1/2}y^{1/2} = \lambda p_x, \quad
+\frac{1}{2}x^{1/2}y^{-1/2} = \lambda p_y, \quad
+p_x x + p_y y = I.
+\]
+Dividing the first two equations:
+\[
+\frac{y}{x} = \frac{p_x}{p_y}.
+\]
+Substitute \( y = (p_x/p_y)x \) into the budget constraint:
+\[
+p_x x + p_y \left(\frac{p_x}{p_y}x\right) = I \Rightarrow 2p_x x = I.
+\]
+Thus, \( x^\star = \frac{I}{2p_x} \) and \( y^\star = \frac{I}{2p_y} \). Substituting back, \( \lambda^\star = \frac{1}{2\sqrt{x^\star y^\star} p_x} \).
+
+Interpretation: \( \lambda^\star \) equals the marginal utility of income — the increase in utility from one additional unit of expenditure.
+
+\subsection*{Example 2: Quadratic Minimization}
+
+Minimize \( f(x,y) = x^2 + y^2 \) subject to \( x + y = 1 \).
+
+\[
+\Lag = x^2 + y^2 - \lambda(x + y - 1).
+\]
+FOCs:
+\[
+2x = \lambda, \quad 2y = \lambda, \quad x + y = 1.
+\]
+From the first two, \( x = y \). Substituting into the constraint: \( 2x = 1 \Rightarrow x = y = \tfrac{1}{2} \). Minimum value: \( f^\star = \tfrac{1}{2} \).
+
+Since the objective function is convex and the constraint linear, the solution is globally optimal.
+
+\subsection*{Second-Order Conditions for One Constraint}
+
+We use the bordered Hessian:
+\[
+H_B =
+\begin{bmatrix}
+0 & g_x & g_y\\
+g_x & f_{xx} & f_{xy}\\
+g_y & f_{xy} & f_{yy}
+\end{bmatrix}.
+\]
+For a maximum, \( \det(H_B) > 0 \); for a minimum, \( \det(H_B) < 0 \).\\
+Or\\
+For a maximum, \( (-1)^{m}\det(H_B) < 0 \); for a minimum, \( (-1)^{m}\det(H_B) > 0 \).
+
+\subsection*{Example 3: Testing with the Bordered Hessian}
+
+Let \( f(x,y) = \sqrt{xy} \) and \( g(x,y) = x + y = 10 \). FOCs give \( x=y=5 \). Compute:
+\[
+f_{xx}=-\frac{1}{4}x^{-3/2}y^{1/2}, \quad f_{yy}=-\frac{1}{4}x^{1/2}y^{-3/2}, \quad f_{xy}=\frac{1}{4}x^{-1/2}y^{-1/2}.
+\]
+At \( (5,5) \),
+\[
+H_B =
+\begin{bmatrix}
+0 & 1 & 1\\
+1 & -\frac{1}{20} & \frac{1}{20}\\
+1 & \frac{1}{20} & -\frac{1}{20}
+\end{bmatrix}.
+\]
+\( \det(H_B) = \frac{1}{5} > 0 \) and \( (-1)^{m}\det(H_B) =- \frac{1}{5} < 0 \),  confirming a maximum.
+
+\section*{Generalization to $n$ Variables and One Constraint}
+
+Consider
+\[
+\max f(x_1, \dots, x_n) \quad \text{s.t. } g(x_1, \dots, x_n) = b.
+\]
+The Lagrangian:
+\[
+\Lag(x_1, \dots, x_n, \lambda) = f(x_1, \dots, x_n) - \lambda [g(x_1, \dots, x_n) - b].
+\]
+FOCs:
+\[
+\frac{\partial f}{\partial x_i} = \lambda \frac{\partial g}{\partial x_i}, \quad i=1,2,\dots,n, \qquad g(x_1, \dots, x_n) = b.
+\]
+Interpretation: the gradient of \( f \) must lie in the span of the gradient of \( g \). At the optimum, \( \grad f = \lambda \grad g \).
+
+\subsection*{Geometric Interpretation}
+
+The constraint defines a $(n-1)$-dimensional surface in $\R^n$. The gradient of $g$ is perpendicular to this surface. The condition $\grad f = \lambda \grad g$ implies that $\grad f$ is also perpendicular to the feasible tangent space. Thus, moving along any feasible direction cannot increase $f$ further — the hallmark of optimality.
+
+\subsection*{Economic Interpretation}
+
+In consumer theory, this means that at the optimum, the marginal rate of substitution equals the price ratio:
+\[
+\frac{MU_x}{MU_y} = \frac{p_x}{p_y}.
+\]
+In production theory, the condition $\frac{MP_L}{MP_K} = \frac{w}{r}$ ensures cost-minimizing input combinations.
+
+\subsection*{Regularity Condition}
+
+For the Lagrangian method to apply, $\grad g(\ve{x}^\star) \neq 0$. This ensures that $g(x)=b$ defines a smooth constraint surface. If $\grad g = 0$ at a point, the constraint is degenerate, and special methods (parametrization or direct substitution) are required.
+
+\section*{Economic Examples}
+
+\subsection*{Example 4: Firm Output Maximization}
+
+A firm’s production function is $Q = x^{0.5}y^{0.5}$. It faces a cost constraint $w_x x + w_y y = C$.
+
+The firm maximizes $Q$ subject to the cost constraint. Lagrangian:
+\[
+\Lag = x^{0.5}y^{0.5} - \lambda(w_x x + w_y y - C).
+\]
+FOCs:
+\[
+0.5x^{-0.5}y^{0.5} = \lambda w_x, \quad 0.5x^{0.5}y^{-0.5} = \lambda w_y.
+\]
+Dividing:
+\[
+\frac{y}{x} = \frac{w_x}{w_y}.
+\]
+Substitute $y = (w_x/w_y)x$ into the cost constraint:
+\[
+w_x x + w_y \left(\frac{w_x}{w_y}x\right) = C \Rightarrow 2w_x x = C.
+\]
+Thus, $x^\star = \frac{C}{2w_x}$ and $y^\star = \frac{C}{2w_y}$.
+
+This mirrors the consumer problem: here, the firm allocates cost optimally to inputs, achieving maximum output given expenditure.
+
+\subsection*{Example 5: Portfolio Allocation}
+
+An investor allocates wealth among two assets with expected returns $r_1$ and $r_2$. Objective:
+\[
+\max f(x_1, x_2) = r_1 x_1 + r_2 x_2 - \frac{1}{2}\sigma(x_1, x_2),
+\]
+subject to $x_1 + x_2 = 1$, where $\sigma$ is a quadratic risk penalty.
+
+The Lagrangian:
+\[
+\Lag = r_1 x_1 + r_2 x_2 - \frac{1}{2}\sigma(x_1, x_2) - \lambda(x_1 + x_2 - 1).
+\]
+The FOCs balance expected returns against marginal risk, and $\lambda$ measures the implicit cost of the wealth constraint.
+
+\section*{Transition to Multiple Constraints}
+
+When we have two or more equality constraints, the geometric picture extends naturally: at the optimum, the gradient of the objective function must lie in the span of the gradients of all the constraint functions. Each constraint introduces one Lagrange multiplier.
+
+% ---------- CONTINUATION FROM PART 1 ----------
+
+\section*{Optimization with Multiple Equality Constraints}
+
+In many economic problems, agents face several simultaneous restrictions. A household might maximize utility subject to both a budget and time constraint, or a firm might minimize cost subject to multiple technological relationships.  
+
+Let
+\[
+\max_{\ve{x}\in\R^n} f(\ve{x})
+\quad \text{subject to} \quad
+g_j(\ve{x}) = b_j, \quad j = 1,2,\dots,m.
+\]
+
+\textit{Definition.}
+The \textbf{Lagrangian} for this problem is  
+\[
+\Lag(\ve{x},\lambda_1,\lambda_2,\dots,\lambda_m)
+= f(\ve{x}) - \sum_{j=1}^m \lambda_j [\,g_j(\ve{x})-b_j\,].
+\]
+
+The \textbf{first-order conditions} (FOCs) are
+\[
+\grad f(\ve{x}) = \sum_{j=1}^m \lambda_j \grad g_j(\ve{x}), 
+\qquad g_j(\ve{x}) = b_j \text{ for all } j.
+\]
+
+\textit{Interpretation.}  
+At the optimum, the gradient of \(f\) is a linear combination of the constraint gradients. Each \(\lambda_j\) represents the marginal change in the optimal value of \(f\) resulting from a one-unit relaxation of constraint \(j\).
+
+\subsection*{Regularity (Constraint Qualification)}
+
+The gradients \(\{\grad g_1, \dots, \grad g_m\}\) must be linearly independent at the optimum.  
+If they are not, one or more constraints are redundant and the standard Lagrange system may not hold.
+
+\subsection*{Example 6: Two-Constraint Problem}
+
+Maximize \( f(x,y) = x y \)  
+subject to  
+\( g_1(x,y)=x+y-10=0 \) and \( g_2(x,y)=x-2y=0. \)
+
+\[
+\Lag = xy - \lambda_1(x+y-10) - \lambda_2(x-2y).
+\]
+
+FOCs:
+\[
+\begin{aligned}
+\frac{\partial \Lag}{\partial x}&=y-\lambda_1-\lambda_2=0,\\
+\frac{\partial \Lag}{\partial y}&=x-\lambda_1+2\lambda_2=0,\\
+x+y-10&=0,\\
+x-2y&=0.
+\end{aligned}
+\]
+From the last two, \(x=2y\) and \(3y=10\Rightarrow y=\tfrac{10}{3},\,x=\tfrac{20}{3}\).  
+Solving for multipliers gives \(\lambda_1=\tfrac{10}{3},\ \lambda_2=-\tfrac{10}{9}\).  
+Economic meaning: \(\lambda_1\) is the shadow value of the resource constraint, while \(\lambda_2\) measures the trade-off imposed by the second relationship.
+
+\section*{Bordered Hessian in the General Case}
+
+Second-order conditions guarantee that the stationary point truly represents an extremum.  
+For \(m\) constraints and \(n\) variables, the bordered Hessian is
+
+\[
+H_B(\ve{x},\ve{\lambda}) =
+\begin{bmatrix}
+\ve{0}_{m\times m} & G(\ve{x})\\
+G(\ve{x})^{\!\top} & H_f(\ve{x})
+\end{bmatrix},
+\]
+where \(G(\ve{x})\) is the \(m\times n\) matrix whose rows are the gradients \(\grad g_j^\top\), and \(H_f\) is the Hessian of \(f\).
+
+\textit{Rule of Signs.}
+For a maximum, the principal minors of \(H_B\) (beginning with the one of order \(m+1\)) alternate in sign starting with \((-1)^m\).  
+For a minimum, they all have the same sign as \((-1)^{m+1}\).
+
+\subsection*{Example 7: Verifying Extremum with Two Constraints}
+
+Let \(f(x,y,z)=x+y+z\) subject to
+\[
+g_1=x^2+y^2+z^2-1=0, \qquad g_2=x+y+z=0.
+\]
+Lagrangian:
+\[
+\Lag = x+y+z-\lambda_1(x^2+y^2+z^2-1)-\lambda_2(x+y+z).
+\]
+FOCs yield \(1-2\lambda_1x-\lambda_2=0\) and similar for \(y,z\).  
+Symmetry implies \(x=y=z\). Substituting into \(x+y+z=0\) gives \(x=0\), but that violates the sphere \(x^2+y^2+z^2=1\); thus solutions lie where symmetry breaks.  
+Students can solve numerically; sign patterns of the bordered Hessian then classify maxima or minima on the sphere intersecting the plane.
+
+\section*{Economic Meaning of Multiple Multipliers}
+
+Each multiplier \(\lambda_j\) measures the marginal value of relaxing its own constraint, holding others fixed.  
+In economics, these are sometimes called \textit{shadow prices} or \textit{imputed values}.  
+
+Example: a planner maximizing welfare \(W(x_1,x_2)\) subject to resource constraints  
+\(a_{11}x_1+a_{12}x_2=R_1\) and \(a_{21}x_1+a_{22}x_2=R_2\).  
+Then  
+\[
+W_{x_i} = \lambda_1 a_{1i} + \lambda_2 a_{2i}.
+\]
+Here, \(\lambda_1,\lambda_2\) are the social values (prices) of each resource.
+
+\section*{Reduced Hessian and Tangent Space Method}
+
+An alternative to the bordered Hessian is to project the problem onto the tangent space of feasible directions.  
+Let \(T\) denote the tangent space to the constraint set at \(\ve{x}^\star\).  
+Define the \textbf{reduced Hessian}
+\[
+H_R = P^\top H_f P,
+\]
+where \(P\) is a matrix whose columns form an orthonormal basis for \(T\).  
+If \(H_R\) is negative definite (positive definite), the point is a constrained maximum (minimum).  
+This matrix approach is conceptually clearer in high dimensions.
+
+\section*{Comparative Statics and the Envelope Theorem}
+
+\subsection*{The Envelope Theorem}
+
+For a parameter vector \(\ve{b}\) entering the constraints \(g_j(\ve{x})=b_j\),
+the value function \(v(\ve{b}) = \max f(\ve{x})\) satisfies
+\[
+\frac{\partial v}{\partial b_j} = \lambda_j^\star.
+\]
+Hence, each multiplier equals the marginal effect of relaxing its constraint.  
+This avoids differentiating optimal choices directly — a powerful simplification in economics.
+
+\subsection*{Implicit Function Approach to Comparative Statics}
+
+Differentiate the FOC system:
+\[
+\begin{bmatrix}
+H_f - \sum_j \lambda_j H_{g_j} & -G^\top\\
+G & \ve{0}
+\end{bmatrix}
+\begin{bmatrix}
+\mathrm{d}\ve{x}\\[2pt] \mathrm{d}\ve{\lambda}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\ve{0}\\[2pt] \mathrm{d}\ve{b}
+\end{bmatrix}.
+\]
+Under regularity, this linear system yields how optimal variables and multipliers change when parameters shift — the foundation of local comparative statics.
+
+\section*{Applications in Economics}
+
+\subsection*{1. Cost Minimization}
+
+A firm produces output \(\bar Q\) with production function \(F(L,K)\).  
+Problem:
+\[
+\min_{L,K} C=wL+rK \quad \text{s.t.} \quad F(L,K)=\bar Q.
+\]
+Lagrangian:
+\[
+\Lag=wL+rK-\lambda[F(L,K)-\bar Q].
+\]
+FOCs:
+\[
+w=\lambda F_L,\qquad r=\lambda F_K.
+\]
+Hence
+\[
+\frac{F_L}{F_K}=\frac{w}{r}.
+\]
+Interpretation: at the cost-minimizing input mix, the marginal rate of technical substitution equals the input-price ratio.  
+\(\lambda^\star\) equals the marginal cost of production, \( \partial C/\partial \bar Q.\)
+
+\subsection*{2. Utility Maximization Revisited}
+
+Maximize \(U(x,y)\) subject to \(p_xx+p_yy=I.\)  
+At the optimum:
+\[
+\frac{U_x}{U_y}=\frac{p_x}{p_y},\qquad \lambda^\star=\frac{\partial V(I,p)}{\partial I}.
+\]
+This condition equates the consumer’s subjective trade-off to the market trade-off.
+
+\subsection*{3. Production and Duality}
+
+The dual of cost minimization is output maximization:
+\[
+\max F(L,K) \quad \text{s.t.} \quad wL+rK=C.
+\]
+The same Lagrange structure produces identical first-order conditions; the multiplier becomes \(1/\lambda\), representing marginal output per unit of cost.
+
+\subsection*{4. Macroeconomic Planning Example}
+
+A social planner maximizes \(U(C,G)\) subject to a resource constraint \(Y=C+G\) and a production function \(Y=F(K,L)\).  
+Form the Lagrangian:
+\[
+\Lag=U(C,G)-\lambda[C+G-F(K,L)].
+\]
+FOCs:
+\[
+U_C=\lambda,\quad U_G=\lambda,\quad \lambda F_K=0,\quad \lambda F_L=0.
+\]
+Equilibrium requires \(U_C=U_G\), reflecting optimal allocation between private and public consumption.  
+\(\lambda\) measures the shadow value of aggregate resources.
+
+\section*{Connections to Further Topics}
+
+\textit{1. Inequality Constraints and Kuhn–Tucker Conditions.}  
+When constraints become inequalities (\(g_j(x)\le b_j\)), we move to the Kuhn–Tucker framework, where multipliers satisfy \(\lambda_j\ge0\) and complementary slackness \(\lambda_j[g_j(x)-b_j]=0.\)
+
+\textit{2. Dynamic Optimization.}  
+In intertemporal problems, Lagrange multipliers evolve over time and correspond to co-state variables in optimal-control theory.
+
+\textit{3. Geometric Intuition.}  
+Each additional constraint reduces feasible dimensionality by one; at the optimum, contour surfaces of \(f\) and all \(g_j\) are mutually tangent.
+
+\section*{Common Pitfalls and Practical Advice}
+
+\begin{itemize}[leftmargin=1em]
+\item Always check that the constraint gradients are independent.
+\item Evaluate the bordered Hessian rather than relying solely on intuition.
+\item Remember that a positive \(\lambda\) does not always indicate a maximum — interpret sign relative to the problem type (max vs min).
+\item When possible, simplify constraints algebraically before forming the Lagrangian.
+\end{itemize}
+
+\section*{Summary and Concluding Remarks}
+
+Optimization with equality constraints extends the calculus of maxima and minima to realistic economic settings where agents face restrictions.  
+The Lagrange multiplier method transforms constrained problems into systems of equations whose solutions simultaneously satisfy optimality and feasibility.  
+
+\begin{itemize}[leftmargin=1em]
+\item The Lagrange multiplier measures the shadow value of each constraint.  
+\item The bordered or reduced Hessian determines whether stationary points are maxima or minima.  
+\item Comparative-statics analysis shows how changes in parameters affect optimal choices and shadow prices.  
+\end{itemize}
+
+These principles underpin almost every analytical model in micro- and macro-economics: consumer choice, production, cost minimization, portfolio allocation, and general equilibrium.  
+Mastery of this technique provides both mathematical precision and deep economic insight.
+
+\end{document}
+
+
+\end{document}

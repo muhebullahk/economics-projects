@@ -1,0 +1,49 @@
+\documentclass[tikz,border=3.14mm]{standalone}
+\usepackage{tikz}
+
+\begin{document}
+
+\begin{tikzpicture}
+
+% Draw the central box (Firms)
+\node[draw, minimum height=3cm, minimum width=4cm] (firms) at (0, 0) {Firms};
+
+% Draw the surrounding boxes (Households, Government, and Financial Sector)
+\node[draw, minimum height=3cm, minimum width=4cm] (households) at (-5, 5) {Households};
+\node[draw, minimum height=3cm, minimum width=4cm] (govt) at (5, 5) {Government};
+\node[draw, minimum height=3cm, minimum width=4cm] (finance) at (5, -5) {Financial Sector};
+
+% Draw arrows representing flows between entities
+
+% Household to Firms (Expenditure on Goods and Services)
+\draw[->, thick] (households) -- node[anchor=south, above] {Expenditure} (firms);
+
+% Firms to Households (Revenue from Goods and Services)
+\draw[->, thick] (firms) -- node[anchor=south, below] {Revenue} (households);
+
+% Households to Government (Taxes)
+\draw[->, thick] (households) -- node[anchor=south, above] {Taxes} (govt);
+
+% Government to Households (Transfers)
+\draw[->, thick] (govt) -- node[anchor=south, below] {Transfers} (households);
+
+% Financial Sector to Firms (Investment)
+\draw[->, thick] (finance) -- node[anchor=south, below] {Investment} (firms);
+
+% Firms to Financial Sector (Savings)
+\draw[->, thick] (firms) -- node[anchor=south, above] {Savings} (finance);
+
+% Government to Firms (Government Spending)
+\draw[->, thick] (govt) -- node[anchor=south, above] {Government Spending} (firms);
+
+% Firms to Government (Taxes paid)
+\draw[->, thick] (firms) -- node[anchor=south, below] {Taxes Paid} (govt);
+
+% Draw labels for arrows and flows
+\node at (0, 3.5) {Product and Factor Markets};
+\node at (0, -3.5) {Financial Markets};
+
+\end{tikzpicture}
+
+\end{document}
+

@@ -1,0 +1,348 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+\usepackage{xcolor}
+\definecolor{accent}{RGB}{0,92,184}
+\definecolor{soft}{RGB}{233,244,255}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{title}{fg=white,bg=accent}
+\setbeamercolor{frametitle}{fg=accent}
+\setbeamercolor{block title}{bg=accent!12,fg=accent}
+\setbeamercolor{block body}{bg=soft}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}
+
+% ---------- SAFE FALLBACK FOR TRANSITIONS ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- PLACEHOLDER BOX (compile-safe; no images required) ----------
+\newcommand{\placeholderbox}[2][0.82\linewidth]{%
+  \begin{center}
+    \fbox{\begin{minipage}[c][0.46\textheight][c]{#1}
+      \centering \vspace{0.25em}
+      \textbf{#2}\\[0.6em]
+      \emph{Insert figure/diagram here later.}
+    \end{minipage}}
+  \end{center}
+}
+
+% ---------- TITLE ----------
+\title{\textbf{Optimal Compensation Systems, Deferred Compensation, and Mandatory Retirement \vspace{.5cm}\\  }}
+\subtitle{ {\large ECON 300 - Labour Economics}}
+%\institute{UNBC}
+\author{Muhebullah Karimzada}
+
+\date{Winter 2026}
+
+
+
+\begin{document}
+
+% ============================================================
+% TITLE
+% ============================================================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ============================================================
+\section{Learning Objectives \& Main Questions}
+% ============================================================
+
+\begin{frame}{Learning Objectives}
+\transfade
+\begin{itemize}[<+->]
+  \item Discuss why seemingly inefficient compensation arrangements can be optimal for aligning employer--employee incentives.
+  \item Explain why compensation arrangements may change across time/countries/workplaces.
+  \item Outline the ``new economics of personnel'' and its insights for HR practices.
+  \item Engage in debates around CEO pay and mandatory retirement.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Main Questions (1/2)}
+\transfade
+\begin{itemize}[<+->]
+  \item How do internal labour markets differ from competitive external markets?
+  \item Why do wages rise with seniority? Does productivity rise continually?
+  \item Why are superstars paid so much more than average performers?
+  \item When are tournament-style pay structures helpful vs.\ harmful?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Main Questions (2/2)}
+\transfade
+\begin{itemize}[<+->]
+  \item What is mandatory retirement -- age discrimination or efficient institution?
+  \item Why are CEO/executive salaries very high, and why have they risen?
+  \item Why does academic tenure exist? When should firms promote from within vs.\ hire outside?
+  \item When do organizations match outside offers -- and what about the winner's curse?
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Agency Theory \& Efficiency Wages}
+% ============================================================
+
+\begin{frame}{Agency Theory}
+\transfade
+\begin{itemize}[<+->]
+  \item Principal--agent problem: design efficient contracts when incentives to cheat exist and information is asymmetric.
+  \item Elicit ``truth-telling'' via explicit (collective agreements) or implicit contracts.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Efficiency Wage Theory}
+\transfade
+\begin{itemize}[<+->]
+  \item Wages affect productivity; paying above spot can raise effort, reduce shirking/turnover.
+  \item At subsistence levels, higher wages can improve nutrition and productivity.
+  \item Result: \alert{efficiency gains} from higher wages in certain settings.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Superstars, Tournaments, and Teams}
+% ============================================================
+
+\begin{frame}{Economics of Superstars}
+\transfade
+\begin{itemize}[<+->]
+  \item Small skill differences can be magnified when output is broadcast or scaled (concerts, TV shows, software platforms).
+  \item Tiny per-person value improvements aggregate to large total value when audience or co-worker base is large.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Salaries as Tournament Prizes}
+\transfade
+\begin{itemize}[<+->]
+  \item Promotions act as \textbf{prizes}: large salary jumps for winners.
+  \item Pros: stronger incentives, especially when few promotion chances remain.
+  \item Cons: discourages cooperation, may foster sabotage or corruption if prize spreads are excessive.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Efficient Pay Equality, Teams, and Cooperation}
+\transfade
+\begin{itemize}[<+->]
+  \item Some inequality is necessary for incentives.
+  \item \alert{Too much inequality} harms teamwork and invites sabotage.
+  \item Solutions: tailor incentive schemes by level, base managers' bonuses on group output, create separate units, use external promotion margins, and HR policies that reward cooperation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The 1/N Problem (Team Averages)}
+\transfade
+\begin{itemize}[<+->]
+  \item Paying by average team output creates \textbf{free-rider} issues.
+  \item Large teams $\Rightarrow$ weak individual incentives; small teams $\Rightarrow$ peer pressure and better monitoring.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Up-or-Out Rules}
+\transfade
+\begin{itemize}[<+->]
+  \item Evaluations at set career points lead to promotion or exit (e.g., academic tenure).
+  \item Can be inefficient if good-but-not-promoted workers leave; remedy: junior non-promoted slots to continue evaluation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Raiding, Offer-Matching, and the Winner's Curse}
+\transfade
+\begin{itemize}[<+->]
+  \item Asymmetric information drives \textbf{raiding} for talent.
+  \item Incumbent firms match if the worker is truly worth the outside offer; otherwise, they do not.
+  \item Raiders risk \textbf{winner's curse} -- overpaying when information is noisy.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Piece Rates: Positives and Negatives}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Benefits:} rewards high output, attracts strong workers, saves monitoring.
+  \item \textbf{Drawbacks:} output measurement can be hard/costly; weak when individuals have limited control over output.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Deferred Compensation}
+% ============================================================
+
+\begin{frame}{Deferred Wages: Concept}
+\transfade
+\begin{itemize}[<+->]
+  \item Wages rise with seniority even if productivity is flat.
+  \item Raises and pension accruals backload pay -- requires long-term commitment.
+  \item \textbf{Efficiency rationale:} boosts effort/honesty, reduces monitoring and unwanted turnover, screens out low-effort workers, lowers hiring/training costs.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 13.1(a) -- Wage Productivity Profiles: Deferred Wages Contract (Placeholder)}
+\transfade
+\placeholderbox{Figure 13.1(a) -- Deferred wages contract market.}
+\end{frame}
+
+\begin{frame}{Figure 13.1(b) -- Wage Productivity Profiles: Spot Market (Placeholder)}
+\transfade
+\placeholderbox{Figure 13.1(b) -- Spot market.}
+\end{frame}
+
+\begin{frame}{Figure 13.1(c) -- Wage Productivity Profiles: Deferred Wages with Company--Specific Training (Placeholder)}
+\transfade
+\placeholderbox{Figure 13.1(c) -- Deferred wages with company--specific training.}
+\end{frame}
+
+\begin{frame}{Figure 13.1(d) -- Wage Productivity Profiles: General Training (Placeholder)}
+\transfade
+\placeholderbox{Figure 13.1(d) -- General training.}
+\end{frame}
+
+\begin{frame}{WORKED EXAMPLE -- Deferred Compensation}
+\transfade
+\small
+Assume a worker's VMP is \$10 per hour.\par
+Deferred compensation system: \(W = 5 + 0.2T\), where \(T\) is tenure in years.\par
+Worker starts at age 20; ignore discounting.\par
+\begin{itemize}[<+->]
+  \item \textbf{Break-even tenure:} set \(W=\text{VMP}\): \(5 + 0.2T = 10 \Rightarrow T=25\).
+  \item \textbf{Implied mandatory retirement age:} \(45 + 25 = 70\).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Underpayment or Overpayment (Exact Table)}
+\transfade
+\scriptsize
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Underpayment or Overpayment} & \textbf{Age} & \textbf{Tenure, T} & \textbf{VMP} & \textbf{W = 5 + 0.2T} & \textbf{W -- VMP} \\
+\midrule
+ & 20 & 0  & 10 & 5  & $-5$ \\
+ & 30 & 10 & 10 & 7  & $-3$ \\
+ & 40 & 20 & 10 & 9  & $-1$ \\
+ & 50 & 30 & 10 & 11 & $+1$ \\
+ & 60 & 40 & 10 & 13 & $+3$ \\
+ & 70 & 50 & 10 & 15 & $+5$ \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{WORKED EXAMPLE -- Piece Rates and Team Compensation (Exact Table)}
+\transfade
+\scriptsize
+\begin{tabular}{cccccc}
+\toprule
+\multicolumn{4}{c}{\textbf{Disutility of Effort}} & \multicolumn{2}{c}{\textbf{Pay (wage $\times$ effort)}} \\
+\textbf{Unit of effort = output (1)} & \textbf{Wage per unit of effort (2)} & \textbf{You (3)} & \textbf{EI Slacker (4)} & \textbf{You (5)} & \textbf{EI Slacker (6)} \\
+\midrule
+1 & 10 & 5  & 7   & 10 & 10 \\
+2 & 10 & 6  & 8   & 20 & 20 \\
+3 & 10 & 7  & 9   & 30 & 30 \\
+4 & 10 & 8  & 10  & 40 & 40 \\
+5 & 10 & 9  & 11  & 50 & 50 \\
+6 & 10 & 10 & 12  & 60 & 60 \\
+7 & 10 & 11 & 13  & 70 & 70 \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Do Workers Prefer Deferred Wages?}
+\transfade
+\begin{itemize}[<+->]
+  \item Many workers prefer rising wage profiles as \textbf{forced saving}.
+  \item Anticipating future consumption itself yields utility (consumption smoothing).
+  \item Workers may willingly trade lower current wages for higher future wages.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Executive Compensation}
+% ============================================================
+
+\begin{frame}{Executive Compensation: Stylized Facts}
+\transfade
+\begin{itemize}[<+->]
+  \item Executive pay has risen relative to average worker pay.
+  \item Typical packages combine base salary with stock options and equity.
+  \item Board dynamics matter: directors may have incentives to award high pay (many are executives elsewhere).
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Mandatory Retirement}
+% ============================================================
+
+\begin{frame}{Rationales for Mandatory Retirement}
+\transfade
+\begin{itemize}[<+->]
+  \item Enables deferred-wage contracts so PV(wages) = PV(productivity) to the firm.
+  \item Provides finality to long-term arrangements and an \alert{efficient compensation rule}.
+  \item Opens promotion and employment opportunities for younger workers.
+  \item Increases planning certainty for staffing, pensions, and medical costs; aids workers' pre-retirement planning.
+  \item Reduces monitoring costs for older workers where effort is hard to observe.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 13.2 -- Mandatory Retirement Age (Placeholder)}
+\transfade
+\placeholderbox{Figure 13.2 -- Mandatory Retirement Age.}
+\end{frame}
+
+\begin{frame}{Arguments Against Mandatory Retirement}
+\transfade
+\begin{itemize}[<+->]
+  \item Human-rights concerns: potential age discrimination and efficiency loss if productive workers are forced out.
+  \item May improve viability of pension systems, but trade-offs exist.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Impact of Banning Mandatory Retirement}
+\transfade
+\begin{itemize}[<+->]
+  \item Age--earnings profiles may \textbf{track productivity} more closely (higher wages for younger, lower for older).
+  \item Deferred-wage systems may change; more frequent monitoring/evaluation.
+  \item Possible reduction in training and fewer openings for younger workers.
+  \item Forecasting/planning becomes more difficult; jobs may be redesigned to accommodate older workers.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Chapter Summary}
+% ============================================================
+
+\begin{frame}{Summary}
+\transfade
+\begin{itemize}[<+->]
+  \item Core ideas: agency and efficiency wages; superstars; tournaments; team incentives.
+  \item Deferred compensation aligns incentives, screens workers, and supports long-term matches.
+  \item Executive pay mixes salary and equity; governance shapes outcomes.
+  \item Mandatory retirement has efficiency rationales but also equitable and efficiency costs; design matters.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge{\textbf{Thank You!}} \\
+\end{frame}
+
+\end{document}

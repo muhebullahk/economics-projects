@@ -1,0 +1,243 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts, amsthm, geometry, setspace, tcolorbox}
+\geometry{margin=1in}
+\setstretch{1.2}
+\setlength{\parindent}{0pt}
+
+\tcbset{colback=gray!5, colframe=black!70, boxrule=0.6pt, arc=2pt, 
+left=6pt, right=6pt, top=4pt, bottom=4pt}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{definition}{Definition}
+
+\title{\textbf{Envelope Theorem and Duality}\\[7pt]
+\large ECON 320 - Introduction to Mathematical Economics}
+\author{Muhebullah Karimzada}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+
+
+\vspace{1em}
+
+\begin{tcolorbox}
+\textbf{Learning Objectives}
+\begin{itemize}
+\item Understand the envelope theorem for constrained and unconstrained problems.
+\item Apply the theorem in consumer, producer, and profit-maximization settings.
+\item Develop intuition for duality in economic optimization.
+\item Learn the relationship between Lagrange multipliers, shadow prices, and value functions.
+\end{itemize}
+\end{tcolorbox}
+
+%-------------------------------------------------------------
+\section*{1. Introduction}
+
+Many economic optimization problems depend on an external parameter (price, income, technology). 
+We frequently want to know how the \textit{optimal value} of the objective changes when the parameter changes, without re-solving the optimization problem completely.
+
+The \textbf{Envelope Theorem} provides an elegant method to compute this derivative.  
+The related concept of \textbf{Duality} expresses an optimization problem in an equivalent but economically insightful form.
+
+%-------------------------------------------------------------
+\section*{2. The Optimization Setup}
+
+Consider the constrained maximization problem:
+\[
+\max_{x_1,\ldots,x_n} f(x_1,\ldots,x_n,a)
+\]
+subject to
+\[
+g(x_1,\ldots,x_n,a)=0,
+\]
+where $a$ is a parameter.
+
+Let $x_i^*(a)$ denote the optimal choices, and let the \textbf{value function} be
+\[
+V(a)=f(x_1^*(a), \ldots, x_n^*(a), a).
+\]
+
+%-------------------------------------------------------------
+\section*{3. The Envelope Theorem}
+
+\begin{theorem}[Envelope Theorem — Constrained Case]
+For the constrained maximization problem above, the derivative of the value function is:
+\[
+\boxed{
+\frac{dV}{da} = 
+\frac{\partial f}{\partial a}(x^*,a)
+-
+\lambda \frac{\partial g}{\partial a}(x^*,a)
+}
+\]
+where $\lambda$ is the optimal Lagrange multiplier.
+\end{theorem}
+
+\textbf{Key idea:} At the optimum, the indirect effects through $dx_i^*/da$ cancel out by the first-order conditions.
+
+\subsection*{Unconstrained Version}
+For:
+\[
+\max_x f(x,a),
+\quad f_x(x^*,a)=0,
+\]
+\[
+\boxed{
+\frac{dV}{da}
+=
+\frac{\partial f}{\partial a}(x^*(a),a).
+}
+\]
+
+%-------------------------------------------------------------
+\section*{4. Economic Interpretation of the Envelope Theorem}
+
+\begin{tcolorbox}
+\textbf{Interpretation:} 
+Only the \textit{direct effect} of the parameter on the objective and constraint matters.  
+All indirect effects through optimal choices vanish.
+\end{tcolorbox}
+
+Examples:
+\begin{itemize}
+\item In consumer theory: $\displaystyle \frac{dU^*}{dM}=\lambda$ = marginal utility of income.
+\item In profit maximization: $\displaystyle \frac{\partial \pi^*}{\partial w}=-L^*$ = negative of optimal labor usage.
+\item In cost minimization: $\displaystyle \frac{dC}{dQ}=\lambda$ = marginal cost.
+\end{itemize}
+
+%-------------------------------------------------------------
+\section*{5. Applications}
+
+\subsection*{5.1 Consumer Utility Maximization}
+\[
+\max_{x,y} U(x,y) \quad \text{s.t. } p_x x + p_y y = M.
+\]
+Lagrangian:
+\[
+\mathcal{L}=U(x,y)+\lambda(M-p_x x-p_y y).
+\]
+Envelope Theorem:
+\[
+\frac{dU^*}{dM}=\lambda.
+\]
+Thus $\lambda$ is the \textbf{marginal utility of income}.
+
+%-------------------------------------------------------------
+\subsection*{5.2 Profit Maximization}
+\[
+\pi=\max_{K,L}[pF(K,L)-wL-rK].
+\]
+Envelope Theorem gives:
+\[
+\frac{\partial \pi}{\partial w}=-L^*,\quad 
+\frac{\partial \pi}{\partial r}=-K^*,\quad
+\frac{\partial \pi}{\partial p}=F(K^*,L^*).
+\]
+Thus:
+\begin{itemize}
+\item Profit falls with each input price at the rate of input usage.
+\item Profit rises with output price at the rate of output.
+\end{itemize}
+
+%-------------------------------------------------------------
+\subsection*{5.3 Cost Minimization}
+\[
+C(w,r,Q)=\min_{K,L}[wL+rK]\quad\text{s.t.}\quad F(K,L)=Q.
+\]
+Envelope Theorem:
+\[
+\frac{\partial C}{\partial Q}=\lambda=\text{marginal cost}.
+\]
+
+%-------------------------------------------------------------
+\section*{6. Duality}
+
+\begin{definition}
+\textbf{Duality} refers to the correspondence between an optimization problem (the \emph{primal}) and another optimization problem (the \emph{dual}) that characterizes the same economic behavior in a different form.
+\end{definition}
+
+%-------------------------------------------------------------
+\subsection*{6.1 Consumer Duality}
+
+\begin{center}
+\begin{tabular}{c|c|c}
+\textbf{Problem} & \textbf{Objective} & \textbf{Constraint} \\ \hline
+Utility Maximization & Maximize $U(x,y)$ & $p_x x + p_y y = M$ \\
+Expenditure Minimization & Minimize $p_x x + p_y y$ & $U(x,y)=\bar{U}$
+\end{tabular}
+\end{center}
+
+Both yield the same tangency condition:
+\[
+MRS=\frac{p_x}{p_y}.
+\]
+
+%-------------------------------------------------------------
+\subsection*{6.2 Producer Duality}
+\begin{center}
+\begin{tabular}{c|c|c}
+\textbf{Problem} & \textbf{Objective} & \textbf{Constraint} \\ \hline
+Cost Minimization & $\min\;C=wL+rK$ & $F(K,L)=Q$ \\
+Profit Maximization & $\max\;\pi=pF(K,L)-wL-rK$ & None
+\end{tabular}
+\end{center}
+
+Key identity:
+\[
+\pi(p,w,r)=pQ-C(w,r,Q).
+\]
+
+%-------------------------------------------------------------
+\section*{7. Shephard’s Lemma}
+
+For the cost function:
+\[
+C(w,r,Q)=\min_{K,L}\{wL+rK: F(K,L)=Q\},
+\]
+\[
+\boxed{
+\frac{\partial C}{\partial w}=L^*, \qquad 
+\frac{\partial C}{\partial r}=K^*
+}
+\]
+That is, the derivative of the cost function with respect to input prices returns the \textbf{conditional factor demands}.
+
+This is a direct application of the Envelope Theorem.
+
+%-------------------------------------------------------------
+\section*{8. Graphical Insight}
+
+\begin{itemize}
+\item The value function forms an \textbf{envelope} of the objective curves for different $x$.
+\item Each curve touches the envelope at the optimum.
+\item The envelope's slope gives the derivative of optimal value with respect to a parameter.
+\end{itemize}
+
+%-------------------------------------------------------------
+\section*{9. Summary of Key Results}
+
+\begin{tcolorbox}
+\[
+\frac{dV}{da} = \frac{\partial f}{\partial a} 
+- \lambda\frac{\partial g}{\partial a}
+\]
+\[
+\lambda = \text{shadow value of the constraint}
+\]
+\[
+\frac{\partial C}{\partial Q}=\text{marginal cost}
+\]
+\[
+\frac{\partial \pi}{\partial w}=-L^*, \quad 
+\frac{\partial \pi}{\partial r}=-K^*
+\]
+\[
+\frac{\partial C}{\partial w}=L^*, \qquad \frac{\partial C}{\partial r}=K^*
+\]
+\end{tcolorbox}
+
+Envelope Theorem + Duality form one of the most powerful toolkits for modern microeconomic analysis.
+
+\end{document}

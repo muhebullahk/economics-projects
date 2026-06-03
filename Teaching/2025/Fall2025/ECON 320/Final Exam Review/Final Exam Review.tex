@@ -1,0 +1,301 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{setspace,enumitem,microtype}
+\usepackage{titlesec}
+
+\setstretch{1.2}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+
+\titleformat{\section}{\Large\bfseries}{}{0em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{}{0em}{}
+
+\begin{document}
+
+\begin{center}
+    {\LARGE \textbf{Final Exam Review}}\\[4pt]
+    \textit{Based on Alpha C. Chiang and Kevin Wainwright (4th Edition)}\\[4pt]
+    Material: Functions, Linear Models, Differentiation, Optimization, Exponential \& Logarithmic Functions, Constrained Optimization, Envelope Theorem, Integration, Dynamics
+\end{center}
+
+\hrule
+\vspace{10pt}
+
+\section*{Functions and Graphs}
+
+\textbf{Definitions}
+\begin{itemize}
+    \item A function assigns to each input \(x\) exactly one output \(y=f(x)\).
+    \item Domain: all permissible \(x\)-values. Range: the set of resulting \(y\)-values.
+\end{itemize}
+
+\textbf{Common Function Types}
+\[
+\text{Linear: }y=a+bx,\qquad
+\text{Quadratic: }y=ax^2+bx+c,\qquad
+\text{Power: }y=ax^b.
+\]
+\[
+\text{Exponential: }y=Ae^{bx},\qquad
+\text{Logarithmic: }y=a+b\ln x.
+\]
+
+\textbf{Economic Uses}
+\begin{itemize}
+    \item Derivatives represent marginal changes (marginal cost, marginal utility).
+    \item Elasticity measures percentage responsiveness.
+\end{itemize}
+
+\hrule
+\vspace{10pt}
+
+\section*{Linear Functions}
+
+\textbf{General Form:}
+\[
+y = a + bx.
+\]
+
+\textbf{Slope:} \(b=\dfrac{\Delta y}{\Delta x}\).
+
+\textbf{Applications}
+\begin{itemize}
+    \item Demand: \(Q_d=a-bP\)
+    \item Supply: \(Q_s=c+dP\)
+    \item Market equilibrium: \(Q_d=Q_s\).
+\end{itemize}
+
+\textbf{Elasticity}
+\[
+E = \frac{dy}{dx}\cdot \frac{x}{y}.
+\]
+Note: Elasticity varies along a linear function.
+
+\hrule
+\vspace{10pt}
+
+\section*{Differentiation}
+
+\textbf{Key Rules}
+\[
+\frac{d}{dx}x^n=nx^{n-1},\qquad
+(uv)'=u'v+uv',\qquad
+\left(\frac{u}{v}\right)'=\frac{u'v-uv'}{v^2}.
+\]
+\[
+\text{Chain Rule: }(f(g(x)))'=f'(g(x))\cdot g'(x).
+\]
+
+\textbf{Economic Interpretation}
+\begin{itemize}
+    \item \(MC = C'(Q)\), \(MR = R'(Q)\).
+    \item Profit maximization requires \(MR=MC\).
+\end{itemize}
+
+\hrule
+\vspace{10pt}
+
+\section*{Optimization of Single-Variable Functions}
+
+To find extrema:
+\[
+f'(x)=0 \quad \text{(FOC)}.
+\]
+
+\textbf{Second-Order Test}
+\begin{itemize}
+    \item If \(f''(x)<0\): maximum.
+    \item If \(f''(x)>0\): minimum.
+\end{itemize}
+
+\textbf{Inflection Point:} when \(f''(x)=0\) and concavity changes sign.
+
+\textbf{Examples}
+\begin{itemize}
+    \item Profit maximization \(\pi(Q)=R(Q)-C(Q)\).
+    \item Cost minimization with single variable.
+\end{itemize}
+
+\hrule
+\vspace{10pt}
+
+\section*{Exponential and Logarithmic Functions}
+
+\textbf{Exponential Form}
+\[
+y=Ae^{bx}\quad\Rightarrow\quad y' = by.
+\]
+Proportional growth rate is constant:
+\[
+\frac{y'}{y}=b.
+\]
+
+\textbf{Logarithmic Function}
+\[
+y=a+b\ln x \quad\Rightarrow\quad y'=\frac{b}{x}.
+\]
+
+\textbf{Elasticity}
+\[
+E = \frac{dy}{dx}\cdot\frac{x}{y}.
+\]
+Log-linear forms have constant elasticity.
+
+\textbf{Economic Applications}
+\begin{itemize}
+    \item Continuous compounding: \(A=Pe^{rt}\).
+    \item Growth models: \(Y(t)=Y_0 e^{rt}\).
+\end{itemize}
+
+\hrule
+\vspace{10pt}
+
+\section*{Optimization of Multi-Variable Functions}
+
+\textbf{First-Order Conditions}
+\[
+f_x(x,y)=0,\qquad f_y(x,y)=0.
+\]
+
+\textbf{Hessian Matrix}
+\[
+H = 
+\begin{bmatrix}
+f_{xx} & f_{xy}\\
+f_{yx} & f_{yy}
+\end{bmatrix}.
+\]
+
+\textbf{Classification}
+\begin{itemize}
+    \item If \(\det H>0\) and \(f_{xx}<0\): maximum.
+    \item If \(\det H>0\) and \(f_{xx}>0\): minimum.
+    \item If \(\det H<0\): saddle point.
+\end{itemize}
+
+\textbf{Economic Interpretations}
+\begin{itemize}
+    \item Diminishing marginal returns.
+    \item Substitutability from cross-partials.
+\end{itemize}
+
+\hrule
+\vspace{10pt}
+
+\section*{Optimization with Equality Constraints}
+
+Maximize \(f(x,y)\) subject to \(g(x,y)=b\).
+
+\textbf{Lagrangian}
+\[
+\mathcal{L}(x,y,\lambda)=f(x,y)-\lambda(g(x,y)-b).
+\]
+
+\textbf{FOCs}
+\[
+f_x = \lambda g_x,\qquad f_y = \lambda g_y,\qquad g(x,y)=b.
+\]
+
+\textbf{Interpretation}
+\(\lambda\) is the shadow price: the marginal value of relaxing the constraint.
+
+\textbf{Bordered Hessian}
+\[
+H_B =
+\begin{bmatrix}
+0 & g_x & g_y\\
+g_x & f_{xx} & f_{xy}\\
+g_y & f_{xy} & f_{yy}
+\end{bmatrix}.
+\]
+Sign of \(\det(H_B)\) determines max/min.
+
+\hrule
+\vspace{10pt}
+
+\section*{Envelope Theorem and Duality}
+
+\textbf{Envelope Theorem}
+If \(v(b)\) is the maximum of \(f(x)\) subject to \(g(x)=b\), then
+\[
+\frac{dv}{db}=\lambda^\star.
+\]
+This simplifies comparative statics by avoiding differentiation of optimal choices.
+
+\textbf{Duality}
+\begin{itemize}
+    \item Utility maximization vs cost minimization.
+    \item Both yield the same marginal rate of substitution conditions.
+    \item Shadow prices appear in both problems.
+\end{itemize}
+
+\hrule
+\vspace{10pt}
+
+\section*{Integration}
+
+\textbf{Basic Rules}
+\[
+\int x^n dx = \frac{x^{n+1}}{n+1}+C,\qquad
+\int e^{ax} dx = \frac{1}{a}e^{ax}+C,\qquad
+\int \frac{1}{x}dx = \ln|x|+C.
+\]
+
+\textbf{Definite Integral}
+\[
+\int_a^b f(x)dx = F(b)-F(a).
+\]
+
+\textbf{Economic Uses}
+\begin{itemize}
+    \item Consumer surplus.
+    \item Present value: \(\int_0^\infty e^{-rt}R(t)\,dt\).
+    \item Capital accumulation solved by integration.
+\end{itemize}
+
+\hrule
+\vspace{10pt}
+
+\section*{Economic Dynamics}
+
+\textbf{Differential Equations}
+\[
+\dot y + ay = b \quad \Rightarrow\quad y(t)=Ce^{-at}+\frac{b}{a}.
+\]
+
+\textbf{Growth Models}
+\[
+Y(t)=Y_0 e^{rt}.
+\]
+
+\textbf{Decay Models}
+\[
+K(t)=K_0 e^{-\delta t}.
+\]
+
+Dynamics describe continuous-time adjustment processes in economics (capital, population, debt).
+
+\hrule
+\vspace{10pt}
+
+\section*{Summary Table}
+
+\begin{tabular}{p{3cm} p{4cm} p{4.5cm}}
+\textbf{Topic} & \textbf{Mathematical Tool} & \textbf{Economic Interpretation} \\
+\hline
+Slopes & Derivative & Marginal change \\
+Concavity & Second derivative & Diminishing returns \\
+Elasticity & Log derivative & Responsiveness \\
+Multivariate optimization & Hessian matrix & Classification of behavior \\
+Constraints & Lagrange multipliers & Shadow values \\
+Comparative statics & Envelope theorem & Value-function sensitivity \\
+Integration & Antiderivatives & Accumulation, surplus \\
+Dynamics & Differential equations & Growth, decay, adjustment paths \\
+\end{tabular}
+
+\end{document}

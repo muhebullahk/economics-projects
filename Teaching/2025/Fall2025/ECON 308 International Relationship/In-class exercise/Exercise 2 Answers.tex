@@ -1,0 +1,155 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, geometry, booktabs}
+\usepackage{enumitem}
+\geometry{margin=1in}
+\setlength{\parindent}{0pt}
+\renewcommand{\arraystretch}{1.2}
+
+\title{The Standard Trade Model and External Economies of Scale}
+\author{ECON 308 -- International Economic Relations}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1 — Terms of Trade and Welfare (Standard Trade Model)}
+
+\textbf{Data.} PPF: $F^2 + M^2 = 400$ with $F$ on the horizontal axis and $M$ on the vertical axis. World relative price $P_M/P_F=2$.
+
+\subsection*{(a) Value-maximizing production point}
+We maximize the value of output at world prices. Normalize $P_F=1$ so $P_M=2$ and
+\[
+V = P_F F + P_M M = F + 2M \quad \text{s.t.} \quad F^2 + M^2 = 400.
+\]
+
+\textit{Method 1 (tangency of isovalue and PPF).}
+The slope of the PPF is the marginal rate of transformation:
+\[
+F^2 + M^2 = 400 \Rightarrow 2F\,dF + 2M\,dM = 0 \Rightarrow \frac{dM}{dF} = -\frac{F}{M}.
+\]
+The slope of the isovalue line is $-\dfrac{P_F}{P_M} = -\dfrac{1}{2}$. Tangency requires
+\[
+-\frac{F}{M} = -\frac{1}{2} \quad \Rightarrow \quad \frac{F}{M}=\frac{1}{2} \quad \Rightarrow \quad F=\frac{M}{2}.
+\]
+Impose on the PPF:
+\[
+\left(\frac{M}{2}\right)^2 + M^2 = 400
+\;\Rightarrow\; \frac{M^2}{4} + M^2 = \frac{5}{4}M^2 = 400
+\;\Rightarrow\; M^2 = 320 \;\Rightarrow\; M = \sqrt{320} = 8\sqrt{5}.
+\]
+Hence $F = \dfrac{M}{2} = 4\sqrt{5}$.
+
+\[
+\boxed{(F_P, M_P) = \big(4\sqrt{5},\, 8\sqrt{5}\big) \approx (8.944,\; 17.889).}
+\]
+
+\textit{Check (Method 2, Lagrangian).}
+\[
+\mathcal{L} = F + 2M + \lambda (400 - F^2 - M^2).
+\]
+FOCs: $1 - 2\lambda F = 0 \Rightarrow F=\dfrac{1}{2\lambda}$; \; $2 - 2\lambda \cdot 2M = 0 \Rightarrow M=\dfrac{1}{2\lambda}$.
+Thus $F=M$ from the FOCs \emph{alone}; but this contradicts the tangency condition above. The mistake is that the derivative for $M$ is $2 - 2\lambda(2M)$ \emph{only if} the constraint is $F^2 + (2)M^2 = \cdots$. Our actual constraint is $F^2 + M^2$, so
+\[
+\frac{\partial \mathcal{L}}{\partial M} = 2 - 2\lambda M = 0 \Rightarrow M = \frac{1}{\lambda}, \quad
+\frac{\partial \mathcal{L}}{\partial F} = 1 - 2\lambda F = 0 \Rightarrow F=\frac{1}{2\lambda},
+\]
+hence $F=\dfrac{M}{2}$, agreeing with the tangency result.
+
+\subsection*{(b) Consumption with preferences $M = 0.5F$}
+Income (value of production) at world prices:
+\[
+V = F_P + 2M_P = 4\sqrt{5} + 2(8\sqrt{5}) = 20\sqrt{5} \approx 44.721.
+\]
+Budget (trade) line at world prices:
+\[
+F + 2M = V = 20\sqrt{5}.
+\]
+Preferences require $M = 0.5F$. Substitute into the budget:
+\[
+F + 2(0.5F) = 2F = 20\sqrt{5} \Rightarrow F_C = 10\sqrt{5}, \quad M_C = 0.5F_C = 5\sqrt{5}.
+\]
+\[
+\boxed{(F_C, M_C) = \big(10\sqrt{5},\, 5\sqrt{5}\big) \approx (22.361,\; 11.180).}
+\]
+
+\subsection*{(c) Trade pattern and volumes}
+\[
+\text{Exports of } M: \; X_M = M_P - M_C = 8\sqrt{5} - 5\sqrt{5} = 3\sqrt{5} \approx 6.708.
+\]
+\[
+\text{Imports of } F: \; M_F = F_C - F_P = 10\sqrt{5} - 4\sqrt{5} = 6\sqrt{5} \approx 13.416.
+\]
+\textit{Value balance check at world prices:}
+\[
+\text{Export revenue }= P_M X_M = 2 \cdot 3\sqrt{5} = 6\sqrt{5}, \qquad
+\text{Import expenditure }= P_F M_F = 1 \cdot 6\sqrt{5} = 6\sqrt{5}.
+\]
+Balanced trade holds (up to rounding).
+
+\[
+\boxed{\text{Country exports manufactures and imports food.}}
+\]
+
+\subsection*{(d) Effect of an increase in $P_M/P_F$ on welfare}
+A rise in $P_M/P_F$ (steeper world price line) has two effects in the Standard Trade Model:
+\begin{itemize}
+\item \textbf{Production effect:} Firms re-optimize toward the now more valuable good ($M$), moving to a tangency where the PPF slope equals $-P_F/P_M$ (more negative). Output bundle becomes more $M$-intensive.
+\item \textbf{Welfare effect:} The trade (budget) line through the new production point pivots outward (higher intercepts), allowing a higher indifference curve. Since the country is an exporter of $M$, this is an \emph{improvement in its terms of trade} and thus raises welfare.
+\end{itemize}
+\[
+\boxed{\text{Welfare rises when } P_M/P_F \text{ increases for an } M\text{-exporter (no distortions).}}
+\]
+
+\hrule
+\vspace{0.7em}
+
+\section*{Problem 2 — Export- and Import-Biased Growth}
+
+\textbf{Setup.} Country A exports steel ($S$) and imports textiles ($T$). Initially, $P_S/P_T = 1$. Consider biased growth holding the other country unchanged.
+
+\subsection*{(a) Export-biased growth in A}
+\textbf{Mechanics (diagrammatically):}
+\begin{enumerate}[label=\roman*)]
+\item \textit{PPF / RS shift:} Export-biased growth expands A's capacity in the export sector ($S$), rotating the PPF outward more in the $S$ direction. Relative supply $RS = Q_S/Q_T$ shifts \emph{right}.
+\item \textit{World price:} For a \emph{large} A, the outward shift in world $RS$ tends to \emph{lower} $P_S/P_T$ (the price of $S$ relative to $T$).
+\item \textit{Production \& consumption:} At given prices (small-country case), A produces more $S$ and trades for more $T$; consumption moves to a higher indifference curve. For a large-country, the deterioration in $P_S/P_T$ dampens the gain.
+\end{enumerate}
+
+\textbf{Terms of trade (TOT) and welfare:}
+\[
+\boxed{\text{Export-biased growth tends to \emph{worsen} Home's TOT }(P_S/P_T \downarrow).}
+\]
+\begin{itemize}
+\item \textbf{Small-country:} Prices fixed $\Rightarrow$ unambiguous welfare gain (bigger budget set).
+\item \textbf{Large-country:} Price falls for $S$ reduce the gain via a worse TOT. Welfare typically still rises unless the TOT deterioration is extreme (``immiserizing growth'').
+\end{itemize}
+
+\subsection*{(b) Import-biased growth in A}
+\textbf{Mechanics (diagrammatically):}
+\begin{enumerate}[label=\roman*)]
+\item \textit{PPF / RS shift:} Import-biased growth expands capacity or reduces demand for the import good $T$, effectively raising the world relative supply of $T$ and/or lowering A's import demand.
+\item \textit{World price:} For a \emph{large} A, this tends to \emph{raise} $P_S/P_T$ (since $T$ becomes relatively more abundant/cheaper internationally).
+\item \textit{Production \& consumption:} At given prices (small-country), A can reach a higher indifference curve due to a larger PPF. For a large-country, the \emph{improved} TOT magnifies the welfare gain.
+\end{enumerate}
+
+\textbf{Terms of trade (TOT) and welfare:}
+\[
+\boxed{\text{Import-biased growth tends to \emph{improve} Home's TOT }(P_S/P_T \uparrow).}
+\]
+\begin{itemize}
+\item \textbf{Small-country:} Prices fixed $\Rightarrow$ welfare gain from the outward shift alone.
+\item \textbf{Large-country:} Additional welfare gain from better TOT (steeper trade line).
+\end{itemize}
+
+\subsection*{(c) Summary}
+\[
+\boxed{\text{Export-biased growth: welfare ${\uparrow}$ but TOT ${\downarrow}$ (for a large exporter).}}
+\]
+\[
+\boxed{\text{Import-biased growth: welfare ${\uparrow}$ and TOT ${\uparrow}$ (for a large exporter).}}
+\]
+In both cases, small countries (price takers) experience unambiguous welfare gains because world prices are unaffected by their growth.
+
+\end{document}

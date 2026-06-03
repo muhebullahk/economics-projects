@@ -1,0 +1,2313 @@
+\documentclass[letterpaper]{article}
+\pdfpagewidth 8.5in
+\pdfpageheight 11.0in
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+\usepackage[hmargin=3cm,vmargin=3.5cm]{geometry}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{dcolumn}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage[justification=centering]{caption}
+\usepackage{enumerate}
+\usepackage{varioref}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{pbox}
+\newcounter{exer}
+\numberwithin{exer}{section}
+\usepackage{color}
+\usepackage{dirtytalk}
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+\usepackage[round]{natbib}
+\bibliographystyle{plainnat}
+
+\pagestyle{fancyplain}
+\usepackage{lastpage}
+\definecolor{hellgrau2}{gray}{.6}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{1pt \color{hellgrau2}}
+\newcommand{\co}{CO\ensuremath{_2} }
+\fancyfoot{}
+\fancyhf{}
+\rfoot{\textbf{Page \thepage\ of \pageref{LastPage}}}
+ \lfoot{\textbf{Econ 102}}
+ \cfoot{\textbf{Module 8: Economic Growth}}
+
+\usepackage{mdframed}
+\usepackage{ntheorem}
+\theoremstyle{nonumberplain}
+\theorembodyfont{\upshape}
+\definecolor{bisque}{rgb}{1.0, 0.89, 0.77}
+\definecolor{etonblue}{rgb}{0.59, 0.78, 0.64}
+\definecolor{blizzardblue}{rgb}{0.67, 0.9, 0.93}
+\definecolor{cornsilk}{rgb}{1.0, 0.97, 0.86}
+\definecolor{banana}{rgb}{0.98, 0.91, 0.71}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=bisque,ntheorem]{background}{Background Information}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=etonblue,ntheorem]{important}{Important}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=cornsilk,ntheorem]{anime}{Suggested Animation}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=banana,ntheorem]{pause}{Pause \& Practice}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=bisque,ntheorem]{devel}{Note to the developers}
+\usepackage{soul}
+\newcommand{\mathcolorbox}[1]{\colorbox{blizzardblue}{$\displaystyle #1$}}
+
+\begin{document}
+\noindent
+ \textsc{\Large ECON 102: Economic Growth}\\[.1cm]
+ \begin{center}
+   \line(1,0){450}\\[0.2cm]
+   \end{center}
+<<echo=FALSE>>=
+library(knitr)
+opts_chunk$set(size='footnotesize', fig.height=4.5,               
+               fig.path='week8/week8-')
+source("R/code.R")
+@ 
+<<echo=FALSE, eval=FALSE>>=
+dat <- read.csv("data/5893fcbc-eaf0-43ff-a7e4-4d4d186482a1_Data.csv", stringsAsFactors=FALSE, na.strings="..")
+getW <- function(dat, type)
+    {
+        s <- grep(type, dat[,3])
+        dat <- dat[s,]        
+        V <- t(dat[,-(1:4)])
+        colnames(V) <- dat[,1]
+        rownames(V) <- NULL
+        V <- ts(V, start=1960)
+        V
+   }
+GDP <- getW(dat, "GDP per capita")
+EDUC <- getW(dat, "Educational attainment")
+LIFE <- getW(dat, "Life expectancy")
+LIT <- getW(dat, "Literacy")
+code <- cbind(unique(dat[,1]), unique(dat[,2]))
+save(GDP, EDUC, LIFE, LIT, code, file="data/WorldBank.rda")
+n <- code[match(colnames(GDP), code[,1]),2] 
+Year <- time(GDP)
+GDP <- cbind(Year, GDP)
+colnames(GDP) <- c("Year", n)
+write.csv(GDP, file="data/WB_GDP.csv", row.names=FALSE)
+EDUC <- cbind(Year, EDUC)
+colnames(EDUC) <- c("Year", n)
+write.csv(EDUC, file="data/WB_EDUC.csv", row.names=FALSE)
+LIFE <- cbind(Year, LIFE)
+colnames(LIFE) <- c("Year", n)
+write.csv(LIFE, file="data/WB_LIFE.csv", row.names=FALSE)
+LIT <- cbind(Year, LIT)
+colnames(LIT) <- c("Year", n)
+write.csv(LIT, file="data/WB_LIT.csv", row.names=FALSE)
+@ 
+
+\tableofcontents
+
+\section{Introduction}\label{sec:intro}
+
+In this module, you will learn facts about the growth and development
+of countries in the world. First, you will see why the real per capita
+GDP can be used as an indicator of a country standard of living, and
+why economic growth can be a way of improving the well-being of
+individuals. Then, you will analyze the evolution of economic growth
+across countries and how it correlates with countries'
+characteristics. In particular, you will see that some poor countries
+have remained poor for decades while others have grown
+richer. Explaining this fact and finding solutions is one of the most
+important challenge that economists are facing. As a starting point,
+this module offers some clues by looking at comovements between growth
+and some variables and by comparing the characteristics of successful
+versus less successful countries.
+
+This module is based on the chapter ``Economic Growth and Economic
+Development: The Questions'' from \cite{acemoglu09}, included in the
+course pack. Some concepts like density and convergence need to be
+introduced before reading the chapter. It is therefore recommended to
+wait until it is specified in the module to read specific sections of
+the chapter. All the data used in this module are available on the
+course website. Although it may be a good exercise to replicate the
+different graphs, it is not required. For this module, we want you to
+focus on learning the facts.
+
+\subsubsection*{Learning Outcomes}
+Students will be able to
+
+\begin{itemize}
+\item explain why real per capita GDP is used as an indicator of a
+  country standard of living.
+\item interpret a distribution measured by bar and smooth densities.
+\item describe the evolution of the standard of living in the world.
+\item explain the importance of economic growth in the evolution of
+  the standard of living.
+\item evaluate the level of convergence and conditional convergence
+  among countries.
+\item identify variables that correlates with economic growth.  
+\item identify the important issues that growth and development
+  economists need to address.
+\end{itemize}
+
+\subsubsection*{Key Terms}
+  
+\begin{itemize}
+\item \textbf{Bar density:} This is a way of representing the
+  distribution of variables. In a bar density, the area of each bar
+  represents the proportion of observations that lie in the interval
+  determined by its base. It is an alternative to histograms for which
+  the height of the bars represents the number of observations.
+\item \textbf{Smooth density:} This is a line chart representing the
+  distribution of a variable. It is approximately obtained by drawing
+  a smooth line over a bar density. This tool is particularly useful
+  to visualize multiple distributions on the same graph.
+\item \textbf{Economic growth:} This is the growth rate of the
+  standard of living measured by the real per capita GDP over a long
+  period of time. 
+\item \textbf{Weighted distribution:} When we represent income
+  distribution across countries using histograms, each country counts
+  as one observation. To get a better representation of the
+  distribution at the individual level, we need to take into account
+  that the size of the population is not the same in each country. A
+  weighted distribution will increase the importance of countries with
+  larger population.
+\item \textbf{Convergence:} This is a mechanism through which the
+  standard of living of countries measured by the real per capita GDP
+  converges to the same value over a long period of time. We observe
+  convergence when countries with lower standard of living grow
+  faster.
+\item \textbf{Conditional convergence:} This is a mechanism through
+  which the standard of living of similar countries measured by the
+  real per capita GDP converges to the same value. We observe
+  conditional convergence when countries with low standard of living
+  grow faster than similar countries with high standard of
+  living. Being similar could mean having an equally educated or
+  healthy population, having a similar political system, having an
+  equivalent respect of human rights, and so on.
+\item \textbf{Standard of living:} This is a subjective concept that
+  characterizes the well being of individuals. The determinants of the
+  standard of living may include, health, education, quality of air,
+  freedom, security, income, etc. The real per capita GDP is often
+  used as an indicator of the standard of living because it 
+  correlated with its determinants.
+\item \textbf{Correlation:} This term is a synonym for comovement or
+  observed relationship. A variable correlates with another if there
+  is a positive or negative comovement between the two variables. To
+  indicate the direction of the comovement, we say positive
+  correlation when the variables move in the same direction and
+  negative correlation if they move in opposite directions.
+\item \textbf{Welfare:} This is a subjective concept that
+  characterizes the well being of a country at the aggregate
+  level. Welfare depends on the standard of living or each individual
+  and on how it is distributed in the population. For example, if the
+  standard of living of some individuals increases and it decreases
+  for others, it is not clear what happens to the welfare of the
+  economy. 
+\item \textbf{Human development index (HDI):} This is an alternative
+  measure of the aggregate standard of living. The index is based on
+  education, life expectancy, the Gini coefficient and the real per
+  capita income.
+\item \textbf{Inequality adjusted HDI (IHDI):} This is an alternative
+  measure of the aggregate standard of living. The index is a modified
+  version of the human development index HDI. It is constructed by
+  taking into account inequality in education and health.
+\end{itemize}
+
+\section{Economic Growth}
+Economic growth and development is an area of economics that studies
+the long term behaviour of economic activity and its implications on
+the well being of the population. In particular, development
+economists are interested in understanding why some countries are poor
+compared with others and why some countries who were poor 50 years ago
+are now among the richest while others remained poor. The following
+short videos from the United Nation Development Program (UNDP) explain
+well the issues that development economists are trying to address:
+\begin{itemize}
+\item \href{https://youtu.be/hUsrRwe9r04}{Human Development Report 2019 - Animated Explainer} (2:29 min)
+\item \href{https://youtu.be/4KIoYPyCJMo}{Animated video- Human Development Report 2016} (4:05 min)
+\item \href{https://youtu.be/P0o_MSOIv1k}{A New Generation of Inequality} (1:41 min)
+  \end{itemize}
+This module is therefore related to the module on income
+inequality. But, instead of studying the income inequality across
+individuals in a given economy, we are interested in analyzing
+inequality across countries and its evolution over time. In the
+modules on unemployment and income inequality, we learned that
+whatever we are trying to analyze, we cannot rely on a single measure
+because the reality is more complex. In this module, we will be
+focusing on the long term behaviour of real per capita GDP, but we
+have to keep in mind that a understanding inequality and poverty
+requires an analysis at a more disaggregated level (at the individual
+of small group level). This is the message you should retain from the
+short videos. 
+
+\subsection{The Data Used in This Module}
+
+A collection of CVS files used in this module have been organized and
+put on the course website. The purpose is to make it easier for you to
+replicate the different results. We enumerate them in this section. As
+an exercise, you can try to download them by yourself.
+
+\subsubsection*{IHDI2018.csv}
+
+The data file contains development indicators for 182 countries
+\citep*{hdi2019}. The columns are:
+\begin{itemize}
+\item Country: the full country names,
+\item Code: the country code,    
+\item HDI: the human development index,
+\item IHDI: the inequality adjusted human development index,
+\item Share.bottom.40.: the income share of the bottom 40\% of the income distribution,
+\item Share.top.10.: the income share of the top 10\% of the income distribution,
+\item Share.top.1.: the income share of the top 1\%  of the income distribution,
+\item Gini: the Gini coefficient,
+\item GNI: the per capita gross national income in constant international dollars,
+\item Exp.Schooling: the expected number of years of schooling of a
+  child entering school (it is a measure of how easy it is for a child
+  to receive a good education on average),
+\item Mean.Schooling: the average number of years of education by individual ages 25 and over and
+\item Life.Exp: the life expectancy (the number of years individuals
+  are expected to live)
+  \end{itemize}
+The countries are ordered to match the order of countries in the Penn
+World Table described below. It was ordered to facilitate the creation
+of scatter plots.
+
+\subsubsection*{The Penn World Table Version 9.1}
+
+The data are from the Penn World Table (PWT) version 9.1
+\citep{pwt91}. The difference variables from the PWT are saved in the
+following files:
+\begin{itemize}
+\item PWT91emp.csv: Total number of individuals employed (in
+  millions).
+\item PWT91gov.csv: The share of government consumption in the real
+  GDP (real G divided by GDP).
+\item PWT91inv.csv: The share of investment in the real GDP (real I
+  divided by real GDP).
+\item PWT91open.csv: The degree of openness in percentage (real trade
+  = (X+M) divided by real GDP). An open economy is an economy that
+  trades with the rest of the world. This value measures the intensity
+  of trade with respect to the real GDP. Notice that it can be greater
+  than 100\%, especially for small economies. For example, if C=100,
+  I=200, G=300, X=400 and M=400, then the GDP is
+  100+200+300+400-400=600. The degree of openness is (400+400)/600 =
+  1.333=133.3\%.
+\item PWT91pop.csv: Total population (in millions).   
+\item PWT91rgdp.csv: Real GDP in millions of international dollars of
+  2011. Notice that you need to divide by the population to obtain the
+  real per capita GDP.       
+  \end{itemize}
+All files have 183 columns: the first contains the years and the
+others are the values for 182 countries. The column names are the
+country codes. To find the country name associated with each code,
+search the internet for ISO 3166-1 alpha-3, or download the csv file
+countryCodes.csv from the course website.
+
+\subsubsection*{Country Characteristics from the World Bank}
+
+The following csv files are series taken from the World Bank
+\citep*{growth-wb}:
+\begin{itemize}
+\item WB\_LIT.csv: The literacy rate in percentage. This information is
+  not reported for developed countries. For example, the whole series
+  is missing for Canada. 
+\item WB\_LIFE.csv: The life expectancy in years.
+\item WB\_EDUC.csv: The percentage of adults who reached a level of
+  education of at least upper secondary.
+  \end{itemize}
+All files have 183 columns: the first contains the years and the
+others are that values for 182 countries. The countries are ordered to
+match the order of countries in the Penn World Table described
+above. The column names are the country codes. To find the country
+name associated with each code, search the internet for ISO 3166-1
+alpha-3, or download the csv file countryCodes.csv from the course
+website.
+
+\subsubsection*{Characteristics.csv}
+
+The file includes some characteristics for the 182 countries included
+in the PWT. Some variables come from the PWT and others from the Word
+Bank files described above. The columns are:
+\begin{itemize}
+\item Code: the country code,      
+\item Growth: The average annual growth rate of the real per capita
+  GDP between the first available observation and 2017 based on the
+  PWT. The growth rates were computed using the average of the log
+  differences (the method for computing the average growth rates does
+  not affect our graphical analysis).
+\item GovShare: The average share of government spending over the
+  period in percentage. The share of government spending equal to real
+  government spending (G) divided by real GDP (based on the PWT).
+\item InvShare: The average share of investment over the period in
+  percentage. The share of investment is equal to real investment (I)
+  divided by real GDP (based on the PWT).
+\item Life: The average life expectancy over the period in years
+  (based on the World Bank).
+\item Education: The average proportion of adults with a level of
+  education of at least upper secondary over the period in percentage
+  (based on the World Bank).
+\item Literacy: The literacy rate on average over the period (based on
+  the World Bank). For developed countries, the literacy rate is not
+  reported. In order to include them in the analysis, their literacy
+  rates are set to 99, which is a good enough approximation for our
+  purpose.
+\item InitYear: The year when the first observation on real per
+  capital GDP is available (based on the PWT).
+\item InitGDP: The real per capital GDP at the beginning of the
+  sample. The year associated with the observation is given in the
+  InitYear column.
+\end{itemize}
+The countries are ordered to match the order of countries in the Penn
+World Table described above.
+
+\subsubsection*{EconFreedom.csv}
+The data are from the Fraser Institute \citep{freedom}. It includes an
+index of economic freedom. The first column contains the years and the
+others are the values for 182 countries (only 162 countries have
+non-missing values). The countries are ordered to match the order of
+countries in the Penn World Table described above. The column names
+are the country codes in the same order as in the PWT and
+characteristics.csv files. To find the country name associated with
+each code, search the internet for ISO 3166-1 alpha-3, or download the
+CVS file countryCodes.csv from the course website.
+
+\subsection{Real Per Capita GDP Versus Welfare}
+
+This module focuses on the long term evolution of the standard of
+living across countries measured by the annual real per capita
+GDP. This is a measure of how much goods and services individuals can
+purchased on average over a year. We already know that the real per
+capita GDP is not allocated equally across individuals and therefore
+hides the existence of inequality. In this section, we want to address
+another possible weakness of this measure: its ability to measure the
+average standard of living or the average well being. In other words,
+can we measure the welfare of a group by how much goods and services
+they can purchased? This is a difficult question to answer because
+there is no objective definition of what we mean by welfare. The best
+we can do is to select variables that are likely to impact
+individuals' well being and see how they relate to real per capita
+GDP.
+
+\subsubsection*{Human Development Index}
+
+The United Nation Development Program
+(\href{https://www.undp.org/content/undp/en/home.html}{UNDP}) works
+with about 170 countries to help them reduce poverty and
+inequality. If you navigate through their sustainable development
+goals
+(\href{https://www.undp.org/content/undp/en/home/sustainable-development-goals.html}{SDGs}),
+you will see that increasing real per capita GDP (economic growth) is
+just one variable among many. This list is a good starting point in
+understanding what determines welfare.
+
+The UNDP publishes the human development index (HDI) in an attempt to
+better measure welfare. It includes the real per capita GDP, a measure
+of the average health quality (life expectancy) and a measure of the
+average level of education. Since 2010, they also publish an
+inequality adjusted index (IHDI) which includes inequality as a fourth
+component. The different variables used in this section are included
+in the The data file IHDI2018.csv.
+
+The following scatter plot shows that the two development indexes are
+closely related. We do see some variations (different IHDI for the
+HDI), but on average the two indexes are comparable. 
+
+\begin{center}
+<<hdi1, echo=FALSE, out.width='90%'>>=
+ihdi  <- read.csv("data/IHDI2018.csv", stringsAsFactors=FALSE)
+plot(ihdi[,3], ihdi[,4], xlab="HDI", ylab="IHDI",pch=21, bg="lightblue",
+     main="IHDI versus HDI in 2018")
+@ 
+\end{center}
+
+We want to see if the real per capita GDP is a good measure of
+welfare. The following is the scatter plot of IHDI as a function of
+GNI. On the left graph, GNI is expressed in thousands of constant
+international dollars and on the right graph GNI is expressed in
+logs. The red dashed lines have been added to show the overall
+comovement between the two variables. Clearly, both graphs show that
+there is a strong comovement between GNI and the human development
+index. However, there is some variations: we see IHDI gaps being above
+0.3 for some countries with the same real per capita GNI. But, the
+variation decreases as GNI increases: we see little variation for
+countries with log GNI above 10. 
+
+The right graph was added to show you that the observed relationship
+is linear on average when GNI is expressed in logs. It means that a
+1\% increase in GNI implies a constant increase in IHDI on average (on
+the graph below each 1\% increase of GNI is associated with IHDI being
+0.0015 higher on average). Since is easier to interpret changes in
+percentage rather than changes in constant international dollars, we
+will only use that scale for analyze relationships.
+
+\begin{center}
+\begin{minipage}{.45\textwidth}  
+<<hdi2, echo=FALSE, fig.height=5.5>>=
+plot(ihdi$GNI/1000, ihdi$IHDI, 
+     xlab="Per capita GNI (thousands of constant international dollars)", 
+     ylab="IHDI",pch=21, , bg="lightblue", 
+     main="Real per capita gross national income versus IHDI")
+b <- coef(lm(IHDI~I(GNI/1000)+I((GNI/1000)^2)+I((GNI/1000)^3), ihdi))
+curve(b[1]+b[2]*x+b[3]*x^2+b[4]*x^3, 0, 80, col=2, 
+      lwd=2, lty=2, add=TRUE)
+@ 
+\end{minipage}
+\begin{minipage}{.45\textwidth}  
+<<hdi3, echo=FALSE,  fig.height=5.5>>=
+plot(log(ihdi$GNI), ihdi$IHDI, 
+     xlab="Per capita GNI (Log-scale)", bg="lightblue",
+     ylab="IHDI",pch=21, 
+     main="Real per capita gross national income versus IHDI")
+fit <- lm(IHDI~log(GNI), ihdi)
+abline(fit, col=2, lwd=2, lty=2)
+@ 
+\end{minipage}
+\end{center}
+
+Next, we want to see if there is a positive comovement between per
+capita income and other determinants of welfare. The following graphs
+are the scatter plots of life expectancy (left graph) and education
+(right graph) with respect to the log of real per capita GNI. Again,
+there is a strong positive comovement between real per capita income
+and the two variables. However, we also see lots of variations. For
+example, the expectancy for Lesotho (LSO) and Honduras (HND) are
+respectively 54 and 75 years despite the fact that they have similar
+real per capita income. We see the same gap between relatively richer
+countries such as Lebanon (LBN) and the Kingdom of Eswatini (SWZ). The
+same type of variations is observed is we use the expected level of
+education as welfare component (compare South Sudan (SDN) with Togo
+(TGO) or the Equatorial Guinea (GNQ) with Argentina (ARG)).
+
+\begin{center}
+\begin{minipage}{.45\textwidth}  
+<<hdi4, echo=FALSE, fig.height=5.5, fid.width=9>>=
+plot(log(ihdi$GNI), ihdi$Life.Exp, 
+     xlab="Real per capita GNI (Log-scale)", 
+     ylab="Life expectancy (years)",pch=21, , bg="lightblue",
+     main="Real per capita income versus life expectancy")
+fit <- lm(Life.Exp~log(GNI), ihdi, na.action="na.exclude")
+abline(fit, col=2, lwd=2, lty=2)
+code <- ihdi$Code
+s <- (ihdi$Life.Exp>fitted(fit)+6) & (log(ihdi$GNI)>8)  & code != "DMA"
+s2 <- ihdi$Life.Exp<60  & (log(ihdi$GNI)>8)
+s3 <- code %in% c("CAN","USA")
+text(log(ihdi$GNI)[s], ihdi$Life.Exp[s], code[s], pos=3, font=2, cex=.8)
+text(log(ihdi$GNI)[s2], ihdi$Life.Exp[s2], code[s2], pos=3, font=2, cex=.8)
+text(log(ihdi$GNI)[s3], ihdi$Life.Exp[s3], code[s3], pos=3, font=2, cex=.8)
+@ 
+\end{minipage}
+\begin{minipage}{.45\textwidth}  
+<<hdi5, echo=FALSE, fig.height=5.5, fid.width=9>>=
+plot(log(ihdi$GNI), ihdi$Exp.Schooling, 
+     xlab="Real per capita GNI (Log-scale)", 
+     ylab="Expected Education (years)",pch=21, , bg="lightblue",ylim=c(4,23),
+     main="Real per capita GNI versus expected years of schooling")
+fit <- lm(Exp.Schooling~log(GNI), ihdi, na.action="na.exclude")
+abline(fit, col=2, lwd=2, lty=2)
+s <- ihdi$Exp.Schooling>(fitted(fit)+3)
+s2 <- ihdi$Exp.Schooling<(fitted(fit)-3.5) 
+s3 <- code %in% c("CAN","USA")
+text(log(ihdi$GNI)[s], ihdi$Exp.Schooling[s], code[s], pos=3, font=2, cex=.8)
+text(log(ihdi$GNI)[s2][-5], ihdi$Exp.Schooling[s2][-5], 
+     code[s2][-5], pos=3, font=2, cex=.8)
+text(log(ihdi$GNI)[s3], ihdi$Exp.Schooling[s3], code[s3], pos=3, font=2, cex=.8)
+@ 
+\end{minipage}
+\end{center}
+
+\subsubsection*{Concluding Remark}
+
+For the rest of the module, we will use real per capita GDP as an
+indicator of welfare. We are not by any mean pretending that real per
+capita GDP is a good measure of welfare. All we say is that it is a
+relatively good indicator because it is positively related to most
+components that determine welfare (education, health, reduced
+inequality, clean water and air, gender equality, peace and justice,
+etc.). We just have to keep in mind that higher real per capita GDP
+does not necessary imply welfare improvement: we just saw examples of
+richer countries with poor human conditions. What we do observe is
+that welfare tends to improve eventually as real per capita income
+increases.
+
+\subsection{Inequality Across Countries}
+
+The data used in this section are from the Penn World Table (PWT)
+version 9.1 \citep{pwt91}. The table is a collection of annual time
+series from 1950 to 2017 for 182 countries. Estimating macroeconomic
+indicators that can be compared across countries is a difficult tasks
+which explains why there are so many versions. Values in version 9.1
+may also differ from order data sources such as the World Bank or the
+OECD web site. It is an issue for empirical macroeconomists trying to
+perform sophisticated statistical studies, but it has little impact on
+our graphical analysis. The PWT is useful because it contains longer
+time series than the World Bank or the OECD. However, the series are
+not complete for all countries. For example, the real GDP is available
+for only 30\% of the 182 countries in 1950, 61\% in 1960 and 86\% in
+1970. 
+
+\subsubsection*{Income Inequality}
+<<echo=FALSE>>=
+load("data/PWT91.rda")
+PWT <- rgdp/pop
+colnames(PWT) <- colnames(pop)
+w <- which(tail(PWT,1)>90000)
+y <- round(tail(PWT,1)[w]/1000,1)
+yc <- code[w,2]
+xx <- hist(c(tail(PWT,1)/1000), breaks=20, plot=FALSE)
+@ 
+
+As we saw in previous module, total income is not allocated equally
+across countries. We start this section by reassessing this fact using
+world data. The following is the histogram of real per capita GDP in
+2017 for 182 countries (you can construct the series using the files
+PWT91pop.csv and PWT91rgdp.csv). We can see a large proportion of the
+countries at the bottom of the income distribution. In fact, more than
+half of the countries (\Sexpr{sum(xx$counts[1:3])} out of
+\Sexpr{sum(xx$counts)}) are represented by the first three bars,
+implying a per capita real GDP less than 15 thousand (the base of each
+rectangle is 5).  The three richest countries at the right of the
+histogram are \Sexpr{yc[1]} (\Sexpr{y[1]} thousand), Macao
+(\Sexpr{y[2]} thousand) and \Sexpr{yc[3]} (\Sexpr{y[3]} thousand).
+
+\begin{center}
+<<dist1, echo=FALSE, fig.height=6.5, fig.width=11, out.width='70%'>>=
+hist(c(tail(PWT,1)/1000), breaks=25, 
+     xlab="Real per capita GDP (thousands of international dollars of 2011)",
+     cex=.8, 
+     main="Distribution of real per capita GDP across country in 2017", 
+     col="gray", labels=TRUE)
+@ 
+\end{center}
+
+\subsubsection*{Distribution Using Densities}
+
+In the module readings, you will see that the income distribution is
+illustrated using line charts instead of bar charts, and the author
+calls them density instead of histogram. A density is simply another
+way to measure the frequency of observations between each
+interval. Instead of counting the number of observations, we compute
+proportions. Therefore, it is simply a different unit of measurement.
+For example, the following is the histogram using the density as
+measurement unit. We can see that the two histograms are identical
+except for the number on top of each bar. When a histogram is based
+on the density measure, the area of the rectangles are the proportions
+of observations that are between the associated intervals. For
+example, the number on top of the first rectangle is
+\Sexpr{round(xx$density[1],3)} and the base of the rectangle is
+\Sexpr{xx$breaks[2]-xx$breaks[1]} (not shown on the graph). The area
+is therefore \Sexpr{round(xx$density[1],3)} $\times$
+\Sexpr{xx$breaks[2]-xx$breaks[1]} =
+\Sexpr{round(xx$density[1],3)*(xx$breaks[2]-xx$breaks[1])}. Therefore,
+\Sexpr{round(xx$density[1],3)*(xx$breaks[2]-xx$breaks[1])*100}\% of
+the countries have a real per capita GDP between 0 and 5 thousand of
+international dollars. Since the number of observations is
+\Sexpr{xx$count[1]} on the above graph, we get the same proportion:
+\Sexpr{xx$count[1]}/\Sexpr{sum(xx$count)} =
+\Sexpr{round(xx$count[1]/sum(xx$count),3)} (the difference is caused
+by rounding error).
+
+\begin{center}
+<<dist2, echo=FALSE, fig.height=6.5, fig.width=11, out.width='70%', warning=FALSE>>=
+library(logKDE)  
+xx2 <- hist(c(tail(PWT,1)/1000), breaks=20, freq=FALSE,
+            xlab="Real per capita GDP (thousands of international dollars of 2011)", 
+            cex=.8, 
+            main="Distribution of real per capita GDP across country in 2017", 
+            col="gray", labels=TRUE)
+@ 
+\end{center}
+
+\subsubsection*{Distribution Using Smooth Density}
+
+When we want to compare income distributions over time, it is better
+to use smooth density because line charts are easier to interpret than
+bar charts when multiple series are represented. A smooth density is
+simply a smooth line that covers the bars of the histogram (it is more
+complicated than that, but it is good enough for this course). On the
+following histogram, the smooth density is represented by the red
+dashed line. You can see that the number of rectangles is much higher
+than in the previous graphs, because a smooth density is obtained by
+increasing the number of intervals. For this course, you don't need to
+know more about densities and you don't need to know how to create
+them. What you need to know is how to interpret them, which is
+identical to interpreting histograms.
+
+\begin{center}
+<<dist3, echo=FALSE, fig.height=6.5, fig.width=11, out.width='70%', warning=FALSE>>=
+xx <- hist(c(tail(PWT,1)/1000), breaks=60, freq=FALSE,
+     xlab="Real per capita GDP (thousands of international dollars of 2011)", cex=.8, 
+     main="Distribution of real per capita GDP across country in 2017", 
+     col="gray", ylim=c(0,.08))
+lines(logdensity(na.omit(c(tail(PWT,1)/1000))), col=2, lty=2, lwd=2)
+@ 
+\end{center}
+
+\subsubsection*{The Evolution of the Income Distribution Across Countries}
+
+The following reproduces Figure 1.1 from the module readings with the
+most recent year added. The distributions for 1960, 1980, 2000 and
+2017 are represented respectively by the solid black, the red dashed,
+the green dotted and the dot-dashed blue lines. Since the areas under
+the curves are proportions, we see that the proportion of poor
+countries has decreased during the periods 1960-1980, 1980-2000 and
+2000-2017. Also, the growing density in the middle shows that the
+proportion of rich (around 40) and medium income (around 20) countries
+have increased over the period. Therefore, real per capita GDP has
+grown at different rates for different countries and some countries
+that were poor in the '60s are still poor today. As a result, we
+observe more inequality today than in the '60s. One of the purpose of
+economic growth is to explain this change in the income distribution.
+
+\begin{devel}
+Would be nice to have an animation in which we see the distributions
+slowly moving from 1950 to 2007. 
+  \end{devel}
+
+\begin{center}
+<<dist4, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+gdp <- sapply(c(1960, 1980, 2000, 2017), function(y) c(window(PWT/1000,y,y)))
+dist <- apply(gdp, 2, function(x) density(x[!is.na(x)], adjust=.8))
+plot(dist[[1]],
+     lwd=2, main="Real per capita GDP distribution across countries",
+     ylab="Density", col=1,lty=1,xlim=c(0,110),
+     xlab="Real per capita GDP (thousands of dollars of 2011)")
+lines(dist[[2]], lwd=2, col=2, lty=2)
+lines(dist[[3]], lwd=2, col=3, lty=3)
+lines(dist[[4]], lwd=2, col=4, lty=4)
+legend("topright", legend=c(1960, 1980, 2000, 2017), 
+       col=1:4, lty=1:4, lwd=2, bty='n')
+text(100,.04,"Higher prop. of very rich", cex=.8)
+arrows(100,.003, 100,.035)
+text(55,.03,"Higher prop. of rich", cex=.8)
+arrows(45,.005, 50,.025)
+text(30,.04,"Higher prop. of medium income", cex=.8)
+arrows(25,.013, 30,.037)
+text(18,.09,"Smaller prop. of poor", cex=.8)
+arrows(4.5,.055, 10,.085)
+@ 
+\end{center}
+
+\subsubsection*{Alternative Representation: Log Per Capita GDP Distribution}
+
+In the module readings, the author looks at the distribution of real
+per capita GDP expressed in logs. The following is what the author
+presents with the year 2017 added. You may see small differences
+because our graph is based an a different PWT version and also because
+the methods for generating the smooth densities may differ from mine.
+The distribution for 1960, 1980, 2000 and 2017 are represented
+respectively by the solid black, the red dashed, the green dotted and
+the dot-dashed blue lines.
+\begin{center}
+<<dist5, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+ldist <- apply(gdp, 2, function(x) density(log(1000*x[!is.na(x)]), adjust=.8))
+plot(ldist[[1]],ylim=c(0,max(c(ldist[[1]]$y, ldist[[2]]$y, ldist[[3]]$y))),
+     xlim=c(5,13),
+     lwd=2, main="Real per capita GDP distribution across countries (log-scale)",
+     ylab="Density", col=1,lty=1,
+     xlab="Real per capita GDP (log-scale)")
+lines(ldist[[2]], lwd=2, col=2, lty=2)
+lines(ldist[[3]], lwd=2, col=3, lty=3)
+lines(ldist[[4]], lwd=2, col=4, lty=4)
+legend("topright", legend=c(1960, 1980, 2000, 2017), 
+       col=1:4, lty=1:4, lwd=2, bty='n')
+q1 <- quantile(log(gdp[,1]*1000), c(.01,.99), na.rm=TRUE)
+y1 <- ldist[[1]]$y[c(which.min(abs(ldist[[1]]$x-q1[1])))]
+q2 <- quantile(log(gdp[,4]*1000), c(.01,.99), na.rm=TRUE)
+y2 <- ldist[[4]]$y[c(which.min(abs(ldist[[4]]$x-q2[1])))]
+arrows(q1[1],y1,q1[2]-.05,y1, code=3)              
+gap1 <- round(q1[2]-q1[1],1)
+gap2 <- round(q2[2]-q2[1],1)
+text(sum(q1)/2, y1, gap1, pos=3)
+arrows(q2[1],y2,q2[2],y2, code=3, col=4)              
+text(sum(q2)/2, y2, gap2, pos=3)
+@ 
+\end{center}
+We can see that the distribution is not as skewed as the previous
+one. However, we still observe that the gap between poor and rich
+countries have increased between 1960 and 2017. The arrows show the
+gaps between the first and last percentiles of the distribution in
+1960 and 2017. The numbers look similar but they hide huge gaps. In
+1960, the gap in log is \Sexpr{gap1}, which means:
+\begin{eqnarray*}
+\log\left(\frac{X_{99}}{X_1}\right) &=& \Sexpr{gap1}\\ 
+\frac{X_{99}}{X_1} &=& e^{\Sexpr{gap1}} = \Sexpr{round(exp(gap1),1)}\,,
+\end{eqnarray*}
+where $X_1$ and $X_{99}$ are the first and 99$^\mathrm{th}$
+percentiles. It means that the per capita income of the
+99$^\mathrm{th}$ percentile is \Sexpr{round(exp(gap1),1)} times higher
+then the per capita income of the first percentile. In 2017, the per
+capita income of the 99$^\mathrm{th}$ percentile is
+\Sexpr{round(exp(gap2),1)} higher:
+\begin{eqnarray*}
+\log\left(\frac{X_{99}}{X_1}\right) &=&  \Sexpr{gap2}\\ 
+\frac{X_{99}}{X_1} &=& e^{\Sexpr{gap2}} =  \Sexpr{round(exp(gap2),1)}\,.
+\end{eqnarray*}
+Therefore, the shape of the distributions in dollars versus in logs
+are different because large differences in dollars translates into
+small differences in logs. This is why the the distribution looks more
+equally spread on both sides of the center when the variable is
+expressed in logs.
+
+<<echo=FALSE>>=
+avg <- median(gdp[,4], na.rm=TRUE)
+q1 <- quantile(gdp[,4],.01, na.rm=TRUE)
+q2 <- quantile(gdp[,4],.99, na.rm=TRUE)
+prop1 <- round((avg-q1)/q1*100,1)
+prop2 <- round((q2-avg)/avg*100,1)
+@ 
+
+To understand why the distribution of the log is less skewed, the
+following shows the distribution of real per capita GDP expressed in
+thousands of dollars for 2011. On the graph, the red dash line
+represents the median, and the dotted blue and dot-dashed green lines
+are respectively the per capital incomes of the first and
+99$^\mathrm{th}$ percentiles. From the numbers on top of the arrows,
+we see that the average per capita income of the 99$^\mathrm{th}$
+percentile is \Sexpr{round(q2-avg,1)} thousand dollars higher than the
+median and it is \Sexpr{round(avg-q1,1)} thousand dollars lower for
+the first percentile. This is a common characteristic for all skewed
+distributions (longer right tail). In proportion, however, the gap is
+reversed (numbers under the arrows). The median is \Sexpr{prop1}\%
+higher than the first percentile and the 99$^\mathrm{th}$ percentile
+is \Sexpr{prop2}\% higher than the median.
+\begin{center}
+<<dist6, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+plot(dist[[4]],
+     lwd=2, main="Real per capita GDP distribution across countries in 2017",
+     ylab="Density", col=1,lty=1,xlim=c(-10,120),
+     xlab="Real per capita GDP (thousands of dollars of 2011)")
+abline(v=avg, col=2, lty=2, lwd=2)
+abline(v=q1, col=4, lty=3, lwd=2)
+abline(v=q2, col="darkgreen", lty=4, lwd=2)
+legend("topright", 
+       c(paste("Median(", round(avg,1),")", sep=""),
+         paste("First percentile(", round(q1,1),")", sep=""),
+         paste("99th percentile(", round(q2,1),")", sep="")),
+       col=c(2,4,"darkgreen"), lwd=2, lty=2:4, bty='n', cex=.7)
+text((q1+avg)/2, .005, round(avg-q1,1), pos=3)
+arrows(q1,.005,avg,.005,code=3, length=.1)         
+text((q2+avg)/2, .03, round(q2-avg,1), pos=3)
+arrows(avg,.03,q2,.03,code=3, length=.1)     
+text((q1+avg)/2, .005, 
+     paste(round((avg-q1)/q1*100,1),"%",sep=""), pos=1,cex=.8)
+text((q2+avg)/2, .03, 
+     paste(round((q2-avg)/avg*100,1),"%",sep=""),pos=1,cex=.8)
+@ 
+\end{center}
+The difference in proportion is what we measure when we use the log
+scale. The following graph is the distribution using the log scale. As
+for the previous graph, the red dash line represents the median, and
+the dotted blue and dot-dashed green lines are the per capital incomes
+of the first and 99$^\mathrm{th}$ percentiles.
+\begin{center}
+<<dist7, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+plot(ldist[[4]],
+     lwd=2, main="Real per capita GDP distribution across countries in 2017",
+     ylab="Density", col=1,lty=1,
+     xlab="Real per capita GDP (log-scale)")     
+g4 <- log(gdp[,4]*1000)
+abline(v=avg <- median(g4, na.rm=TRUE), col=2, lty=2, lwd=2)
+abline(v=q1 <- quantile(g4,.01, na.rm=TRUE), col=4, lty=3, lwd=2)
+abline(v=q2 <- quantile(g4,.99, na.rm=TRUE), col="darkgreen", lty=4, lwd=2)
+legend("topleft",  
+       legend = c(paste("Median(", round(avg,1),")", sep=""),
+                  paste("First percentile(", round(q1,3),")", sep=""),
+                  paste("99th percentile(", round(q2,3),")", sep="")),
+       col=c(2,4,"darkgreen"), lwd=2, lty=2:4, bty='n', cex=.7)
+d1 <- round(avg-q1,3)
+d2 <- round(q2-avg,3)
+text((q1+avg)/2, .005, d1, pos=3)
+arrows(q1,.005,avg,.005,code=3, length=.1)         
+text((q2+avg)/2, .03, d2, pos=3)
+arrows(avg,.03,q2,.03,code=3, length=.1)     
+@ 
+\end{center}
+Using the same log formula we obtain approximately the same percentage
+differences ($X_m$ is the median and the difference of percentage gaps
+are due to rounding errors and how the percentiles are computed in the
+two cases):
+\begin{eqnarray*}
+\log(X_m)-\log(X_1) \equiv \log\left(\frac{X_{m}}{X_1}\right) &=& \Sexpr{d1}\\ 
+\frac{X_{m}}{X_1}&=& e^{ \Sexpr{d1}} =  \Sexpr{round(exp(d1), 4)}\\
+\frac{X_{m}-X_1}{X_1}\times 100\%  = [\Sexpr{round(exp(d1),4)}-1]\times 100\%
+&=& \Sexpr{(round(exp(d1), 4)-1)*100}\%
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+\log(X_{99})-\log(X_m) \equiv \log\left(\frac{X_{99}}{X_m}\right) &=& \Sexpr{d2}\\ 
+\frac{X_{99}}{X_m} &=& e^{ \Sexpr{d2}} =  \Sexpr{round(exp(d2),4)}\\
+\frac{X_{99}-X_m}{X_m}\times 100\%  = [\Sexpr{round(exp(d2),4)}-1]\times 100\%
+&=& \Sexpr{100*(round(exp(d2),4)-1)}\%\,.
+\end{eqnarray*}
+Therefore, we need to dig a little deeper to understand distributions
+of logs. The most important result to remember is that despite the
+fact that the distribution is less skewed, we still observe an
+increase in the gap between rich and poor countries.
+
+\subsubsection*{Alternative Representation: Weighed Distribution}
+
+The author also presents the weighted distribution. The problem with
+the above method is that it does not take into account that some
+countries are much more populated than others. For example, the
+population of China in 2017 was 1.4 billion and the population of
+Montserrat was 5.2 thousand. Clearly, we cannot consider an increase
+of the real per capita GDP in China equivalent to an increase in
+Montserrat: the former implies that 1.4 billion individuals are richer
+on average while the latter implies only 5.2 thousand richer
+individuals on average. Therefore, if we want to visualize the income
+distribution in the world at the individual level, we need to increase
+the importance of populated countries relative less populated
+ones. Learning how to construct a weighted distribution is beyond the
+scope of this course but intuitively, it is like constructing a
+distribution from a series in which the real per capita GDP of China
+is repeated 1.4 billion times, the real per capita GDP of Montserrat is
+repeated 5.2 thousand times and so on.
+
+<<echo=FALSE, warning=FALSE, message=FALSE>>=
+library(Hmisc)
+pop2 <- sapply(c(1960, 1980, 2000, 2017), function(y) c(window(pop,y,y)))
+q1 <- round(diff(wtd.quantile(log(gdp[,1]*1000), c(.01,.99), weights=pop2[,1])),1)
+q2 <- round(diff(wtd.quantile(log(gdp[,4]*1000), c(.01,.99), weights=pop2[,4])),1)
+@ 
+
+The following graphs reproduces Figure 1.3 of the module readings with
+the year 2017 added. The distribution for 1960, 1980, 2000 and 2017
+are represented respectively by the solid black, the red dashed, the
+dotted green and the dot-dashed blue lines. We can see that the per
+capita income as increased for a large proportion of the world
+population between 1960 and 2017 (large shift of the hill to the
+right). This is partly due to the economic growth in China and India,
+two countries that represent about 30\% of the world population (real
+per capita GDP was multiplied by 10 in China between 1960 and 2017 and
+it was multiplied by 4 in India). However, the gap between the poor
+and rich has increased even at the individual level (a difference in
+logs of \Sexpr{q1} in 1960 and \Sexpr{q2} in 2017 between percentiles
+1 and 99, not shown on the graph).
+
+\begin{center}
+<<dist8, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+ldistw <- lapply(1:4, function(i) {
+    d <- cbind(gdp[,i]*1000, pop2[,i])
+    d <- na.omit(d)
+    w <- d[,2]/sum(d[,2])
+    density(log(d[,1]), weights=w)})
+plot(ldistw[[1]],ylim=c(0,max(c(ldistw[[1]]$y, ldistw[[2]]$y, ldistw[[3]]$y))),
+     lwd=2, 
+     main="Real per capita GDP distribution across countries\n(weighted by population)",
+     ylab="Density", col=1,lty=1,xlim=c(5,12),
+     xlab="Real per capita GDP (log-scale)")
+lines(ldistw[[2]], lwd=2, col=2, lty=2)
+lines(ldistw[[3]], lwd=2, col=3, lty=3)
+lines(ldistw[[4]], lwd=2, col=4, lty=4)
+legend("topright", legend=c(1960, 1980, 2000, 2017), 
+       col=1:4, lty=1:4, lwd=2, bty='n')
+@ 
+\end{center}
+\begin{important}
+It is now the time to read Sections 1.1 and 1.2 of \cite{acemoglu09}. 
+  \end{important}
+
+\subsection{The Importance of Growth}
+
+The module is called Economic growth (growth rate of the real per
+capita GDP) because growth is what allows poor countries to become
+richer. In fact, a small difference in the annual growth rate over a
+long period of time has a huge impact on the standard of living. To
+see that, suppose that the initial real per capita GDP is $X_0$ and
+the annual growth rate is $g$ for $T$ years. We saw in a previous
+module that it implies the following real per capita GDP after $T$
+years:
+\[
+X_T = (1+g)^T X_0\,.
+\]
+Therefore, the real per capita GDP is multiplied by $(1+g)^T$. For
+example, suppose two countries start with the same real per capita
+GDP, but the annual growth rate over a period of 50 years in the first
+country is 1\% and it is 2\% in the second. Then, the real per capita
+GDP is multiplied by
+\[
+(1+g)^T = (1.01)^{50} = \Sexpr{round(1.01^50,1)}
+\]
+in the first country and by 
+\[
+(1+g)^T = (1.02)^{50} = \Sexpr{round(1.02^50,1)}
+\]
+in the second. For example, if $X_0$ was 10 thousand dollars for both
+countries, the real per capita GDP after 50 years would become
+\Sexpr{10*round(1.01^50,1)} thousand dollars in the first country and
+\Sexpr{10*round(1.02^50,1)} thousand in the second. Therefore, the
+extra percentage point results in 
+\Sexpr{10*round(1.02^50,1)-10*round(1.01^50,1)} thousand dollars
+more real income by individual on average. 
+
+The following graph compares the trending behaviour of real per capita
+GDP for countries with the same initial value but with annual growth
+rates ranging from 0.5\% to 3\%, over a period of 70 years (1950 to
+2020). On the left graph the GDP is expressed in thousands of dollars
+and it is expressed in logs on the right graph. 
+\begin{center} 
+\begin{minipage}{.45\textwidth}  
+<<growth1, echo=FALSE, fig.height=6.5, fig.width=10, out.width='90%', warning=FALSE>>=
+g <- c(.005, .01, .015, .02, .025, .03)
+X0 <- 10
+t <- 0:70
+X <- sapply(g, function(gi) X0*(1+gi)^t)
+colnames(X) <- paste("g = ",g,sep="")
+X <- ts(X, start=c(1950,1), frequency=1)
+ylim=range(X)
+plot(X, main="The evolution of real per capita GDP for different economic growth rates",
+     ylab="Real per capita GDP (thousands of dollars)",
+     col=1:6, lty=1:6, lwd=2, plot.type="single")
+legend("topleft", colnames(X), col=1:6, lty=1:6, lwd=2, bty='n')
+@ 
+\end{minipage}
+\begin{minipage}{.45\textwidth}  
+<<growth2, echo=FALSE, fig.height=6.5, fig.width=10, out.width='90%', warning=FALSE>>=
+ylim=range(log(X))
+plot(log(X), 
+     main="The evolution of real per capita GDP for different economic growth rates",
+     ylab="Real per capita GDP (log-scale)",
+     col=1:6, lty=1:6, lwd=2, plot.type="single")
+legend("topleft", colnames(X), col=1:6, lty=1:6, lwd=2, bty='n')
+@ 
+\end{minipage}
+\end{center}
+We can see that gaps between slow and fast growing economies are
+increasing over the period. Therefore, inequality in economic growth
+rates leads to income inequality. Notice that the gap in dollars
+between consecutive trends in a given year increases as we move up on
+the left graph. In other words, the difference of GDP in dollars in
+2020 between the countries with $g=0.005$ and $g=0.01$ is smaller than
+the difference between the countries with $g=0.025$ and
+$g=0.03$. However, the right graph shows that the percentage
+differences are the same (same difference in logs implies same
+percentage difference).
+
+\subsection{Convergence and Conditional Convergence}
+
+\subsubsection*{The Concept of Convergence}
+
+Some models from the economic growth theory predicts that inequality
+across countries (or some countries) should eventually be reduced,
+because poor countries should grow faster than rich countries. This
+result is called convergence because it implies that the standard of
+living of poor and rich countries will eventually converge to the
+same. The following graph illustrates the concept of convergence. The
+growth rates are the same used in the previous graphs but the 1950
+per capita GDP of the faster growing countries are set to a lower
+value. Since poor countries grow faster (e.g. the dot-dashed pink
+line), they eventually reach the same standard of living as the
+countries that were initially rich (e.g. the solid black line).
+
+\begin{center} 
+<<growth3, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+g <- c(.005, .01, .015, .02, .025, .03)
+X0 <- 100*(1+g[1])^70/((1+g)^70)
+t <- 0:70
+X <- sapply(1:6, function(i) X0[i]*(1+g[i])^t)
+colnames(X) <- paste("g = ",g,sep="")
+X <- ts(X, start=c(1950,1), frequency=1)
+ylim=range(X)
+plot(X, main="Convergence of the Standard of Living",
+     ylab="Real per capita GDP (thousands of dollars)",
+     col=1:6, lty=1:6, lwd=2, plot.type="single")
+leg <- paste(colnames(X), ", X0 = ", round(X0,0), sep="")
+legend("topleft", leg, col=1:6, lty=1:6, lwd=2, bty='n', cex=.8)
+@ 
+\end{center}
+
+The above graph does not show exactly what convergence means in
+theory. If poor countries grow faster than rich countries, then their
+growth rates should decrease as they get richer, which is not what we
+observe on the graph. In fact, if we continued the lines after 2020,
+we would observe a divergence with the poorest country becoming the
+richest and the richest becoming the poorest. The purpose of the graph
+is just to explain what it means for countries to converge to the same
+real per capita GDP. We also want to point out that convergence exists
+only if poor countries grow faster than rich countries. The following
+graph shows what convergence means: the growth rate is slowing down as
+countries get richer. If we were to continue the lines passed 2020, all
+lines would get closer and closer from each other. It implies that at
+any point in time poorer countries grow faster. That's the only fact
+about convergence that we need to understand before going to the next
+section.
+\begin{center} 
+<<growth4, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+k <- matrix(c(100, 71, 50, 35, 25, 18),nrow=1)
+for (i in 1:70)
+    {
+        tmp <- k[i,]+0.3*3.5*k[i,]^(.5)-0.1*k[i,]
+        k <- rbind(k, tmp)
+        }
+colnames(k) <- paste("Country ",1:6,sep="")
+k <- ts(k, start=c(1950,1), frequency=1)
+ylim=range(k)
+plot(k, main="Convergence of the Standard of Living",
+     ylab="Real per capita GDP (thousands of dollars)",
+     col=1:6, lty=1:6, lwd=2, plot.type="single")
+legend("bottomright", colnames(k), col=1:6, lty=1:6, lwd=2, bty='n', cex=.8)
+@ 
+\end{center}
+
+\subsubsection*{Convergence in the Data}
+<<echo=FALSE>>=
+sel <- c("Canada", "Japan", "China",
+         "India", "Nigeria", "Mexico")
+selc <- code[match(sel, code[,2]),1]
+gdp <- PWT[,selc]
+g <- apply(gdp, 2, function(x) diff(log(x)))
+g <- colMeans(g, na.rm=TRUE)*100
+trd <- lapply(1:ncol(gdp), function(i) {
+    fit <-  lm(log(gdp[,i])~time(gdp[,i])+I(time(gdp[,i])^2))
+    fit$coef[1]+fit$coef[2]*time(gdp[,i])+fit$coef[3]*time(gdp[,i])^2})
+trd <- do.call(cbind, trd)
+colnames(trd) <- sel
+names(g) <- sel
+@ 
+
+The following graph shows the trend component of the real per capita
+GDP expressed in logs for some countries between 1950 and 2017 using a
+quadratic trend. In this group of countries, Canada (the solid black
+line) was the richest country in 1950 and China (the dotted green
+line) was the poorest. The legend includes the average annual growth
+rates over the period. We can see that China, Japan (dashed red line)
+and India (dot-dashed blue line) are converging to Canada, Nigeria
+(log dashed cyan line) is diverging (the gap is increasing) and Mexico
+(two-dashed magenta line) is neither converging nor diverging
+(constant gap). Therefore, convergence does not seem to be a rule for
+all countries.
+
+\begin{center} 
+<<growth6, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+plot(trd, main="Evolution of real per capita GDP for some countries (quadratic trend)",
+     ylab="Real per capita GDP (log-scale)",
+     col=1:6, lty=1:6, lwd=2, plot.type="single")
+leg <- sel
+leg <- paste(leg, ", g = ", round(g,1), "%", sep="")
+legend("bottomright", leg, bty='n', col=1:6, lty=1:6, lwd=2, cex=.8)
+@ 
+\end{center}
+
+\begin{pause}
+Try to pick other countries and see which ones are converging to
+Canada and which ones are not. You can use the CSV file PWT91rgdp.csv
+and PWT91pop.csv from the course website (don't forget to divide the
+real GDP by the population). Try to plot only the trend component of
+the real per capita GDP expressed in logs using a quadratic
+trend. Alternatively, you can simply plot the original series, but the
+fluctuations make it harder to observe the convergence when the
+convergence is slow (like Mexico in the above graph). You can also try
+to compare Canada with countries that were richer in 1950 as in the
+following graph. We see for example that Canada is not converging to
+Luxembourg nor to the United States.
+\begin{center} 
+<<pause1, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+sel <- c("Canada", "Switzerland", "United States", "Luxembourg")
+selc <- code[match(sel, code[,2]),1]
+gdp <- PWT[,selc]
+g <- apply(gdp, 2, function(x) diff(log(x)))
+g <- colMeans(g, na.rm=TRUE)*100
+trd <- lapply(1:ncol(gdp), function(i) {
+    fit <-  lm(log(gdp[,i])~time(gdp[,i])+I(time(gdp[,i])^2))
+    fit$coef[1]+fit$coef[2]*time(gdp[,i])+fit$coef[3]*time(gdp[,i])^2})
+trd <- do.call(cbind, trd)
+colnames(trd) <- sel
+names(g) <- sel
+plot(trd, main="Evolution of real per capita GDP for some countries (tend component)",
+     ylab="Real per capita GDP (log-scale)",
+     col=1:4, lty=1:4, lwd=2, plot.type="single")
+leg <- sel
+leg <- paste(leg, ", g = ", round(g,1), "%", sep="")
+legend("bottomright", leg, bty='n', col=1:4, lty=1:4, lwd=2, cex=.8)
+@ 
+\end{center}
+  \end{pause}
+
+\begin{important}
+It is now the time to read Sections 1.3 and 1.4 of \cite{acemoglu09}.
+  \end{important}
+
+\subsubsection*{Observing Convergence using Scatter Plots}
+
+We can easily verify if there is a global tendency for the poor
+countries to grow faster. All we need is a scatter plot of the average
+annual growth rate over the whole period with respect to the initial
+real per capita GDP. The average growth rate can be computed by
+averaging the log differences $(\log(X_t)-\log(X_{t-1}))$ for each
+country. A negative comovement between these two variables means that
+countries that were initially poor grow faster than countries that
+were initially rich, which is what convergence implies. For example,
+the following is the scatter plot using the hypothetical series from
+the previous section. The graph shows a clear negative comovement
+between the two variables: the richest country in 1960 (Country 1) is
+the one with the lowest average growth rate between 1960 and 2020 and
+the poorest country in 1960 (Country 6) is the one with the highest
+average growth rate.
+\begin{center} 
+<<growth7, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+x <- head(k,1)
+g <- apply(k, 2, function(x) diff(log(x)))
+g <- colMeans(g)*100
+plot(x, g, main="Detecting convergence (hypothetical example)",
+     xlab="Real per capita GDP in 1960 (thousands of dollars)",
+     ylab="Average annual growth rate  between 1960-2020 (percent)",
+     pch=21, bg=1, ylim=c(0,3))
+text(x, g, names(g), pos=3, cex=.8)
+@ 
+\end{center}
+
+<<echo=FALSE>>=
+OECD07 <- c("AUS","AUT","BEL","CAN","CZE","DNK","FIN","FRA","DEU","GRC","HUN","ISL",
+            "ITA","JPN","KOR","LUX","MEX","NLD","NZL","NOR","POL","PRT","EXP","SWE",
+            "CHE","TUR","GBR","USA")
+charact <- read.csv("data/Characteristics.csv", stringsAsFactors=FALSE)
+wout <- charact$InitYear <= 1960
+g <- charact$Growth[wout]
+gdp60 <- charact$InitGDP[wout]
+names(g) <- names(gdp60) <- charact$Code[wout]
+oecd <- names(g) %in% OECD07
+y1 <- charact$InitYear[charact$Code == "COD"]
+y2 <- charact$InitYear[charact$Code == "KOR"]
+ny1 <- end(PWT)[1]-y1
+ny2 <- end(PWT)[1]-y2
+@ 
+
+The following is the scatter plot using the \Sexpr{length(g)}
+countries for which the initial real per capita GDP was available in
+1960 and before, using the file Characteristics.csv. On the x-axis, we
+have the initial real per capita GDP (the initial year varies from
+country to country) and on the y-axis it is the average growth rate
+between the year when the first real per capita GDP is available and
+\Sexpr{end(PWT)[1]}. The red dashed line is added to show you the
+average comovement between the two variables. Clearly, we do not
+observe overall convergence: among the initially poorest countries,
+the growth rates range between \Sexpr{round(min(g),1)}\% and
+\Sexpr{round(max(g),1)}\%. For example, the average economic growth
+rate for the Democratic Republic of the Congo (COD) from \Sexpr{y1} to
+\Sexpr{end(PWT)[1]} is \Sexpr{round(g["COD"],2)}\%. It means that its
+real per capita GDP was divided by more than 2 during that period
+($X_T/X_0=(1\Sexpr{round(g["COD"],2)/100})^{\Sexpr{ny1}}=
+\Sexpr{round((1+round(g["COD"],2)/100)^ny1,3)}$). On the other
+extreme, the average growth rate for the Republic of Korea (KOR), an
+equally poor country in \Sexpr{y2}, is \Sexpr{round(g["KOR"],2)}\%:
+its per capita GDP was multiplied by
+\Sexpr{round((1+round(g["KOR"],2)/100)^ny2,3)}
+($X_T/X_0=(1+\Sexpr{round(g["KOR"],2)/100})^{\Sexpr{ny2}}=
+\Sexpr{round((1+round(g["KOR"],2)/100)^ny2,3)}$) between \Sexpr{y2}
+and \Sexpr{end(PWT)[1]}. Therefore, some countries that were initially
+poor are converging but others are diverging.
+
+\begin{center} 
+<<growth8, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+plot(log(gdp60), g,
+     main="Average economic growth rate versus initial real per capita GDP ",
+     xlab="Initial real per capita GDP(log-scale)",
+     ylab="Average annual growth rate (percent)",
+     pch=21, bg="blue", col="blue")
+text(log(gdp60), g, names(g), pos=3, cex=.7)
+abline(lm(g~log(gdp60)), lty=2, lwd=2, col=2)
+@ 
+\end{center}
+
+\subsubsection*{Conditional Convergence}
+
+The following graph is the same scatter plot restricted to the
+countries that were members of the OECD in 2007 (the choice of 2007 is
+arbitrary). We detect a negative comovement between the variables
+(look at the red dashed line), which implies that OECD members are
+converging to each other on average. We do, however, observe some
+variations: Republic of Korea (KOR) and Japan (JPN) are converging
+much faster than Mexico (MEX) and Turkey (TUR).
+\begin{center} 
+<<growth9, echo=FALSE, fig.height=6.5, fig.width=10, out.width='70%', warning=FALSE>>=
+plot(log(gdp60[oecd]), g[oecd],
+     main="Average economic growth rate versus initial real per capita GDP (2007 OECD members)",
+     xlab="Initial real per capita GDP (log-scale)",
+     ylab="Average annual growth rate (percent)",
+     pch=21, bg="blue", col="blue", ylim=c(1.5,6))
+text(log(gdp60[oecd]), g[oecd], names(g[oecd]), pos=3, cex=.7)
+abline(lm(g~log(gdp60), subset=oecd), lty=2, lwd=2, col=2)
+@ 
+\end{center}
+
+The previous graph shows that convergence may happen if we select the
+countries wisely. The reason for selecting the countries based on
+their OECD membership, is that OECD countries are similar in many
+aspects. When we observe convergence among countries that share
+similar characteristics, we call it conditional convergence because
+the convergence is conditional on the countries having some
+similarities. 
+
+The economic growth theory provides a possible list of characteristics
+that need to be similar for countries to converge to each other. In
+this module, we only explore a few: education, literacy and
+health. The following scatter plots include countries with the
+following characteristics: life expectancy greater than 60 years (top
+left), the education level of more than 30\% of adults is at least
+upper secondary (top right), the proportion of literacy is greater
+than 80\% (bottom left) and all previous three characteristics are
+satisfied (bottom right). The data on education, literacy and life
+expectancy are from Characteristics.csv file. In order to see that
+OECD members share those characteristics, which may explain why
+convergence exists among them, they are represented on the graphs by
+red squares. The main result is that convergence exists on average
+among countries with favorable characteristics (good education, good
+health etc.): the red dashed lines shows that the comovements are
+negative on average. However, the large variations suggest that being
+healthy and educated is not sufficient for poor countries to grow
+fast.
+\begin{center}
+\begin{minipage}{.45\textwidth}
+<<growth10, echo=FALSE, fig.height=6.5, fig.width=10>>=
+w <- charact$Life[wout]>60
+col <- 1*(!oecd[w]) + 2*oecd[w]
+pch <- 21*(!oecd[w]) + 22*oecd[w]
+plot(log(gdp60[w]), g[w],
+     main="Average economic growth rate versus initial real per capita GDP\n (Countries with life expectancy greater than 60 years)",
+     xlab="Initial real per capita GDP (log-scale)",
+     ylab="Average annual growth rate (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~log(gdp60), subset=w), lty=2, lwd=2, col=2)
+text(log(gdp60[w]), g[w], names(g[w]), pos=3, cex=.7)
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=2:1, pch=22:21, pt.bg=2:1, bty='n')
+@ 
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+<<growth11, echo=FALSE, fig.height=6.5, fig.width=10>>=
+w <- charact$Education[wout]>30 
+col <- 1*(!oecd[w]) + 2*oecd[w]
+pch <- 21*(!oecd[w]) + 22*oecd[w]
+plot(log(gdp60[w]), g[w],
+     main="Average economic growth rate versus initial real per capita GDP\n (Countries with more than 30% of the adults who completed upper secondary school)",
+     xlab="Initial real per capita GDP (log-scale)",
+     ylab="Average annual growth rate (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~log(gdp60), subset=w), lty=2, lwd=2, col=2)
+text(log(gdp60[w]), g[w], names(g[w]), pos=3, cex=.7)
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=2:1, pch=22:21, pt.bg=2:1, bty='n')
+@ 
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.45\textwidth}
+<<growth12, echo=FALSE, fig.height=6.5, fig.width=10>>=
+w <- charact$Literacy[wout]>80
+col <- 1*(!oecd[w]) + 2*oecd[w]
+pch <- 21*(!oecd[w]) + 22*oecd[w]
+plot(log(gdp60[w]), g[w],
+     main="Average economic growth rate versus initial real per capita GDP\n (Countries with a proportion of literacy greater than 80%)",
+     xlab="Initial real per capita GDP (log-scale)",
+     ylab="Average annual growth rate (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~log(gdp60), subset=w), lty=2, lwd=2, col=2)
+text(log(gdp60[w]), g[w], names(g[w]), pos=3, cex=.7)
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=2:1, pch=22:21, pt.bg=2:1, bty='n')
+@ 
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+<<growth13, echo=FALSE, fig.height=6.5, fig.width=10>>=
+w <- charact$Life[wout]>60 & charact$Education[wout]>30 & charact$Literacy[wout]>80
+col <- 1*(!oecd[w]) + 2*oecd[w]
+pch <- 21*(!oecd[w]) + 22*oecd[w]
+plot(log(gdp60[w]), g[w],
+     main="Average economic growth rate versus initial real per capita GDP\n (Countries with high life expectancy, education and literacy)",
+     xlab="Initial real per capita GDP (log-scale)",
+     ylab="Average annual growth rate (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~log(gdp60), subset=w), lty=2, lwd=2, col=2)
+text(log(gdp60[w]), g[w], names(g[w]), pos=3, cex=.7)
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=2:1, pch=22:21, pt.bg=2:1, bty='n')
+freeTS <- read.csv("data/EconFreedom.csv", stringsAsFactors=FALSE)
+Y <- freeTS[,1]
+free <- colMeans(freeTS[,-1], na.rm=TRUE)[wout]
+@ 
+\end{minipage}
+\end{center}
+To conclude this section, we want to consider convergence conditioned
+on the level of economic freedom. What is economic freedom and why it
+may have an impact on growth and the standard of living? Watch the
+following short videos to understand what it means:
+\begin{itemize}
+\item \href{https://youtu.be/3_HnZa2XSrc}{Fraser Institute: The Benefits of Economic Freedom} (1:51 min)
+\item \href{https://youtu.be/SgXeOTBiPZI}{Women's Economic Rights—What's Changed and Why Does It Matter?} (1:09 min)  
+\end{itemize}
+The Fraser Institute constructs an economic freedom index
+\citep*{freedom} which is based on 44 variables covering topics such
+as legal system, security of property rights, freedom of trade,
+regulation etc. The index goes from 0 (absence of freedom) to 10
+(total freedom). If you are interested to know how it is constructed,
+you can visit their
+\href{https://www.fraserinstitute.org/economic-freedom/approach}{website}. This
+is an index that puts different weights of different freedom
+measures. You may or may not agree with their view of what freedom
+means. In fact, you should always be skeptical about such measures and
+verify by yourself how they are constructed. An interesting results,
+however, is the strong positive comovement between the economic
+freedom index and the inequality adjusted human development index
+(IHDI) as we can see on the following graph. In particular, most
+countries with an economic freedom index greater than 7.2 have a
+relatively high IHDI. However, some countries have an economic freedom
+index around 7 and a very low IHDI.
+
+\begin{minipage}{.75\textwidth}  
+<<ihdi_freedom, echo=FALSE, fig.height=5.5, fid.width=9>>=
+ihdi  <- read.csv("data/IHDI2018.csv", stringsAsFactors=FALSE)
+free2 <- read.csv("data/EconFreedom.csv", stringsAsFactors=FALSE)
+free2 <- colMeans(free2[,-1], na.rm=TRUE)
+IHDI <- ihdi$IHDI
+plot(free2, IHDI, 
+     xlab="Economic freedom index (scale 0-10)", 
+     ylab="Human development index",pch=21, , bg="lightblue",
+     main="Economic freedom index versus IHDI")
+abline(lm(IHDI~free2), col=2, lwd=2, lty=2)
+@ 
+\end{minipage}
+
+The series of the indexes for several countries from 1970 to 2017 are
+included in the EconFreedom.csv file. According to the index, for
+example, the country with the highest economic freedom in 2017 was
+Hong Kong with 8.91, and Venezuela was the country with the lowest
+score with 2.58. The following graphs are scatter plots of economic
+growth with respect to initial real per capita GDP for countries with
+an economic freedom greater than the median 6.5 (left graph) and less
+than 6.5 (right graph) on average over the period 1970-2017. We
+observe more convergence among countries with higher economic
+freedom (stronger negative comovement). But again, we see lots of
+variations: countries with a higher economic freedom index do not
+necessarily converge to rich countries.
+\begin{center}
+\begin{minipage}{.45\textwidth}
+<<growth14, echo=FALSE, fig.height=6.5, fig.width=10>>=
+w <- free>6.5
+w[is.na(w)] <- FALSE
+col <- 1*(!oecd[w]) + 2*oecd[w]
+pch <- 21*(!oecd[w]) + 22*oecd[w]
+plot(log(gdp60[w]), g[w],
+     main="Average economic growth rate versus initial real per capita GDP\n (Countries with an economic freedom index greater than 6.5)",
+     xlab="Initial real per capita GDP(log scale)",
+     ylab="Average economic growth (percent)",
+     pch=pch, bg=col, col=col, ylim=c(-1.5,6.5))
+abline(lm(g~log(gdp60), subset=w), lty=2, lwd=2, col=2)
+text(log(gdp60[w]), g[w], charact$Code[wout][w], pos=3)
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=2:1, pch=22:21, pt.bg=2:1, bty='n')
+grid()
+@ 
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+<<growth15, echo=FALSE, fig.height=6.5, fig.width=10>>=
+w <- free<6.5
+w[is.na(w)] <- FALSE
+col <- 1*(!oecd[w]) + 2*oecd[w]
+pch <- 21*(!oecd[w]) + 22*oecd[w]
+plot(log(gdp60[w]), g[w],
+     main="Average economic growth rate versus initial real per capita GDP\n (Countries with an economic freedom index less than 6.5)",
+     xlab="Initial real per capita GDP(log scale)",
+     ylab="Average economic growth (percent)",
+     pch=pch, bg=col, col=col, ylim=c(-1.5,6.5))
+abline(lm(g~log(gdp60), subset=w), lty=2, lwd=2, col=2)
+text(log(gdp60[w]), g[w], charact$Code[wout][w], pos=3)
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=2:1, pch=22:21, pt.bg=2:1, bty='n')
+grid()
+@ 
+\end{minipage}
+\end{center}
+Notice that we cannot conclude that any of the variables analyzed in
+this section help poor countries become richer. We did observe a
+relationship between education, health, economic freedom and the
+ability of poor countries to grow, but observing comovements does not
+imply that an actual relationship exists. Also, the variations that we
+observe in all graphs suggests that we need to dig deeper to
+understand why some poor countries grow and others remain
+poor. Answering those questions is the topic of economic growth and
+development courses.
+
+\begin{important}
+It is now the time to read Section 1.5 of \cite{acemoglu09}.
+\end{important}
+\subsection{Determinants of Economic Growth}
+
+The title of the section is a little too ambitious given the tools
+that we have at hand. Only theory and/or advanced statistical
+techniques can identify what determine growth. You may find that I am
+repeating myself, but I want to make sure you remember that comovement
+and relationship are two completely different things. 
+
+In this section we want to analyze the comovement between economic
+growth and some characteristics. In the following scatter plots
+average economic growth is on the y-axis and the country
+characteristics obtained from the Characteristics.csv file are on the
+x-axis. First, we want to see if a comovement exists between economic
+growth and some economic variables. The first set of variables are the
+government share (G divided by GDP) on the top left graph, the
+investment share (I divided by GDP) on the top right graph and the
+level of openness (X+M divided by GDP) on the bottom graph. On each
+graph, the OECD countries are represented by the dark blue squares and
+all other countries by the light blue bullets. We observe a positive
+comovement in all graph (shown by the red dashed line), but the it is
+stronger for the investment share and level of openness than for the
+share of government spending. Economic theory would suggest that
+investment and trade are good for growth. Therefore, the graphs are in
+line with the theory (without proving it of course).
+
+\begin{center}
+\begin{minipage}{.45\textwidth}
+<<det1, echo=FALSE, fig.height=6.5, fig.width=10>>=
+g <- charact$Growth
+gov <- charact$GovShare
+inv <- charact$InvShare
+open <- charact$Openness
+educ <- charact$Education
+life <- charact$Life
+lit <- charact$Literacy
+oecd <- charact$Code %in% OECD07
+freeTS <- read.csv("data/EconFreedom.csv", stringsAsFactors=FALSE)
+free <- colMeans(freeTS[,-1], na.rm=TRUE)
+col <- character(length(g))
+col[oecd] <- "darkblue"; col[!oecd] <- "lightblue"
+pch <- rep(21, length(g))
+pch[oecd] <- 22
+plot(gov, g,
+     main="Economic growth versus the share of government spending",
+     xlab="Share of government spending (percent)",
+     ylab="Average economic growth (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~gov), lty=2, lwd=2, col=2)
+#text(gov[oecd], g[oecd], charact$Code[oecd], pos=3)
+grid()
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=c("darkblue", "lightblue"), pch=22:21, 
+       pt.bg=c("darkblue", "lightblue"), bty='n')
+@ 
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+<<det2, echo=FALSE, fig.height=6.5, fig.width=10>>=
+plot(inv, g,
+     main="Economic growth versus the share of investment",
+     xlab="Share of investment (percent)",
+     ylab="Average economic growth (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~inv), lty=2, lwd=2, col=2)
+#text(inv[oecd], g[oecd], charact$Code[oecd], pos=3)
+grid()
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=c("darkblue", "lightblue"), pch=22:21, 
+       pt.bg=c("darkblue", "lightblue"), bty='n')
+@ 
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.45\textwidth}
+<<det3, echo=FALSE, fig.height=6.5, fig.width=10>>=
+plot(open, g,
+     main="Economic growth versus openness",
+     xlab="Level of openness (percent)",
+     ylab="Average economic growth (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~open), lty=2, lwd=2, col=2)
+#text(open[oecd], g[oecd], charact$Code[oecd], pos=3)
+grid()
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=c("darkblue", "lightblue"), pch=22:21, 
+       pt.bg=c("darkblue", "lightblue"), bty='n')
+@ 
+\end{minipage}
+\end{center}
+
+For the next set of graphs, we want to see if we observe a comovement
+between economic growth and education (the top right graph), literacy
+(the bottom graph) and health (the top right graph). We also observe a
+positive comovement between those variables and the economic
+growth. It is less strong for the education measure, but we used a
+narrowed measure of education. In the module readings, the author uses
+the average years of schooling and he finds a stronger comovement.
+
+\begin{center}
+\begin{minipage}{.45\textwidth}
+<<det4, echo=FALSE, fig.height=6.5, fig.width=10>>=
+plot(educ, g,
+     main="Economic growth versus education",
+     xlab="Proportion of adults with at least upper secondary (percent)",
+     ylab="Average economic growth (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~educ), lty=2, lwd=2, col=2)
+#text(educ[oecd], g[oecd], charact$Code[oecd], pos=3)
+grid()
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=c("darkblue", "lightblue"), pch=22:21, 
+       pt.bg=c("darkblue", "lightblue"), bty='n')
+@ 
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+<<det5, echo=FALSE, fig.height=6.5, fig.width=10>>=
+plot(life, g,
+     main="Economic growth versus health",
+     xlab="Life expectancy (years)",
+     ylab="Average economic growth (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~life), lty=2, lwd=2, col=2)
+#text(open[oecd], g[oecd], charact$Code[oecd], pos=3)
+grid()
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=c("darkblue", "lightblue"), pch=22:21, 
+       pt.bg=c("darkblue", "lightblue"), bty='n')
+@ 
+\end{minipage}
+\end{center}
+
+\begin{center}
+\begin{minipage}{.45\textwidth}
+<<det6, echo=FALSE, fig.height=6.5, fig.width=10>>=
+plot(lit, g,
+     main="Economic growth versus literacy",
+     xlab="Literacy rate (percent)",
+     ylab="Average economic growth (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~lit), lty=2, lwd=2, col=2)
+#text(educ[oecd], g[oecd], charact$Code[oecd], pos=3)
+grid()
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=c("darkblue", "lightblue"), pch=22:21, 
+       pt.bg=c("darkblue", "lightblue"), bty='n')
+@ 
+\end{minipage}
+\end{center}
+
+We conclude this section by analyzing the comovement between average
+economic growth and the economic freedom index. The purpose of
+presenting this variable is to emphasize the fact the economic growth
+and development is not only affected by economic
+variables. Characteristics such as the political system, the social
+norms and the legal system also play a role in a country
+development. The scatter plot shows that there is a positive
+comovement between growth and economic freedom. However, it is
+possible for countries with a relatively high level of economic
+freedom to have a low economic growth. See for example Georgia (GEO)
+and Gambia (GMB). The United Arab Emirates (ARE) is an outlier (a
+country very different from the rest) because its real per capita GDP
+went from 252 thousand in 1970 to 66 thousand in 2017. That can be
+explained by the fact that the proportion of GDP that was coming from
+oil production went from more than 40\% in 1970 to about 10\% in 2017
+(source, World Bank) while the population went from half a million to
+9.4 million. The Gini coefficient is not available for that country,
+but we should expect a high level of income inequality in 1970.
+
+\begin{center}
+\begin{minipage}{.75\textwidth}
+<<det7, echo=FALSE, fig.height=6.5, fig.width=10>>=
+plot(free, g,
+     main="Economic growth versus economic freedom",
+     xlab="Economic freedom index (0 to 10 scale)",
+     ylab="Average economic growth (percent)",
+     pch=pch, bg=col, col=col)
+abline(lm(g~free), lty=2, lwd=2, col=2)
+grid()
+legend("topright", c("OECD members", "Non-OECD members"),
+       col=c("darkblue", "lightblue"), pch=22:21, 
+       pt.bg=c("darkblue", "lightblue"), bty='n')
+text(free[oecd], g[oecd], charact$Code[oecd], pos=3)
+w <- g < .3 & free>7
+text(free[w], g[w], charact$Code[w], pos=3)
+@ 
+\end{minipage}
+\end{center}
+
+\subsection{Concluding Remark}
+In this section, we review the main findings of the module. We went
+through many facts regarding economic growth and it is important to
+summarize the most important ones. 
+\begin{itemize}
+\item We use real per capita GDP as an indicator of welfare not
+  because welfare only depends on it, but because countries with high
+  real per capita GDP tend to have high values for variables that
+  affect the quality of life. However, we have to keep in mind that
+  the comovement is not perfect. Many countries have high real per
+  capita GDP and low education and life expectancy.
+\item The real per capita GDP has increased in most countries between
+  1950 and 2017, but the inequality in the growth rates resulted in an
+  increase of income inequality over the period. If we weight the
+  country by their population to obtained the income distribution at
+  the individual level, the increase of income inequality is
+  reduced. This is mainly due to the fact that large countries such as
+  China and India have experienced relatively high economic growth.
+\item We do not observe unconditional convergence: globally, the
+  standard of living of poor countries is not converging to the
+  standard of living of rich countries.
+\item We do observer conditional convergence: if we restrict our
+  sample to countries with favorable characteristics (high education,
+  life expectancy and economic freedom), we observe poor countries
+  converging to rich countries on average. However, there is lots of
+  variations which means that some poor countries with favorable
+  characteristics do not grow enough to catch-up with the richer
+  countries.
+\item Economic growth seems to positively correlate (positive
+  comovement) with investment, openness, health, education and
+  economic freedom. However, the observed variations suggest that it
+  is not sufficient to have high investment, openness, health,
+  education and economic freedom to grow. 
+\item All the facts that we analyzed in this module have policy
+  implications. If we are willing to accept that growth is a solution
+  to welfare improvement, then policies that promote economic growth
+  are likely to be beneficial for a country. How do we promote growth?
+  According to our results, if a poor country is able increase its
+  education, investment, international trade, economic freedom and
+  health, growth should increase on average. Also, by matching the
+  characteristics of richer countries its standard of living should
+  converge to the standard of living of the rich countries
+  (conditional convergence). The effectiveness of these policies
+  relies on the validity of our observed results. Unfortunately, what
+  we discovered in this module is not sufficient to assess the
+  effectiveness of policies. In order to propose or evaluate policies,
+  we need to know more about the theory of economic growth and
+  development, and we need stronger statistical foundation.
+\item Read carefully the module reading. It contains important
+  information not included in this document. The section on the origin
+  of income differences is particularly important because it explains
+  when world started to be unequal (going back as far as the year
+  1,000). Also the section From Correlates to Fundamental Causes gives
+  you some insights about why investment or other variables should be
+  related to growth. It gives you a taste of what an economic growth
+  theory course would look like. Finally, the section The Agenda
+  provides a nice conclusion with a list of questions that more
+  advanced development economic course seek to answer.
+  \end{itemize}
+
+\begin{important}
+It is now the time to read Sections 1.6 to 1.8 of
+\cite{acemoglu09}. Section 1.9 is a technical section about the
+literature on economic growth and development, so you do not have to
+read it.
+\end{important}
+
+\section{Exercises on Economic Growth}
+
+\subsubsection*{Question 1}
+Using the file WB\_LIFE.csv, compare the distribution of life
+expectancy across countries in 1960 and 2018 using histograms. Add the
+frequency on top of each bar. What is the proportion of countries with
+life expectancy less than 50 years in 1960 and 2018?
+
+\subsubsection*{Question 2}
+\begin{enumerate}[a)]
+\item The following graph is the histogram of real per capita GDP in 1990
+using the density as measurement unit. Given that the number of
+countries is equal to 180 and the interval length of each bar is 0.5,
+what is the proportion and the number of countries that have a log per
+capita real GDP between 8.5 and 9.0?
+
+\begin{center}
+\begin{minipage}{.65\textwidth}
+<<ex1, echo=FALSE>>=
+load("data/PWT91.rda")
+PWT <- rgdp/pop
+colnames(PWT) <- colnames(pop)
+lgdp90 <- window(log(PWT), c(1990,1), c(1990,1))
+lgdp90 <- c(lgdp90)[!is.na(c(lgdp90))]
+gdp90 <- window(PWT/1000, c(1990,1), c(1990,1))
+gdp90 <- c(gdp90)[!is.na(c(gdp90))]
+hist(lgdp90, main="Distribution of real per capita GDP in 1990",
+     xlab="Real per capita GDP (log-scale)", freq=FALSE,
+     col=gray(.8,.6), labels=TRUE, ylim=c(0,.35))
+@ 
+\end{minipage}
+\end{center}
+\item The following is the same distribution with the y-axis expressed
+  in the number of countries and the x-axis in thousands of
+  international dollars of 2011. The number of bars has also been
+  increased. Given that the number of countries is equal to 180 and
+  the interval length for each bar is 5, what is the density value of
+  the first bar? What is the main difference between the histogram in
+  a) and b)?
+\begin{center}
+\begin{minipage}{.65\textwidth}
+<<ex2, echo=FALSE>>=
+hist(gdp90, main="Distribution of real per capita GDP in 1990",
+     xlab="Real per capita GDP (thousands of international dollars of 2011)", 
+     col=gray(.8,.6), labels=TRUE, breaks=20, ylim=c(0,90))
+@ 
+\end{minipage}
+\end{center}  
+<<echo=FALSE>>=
+q <- quantile(gdp90, c(0,.2,.4,.6,.8,1))
+ans <- sapply(1:5, function(i) {
+    x <- gdp90[gdp90<=q[i+1] & gdp90>=q[i]]
+    mean(x)})
+q <- quantile(lgdp90, c(0,.2,.4,.6,.8,1))
+ans2 <- sapply(1:5, function(i) {
+    x <- lgdp90[lgdp90<=q[i+1] & lgdp90>=q[i]]
+    mean(x)})
+ans <- cbind(ans, ans2)
+colnames(ans) <- c("Real per capita GDP (thousands of dollars)", 
+                   "Real per capita GDP (logs)")
+rownames(ans) <- c("First quintile",
+                   "Second quintile",
+                   "Third quintile",
+                   "Fourth quintile",
+                   "Fifth quintile")
+@ 
+\item The following table shows the average real per capita GDP in
+  logs and thousands of dollars per quintile.
+\begin{center}
+\resizebox{0.8\linewidth}{!}{  
+<<echo=FALSE, results='asis', warning=FALSE, message=FALSE>>=
+library(xtable)
+addtorow <- list()
+addtorow$pos <- list(-1)
+addtorow$command <-"\\multicolumn{3}{c}{Average real per capita GDP per quintile}\\\\"
+T1 <- xtable(ans, align=c("l|cc"))
+print(T1, add.to.row=addtorow, floating=FALSE)
+@   
+}
+\end{center}  
+\end{enumerate}
+Using the information in the table, explain why the distribution of
+the variable expressed in thousands of dollars is skewed while it is
+not (or almost not) when it is expressed in logs.
+
+\subsubsection*{Question 3}
+The following is the list of countries that were members of the
+European Union (EU) in 2013.
+\begin{center}
+\resizebox{0.8\linewidth}{!}{    
+<<echo=FALSE, results='asis'>>=
+eu <- as.matrix(read.csv("data/EU.csv"))
+EU <- eu[,4]
+eu <-  paste(eu[,2], " (", eu[,4], ")", sep="")
+eu <- matrix(eu, ncol=4)
+print(xtable(eu), floating=FALSE, include.colnames=FALSE,
+      include.rownames=FALSE)
+chaEU <- charact[charact$Code%in%EU,]
+@ 
+}
+\end{center}
+
+\begin{enumerate}[a)]
+  \item For this question, consider only the EU countries for which
+    the 1950 real per capita GDP was available (the InitYear is 1950
+    in the Characteristics.csv file). Select the two countries with
+    the lowest initial real per capita GDP and two with the
+    highest. Then, plot the real per capita GDP of the four countries
+    on the same chart for the period 1950-2017. Do you see poor
+    countries converging to the richer countries?
+  \item Answer question a), but express the real per capita GDP's in
+    logs.
+  \item Using all EU countries, create a scatter plot with the average
+    growth rate on the y-axis and the initial real per capita GDP on
+    the x-axis. Do you observe a global convergence among EU
+    countries?
+  \item Given the comovement between growth and other economic
+    variables observed in the module, can you give a possible
+    explanation of why Ireland (IRL) has grown faster than Italy (ITA)
+    despite its initially higher real per capita GDP? How certain are
+    you of your answer? Use the information included in the
+    Characteristics.csv file.
+\end{enumerate}
+
+\subsubsection*{Question 4}
+The following are the countries from West Africa. They are all
+included in our data files.
+\begin{center}
+\resizebox{0.8\linewidth}{!}{    
+<<echo=FALSE, results='asis'>>=
+af <- sort(c(14, 15, 41, 35, 66, 64,65, 67, 
+             97, 111, 117, 123, 124, 145, 147,161))
+AF <- code[af,]
+af <-  paste(AF[,2], " (", AF[,1], ")", sep="")
+af <- matrix(af, ncol=4)
+print(xtable(af), floating=FALSE, include.colnames=FALSE,
+      include.rownames=FALSE)
+chaAF <- charact[charact$Code%in%AF[,1],]
+@ 
+}
+\end{center}
+\begin{enumerate}[a)]
+  \item Select the two countries with the lowest initial real per
+    capita GDP, two with the highest and Cabo Verde (CPV). Then, plot
+    the real per capita GDP of the four countries on the same chart
+    for the period available. Do you see poor countries converging to
+    the richer countries?
+  \item Answer question a), but express the real per capita GDP's in
+    logs.
+  \item Create a scatter plot with the average growth rate on the
+    y-axis and the initial real per capita GDP on the x-axis. Do you
+    observe a global convergence among EU countries?
+  \item Given the comovement between growth and other economic
+    variables observed in the module, can you give a possible
+    explanation of why the growth rate of Capo Verde is so high while
+    it is negative for Niger (NER) and Guinea (GIN)? How certain are
+    you of your answer? Use the information included in the
+    Characteristics.csv and EconFreedom.csv file.
+\end{enumerate}
+
+\subsubsection*{Question 5}
+For the following questions, you will need the following formula: let
+$X_0$ be the initial value, $X_t$ be the value after $t$ periods and
+$g$ be the growth rate by period, then
+\[
+X_t = X_0(1+g)^t\,.
+\]
+You may also need the log properties: $\log(a^b)=b\log(a)$ and
+$\log(ab)=\log(a)+\log(b)$. The properties imply:
+\[
+\log(X_t) = \log(X_0) + t\log(1+g)\,.
+\]
+\begin{enumerate}[a)]
+\item Suppose the initial real per capita GDP for countries A and B is 
+  5 thousand dollars. If the annual growth rates of countries A and B
+  are respectively 1\% and 2\%, what is the the ratio $X_B/X_A$ after
+  60 years? Interpret the result.
+\item Suppose the annual growth rates of countries A and B are
+  respectively 1\% and 2\%. How many years it will take for each
+  country to double their respective real per capita GDP?
+\item Suppose the initial real per capita GDP of countries A, B and C
+  are respectively 10, 10 and 50 thousand dollars. If their annual
+  growth rates are respectively 3\%, 4\% and 1.5\%, how many years it
+  will take for countries A and B to converge to country C?
+\item For this question, we suppose that all countries in the PWT will
+  growth in the future at the same rate they have grown on average
+  from 1950 to 2017 (The Growth column in Characteristics.csv). The
+  following table shows the real per capita GDP in 2017 for some
+  countries and their average annual growth rate between 1950 and
+  2017.
+\begin{center}
+\resizebox{0.8\linewidth}{!}{      
+<<echo=FALSE, results='asis'>>=
+gdpT <- c(tail(PWT,1))
+names(gdpT) <- colnames(PWT)
+g <- charact$Growth
+names(g) <- colnames(PWT)
+can <- round(c(g["CAN"], gdpT["CAN"]/1000),2)
+w <- which(gdpT/1000<can[2] & g>can[1] & names(gdpT)!= "CAN") 
+n <- 4
+set.seed(112233)
+sel <- sample(w, n, replace=FALSE)
+Q5dat <- cbind(c(can[1], round(g[sel],2)), c(can[2], round(gdpT[sel]/1000,2)))
+dimnames(Q5dat) <- list(c("Canada", code[sel,2]), 
+                        c("Annual growth rate (percent)", 
+                          "real per capita GDP in 2017 (thousands of dollars)"))
+print(xtable(Q5dat, align=c("ccc")), floating=FALSE)
+@   
+}
+\end{center}
+In what year each countries will reach the real per capita GDP of
+Canada?
+\item According to the results we obtained in the module, is it
+  reasonable to assume that all countries in the PWT will
+  growth in the future at the same rate they have grown on average
+  from 1950 to 2017?
+\end{enumerate}
+
+\subsection{Solution}
+
+\subsubsection*{Question 1}
+The following histograms show that life expectancy has increased in
+general over the period. In 1960, life expectancy was below 50 years
+for (2+6+17+21+25)/167 = 42.5\% of the countries. In 2018, no country
+had a life expectancy less than 50 years. In fact, life expectancy was
+above 70 years for the majority of the 172 countries.
+\begin{center}
+\begin{minipage}{.45\textwidth}
+<<sol1, echo=FALSE>>=
+dat <- read.csv("data/WB_LIFE.csv", stringsAsFactors=FALSE)
+l60 <- as.numeric(dat[1,-1])
+l18 <- as.numeric(dat[59,-1])
+hist(l60, breaks=10, main="Distribution of life expectancy in 1960",
+     xlab="Life expectancy (years)", col=gray(.8,.6), labels=TRUE,
+     ylim=c(0,35))
+@ 
+\end{minipage}
+\begin{minipage}{.45\textwidth}
+<<sol2, echo=FALSE>>=
+hist(l18, breaks=11, main="Distribution of life expectancy in 2018",
+     xlab="Life expectancy (years)", col=gray(.8,.6), labels=TRUE,
+     ylim=c(0,45))
+@ 
+\end{minipage}
+\end{center}
+
+\subsubsection*{Question 2}
+\begin{enumerate}[a)]
+\item The proportions are the area of the rectangles. The height of
+  the bar associated with the interval 8.5 to 9.0 is 0.289 and its
+  base is 0.5, so the area is 0.289$\times$0.5 = 0.1445. Therefore
+  14.45\% of the countries are located in that interval. Since the
+  total number of countries is 180, the number of countries in the
+  interval is 0.1445$\times$180 = 26.
+
+\item The density times the interval length is the proportion. The
+  proportion of countries with a real per capital GDP between 0 and 5
+  thousand dollars is 78/180 = 0.4333. The density value is therefore
+  the proportion divided by the interval length: 0.4333/5 = 0.087. The
+  main difference between the a) and b) histograms is that the one in
+  b) is skewed to the right while the one in a) is not skewed.
+
+<<echo=FALSE>>=
+ans <- round(ans,2)
+d1 <- ans[3,1]-ans[1,1]
+d2 <- ans[5,1]-ans[3,1]
+d3 <- ans[3,2]-ans[1,2]
+d4 <- ans[5,2]-ans[3,2]
+@   
+\item The difference between the third and first quintiles is
+  \Sexpr{d1} thousand dollars and the difference between the fifth
+  quintile and the third is \Sexpr{d2} thousand dollars. Therefore,
+  the tail is must longer on the right of the third quintile (which is
+  the center). Using the variable expressed in logs, the difference
+  between the third and first quintiles is \Sexpr{d3} and the
+  difference between the fifth quintile and the third is
+  \Sexpr{d4}. Therefore, there is little difference between the length
+  of the tail on the right and left sides of the third quintile. The
+  reason is that differences in proportion is almost equal and
+  differences in dollars are very different: If $X_i$ is the average
+  per capita GDP for the i$^\mathrm{th}$ quintile, then:
+\begin{eqnarray*}
+\log(X_3)-\log(X_1) &=& \log\left(\frac{X_3}{X_1}\right) =
+\Sexpr{d3}\\ \frac{X_3}{X_1} & = & e^{\Sexpr{d3}} =
+\Sexpr{round(exp(d3),2)}
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+\log(X_5)-\log(X_3) &=& \log\left(\frac{X_5}{X_3}\right) =
+\Sexpr{d4}\\ \frac{X_5}{X_3} & = & e^{\Sexpr{d4}} =
+\Sexpr{round(exp(d4),2)}
+\end{eqnarray*}
+Therefore, the average real per capita GDP for the third quintile is
+\Sexpr{round(exp(d3),2)} time the one for the first quintile and the
+average real per capita GDP for the fifth quintile is
+\Sexpr{round(exp(d4),2)} times the one for the third quintile. The
+difference is not as high as the difference in dollars. 
+
+Think about it, the average income in the first quintile is
+\Sexpr{ans[1,1]} thousand. Therefore, \Sexpr{round(exp(d3),2)} times
+\Sexpr{ans[1,1]} thousand means a difference of
+\Sexpr{round(exp(d3),2)*ans[1,1]-ans[1,1]} thousand
+([\Sexpr{round(exp(d3),2)} $\times$
+  \Sexpr{ans[1,1]}]-\Sexpr{ans[1,1]}). On the other hand, the average
+income in the third quintile is \Sexpr{ans[3,1]} thousand. Therefore,
+\Sexpr{round(exp(d4),2)} times \Sexpr{ans[3,1]} thousand means a
+difference of \Sexpr{round(exp(d4),2)*ans[3,1]-ans[3,1]} thousand. 
+
+\end{enumerate}
+\subsubsection*{Question 3}
+<<echo=FALSE, results='asis'>>=
+load("data/PWT91.rda")
+PWT <- rgdp/pop
+colnames(PWT) <- colnames(pop)
+eu <- as.matrix(read.csv("data/EU.csv"))
+EU <- eu[,4]
+charact <- read.csv("data/Characteristics.csv", stringsAsFactors=FALSE)
+chaEU <- charact[charact$Code%in%EU & charact$InitYear==1950,]
+ix <- sort.int(chaEU$InitGDP, index=TRUE)$ix
+poor <- chaEU$Code[head(ix,2)]
+rich <- chaEU$Code[tail(ix,2)]
+poorn <- code[match(poor, code[,1]),2]
+richn <- code[match(rich, code[,1]),2]
+@ 
+\begin{enumerate}[a)]
+\item The two initially poorest countries are \Sexpr{poorn[1]}
+  (\Sexpr{poor[1]}) and \Sexpr{poorn[2]} (\Sexpr{poor[2]}) and the
+  two intially richest countries are \Sexpr{richn[1]}
+  (\Sexpr{rich[1]}) and \Sexpr{richn[2]} (\Sexpr{rich[2]}). On the
+  following chart, they are represented respectively by the solid
+  black, the dashed red, the dotted green and the dot-dashed blue
+  lines. No country is converging to the country that was initially
+  the richest (LUX). Cyprus is getting closer to Sweden (it is
+  converging slowly) but the gap between Portugal and Sweden has not
+  changed much over the period (no convergence).
+  \begin{center}
+<<sol3, echo=FALSE, results='asis', fig.height=7, fig.width=9, out.width='60%'>>=
+dat <- PWT[,c(poor,rich)]
+plot(dat/1000, plot.type="single", col=1:4, lty=1:4, lwd=2,
+     main="Real per capita GDP for some European Union countries",
+     ylab="Real per capita GDP (thousands of international dollars of 2011)")
+legend("topleft", c(poorn,richn), col=1:4, lty=1:4, lwd=2, bty='n')
+grid()
+@ 
+\end{center}    
+\item The same line shapes and colors are used for the four countries
+  in the following chart. The chart tells a similar story, but the
+  gaps are now proportions which makes it a little harder to
+  interpret.
+\begin{center}
+<<sol4, echo=FALSE, results='asis', fig.height=7, fig.width=9, out.width='60%'>>=
+dat <- PWT[,c(poor,rich)]
+plot(log(dat), plot.type="single", col=1:4, lty=1:4, lwd=2,
+     main="Real per capita GDP for some European Union countries",
+     ylab="Real per capita GDP (log-scale)")
+legend("topleft", c(poorn,richn), col=1:4, lty=1:4, lwd=2, bty='n')
+grid()
+@ 
+\end{center}    
+If we compare Luxembourg and Sweden, we clearly see that gap increased
+in proportion. This is consistent with the huge increase in the gap in
+dollars that we see on the previous answer. Always remember that if
+gap=$\log(X_2)-\log(X_1)$, where in this case $X_2$ and $X_1$ are
+respectively the real per capita GDP of Luxembourg and Sweden in
+thousands of dollars, then
+\[
+X_2 = X_1 e^{\mathrm{gap}}\,,
+\]
+which implies the following difference (subtract $X_1$ on both sides):
+\[
+X_2-X_1 = X_1 \left(e^{\mathrm{gap}}-1\right)\,.
+\]
+Therefore, if the difference in logs is constant (same gap) but $X_1$
+is increasing (Sweden is growing), then the gap in dollars is
+increasing. If we compare Portugal and Sweden, the gap in logs is
+decreasing over the period (the lines are getting closer to each
+other) but it is constant in dollars. What happens is that the
+increase in $X_1$ is offset by the smaller gap, so that the difference
+in dollars remains constant. 
+\item The following is the scatter plot on which the country codes
+  have been added. If we ignore Ireland (IRL) and Luxembourg (LUX) we
+  almost get a perfect negative comovement between the two
+  variables. Therefore, we observe convergence among EU countries.
+\begin{center}
+<<sol5, echo=FALSE, results='asis', fig.height=6, fig.width=9, out.width='60%'>>=
+plot(chaEU$InitGDP/1000, chaEU$Growth, 
+     main="Initial GDP versus aberage growth for European Union countries",
+     xlab="Initial Real per capita GDP (thousands of international dollars of 2011)",
+     ylab="Average growth rate (percent)", pch=21, col="lightblue",
+     bg="lightblue", ylim=c(2,4.2))
+text(chaEU$InitGDP/1000, chaEU$Growth, chaEU$Code, pos=3)
+grid()
+@   
+\end{center}
+\item The following are the characteristics found in the
+  Characteristics.csv file for Ireland and Italy:
+\begin{center}  
+\resizebox{0.8\linewidth}{!}{    
+<<echo=FALSE, results='asis'>>=
+dat2 <- chaEU[match(c("IRL","ITA"), chaEU$Code),3:8]
+rownames(dat2) <- code[match(c("IRL","ITA"), code[,1]),2]
+print(xtable(dat2), floating=FALSE)
+@   
+}
+\end{center}
+All characteristics are similar except for the education and level of
+openness which are much higher for Ireland. We saw in the module that
+countries with higher level of openness and larger proportion of
+adults with at least an upper secondary degree tend to grow faster on
+average. Therefore, the higher education and level of openness could
+explain why Ireland grew faster than Italy. Am I certain that
+education and openness explain the difference? The answer is
+no. First, we saw lots of variation in the scatter plots of growth
+versus characteristics: many countries with lower level of openness
+and education grow faster. Also, comovements do not imply direct
+relationships. It is just a possibility that needs to be justified by
+theory.
+\end{enumerate}
+
+\subsubsection*{Question 4}
+<<echo=FALSE, results='asis'>>=
+load("data/PWT91.rda")
+PWT <- rgdp/pop
+colnames(PWT) <- colnames(pop)
+af <- sort(c(14, 15, 41, 35, 66, 64,65, 67, 
+             97, 111, 117, 123, 124, 145, 147,161))
+AF <- code[af,]
+charact <- read.csv("data/Characteristics.csv", stringsAsFactors=FALSE)
+chaAF <- charact[charact$Code%in%AF[,1],]
+ix <- sort.int(chaAF$InitGDP, index=TRUE)$ix
+poor <- chaAF$Code[head(ix,2)]
+rich <- chaAF$Code[tail(ix,2)]
+poorn <- code[match(poor, code[,1]),2]
+richn <- code[match(rich, code[,1]),2]
+@ 
+\begin{enumerate}[a)]
+\item The two initially poorest countries are \Sexpr{poorn[1]}
+  (\Sexpr{poor[1]}) and \Sexpr{poorn[2]} (\Sexpr{poor[2]}) and the two
+  intially richest countries are \Sexpr{richn[1]} (\Sexpr{rich[1]})
+  and \Sexpr{richn[2]} (\Sexpr{rich[2]}). On the following chart, they
+  are represented respectively by the solid black, the dashed red, the
+  dotted green and the dot-dashed blue lines, and Cabo Verde is the
+  long-dashed cyan line. First, not only Cabo Verde converged to the
+  initially richest countries, it became the richest. It is clearly
+  the country with the highest growth rate. The Senegal and Ghana did
+  not grow much during the period. In fact, it took 60 years for them
+  to see their real per capita GDP's exceed their 1950 level. As a
+  result, the initially poorest countries are converging to Senegal
+  and Ghana despite their small (but positive) growth rate.
+  \begin{center}
+<<sol6, echo=FALSE, results='asis', fig.height=7, fig.width=9, out.width='60%'>>=
+dat <- PWT[,c(poor,rich, "CPV")]
+plot(dat/1000, plot.type="single", col=1:5, lty=1:5, lwd=2,
+     main="Real per capita GDP for some West African countries",
+     ylab="Real per capita GDP (thousands of international dollars of 2011)")
+legend("topleft", c(poorn,richn,"Cabo Verde"), col=1:5, lty=1:5, lwd=2, bty='n')
+grid()
+@ 
+\end{center}    
+\item The same line shapes and colors are used for the five countries
+  in the following chart. The chart tells a similar story. Notice that
+  from 2000, Cabo Verde, Ghana and Mali are growing at the same rate
+  (the lines are parallel and we use the log-scale). But since they
+  are different real per capita GDP, the gaps in dollars are
+  increasing.
+\begin{center}
+<<sol7, echo=FALSE, results='asis', fig.height=7, fig.width=9, out.width='60%'>>=
+plot(log(dat), plot.type="single", col=1:5, lty=1:5, lwd=2,
+     main="Real per capita GDP for some West African countries",
+     ylab="Real per capita GDP (log-scale)")
+legend("topleft", c(poorn,richn,"Cabo Verde"), col=1:5, lty=1:5, lwd=2, bty='n')
+grid()
+@ 
+\end{center}    
+
+\item The following is the scatter plot on which the country codes
+  have been added. We observe a negative comovement, which implies
+  convergence, but there are much more variation compared with the EU
+  countries. Therefore, many countries that were poor in the '50s are
+  still poor today (four countries have an average growth rate less
+  than 0).
+\begin{center}
+<<sol8, echo=FALSE, results='asis', fig.height=6, fig.width=9, out.width='60%'>>=
+plot(chaAF$InitGDP/1000, chaAF$Growth, 
+     main="Initial GDP versus aberage growth for West African countries",
+     xlab="Initial Real per capita GDP (thousands of international dollars of 2011)",
+     ylab="Average growth rate (percent)", pch=21, col="lightblue",
+     bg="lightblue", ylim=c(-2,4))
+text(chaAF$InitGDP/1000, chaAF$Growth, chaAF$Code, pos=3)
+grid()
+@   
+\end{center}
+\item The following are the characteristics found in the
+  Characteristics.csv and EconFreedom.csv for Cabo Verde, Guinea and
+  Niger. For the economic freedom index, we report the average over
+  the available period.
+\begin{center}  
+\resizebox{0.8\linewidth}{!}{    
+<<echo=FALSE, results='asis'>>=
+free <- read.csv("data/EconFreedom.csv")
+free <- colMeans(free[,-1], na.rm=TRUE)
+free <- free[match(c("CPV","GIN","NER"), names(free))]
+dat2 <- cbind(chaAF[match(c("CPV","GIN","NER"), chaAF$Code),2:8], EconFreedom=free)
+rownames(dat2) <- code[match(c("CPV","GIN","NER"), code[,1]),2]
+print(xtable(dat2), floating=FALSE)
+@   
+}
+\end{center}
+We will ignore differences in the government spending share because we
+have not observed a strong comovement between this variable and the
+growth rate in the module. If we compare Cabo Verde with the other two
+countries, there is a clear difference. Investment share is 5 times
+the share in Guinea and more than twice the share in Niger. Also,
+there are at least 3 times more individuals with at least an upper
+secondary education in Capo Verde and the literacy rate is also 3
+times higher. There is also a large difference for the Economic
+freedom index, the level of openness and life expectancy. For the
+economic freedom, it is hard to interpret what it means to have a
+difference of 1.3. Let's say, given that it is 8.08 in Canada, that
+Capo Verde is between Guinea and Canada. With these huge differences,
+we can say that all of these differences have something to do with the
+relative success of Cabo Verde. However, we need the theory to explain
+why they might affect growth and what are their relative importance.
+
+For Niger and Guinea, they have similar characteristics. The
+investment is higher in Guinea but the openness and education are
+lower.
+\end{enumerate}
+
+\subsubsection*{Question 5}
+\begin{enumerate}[a)]
+\item You can answer the question in two ways. First, you calculate
+  the final real per capita GDP for each countries:
+\[
+X_A = 5\times(1.01)^{60} = \Sexpr{round(5*1.01^60,2)}
+\]
+\[
+X_B = 5\times(1.02)^{60} = \Sexpr{round(5*1.02^60,2)}
+\]
+Which implies:
+\[
+\frac{X_B}{X_A} = \Sexpr{round(round(5*1.02^60,2)/round(5*1.01^60,2),2)}\,.
+\]
+You can also calculate it directly:
+\[
+\frac{X_B}{X_A} = \frac{5\times (1.02)^{60}}{5\times (1.01)^{60}}
+= \frac{(1.02)^{60}}{(1.01)^{60}} = \left(\frac{1.02}{1.01}\right)^{60}
+=\Sexpr{round((1.02/1.01)^60,2)}
+\]
+It means that real per capita GDP in country B is
+\Sexpr{round((1.02/1.01)^60,2)} times higher than in country A after
+60 years.
+\item Since the real per capita GDP doubles, $X_t/X_0=2$. Therefore:
+\[
+2 = (1+g)^t  
+\]
+Knowing $g$, we solve for $t$. For country A, we have:
+\begin{eqnarray*}
+2 &=& 1.01^t\\
+\log(2) &=& t\log(1.01) \\
+\frac{\log(2)}{\log(1.01)} &=& t\\
+\Sexpr{round(log(2)/log(1.01),1)} &=& t
+\end{eqnarray*}
+Similarly, we have the following for country B:
+\[
+t = \frac{\log(2)}{\log(1.02)}  = \Sexpr{round(log(2)/log(1.02),1)}
+\]
+Therefore, it takes \Sexpr{round(log(2)/log(1.02),1)} years for
+country B to double its real per capita GDP and
+\Sexpr{round(log(2)/log(1.01),1)} years for country A.
+\item We are looking for $t$ that will make the final values of two
+  countries equal. For countries A and C, we need to solve the
+  following equation:
+\[
+10\times(1.03)^t = 50\times(1.015)^t
+\]
+Using the properties of logarithm, we obtain:
+\begin{eqnarray*}
+\log(10) + t \log(1.03) &=& \log(50)+t\log(1.015)\\
+ t [\log(1.03)-\log(1.015)] &=& [\log(50)-\log(10)]\\
+ t &=& \frac{\log(50)-\log(10)}{\log(1.03)-\log(1.015)}\\
+ t &=&\Sexpr{round((log(50)-log(10))/(log(1.03)-log(1.015)),1)}
+\end{eqnarray*}
+Similarly \, we obtain the following for country B:
+\begin{eqnarray*}
+ t &=& \frac{\log(50)-\log(10)}{\log(1.04)-\log(1.015)}\\
+ t &=&\Sexpr{round((log(50)-log(10))/(log(1.04)-log(1.015)),1)}
+\end{eqnarray*}
+Therefore, it will take
+\Sexpr{round((log(50)-log(10))/(log(1.03)-log(1.015)),1)} years for
+country A to converge to country C and it will take
+\Sexpr{round((log(50)-log(10))/(log(1.04)-log(1.015)),1)} years for
+country B.
+\item We can apply the same formula used in the previous solution. You
+  just need to plug the numbers from the table in it. The following shows the results:
+\begin{center}
+\resizebox{0.9\linewidth}{!}{      
+<<echo=FALSE, results='asis'>>=
+ans <- round((log(Q5dat[1,2]/Q5dat[-1,2]))/(log((1+Q5dat[-1,1]/100)/(1+Q5dat[1,1]/100))),0)
+ans <- c(NA, ans)
+Q5dat <- cbind(Q5dat, ans, 2017+ans)
+colnames(Q5dat)[3:4] <- c("Number of Years", "Year of convergence")
+print(xtable(Q5dat, align=c("ccccc"), 
+             display=c("s","f","f","d","d")), floating=FALSE)
+@   
+}
+\end{center}  
+The third column is the number of years to converge to Canada (rounded
+to the nearest integer) and the last of the year when the country will
+have reached the real per capita GDP of Canada (2017+number of
+years). For example, it will take \Sexpr{Q5dat[2,3]} years for
+\Sexpr{rownames(Q5dat)[2]} to converge to Canada. Therefore, it will
+happen in the year \Sexpr{Q5dat[2,4]}. 
+\item It is probably not reasonable. Even if some poor countries have
+  not grown over the period, countries with favorable characteristics
+  (high education, investment share, health) tend to grow at a slower
+  rate on average as they get richer (conditional
+  convergence). Therefore, it is not reasonable to assume that growth
+  rate will remain constant as real per capita GDP increases.
+
+\end{enumerate}
+
+\bibliography{econ102}
+\end{document}

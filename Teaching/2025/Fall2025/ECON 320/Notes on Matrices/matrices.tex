@@ -1,0 +1,149 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm, bm, mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+\title{Matrices and Their Operations}
+\author{ECON 320 -- Introduction to Mathematical Economics }
+\date{Fall 2025}
+
+\newcommand{\R}{\mathbb{R}}
+
+\begin{document}
+\maketitle
+
+
+
+\section{Introduction}
+A \textbf{matrix} is a rectangular array of numbers arranged in rows and columns. 
+They provide a compact representation of systems of linear equations, econometric models, and linear transformations.
+Matrices are widely used in economics: equilibrium analysis, input--output models, comparative statics, and econometric estimation.
+
+
+
+\section{Types of Matrices}
+\begin{itemize}
+    \item \textbf{Row Matrix:} One row only. Example: $[\,3 \; 5 \; 7\,]$.
+    \item \textbf{Column Matrix:} One column only. Example: $\begin{bmatrix} 2 \\ 4 \\ 6 \end{bmatrix}$.
+    \item \textbf{Square Matrix:} Same number of rows and columns ($n\times n$).
+    \item \textbf{Diagonal Matrix:} All off-diagonal entries are zero.
+    \item \textbf{Identity Matrix $I$:} Diagonal matrix with $1$’s on the diagonal. Acts like $1$ in multiplication.
+    \item \textbf{Zero Matrix $0$:} All entries are zero.
+    \item \textbf{Symmetric Matrix:} $A = A'$.
+\end{itemize}
+
+
+
+\section{Basic Operations}
+\subsection{Addition and Subtraction}
+Defined element-wise, only possible if matrices have the same dimensions.
+
+\subsection{Scalar Multiplication}
+Multiply every entry of a matrix by the scalar.
+
+\subsection{Matrix Multiplication}
+If $A$ is $m \times n$ and $B$ is $n \times p$, then $AB$ is $m \times p$:
+\[
+(AB)_{ij} = \sum_{k=1}^n a_{ik} b_{kj}.
+\]
+
+\subsection{Transpose}
+The transpose $A'$ (or $A^T$) is obtained by flipping rows into columns.  
+Properties:
+\[
+(A')' = A, \quad (A+B)' = A' + B', \quad (AB)' = B'A'.
+\]
+
+
+
+\section{Determinants}
+The determinant is a scalar value associated with square matrices.  
+\subsection{Definition}
+For a $2 \times 2$ matrix:
+\[
+\det\begin{bmatrix} a & b \\ c & d \end{bmatrix} = ad - bc.
+\]
+For higher-order matrices, expansion by minors or Laplace expansion is used.
+
+\subsection{Properties}
+\begin{itemize}
+    \item $\det(AB) = \det(A)\det(B)$.
+    \item $\det(A') = \det(A)$.
+    \item If $\det(A) = 0$, $A$ is \textbf{singular} and not invertible.
+\end{itemize}
+
+
+
+\section{Inverse of a Matrix}
+The inverse $A^{-1}$ (if it exists) satisfies:
+\[
+AA^{-1} = A^{-1}A = I.
+\]
+For a $2 \times 2$ matrix:
+\[
+A^{-1} = \frac{1}{ad - bc}\begin{bmatrix} d & -b \\ -c & a \end{bmatrix}.
+\]
+
+
+
+\section{Jacobian Matrix}
+The \textbf{Jacobian} of a vector-valued function $F:\R^n \to \R^m$ is the $m \times n$ matrix of first-order partial derivatives:
+\[
+J(x) = 
+\begin{bmatrix}
+\frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n} \\
+\vdots & \ddots & \vdots \\
+\frac{\partial f_m}{\partial x_1} & \cdots & \frac{\partial f_m}{\partial x_n}
+\end{bmatrix}.
+\]
+In economics, Jacobians are used in comparative statics, general equilibrium, and optimization problems.
+
+
+
+
+\section*{Examples}
+
+\subsection{Determinant Example}
+Let 
+\[
+A = \begin{bmatrix} 2 & 1 \\ 3 & 4 \end{bmatrix}.
+\]
+Compute $\det(A)$:
+\[
+\det(A) = (2)(4) - (1)(3) = 8 - 3 = 5.
+\]
+Since $\det(A) \neq 0$, $A$ is invertible.
+
+
+
+\subsection{Jacobian Example}
+Consider the demand system:
+\[
+q_1(p_1, p_2) = 10 - 2p_1 + p_2, 
+\quad q_2(p_1, p_2) = 20 + p_1 - 3p_2.
+\]
+The Jacobian is:
+\[
+J = 
+\begin{bmatrix}
+\frac{\partial q_1}{\partial p_1} & \frac{\partial q_1}{\partial p_2} \\
+\frac{\partial q_2}{\partial p_1} & \frac{\partial q_2}{\partial p_2}
+\end{bmatrix}
+=
+\begin{bmatrix}
+-2 & 1 \\
+1 & -3
+\end{bmatrix}.
+\]
+
+
+
+
+
+
+
+\end{document}

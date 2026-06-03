@@ -1,0 +1,302 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts, geometry, setspace, tcolorbox}
+\geometry{margin=1in}
+\setstretch{1.2}
+\setlength{\parindent}{0pt}
+
+
+\title{Optimization of Multi-Variable Functions\\[7pt]
+\large ECON 320 - Introduction to Mathematical Economics}
+\author{Muhebullah Karimzada}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+\section*{1. Introduction}
+
+Many economic problems require maximizing or minimizing a function of several variables. 
+For example, a firm maximizes profit depending on capital and labor, or a consumer maximizes utility depending on two goods. 
+This is the domain of \textbf{multivariable optimization}.
+
+\[
+\text{Maximize or minimize } f(x_1, x_2, \ldots, x_n)
+\]
+possibly \textbf{subject to constraints} such as a budget or production function.
+
+
+
+\section*{2. Unconstrained Optimization in Two Variables}
+
+Let
+\[
+z = f(x, y)
+\]
+represent a smooth surface.
+
+\subsection*{2.1 First-Order (Necessary) Conditions}
+
+At an interior extremum, small changes in \(x\) or \(y\) leave \(z\) unchanged:
+
+\[
+f_x = \frac{\partial f}{\partial x} = 0, \quad f_y = \frac{\partial f}{\partial y} = 0
+\]
+
+The points \((x^*, y^*)\) satisfying these equations are called \textit{stationary points}.
+
+
+
+\subsection*{2.2 Second-Order (Sufficient) Conditions}
+
+Let
+\[
+f_{xx} = \frac{\partial^2 f}{\partial x^2}, \quad f_{yy} = \frac{\partial^2 f}{\partial y^2}, \quad f_{xy} = \frac{\partial^2 f}{\partial x \partial y}
+\]
+and define the \textbf{Hessian determinant}
+\[
+D = 
+\begin{vmatrix}
+f_{xx} & f_{xy} \\
+f_{yx} & f_{yy}
+\end{vmatrix}
+= f_{xx}f_{yy} - (f_{xy})^2
+\]
+
+\begin{center}
+\begin{tabular}{c|c}
+\textbf{Condition} & \textbf{Nature of Stationary Point} \\ \hline
+$D>0$, $f_{xx}<0$ & Local Maximum \\
+$D>0$, $f_{xx}>0$ & Local Minimum \\
+$D<0$ & Saddle Point \\
+$D=0$ & Inconclusive
+\end{tabular}
+\end{center}
+
+
+
+\subsection*{Example 1: Profit Maximization}
+
+\[
+\pi(x,y) = 100x + 80y - 10x^2 - 4y^2 - 4xy
+\]
+
+\[
+\pi_x = 100 - 20x - 4y = 0, \qquad \pi_y = 80 - 8y - 4x = 0
+\]
+
+Solve:
+\[
+\begin{cases}
+20x + 4y = 100 \\
+4x + 8y = 80
+\end{cases}
+\Rightarrow x=4, \; y=8
+\]
+
+Second derivatives:
+\[
+f_{xx}=-20, \; f_{yy}=-8, \; f_{xy}=-4
+\]
+\[
+D = (-20)(-8) - (-4)^2 = 144 > 0, \; f_{xx}<0
+\Rightarrow \text{Local Maximum.}
+\]
+
+
+
+\section*{3. Generalization to \(n\) Variables}
+
+For \(f(x_1, \ldots, x_n)\):
+
+\[
+\frac{\partial f}{\partial x_i} = 0, \quad i = 1,2,\ldots,n
+\]
+
+The second-order conditions use the \textbf{Hessian matrix}:
+\[
+H =
+\begin{bmatrix}
+f_{x_1x_1} & \cdots & f_{x_1x_n} \\
+\vdots & \ddots & \vdots \\
+f_{x_nx_1} & \cdots & f_{x_nx_n}
+\end{bmatrix}
+\]
+
+To determine the nature of the stationary point, evaluate the \textbf{leading principal minors} \(D_1, D_2, \ldots, D_n\):
+
+\begin{center}
+\begin{tabular}{c|l}
+\textbf{Condition} & \textbf{Type of Extremum} \\ \hline
+Alternating signs ($D_1<0, D_2>0, D_3<0,\ldots$) & Maximum \\
+All positive ($D_1>0, D_2>0, D_3>0,\ldots$) & Minimum
+\end{tabular}
+\end{center}
+
+
+
+\section*{4. Constrained Optimization: The Lagrange Method}
+
+Most economic problems involve constraints.
+
+\[
+\max_{x,y} f(x,y) \quad \text{subject to} \quad g(x,y) = k
+\]
+
+\subsection*{4.1 Lagrangian Function}
+\[
+\mathcal{L}(x,y,\lambda) = f(x,y) + \lambda(k - g(x,y))
+\]
+
+\subsection*{4.2 First-Order Conditions (FOCs)}
+\[
+\begin{cases}
+f_x - \lambda g_x = 0 \\
+f_y - \lambda g_y = 0 \\
+g(x,y) = k
+\end{cases}
+\]
+
+At the optimum,
+\[
+\frac{f_x}{g_x} = \frac{f_y}{g_y} = \lambda
+\]
+so the \textbf{marginal rates of substitution} are equal to the ratio of the constraint effects.
+
+
+
+\subsection*{Example 2: Utility Maximization under a Budget Constraint}
+
+\[
+U(x,y) = x^{0.5}y^{0.5}, \quad p_xx + p_yy = M
+\]
+
+Lagrangian:
+\[
+\mathcal{L} = x^{0.5}y^{0.5} + \lambda(M - p_xx - p_yy)
+\]
+
+FOCs:
+\[
+\frac{1}{2}x^{-0.5}y^{0.5} = \lambda p_x, \quad
+\frac{1}{2}x^{0.5}y^{-0.5} = \lambda p_y
+\]
+
+Dividing:
+\[
+\frac{y}{x} = \frac{p_x}{p_y} \Rightarrow y = \frac{p_x}{p_y}x
+\]
+
+Substitute in constraint:
+\[
+p_xx + p_y\left(\frac{p_x}{p_y}x\right) = M \Rightarrow 2p_xx = M \Rightarrow x^* = \frac{M}{2p_x}, \quad y^* = \frac{M}{2p_y}
+\]
+
+\textbf{Interpretation:} The consumer chooses a point where MRS = price ratio.
+
+
+\section*{5. The Economic Meaning of the Lagrange Multiplier}
+
+The multiplier $\lambda$ represents the \textbf{shadow price} or \textbf{marginal value of relaxing the constraint}.
+
+\[
+\frac{\partial f^*}{\partial k} = \lambda
+\]
+
+In utility maximization, $\lambda$ equals the marginal utility of income; in production, it represents the marginal output per additional unit of input cost.
+
+
+
+\section*{6. Multiple Constraints}
+
+If there are $m$ constraints:
+\[
+g_i(x_1,\ldots,x_n) = k_i, \quad i=1,\ldots,m
+\]
+then
+\[
+\mathcal{L} = f(x_1,\ldots,x_n) + \sum_{i=1}^m \lambda_i(k_i - g_i)
+\]
+
+First-order conditions:
+\[
+f_{x_j} = \sum_{i=1}^m \lambda_i g_{i,x_j}, \quad j = 1,\ldots,n
+\]
+
+
+
+\section*{7. Second-Order Conditions for Constrained Problems}
+
+For a single constraint, the test uses the \textbf{bordered Hessian:}
+\[
+H_b =
+\begin{vmatrix}
+0 & g_x & g_y \\
+g_x & f_{xx} & f_{xy} \\
+g_y & f_{yx} & f_{yy}
+\end{vmatrix}
+\]
+
+\begin{center}
+\begin{tabular}{c|c}
+\textbf{Sign of } $H_b$ & \textbf{Type of Extremum} \\ \hline
+$(-1)^{m}det(H_b) < 0$ & Maximum \\
+$(-1)^{m}det(H_b)> 0$ & Minimum
+\end{tabular}
+\end{center}
+
+\textbf{Why the $(-1)^{m}$ factor?}
+
+Because each equality constraint adds one border row and column to the Hessian.
+Each border introduces a sign flip in the determinant pattern.
+
+Hence, the test must account for how many constraints 
+$m$ we have added.   That's exactly what the factor $(-1)^{m}$ does,  it adjusts the sign convention.
+
+\section*{8. Example 3: Cost Minimization with Cobb–Douglas Technology}
+
+\[
+Q = K^{0.5}L^{0.5}, \quad \text{Minimize } C = wL + rK, \quad Q = \bar{Q}
+\]
+
+Lagrangian:
+\[
+\mathcal{L} = wL + rK + \lambda(\bar{Q} - K^{0.5}L^{0.5})
+\]
+
+FOCs:
+\[
+\begin{cases}
+w - \frac{\lambda}{2}K^{0.5}L^{-0.5} = 0 \\
+r - \frac{\lambda}{2}K^{-0.5}L^{0.5} = 0
+\end{cases}
+\]
+
+Dividing:
+\[
+\frac{w}{r} = \frac{K}{L} \Rightarrow \frac{L}{K} = \frac{r}{w}
+\]
+
+Substitute into constraint:
+\[
+K^* = \bar{Q}\sqrt{\frac{w}{r}}, \quad L^* = \bar{Q}\sqrt{\frac{r}{w}}
+\]
+
+\textbf{Interpretation:} The firm allocates inputs such that the marginal product per dollar is equalized across inputs.
+
+\section*{9. Applications in Economics}
+
+\begin{center}
+\begin{tabular}{l|l|l}
+\textbf{Field} & \textbf{Objective Function} & \textbf{Constraint} \\ \hline
+Consumer Theory & $U(x,y)$ & $p_xx + p_yy = M$ \\
+Production Theory & $Q(K,L)$ & $wL + rK = C$ \\
+International Trade & Welfare $W(t)$ & Balance of trade constraint \\
+Public Finance & Utility & Government budget constraint \\
+Growth Models & Output or Consumption & Capital accumulation equation
+\end{tabular}
+\end{center}
+
+
+
+
+\end{document}

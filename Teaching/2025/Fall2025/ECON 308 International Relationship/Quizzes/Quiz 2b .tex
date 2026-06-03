@@ -1,0 +1,152 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Solving for $L_M$ Step-by-Step}
+\author{Specific-Factors Model}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Setup}
+
+Home produces Manufactures ($M$) and Food ($F$).  
+Labor is mobile between sectors, while capital is specific to $M$ and land to $F$.  
+
+\[
+Q_M = K^{1/2}L_M^{1/2}, 
+\qquad 
+Q_F = T^{1/2}L_F^{1/2},
+\qquad 
+L_M + L_F = L.
+\]
+
+Endowments:
+\[
+K=100, \quad T=64, \quad L=100.
+\]
+
+Prices: initially $P_M=2$, $P_F=1$.  
+We will later examine the case when $P_M=3$.
+
+\bigskip
+
+\noindent The equilibrium condition (labor mobility):
+\[
+P_M \cdot MPL_M = P_F \cdot MPL_F,
+\]
+where
+\[
+MPL_M = \frac{\partial Q_M}{\partial L_M} = \frac{1}{2}K^{1/2}L_M^{-1/2}, 
+\qquad
+MPL_F = \frac{\partial Q_F}{\partial L_F} = \frac{1}{2}T^{1/2}L_F^{-1/2}.
+\]
+
+Since $K^{1/2}=10$ and $T^{1/2}=8$:
+\[
+MPL_M = 5L_M^{-1/2}, \qquad MPL_F = 4L_F^{-1/2}.
+\]
+
+Also $L_F = 100 - L_M$.
+
+---
+
+\section*{Case 1: $P_M = 2$, $P_F = 1$}
+
+\noindent Step 1: Wage equalization condition
+\[
+2 \cdot 5L_M^{-1/2} = 1 \cdot 4(100 - L_M)^{-1/2}.
+\]
+Simplify:
+\[
+10L_M^{-1/2} = 4(100 - L_M)^{-1/2}.
+\]
+
+\bigskip
+\noindent Step 2: Square both sides to remove the square roots
+\[
+100L_M^{-1} = 16(100 - L_M)^{-1}.
+\]
+
+\bigskip
+\noindent Step 3: Cross-multiply
+\[
+100(100 - L_M) = 16L_M.
+\]
+
+\bigskip
+\noindent Step 4: Expand and solve for $L_M$
+\[
+10{,}000 - 100L_M = 16L_M \quad \Rightarrow \quad 10{,}000 = 116L_M.
+\]
+\[
+\boxed{L_M = 86.21, \quad L_F = 13.79.}
+\]
+
+\bigskip
+\noindent Step 5: Compute the common wage
+\[
+w = P_M \cdot MPL_M = 2 \cdot 5L_M^{-1/2} = 10L_M^{-1/2}.
+\]
+\[
+w = 10 / \sqrt{86.21} \approx 10 / 9.29 \approx \boxed{1.08.}
+\]
+
+---
+
+\section*{Case 2: $P_M = 3$, $P_F = 1$}
+
+\noindent Step 1: Wage equalization
+\[
+3 \cdot 5L_M^{-1/2} = 1 \cdot 4(100 - L_M)^{-1/2},
+\]
+\[
+15L_M^{-1/2} = 4(100 - L_M)^{-1/2}.
+\]
+
+\bigskip
+\noindent Step 2: Square both sides
+\[
+225L_M^{-1} = 16(100 - L_M)^{-1}.
+\]
+
+\bigskip
+\noindent Step 3: Cross-multiply
+\[
+225(100 - L_M) = 16L_M.
+\]
+\[
+22{,}500 - 225L_M = 16L_M.
+\]
+
+\bigskip
+\noindent Step 4: Solve for $L_M$
+\[
+22{,}500 = 241L_M \quad \Rightarrow \quad \boxed{L_M = 93.36, \quad L_F = 6.64.}
+\]
+
+\bigskip
+\noindent Step 5: Compute new wage
+\[
+w = P_M \cdot MPL_M = 3 \cdot 5L_M^{-1/2} = 15L_M^{-1/2}.
+\]
+\[
+w = 15 / \sqrt{93.36} = 15 / 9.66 \approx \boxed{1.55.}
+\]
+
+---
+
+\section*{Interpretation}
+
+\begin{itemize}
+\item As $P_M$ rises, $L_M$ increases (from 86.2 to 93.4), meaning more labor moves to manufacturing.  
+\item The wage rises (from 1.08 to 1.55) but less than the increase in $P_M$ (which rose 50\%).  
+\item Capital (specific to $M$) gains the most because it benefits from both the price increase and more labor.  
+\item Land (specific to $F$) loses because $L_F$ falls and $P_F$ is unchanged.  
+\item Workers have an ambiguous outcome: their real wage in terms of $F$ rises, but in terms of $M$ falls.
+\end{itemize}
+
+\end{document}

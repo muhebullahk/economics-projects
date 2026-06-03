@@ -1,0 +1,173 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb,geometry}
+\geometry{margin=1in}
+\usepackage{xcolor}
+\usepackage{enumitem}
+
+\title{Solutions -- Quiz 5\\ \vspace{5pt}
+\large ECON 320 -- Introduction to Mathematical Economics}
+\author{Instructor: Muhebullah Karimzada}
+\date{October 29, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{{ Multiple Choice (1 mark each)}}
+
+\begin{enumerate}[leftmargin=*, label=\textbf{Q\arabic*.}]
+
+\item \textbf{Correct: (b)} \\
+\emph{Reasoning:} The Hessian of $f(x,y)$ is the $2\times 2$ matrix of second partial derivatives
+\[
+H(f)=
+\begin{bmatrix}
+f_{xx} & f_{xy}\\
+f_{yx} & f_{yy}
+\end{bmatrix}.
+\]
+Option (a) describes the Jacobian of first derivatives; (c) ``total differentials'' is not a matrix of second partials; (d) the Jacobian applies to vector-valued functions.
+
+\item \textbf{Correct: (b)} \\
+\emph{Reasoning:} For two variables, define $D=f_{xx}f_{yy}-(f_{xy})^2$. If at a critical point we have $D>0$ and $f_{xx}<0$, then the Hessian is negative definite $\Rightarrow$ a \textbf{local maximum}. (If $D>0$ and $f_{xx}>0$, it is a local minimum. If $D<0$, it is a saddle.)
+
+\item \textbf{Correct: (d)} \\
+\emph{Problem:} $f(x,y)=x^2-2xy+3y^2$. Then $f_{xx}=2$, $f_{yy}=6$, $f_{xy}=-2$. Hence
+\[
+D = f_{xx}f_{yy}-(f_{xy})^2 = 2\cdot 6 - (-2)^2 = 12-4=8>0.
+\]
+So the determinant is $8$.
+
+\item \textbf{Correct: (c)} \\
+\emph{Reasoning:} For a \textbf{local maximum}, the Hessian must be negative definite: $D>0$ and $f_{xx}<0$. (For a local minimum: $D>0$ and $f_{xx}>0$; $D<0$ indicates a saddle.)
+
+\item \textbf{Correct: (d)} \\
+\emph{Problem:} $f(x,y)=4x^2+9y^2-12xy$. Then $f_{xx}=8$, $f_{yy}=18$, $f_{xy}=-12$. Thus
+\[
+D=8\cdot 18-(-12)^2 = 144-144=0.
+\]
+Hence the second-order test is \emph{inconclusive}. In fact, $f(x,y)=(2x-3y)^2\ge 0$, so $(0,0)$ is a (non-strict) minimum and the set of minimizers is the line $2x=3y$. Among the given choices, only (d) is unambiguously true.
+
+\end{enumerate}
+
+
+\noindent\textbf{Problem 1 (6 marks)} \\
+\textbf{Function: } $f(x,y)=3x^2+xy+y^2-6x-9y$.
+
+\underline{(a) Stationary points.} First-order conditions:
+\[
+f_x = 6x + y - 6 = 0,\qquad
+f_y = x + 2y - 9 = 0.
+\]
+Solve the linear system:
+\[
+\begin{cases}
+6x + y = 6\\
+x + 2y = 9
+\end{cases}
+\Rightarrow
+\text{From the first, } y=6-6x.
+\]
+Substitute into the second:
+\[
+x + 2(6-6x) = 9 \ \Rightarrow\ x + 12 - 12x = 9
+\Rightarrow\ -11x = -3 \Rightarrow\ x^*=\frac{3}{11}.
+\]
+Then
+\[
+y^* = 6 - 6x^* = 6 - \frac{18}{11} = \frac{66-18}{11}=\frac{48}{11}.
+\]
+Thus the unique stationary point is
+\[
+\boxed{(x^*,y^*)=\left(\frac{3}{11},\frac{48}{11}\right)}.
+\]
+
+\underline{(b) Nature of the point (Hessian test).} Compute second partials:
+\[
+f_{xx}=6,\quad f_{yy}=2,\quad f_{xy}=1.
+\]
+Then the Hessian determinant
+\[
+D = f_{xx}f_{yy} - (f_{xy})^2 = 6\cdot 2 - 1^2 = 12-1=11>0,
+\]
+and $f_{xx}=6>0$. Therefore, the Hessian is \emph{positive definite} at the stationary point:
+\[
+\boxed{\text{Local minimum at } \left(\frac{3}{11},\frac{48}{11}\right).}
+\]
+(\emph{Optional check:} the minimized value is
+$f\!\left(\frac{3}{11},\frac{48}{11}\right)
+= 3\left(\frac{9}{121}\right) + \left(\frac{144}{121}\right) + \left(\frac{2304}{121}\right) - 6\left(\frac{3}{11}\right) - 9\left(\frac{48}{11}\right)$,
+which simplifies to a positive number, consistent with a minimum.)
+
+\medskip
+\noindent\textit{Marking guide (6): 2 for FOCs, 2 for solving the system, 2 for correct Hessian test and classification.}
+
+\newpage
+
+\noindent\textbf{Problem 2 (9 marks)} \\
+\textbf{Cost minimization with target output.} \\
+Production $Q = 100K^{0.5} L^{0.5}$, input prices $r=4$ (capital), $w=1$ (labor), target $Q_0=100$.
+
+\underline{Set-up:} Minimize $C=4K + 1\cdot L$ subject to $100K^{0.5}L^{0.5}=100$.
+
+\underline{Constraint simplification:}
+\[
+100K^{0.5}L^{0.5}=100 \ \Longleftrightarrow\ K^{0.5}L^{0.5}=1 \ \Longleftrightarrow\ KL=1.
+\]
+
+\underline{Lagrangian:}
+\[
+\mathcal{L}(K,L,\lambda) = 4K + L + \lambda\,(100 - 100K^{0.5}L^{0.5}).
+\]
+
+\underline{FOCs:}
+\[
+\frac{\partial \mathcal{L}}{\partial K} = 4 - 50\lambda\,L^{0.5}K^{-0.5}=0
+\quad\Rightarrow\quad 4 = 50\lambda\,\frac{\sqrt{L}}{\sqrt{K}} \tag{1}
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial L} = 1 - 50\lambda\,K^{0.5}L^{-0.5}=0
+\quad\Rightarrow\quad 1 = 50\lambda\,\frac{\sqrt{K}}{\sqrt{L}} \tag{2}
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial \lambda}:\quad 100 - 100K^{0.5}L^{0.5}=0 \ \Longleftrightarrow\ KL=1. \tag{3}
+\]
+
+\underline{Ratio condition (MRTS = price ratio):} Divide (1) by (2):
+\[
+\frac{4}{1} = 
+\frac{50\lambda\,(\sqrt{L}/\sqrt{K})}{50\lambda\,(\sqrt{K}/\sqrt{L})}
+= \frac{L}{K}
+\quad\Longrightarrow\quad L=4K.
+\]
+This is equivalent to the standard Cobb–Douglas rule
+$\dfrac{\text{MPL}}{\text{MPK}}=\dfrac{w}{r}=\dfrac{1}{4}$ and indeed 
+$\dfrac{\text{MPL}}{\text{MPK}}=\dfrac{K}{L}$, giving $K/L=1/4$ (i.e., $L=4K$).
+
+\underline{Use the constraint $KL=1$:}
+\[
+K\cdot(4K)=1 \ \Rightarrow\ 4K^2=1 \ \Rightarrow\ K^*=\frac{1}{2},\quad L^*=2.
+\]
+
+\underline{Minimum cost:}
+\[
+C_{\min}=4K^*+1\cdot L^* = 4\left(\frac{1}{2}\right)+2 = 2+2 = \boxed{4}.
+\]
+
+\underline{Second-order condition (brief):} With a convex cost function and a concave (Cobb–Douglas) production constraint in $(K,L)$ at fixed $Q$, the problem is convex; the FOCs are sufficient. Alternatively, the bordered Hessian test confirms a minimum.
+
+\[
+\boxed{K^*=\tfrac{1}{2},\quad L^*=2,\quad C_{\min}=4.}
+\]
+
+\medskip
+\noindent\textit{Marking guide (8): 2 for Lagrangian \& FOCs, 2 for ratio condition, 2 for applying the constraint, 1 for optimal bundle, 1 for cost.}
+
+
+
+\vspace{0.5em}
+\hrule
+\vspace{0.5em}
+
+\noindent\textbf{Total Section B: 15/15 \quad (Overall quiz 20/20).}
+
+\end{document}

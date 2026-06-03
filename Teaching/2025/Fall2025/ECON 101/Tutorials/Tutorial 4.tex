@@ -1,0 +1,147 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, geometry, booktabs}
+\geometry{margin=1in}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+
+\title{Tutorial 4}
+\author{ECON 101 -- Macroeconomics}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+\section*{1. The Basic Multiplier in a Closed Economy (No Taxes, No Trade)}
+
+\textbf{Consumption Function:}
+\[
+C = \bar{C} + cY
+\]
+where \( c \) is the marginal propensity to consume (MPC).
+
+\textbf{Aggregate Expenditure:}
+\[
+AE = C + I + G = \bar{C} + cY + I + G
+\]
+Equilibrium occurs when \( Y = AE \).
+
+\textbf{Multiplier (Closed Economy):}
+\[
+k = \frac{1}{1 - c}
+\]
+
+\textbf{Example Parameters:}
+\[
+\bar{C} = 200, \quad c = 0.75, \quad I = 150, \quad G = 250
+\]
+
+\textbf{Step 1: Solve for Equilibrium Income}
+\[
+Y = \bar{C} + cY + I + G
+\]
+\[
+Y - 0.75Y = 200 + 150 + 250
+\]
+\[
+0.25Y = 600 \quad \Rightarrow \quad Y = \boxed{2{,}400}
+\]
+\newpage
+\textbf{Step 2: Apply a Government Spending Increase}
+\[
+\Delta G = +100, \quad k = \frac{1}{1 - 0.75} = 4
+\]
+\[
+\Delta Y = k \cdot \Delta G = 4 \times 100 = \boxed{400}
+\]
+\[
+Y' = 2{,}400 + 400 = \boxed{2{,}800}
+\]
+
+\textbf{Step 3: Round-by-Round Spending Illustration}
+\[
+100 + 0.75(100) + 0.75^2(100) + \dots = \frac{100}{1 - 0.75} = 400
+\]
+Each round induces additional consumption until total change in output equals \( \Delta Y = 400 \).
+
+
+
+\section*{2. The Multiplier with Taxes and Imports (Open Economy)}
+
+\textbf{Setup:}
+\[
+C = \bar{C} + c(1-t)Y, \quad NX = \bar{X} - mY
+\]
+\[
+AE = \bar{C} + I + G + \bar{X} + [c(1-t) - m]Y
+\]
+Define \( A_0 = \bar{C} + I + G + \bar{X} \) (autonomous expenditure), and the slope of the AE function as \( z = c(1-t) - m \).
+
+\textbf{Equilibrium:}
+\[
+Y = A_0 + zY \quad \Rightarrow \quad Y(1 - z) = A_0
+\]
+\[
+Y = \frac{A_0}{1 - z}
+\]
+
+\textbf{Multiplier:}
+\[
+k = \frac{1}{1 - [c(1-t) - m]} = \frac{1}{1 - c(1-t) + m}
+\]
+
+\textbf{Example Parameters:}
+\[
+\bar{C} = 200, \; c = 0.75, \; I = 150, \; G = 250, \; \bar{X} = 20, \; t = 0.20, \; m = 0.15
+\]
+
+\textbf{Step 1: Compute the Slope \( z \)}
+\[
+z = c(1 - t) - m = 0.75(1 - 0.20) - 0.15 = 0.75(0.80) - 0.15 = 0.60 - 0.15 = \boxed{0.45}
+\]
+
+\textbf{Step 2: Compute Autonomous Spending \( A_0 \)}
+\[
+A_0 = \bar{C} + I + G + \bar{X} = 200 + 150 + 250 + 20 = \boxed{620}
+\]
+
+\textbf{Step 3: Find Equilibrium Income}
+\[
+Y = \frac{A_0}{1 - z} = \frac{620}{1 - 0.45} = \frac{620}{0.55} = \boxed{1{,}127.27}
+\]
+
+\textbf{Step 4: Compute the Multiplier}
+\[
+k = \frac{1}{1 - c(1-t) + m} = \frac{1}{1 - 0.75(0.80) + 0.15}
+\]
+\[
+k = \frac{1}{1 - 0.60 + 0.15} = \frac{1}{0.55} = \boxed{1.8182}
+\]
+
+\textbf{Step 5: Fiscal Policy Shock}
+\[
+\Delta G = +100
+\]
+\[
+\Delta Y = k \cdot \Delta G = 1.8182 \times 100 = \boxed{181.82}
+\]
+\[
+Y' = 1{,}127.27 + 181.82 = \boxed{1{,}309.09}
+\]
+
+\textbf{Step 6: Spending Rounds Intuition (with Leakages)}
+Each spending round induces a smaller response:
+\[
+100 + 0.45(100) + 0.45^2(100) + 0.45^3(100) + \dots = \frac{100}{1 - 0.45} = 181.82
+\]
+
+\textbf{Interpretation:}  
+Taxes (\(t=0.20\)) and imports (\(m=0.15\)) create leakages that reduce the multiplier from \(4.0\) in a closed economy to approximately \(1.82\).  
+This illustrates why fiscal policy has a smaller impact in open economies with taxation and trade.
+
+
+\begin{center}
+\rule{0.5\textwidth}{0.4pt}\\
+\textit{End of Example}
+\end{center}
+
+\end{document}

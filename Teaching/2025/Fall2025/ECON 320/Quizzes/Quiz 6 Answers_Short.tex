@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, geometry, setspace}
+\geometry{margin=1in}
+\setstretch{1.25}
+\setlength{\parindent}{0pt}
+
+\title{Solutions -- Quiz 6\\ \vspace{5pt}
+\large ECON 320 -- Introduction to Mathematical Economics}
+\author{Instructor: Muhebullah Karimzada}
+\date{December 01, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Part A — Multiple Choice}
+
+\begin{enumerate}
+\item (c)  
+\item (b)  
+\item (a)  
+\item (b)  
+\item (c)  
+\item (b)  
+\item (d)  
+\end{enumerate}
+
+\newpage
+
+\section*{Part B — Short Answer Solutions}
+
+\subsection*{Question 1 — Envelope Theorem}
+
+\textbf{(1) Derivative of the value function}
+
+From the Envelope Theorem for a constrained maximization problem:
+\[
+\boxed{
+\frac{dV}{da}
+= U_a + \lambda\, g_a
+}
+\]
+evaluated at the optimum.
+
+\textbf{(2) Why indirect effects disappear}
+
+The FOCs ensure that the derivatives with respect to $x$ and $y$ cancel out. Thus changes in $a$ affect $V(a)$ only directly through $U_a$ and indirectly through the constraint term $g_a$.
+
+\textbf{(3) Interpretation of $-\lambda g_a$ (or $+\lambda g_a$ depending on constraint form)}
+
+It measures how changes in the parameter $a$ affect the tightness of the constraint, multiplied by the shadow value of relaxing the constraint. It is the effect on the optimized value caused by changes in the feasible set.
+
+---
+
+\subsection*{Question 2 — Duality and Shephard’s Lemma}
+
+\textbf{(1) Conditional factor demands}
+
+By Shephard’s Lemma:
+\[
+\boxed{
+\frac{\partial C}{\partial w} = L^*, \qquad
+\frac{\partial C}{\partial r} = K^*.
+}
+\]
+
+\textbf{(2) Duality explanation}
+
+Cost minimization and output maximization share the same tangency condition ($MRTS = w/r$). Therefore the cost function and production function describe the same technology from two perspectives: one minimizes cost for a given output, the other maximizes output for given inputs.
+
+\textbf{(3) Marginal cost}
+
+\[
+\boxed{
+MC(Q) = \frac{\partial C}{\partial Q}
+}
+\]
+because the Lagrange multiplier in the cost-minimization problem equals marginal cost.
+
+---
+
+\subsection*{Question 3 — Capital Dynamics}
+
+The differential equation is:
+\[
+\frac{dK}{dt}=I(t)-\delta K.
+\]
+
+\textbf{Solution:}
+\[
+\boxed{
+K(t)
+=K(0)e^{-\delta t}+\int_0^t e^{-\delta (t-s)}I(s)\,ds.
+}
+\]
+
+\textbf{Steady state (constant $I$):}
+\[
+\boxed{
+K^*=\frac{I}{\delta}.
+}
+\]
+
+\textbf{Interpretation:}
+- $K(0)e^{-\delta t}$ = initial capital depreciated over time.  
+- The integral term = accumulated past investment adjusted for depreciation.
+
+---
+
+\subsection*{Question 4 — Present Value}
+
+Income:
+\[
+Y(t) = Y_0 e^{gt}.
+\]
+
+Present value:
+\[
+PV = \int_0^\infty Y_0 e^{(g-r)t} dt
+= \frac{Y_0}{r-g},
+\quad r>g.
+\]
+
+\textbf{Condition for finiteness:}  
+\[
+\boxed{r>g}
+\]
+because income must not grow faster than it is discounted.
+
+\end{document}

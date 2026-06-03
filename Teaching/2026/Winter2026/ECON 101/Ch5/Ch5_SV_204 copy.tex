@@ -1,0 +1,560 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+% Beamer already loads xcolor, so we just define our colors
+\definecolor{accent}{RGB}{0,92,184}
+\definecolor{soft}{RGB}{233,244,255}
+\definecolor{lightred}{RGB}{245,210,210}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{title}{fg=white,bg=accent}
+\setbeamercolor{frametitle}{fg=accent}
+\setbeamercolor{block title}{bg=accent!12,fg=accent}
+\setbeamercolor{block body}{bg=soft}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}
+
+% ---------- SAFE TRANSITION FALLBACK ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- PLACEHOLDER BOX FOR FIGURES ----------
+\newcommand{\placeholderbox}[2][0.82\linewidth]{%
+  \begin{center}
+    \fbox{\begin{minipage}[c][0.46\textheight][c]{#1}
+      \centering \vspace{0.3em}
+      \textbf{#2}\\[0.6em]
+      \emph{Insert figure/diagram here later.}
+    \end{minipage}}
+  \end{center}
+}
+
+% ---------- TITLE ----------
+\title{\textbf{Labour Markets and the Future of Work: Unemployment \vspace{.5cm}\\  }}
+\subtitle{ {\large ECON 204 - Contemporary Economic Issues}}
+%\institute{UNBC}
+\author{Muhebullah Karimzada}
+\date{Winter 2026}
+
+
+
+\begin{document}
+
+% ============================================================
+% TITLE
+% ============================================================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ============================================================
+\begin{frame}{Chapter Outline}
+\transfade
+\begin{itemize}
+  \item \textbf{5.1} Measuring the Unemployment Rate and the Labour Force Participation Rate
+  \item \textbf{5.2} Types of Unemployment
+  \item \textbf{5.3} Explaining Unemployment
+
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section*{Why Unemployment and Inflation Matter}
+% ============================================================
+
+\begin{frame}{Measuring Unemployment and Inflation}
+\transfade
+\begin{itemize}
+
+  \item This lecture: how to measure
+  \begin{itemize}
+    \item \textbf{Unemployment} in the labour market, and
+    \item \textbf{Inflation} in the goods and services market.
+  \end{itemize}
+  \item Both are central for:
+  \begin{itemize}
+    \item macroeconomic policy,
+    \item evaluating economic performance,
+    \item everyday decisions of households and firms.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{5.1 Measuring the Unemployment Rate and Labour Force Participation}
+% ============================================================
+
+\begin{frame}{5.1 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Understand how unemployment, labour force participation, and employment rates are measured.
+\end{block}
+\begin{itemize}
+  \item Canada is a large economy – millions of people, changing jobs all the time.
+  \item We cannot track every person individually in real time.
+  \item Instead, Statistics Canada uses \textbf{survey data} to estimate:
+  \begin{itemize}
+    \item employment,
+    \item unemployment,
+    \item labour force participation,
+    \item employment-population ratio.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Labour Force and Unemployment}
+\transfade
+\begin{itemize}
+  \item \textbf{Labour force:} sum of \alert{employed} and \alert{unemployed} workers in the economy.
+  \item \textbf{Unemployment rate:} percentage of the labour force that is unemployed:
+  \[
+    \text{Unemployment rate} = 
+    \frac{\text{Number of unemployed}}{\text{Labour force}} \times 100.
+  \]
+  \item These are monthly headline numbers often reported in the news.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Labour Force Survey (LFS)}
+\transfade
+\begin{itemize}
+  \item Each month, Statistics Canada conducts the \textbf{Labour Force Survey (LFS)}.
+  \item Roughly \textbf{56,000 households} are selected to be representative.
+  \item Members of \textbf{working age} (15 years and older) are:
+  \begin{itemize}
+    \item asked about employment status, and
+    \item asked about recent \textbf{job search} activities.
+  \end{itemize}
+  \item Based on the answers, each person is classified as:
+  \begin{itemize}
+    \item \textbf{Employed}
+    \item \textbf{Unemployed}
+    \item \textbf{Not in the labour force}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Definitions: Employed, Unemployed, Not in the Labour Force}
+\transfade
+\begin{itemize}
+  \item \textbf{Employed:}
+  \begin{itemize}
+    \item Did paid work, or
+    \item Did unpaid work for a family business, or
+    \item Worked for themselves, or
+    \item Were temporarily away from their jobs (vacation, illness, strike).
+  \end{itemize}
+  \item \textbf{Unemployed:}
+  \begin{itemize}
+    \item Not currently at work,
+    \item \emph{Available} for work,
+    \item Actively looked for work in the previous four weeks.
+  \end{itemize}
+  \item \textbf{Not in the labour force:}
+  \begin{itemize}
+    \item Neither employed nor unemployed (students not seeking work, retirees, etc.).
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 5.1 -- Employment Status of the Working-Age Population}
+\centering
+
+
+\includegraphics[width=0.71\linewidth]{Fig05-001}.
+\end{frame}
+
+\begin{frame}{Labour Force Participation Rate}
+\transfade
+\begin{itemize}
+  \item \textbf{Labour force participation rate:}
+  \[
+    \text{LFPR} = 
+    \frac{\text{Labour force}}{\text{Working-age population}} \times 100.
+  \]
+  \item Measures what fraction of working-age people are \textbf{actively} in the labour market.
+  \item Helps us distinguish:
+  \begin{itemize}
+    \item low unemployment because people have jobs,
+    \item vs.\ low unemployment because many have given up looking for work.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Employment-Population Ratio}
+\transfade
+\begin{itemize}
+  \item \textbf{Employment-population ratio:}
+  \[
+    \text{Employment-population ratio} =
+    \frac{\text{Number employed}}{\text{Working-age population}} \times 100.
+  \]
+  \item This tells us how many people \textbf{actually have jobs}, relative to the working-age population.
+  \item Useful indicator of the \textbf{health of the labour market} during expansions and recessions.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{Problems with Measuring the Unemployment Rate}
+\transfade
+\begin{itemize}
+  \item The measured unemployment rate is \textbf{not perfect}.
+  \item It may \alert{understate} true unemployment:
+  \begin{itemize}
+    \item Distinguishing between \textbf{unemployed} and \textbf{not in the labour force} can be difficult.
+    \item \textbf{Discouraged workers}: people who have stopped looking for work but would take a job if offered one.
+    \item It does not measure intensity of employment — e.g., part-time vs.\ full-time, underemployment.
+  \end{itemize}
+  \item It may \alert{overstate} unemployment:
+  \begin{itemize}
+    \item Some people may claim to be unemployed while not seriously looking, to keep benefits or avoid taxes.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 5.2 -- Trends in Labour Force Participation}
+\centering
+
+
+\includegraphics[width=0.65\linewidth]{Fig05-002}.
+\end{frame}
+
+
+\begin{frame}{Job Creation and Job Destruction}
+\transfade
+\begin{itemize}
+  \item The labour market is \textbf{dynamic}:
+  \begin{itemize}
+    \item Firms constantly create and destroy jobs.
+  \end{itemize}
+  \item Example (from the slide):
+  \begin{itemize}
+    \item In January 2022, there were 890,500 more people employed than in January 2021.
+    \item But the number of jobs \textbf{created} was much larger, because many jobs were also \textbf{destroyed}.
+  \end{itemize}
+  \item Month to month, some provinces can see large job losses even while the national economy is improving.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{5.2 Types of Unemployment}
+% ============================================================
+
+\begin{frame}{5.2 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Identify and understand the four types of unemployment.
+\end{block}
+\begin{itemize}
+  \item Unemployment is not a single phenomenon.
+  \item To interpret unemployment correctly, we distinguish:
+  \begin{itemize}
+    \item frictional,
+    \item structural,
+    \item cyclical,
+    \item seasonal unemployment.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 5.3 -- The Unemployment Rate in Canada }
+\centering
+
+
+\includegraphics[width=0.65\linewidth]{Fig05-003}.
+\end{frame}
+
+\begin{frame}{Four Types of Unemployment}
+\transfade
+\begin{itemize}
+  \item \textbf{Frictional unemployment}
+  \item \textbf{Structural unemployment}
+  \item \textbf{Cyclical unemployment}
+  \item \textbf{Seasonal unemployment}
+  \item Each type has different causes and different policy implications.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Frictional Unemployment}
+\transfade
+\begin{itemize}
+  \item \textbf{Frictional unemployment:}
+  \begin{itemize}
+    \item Short-term unemployment that arises from the process of matching workers with jobs.
+  \end{itemize}
+  \item Mainly due to \textbf{job search}:
+  \begin{itemize}
+    \item People entering or re-entering the labour force.
+    \item People between jobs.
+  \end{itemize}
+  \item Some frictional unemployment is \alert{unavoidable}:
+  \begin{itemize}
+    \item People need time to learn about opportunities and find good matches.
+  \end{itemize}
+  \item In fact, some frictional unemployment can \alert{increase} economic efficiency:
+  \begin{itemize}
+    \item It allows workers to find jobs that better fit their skills and preferences.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example: Frictional Unemployment}
+\transfade
+\begin{itemize}
+  \item A recent university graduate spends three months searching for a job in their field.
+  \item They are counted as \textbf{unemployed}, but this is frictional unemployment.
+  \item From the economy’s perspective:
+  \begin{itemize}
+    \item It is better for them to search a bit longer and find a suitable, productive job than to accept the first random job.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Structural Unemployment}
+\transfade
+\begin{itemize}
+  \item \textbf{Structural unemployment:}
+  \begin{itemize}
+    \item Unemployment that arises from a persistent \alert{mismatch} between the skills and attributes of workers and the requirements of jobs.
+  \end{itemize}
+  \item Often associated with:
+  \begin{itemize}
+    \item technological change,
+    \item changes in demand for certain industries,
+    \item regional shifts in economic activity.
+  \end{itemize}
+  \item Structural unemployment tends to be \textbf{longer-term}:
+  \begin{itemize}
+    \item Workers may need retraining or relocation.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example: Structural Unemployment}
+\transfade
+\begin{itemize}
+  \item A manufacturing worker loses their job due to automation.
+  \item Their skills do not easily transfer to growing sectors such as IT or health care.
+  \item Without retraining, they may remain unemployed for a long period.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Cyclical Unemployment}
+\transfade
+\begin{itemize}
+  \item \textbf{Cyclical unemployment:}
+  \begin{itemize}
+    \item Unemployment caused by a \alert{business cycle recession}.
+  \end{itemize}
+  \item When aggregate demand falls:
+  \begin{itemize}
+    \item firms reduce output,
+    \item and lay off workers even if workers are skilled and jobs are otherwise a good match.
+  \end{itemize}
+  \item Example:
+  \begin{itemize}
+    \item In February 2009, Chrysler temporarily closed its assembly plant in Brampton, Ontario, due to low sales.
+    \item Laid-off employees experienced \textbf{cyclical unemployment}.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Seasonal Unemployment}
+\transfade
+\begin{itemize}
+  \item \textbf{Seasonal unemployment:}
+  \begin{itemize}
+    \item Unemployment due to seasonal factors such as weather or calendar patterns.
+  \end{itemize}
+  \item Examples:
+  \begin{itemize}
+    \item Construction and tourism often slow in winter.
+    \item Agriculture, fisheries, and some retail sectors are highly seasonal.
+  \end{itemize}
+  \item Seasonal unemployment can make the measured unemployment rate:
+  \begin{itemize}
+    \item artificially high in winter,
+    \item artificially low in summer.
+  \end{itemize}
+  \item To address this, Statistics Canada provides:
+  \begin{itemize}
+    \item \textbf{seasonally adjusted} series (seasonal effects removed),
+    \item \textbf{unadjusted} series (seasonal effects included).
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Full Employment and the Natural Rate of Unemployment}
+\transfade
+\begin{itemize}
+  \item Even in good times, there is always some unemployment.
+  \item When all unemployment is due to frictional and structural factors, the economy is at \textbf{full employment}.
+  \item \textbf{Natural rate of unemployment:}
+  \begin{itemize}
+    \item The normal rate of unemployment, consisting of frictional and structural unemployment.
+  \end{itemize}
+  \item Estimates for Canada suggest a natural rate around \textbf{5.6--6.7\%} in recent years.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{5.3 Explaining Unemployment}
+% ============================================================
+
+\begin{frame}{5.3 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Explain what determines the unemployment rate and how policy affects it.
+\end{block}
+\begin{itemize}
+  \item Governments often try to influence unemployment directly and indirectly.
+  \item Some policies \alert{reduce} frictional or structural unemployment.
+  \item Other policies can unintentionally \alert{increase} unemployment.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Government Policies and Unemployment}
+\transfade
+\begin{itemize}
+  \item Examples of policies that can \textbf{reduce unemployment}:
+  \begin{itemize}
+    \item Retraining programs (e.g., Ontario’s “Better Jobs Ontario”) to reduce structural unemployment.
+    \item Hiring subsidies or job search assistance to reduce frictional unemployment.
+  \end{itemize}
+  \item Examples of policies that might \textbf{increase unemployment}:
+  \begin{itemize}
+    \item Employment insurance (if very generous),
+    \item Minimum wage laws that raise the cost of hiring,
+    \item Some labour market regulations.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Employment Insurance (EI)}
+\transfade
+\begin{itemize}
+  \item Suppose you lose your job. You can:
+  \begin{itemize}
+    \item take a new low-paying job immediately, or
+    \item search for a better job that matches your skills.
+  \end{itemize}
+  \item If \textbf{employment insurance} payments are available, you are more likely to choose the second option.
+  \item In Canada, EI replaces about \textbf{55\%} of earnings up to a weekly maximum (e.g., \$595 per week in 2021).
+  \item EI effects:
+  \begin{itemize}
+    \item Allows more time for job search \(\Rightarrow\) better matches, higher productivity.
+    \item But also tends to \alert{increase} the average duration of unemployment.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Minimum Wage Laws}
+\transfade
+\begin{itemize}
+  \item Minimum wage laws are designed to help low-income workers.
+  \item Raising the minimum wage increases the \textbf{cost of labour}.
+  \item Firms may respond by:
+  \begin{itemize}
+    \item hiring fewer workers,
+    \item substituting capital for labour,
+    \item reducing hours.
+  \end{itemize}
+  \item In Canada, minimum wages vary by province:
+\end{itemize}
+\small
+\begin{tabular}{l c}
+\toprule
+Region & Example Minimum Wage (June 2022) \\
+\midrule
+Nunavut & \$16.00/hour \\
+New Brunswick & \$12.75/hour \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.4em}
+\begin{itemize}
+  \item Studies suggest a 10\% increase in the minimum wage might reduce teenage employment by about 2\%.
+  \item Overall effect on total unemployment is believed to be \textbf{relatively small}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Labour Unions}
+\transfade
+\begin{itemize}
+  \item \textbf{Labour unions:} organizations of workers that bargain with employers for:
+  \begin{itemize}
+    \item higher wages,
+    \item better working conditions.
+  \end{itemize}
+  \item Unions can push wages above the competitive level for their members.
+  \item In Canada:
+  \begin{itemize}
+    \item about \textbf{30.9\%} of workers belonged to a union by the end of 2021,
+    \item roughly \textbf{77.2\%} of government employees are unionized,
+    \item only about \textbf{15.3\%} of private-sector workers are unionized.
+  \end{itemize}
+  \item Conclusion: unions likely have \textbf{limited impact} on overall unemployment in Canada.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Efficiency Wages}
+\transfade
+\begin{itemize}
+  \item \textbf{Efficiency wage:} a wage above the market-clearing level that firms pay to increase workers’ productivity.
+  \item Why pay more than necessary?
+  \begin{itemize}
+    \item Higher wages can reduce worker turnover.
+    \item They can increase effort and reduce shirking.
+    \item They can attract higher-quality applicants.
+  \end{itemize}
+  \item But paying an efficiency wage means:
+  \begin{itemize}
+    \item firms hire fewer workers,
+    \item some workers who want jobs at that wage cannot find them.
+  \end{itemize}
+  \item This contributes to \textbf{persistent unemployment}, even when the economy is not in recession.
+\end{itemize}
+\end{frame}
+
+
+% ============================================================
+\section*{Chapter Summary}
+% ============================================================
+
+\begin{frame}{Summary}
+\transfade
+\begin{itemize}
+  \item The unemployment rate, labour force participation rate, and employment-population ratio summarize labour market conditions.
+  \item Unemployment has four main types: frictional, structural, cyclical, and seasonal.
+  \item Policies such as EI, minimum wage laws, unions, and efficiency wages affect unemployment in different ways.
+ 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge \textbf{Thank you!}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,423 @@
+\documentclass[11pt]{book}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{palatino}
+\usepackage{setspace}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{natbib}
+\usepackage{titlesec}
+\usepackage{hyperref}
+
+% --- Blue-accent styling ---
+\definecolor{blueaccent}{RGB}{22,70,140}
+\definecolor{lightblue}{RGB}{230,240,255}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blueaccent,
+  citecolor=blueaccent,
+  urlcolor=blueaccent
+}
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{blueaccent}}{}{0pt}{\Huge}
+\titleformat{\section}
+  {\large\bfseries\color{blueaccent}}{}{0pt}{}
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{blueaccent}}{}{0pt}{}
+
+\setstretch{1.2}
+
+% --- Custom boxes ---
+\tcbset{
+  colback=lightblue,
+  colframe=blueaccent,
+  fonttitle=\bfseries,
+  boxrule=0.8pt,
+  arc=3pt,
+  left=6pt,right=6pt,top=4pt,bottom=4pt
+}
+
+\newtcolorbox{definitionbox}[1][]{title=Definition,#1}
+\newtcolorbox{examplebox}[1][]{title=Example,#1}
+\newtcolorbox{casebox}[1][]{title=Case Study,#1}
+\newtcolorbox{keytermsbox}[1][]{title=Key Terms,#1}
+
+\begin{document}
+
+\chapter*{Behavioral Economics: Understanding Human Decision-Making}
+\addcontentsline{toc}{chapter}{Behavioral Economics: Understanding Human Decision-Making}
+
+\begin{center}
+\textbf{By:} Muhebullah Karimzada\\
+\textit{School of Economics, University of Northern British Columbia} \\
+\vspace{1em}
+\textbf{Course:} Introduction to Behavioral Economics
+\end{center}
+
+\vspace{1em}
+
+\noindent
+\textbf{Overview:}  
+Behavioral economics integrates insights from psychology and economics to better understand how individuals actually make decisions. While traditional economics assumes that individuals are perfectly rational and self-interested, behavioral economics acknowledges that people are often emotional, biased, and influenced by social context. This chapter introduces the foundations, key models, and real-world applications of behavioral economics.
+
+---
+
+\section*{The Birth of Behavioral Economics}
+
+Traditional economic theory has long been built on the model of the ``rational actor''—a decision-maker who processes information perfectly, has stable preferences, and maximizes utility. This framework, known as \textit{Homo Economicus}, underlies models of consumer choice, market equilibrium, and welfare analysis. However, real human behavior often deviates from these assumptions.
+
+Early psychologists and economists began to notice systematic patterns of deviation. Herbert Simon, in the 1950s, introduced the concept of \textbf{bounded rationality}, arguing that humans operate under cognitive limitations—they cannot process every piece of information or evaluate every option. Instead, they use rules of thumb or heuristics to make decisions that are ``good enough'' rather than optimal.
+
+\begin{definitionbox}
+\textbf{Bounded Rationality:} The idea that individuals are rational within limits—they seek satisfactory solutions given constraints on information, time, and cognitive ability (\citealp{Simon1955}).
+\end{definitionbox}
+
+The discipline matured significantly in the 1970s through the pioneering work of Daniel Kahneman and Amos Tversky. Their research on heuristics and biases demonstrated that human judgment systematically departs from the predictions of rational models. Later, Richard Thaler integrated these insights into economics, laying the groundwork for a unified behavioral framework that explained real-world anomalies such as inconsistent savings, procrastination, and loss aversion.
+
+---
+
+\section*{Psychology Meets Economics}
+
+Behavioral economics bridges two fields that were historically separate: economics, which emphasizes rational decision-making, and psychology, which studies emotions, perception, and cognitive limitations. The combination offers a richer understanding of behavior.
+
+\begin{keytermsbox}
+\textbf{Key Terms:} \\
+\textbf{Cognitive Bias} – A systematic deviation from rational judgment. \\
+\textbf{Heuristic} – A mental shortcut or rule of thumb used to simplify decision-making. \\
+\textbf{Utility} – The satisfaction or benefit derived from consumption or outcomes. \\
+\textbf{Nudge} – A subtle change in choice architecture that alters behavior predictably without restricting options.
+\end{keytermsbox}
+
+\begin{examplebox}
+\textbf{Example:} A shopper deciding among dozens of cereal brands does not calculate the expected utility of each. Instead, they may choose the one they always buy, or the one labeled ``healthy.'' This is an instance of satisficing—a boundedly rational decision.
+\end{examplebox}
+
+---
+
+\section*{Heuristics and Biases}
+
+In their landmark paper ``Judgment under Uncertainty'' (\citealp{Kahneman1974}), Kahneman and Tversky identified several key heuristics that shape how people make probabilistic judgments.
+
+\subsection*{Representativeness Heuristic}
+People evaluate the probability that an object or event belongs to a category by assessing how similar it is to a prototype.
+
+\begin{examplebox}
+\textbf{Example:} If told that ``Linda is outspoken, bright, and concerned about social justice,'' many people rate ``Linda is a feminist bank teller'' as more probable than ``Linda is a bank teller,'' violating basic probability laws. This is known as the \textbf{conjunction fallacy}.
+\end{examplebox}
+
+\subsection*{Availability Heuristic}
+People judge the likelihood of an event based on how easily examples come to mind. Dramatic, recent, or vivid events are overestimated.
+
+\begin{examplebox}
+\textbf{Example:} After watching news about airplane crashes, individuals may perceive air travel as more dangerous than it is, even though statistics show driving is far riskier.
+\end{examplebox}
+
+\subsection*{Anchoring and Adjustment}
+When people start from an initial value (the ``anchor'') and adjust insufficiently, their final estimate remains biased toward the anchor.
+
+\begin{examplebox}
+\textbf{Example:} In one experiment, participants spun a wheel rigged to land on 10 or 65, then were asked if the percentage of African countries in the UN was higher or lower than that number. Their final guesses were heavily influenced by the arbitrary anchor.
+\end{examplebox}
+
+These heuristics illustrate that human cognition relies on simplification strategies, which can lead to predictable errors. Such patterns form the empirical backbone of behavioral economics.
+
+---
+
+\section*{Prospect Theory: A New Model of Choice under Risk}
+
+One of the most influential contributions to behavioral economics is \textbf{Prospect Theory}, developed by Kahneman and Tversky (1979). It replaces the expected utility model by incorporating how people actually perceive gains, losses, and probabilities.
+
+\begin{definitionbox}
+\textbf{Prospect Theory:} A model of decision-making under risk in which people evaluate outcomes relative to a reference point and exhibit loss aversion and nonlinear probability weighting (\citealp{Kahneman1979}).
+\end{definitionbox}
+
+Core Concepts
+
+\textbf{Reference Dependence:}  
+Individuals evaluate outcomes as gains or losses relative to a reference point—often the status quo or an expected outcome.
+
+\textbf{Loss Aversion:}  
+Losses hurt more than equivalent gains feel good. The disutility of losing \$100 is roughly twice as strong as the utility of gaining \$100.
+
+\textbf{Diminishing Sensitivity:}  
+The value function is concave for gains and convex for losses, meaning that the psychological impact of changes diminishes as the amounts grow larger.
+
+\textbf{Probability Weighting:}  
+People overweigh small probabilities and underweigh large ones. This explains why individuals both buy lottery tickets and insurance.
+
+\begin{examplebox}
+\textbf{Example:}  
+An investor might refuse to sell a losing stock because the pain of realizing a loss outweighs the potential gain from reallocating funds—a phenomenon known as the ``disposition effect.''
+\end{examplebox}
+
+The prospect theory value function can be expressed as:
+\[
+v(x) = 
+\begin{cases}
+(x - r)^{\alpha}, & \text{if } x \ge r, \\
+-\lambda (r - x)^{\beta}, & \text{if } x < r,
+\end{cases}
+\]
+where \(r\) is the reference point, \(\lambda > 1\) captures loss aversion, and \(0 < \alpha, \beta < 1\) indicate diminishing sensitivity.
+
+---
+
+\begin{casebox}
+\textbf{Case Study: Framing and Organ Donation}  
+
+In countries where organ donation is the \textbf{default option} (opt-out system), participation rates exceed 90\%. In opt-in systems, where individuals must actively consent, rates are often below 20\%.  
+This dramatic difference arises not from preferences but from the \textbf{default effect}: people stick with the status quo due to inertia and perceived endorsement.  
+Behavioral economists have used this insight to advocate for policy designs that align default options with socially beneficial outcomes (\citealp{Johnson2003}).
+\end{casebox}
+
+---
+
+\section*{Framing and Mental Accounting}
+
+Richard Thaler expanded on these insights with the concept of \textbf{mental accounting}—the tendency for people to categorize money into separate “accounts” based on subjective criteria, such as source or intended use.
+
+\begin{examplebox}
+\textbf{Example:}  
+A person who loses a \$20 movie ticket may skip the show, thinking they have already ``spent'' that money. But if they lose \$20 in cash before buying the ticket, they still go—the mental accounting differs even though total wealth is unchanged.
+\end{examplebox}
+
+Framing effects demonstrate that how choices are presented influences decisions. People respond differently to equivalent statements such as “90\% fat-free” versus “10\% fat,” even though the information is identical.
+
+\begin{casebox}
+\textbf{Case Study: The Asian Disease Problem}  
+
+In a famous experiment, participants were told an outbreak would kill 600 people.  
+- When framed in terms of lives \textbf{saved}, most chose the safe option (Program A: 200 saved).  
+- When framed in terms of \textbf{lives lost}, most preferred the risky option (Program C: 400 die).  
+
+This reversal violates expected utility theory but is consistent with prospect theory: people are risk-averse in gains and risk-seeking in losses (\citealp{Tversky1981}).
+\end{casebox}
+
+---
+
+% ---------- CONTINUATION OF CHAPTER ----------
+\section*{Time Inconsistency and Self-Control}
+
+Even when individuals know what is best for them, they often fail to act accordingly. This inconsistency between plans and actions is known as \textbf{time inconsistency}. The standard exponential discounting model assumes consistent preferences over time, but real people display a strong bias for immediate gratification.
+
+\begin{definitionbox}
+\textbf{Present Bias:} The tendency to give stronger weight to payoffs that are closer to the present time when considering trade-offs between two future moments (\citealp{Laibson1997}).
+\end{definitionbox}
+
+Hyperbolic Discounting
+
+Instead of discounting the future exponentially, behavioral economists use the \textbf{hyperbolic discounting} model:
+
+\[
+U = u(c_0) + \beta \sum_{t=1}^{T} \delta^t u(c_t)
+\]
+
+where \(0 < \beta \le 1\) captures present bias and \(0 < \delta < 1\) is the standard discount factor.  
+When \(\beta < 1\), individuals are overly impatient in the short run but patient in the long run.
+
+\begin{examplebox}
+\textbf{Example:}  
+A student plans to start writing an essay a week in advance but ends up watching movies until the night before the deadline. The intention was sincere, but the present reward of relaxation outweighed the distant cost of procrastination.
+\end{examplebox}
+
+Commitment Devices
+
+Because people recognize their self-control problems, they often adopt mechanisms to constrain their future behavior.
+
+\begin{casebox}
+\textbf{Case Study: Save More Tomorrow}  
+
+Richard Thaler and Shlomo Benartzi (2004) designed a retirement savings program where employees commit in advance to allocate a portion of future salary increases toward savings.  
+The program exploits inertia and loss aversion: since contributions rise only when income increases, workers rarely feel a ``loss.''  
+Field evidence shows savings rates nearly tripled among participants.
+\end{casebox}
+
+---
+
+\section*{Social Preferences and Fairness}
+
+Classical economics assumes individuals care only about their own payoffs, yet experiments show that fairness, altruism, and reciprocity play crucial roles in economic life.
+
+\begin{definitionbox}
+\textbf{Social Preferences:} Preferences that incorporate the welfare of others into one’s own utility function, such as fairness, altruism, or inequality aversion (\citealp{FehrSchmidt1999}).
+\end{definitionbox}
+
+Experimental Evidence
+
+\textbf{The Ultimatum Game:}  
+One player offers a split of \$10; the other can accept or reject. Rejections of ``unfair'' offers (below 20–30 %) demonstrate a willingness to sacrifice income to punish unfairness.
+
+\textbf{The Dictator Game:}  
+Without fear of rejection, many dictators still give 20–30 %—evidence of intrinsic fairness.
+
+\textbf{Public Goods Games:}  
+Players often contribute voluntarily to group projects, especially when cooperation norms or punishment are present.
+
+\begin{examplebox}
+\textbf{Example:}  
+Charitable giving and tipping are real-world analogues. Even when there is no material gain, individuals act generously to maintain self-image or social reputation.
+\end{examplebox}
+
+---
+
+\section*{Identity and Motivation}
+
+George Akerlof and Rachel Kranton (2010) introduced the concept of \textbf{identity economics}, suggesting that people derive utility from behaving consistently with the norms and ideals of their social identity.
+
+\[
+U = U(a, I)
+\]
+where \(a\) represents actions and \(I\) the individual’s identity.
+
+\begin{examplebox}
+\textbf{Example:}  
+A nurse may exert extra effort not for monetary reward but because caring aligns with their self-concept as a compassionate professional.
+\end{examplebox}
+
+Behavior is also shaped by \textbf{intrinsic} and \textbf{extrinsic} motivation. Paying individuals for tasks they already enjoy can sometimes \textit{crowd out} intrinsic motivation, a phenomenon observed in volunteer work and education incentives.
+
+---
+
+\section*{Nudging and Choice Architecture}
+
+Richard Thaler and Cass Sunstein’s (2008) concept of \textbf{nudging} revolutionized public policy by showing that small design changes can steer choices without coercion.
+
+\begin{definitionbox}
+\textbf{Nudge:} Any aspect of the choice architecture that alters people’s behavior in a predictable way without forbidding options or significantly changing economic incentives.
+\end{definitionbox}
+
+Principles of Effective Nudges
+1. \textbf{Default Rules} – People tend to accept pre-selected options (e.g., organ donation defaults).  
+2. \textbf{Simplification and Salience} – Making forms and information easy to understand increases compliance.  
+3. \textbf{Feedback and Social Norms} – Providing comparative information (e.g., energy usage vs. neighbors).  
+4. \textbf{Framing} – Presenting outcomes as gains or losses affects behavior.
+
+\begin{casebox}
+\textbf{Case Study: Energy Conservation in the U.S.}  
+
+The company \textit{Opower} sent households energy bills comparing their consumption to that of their neighbors.  
+High-usage households reduced electricity use by 2–4 %, equivalent to removing thousands of cars from the road annually.  
+This demonstrates the power of social-norm feedback (\citealp{Allcott2011}).
+\end{casebox}
+
+---
+
+\section*{Applications in Policy and Business}
+
+Behavioral insights are now used in domains ranging from public health to finance.
+
+\begin{itemize}
+\item \textbf{Finance:} Automatic enrollment in retirement plans boosts participation dramatically.  
+\item \textbf{Health:} Framing vaccines as ``protecting your family'' rather than ``avoiding illness'' increases uptake.  
+\item \textbf{Tax Compliance:} Letters reminding taxpayers that ``most people have already paid'' raise compliance rates.  
+\item \textbf{Education:} Simple text reminders to parents improve attendance and homework submission.  
+\end{itemize}
+
+\begin{casebox}
+\textbf{Case Study: Behavioral Insights Team (BIT), UK}  
+
+Established in 2010, the UK’s BIT applied behavioral science to government policy.  
+Early trials saved millions of pounds by improving tax collection, organ donation, and court fine payments.  
+The success of BIT inspired similar teams in the U.S., Canada, and other countries.
+\end{casebox}
+
+---
+
+\section*{Critiques and Ethical Considerations}
+
+While behavioral economics has transformed policy, it faces several criticisms.
+
+\textbf{1. Paternalism:}  
+Critics argue that nudging infringes on autonomy by manipulating choices, even if intentions are benevolent.
+
+\textbf{2. Cultural Context:}  
+Many findings are derived from Western, educated populations; behavior may differ across cultures.
+
+\textbf{3. Replicability:}  
+Some classic experiments have proven difficult to replicate under modern standards.
+
+\textbf{4. Bounded Rationality of Policymakers:}  
+Designing effective nudges requires policymakers who themselves are subject to biases.
+
+\begin{examplebox}
+\textbf{Example:}  
+A poorly designed nudge—such as overly complex ``green'' energy options—can create confusion or mistrust, undermining policy goals.
+\end{examplebox}
+
+---
+
+\section*{From Rational to Behavioral Economics: A Summary}
+
+\begin{center}
+\begin{tabular}{p{4cm}p{5cm}p{6cm}}
+\hline
+\textbf{Concept} & \textbf{Traditional Economics} & \textbf{Behavioral Economics} \\
+\hline
+Decision Making & Rational optimization & Heuristics and bounded rationality \\
+Preferences & Stable and self-interested & Context-dependent, social preferences \\
+Time & Consistent discounting & Present bias and self-control issues \\
+Risk & Expected utility theory & Prospect theory and loss aversion \\
+Policy Tools & Incentives and prices & Nudges and choice architecture \\
+\hline
+\end{tabular}
+\end{center}
+
+---
+
+\section*{Conclusion}
+
+Behavioral economics provides a richer and more realistic view of human decision-making.  
+By integrating psychology with economics, it reveals why individuals sometimes make choices that appear irrational but are, in fact, predictably human.  
+Its applications—from personal finance to public policy—demonstrate that understanding behavior can improve welfare without restricting freedom.  
+As the field evolves, future research will refine the balance between nudging and respecting individual autonomy.
+
+---
+
+\section*{References}
+\begingroup
+\renewcommand{\section}[2]{}%
+\begin{thebibliography}{}
+
+\bibitem[Allcott(2011)]{Allcott2011}
+Allcott, H. (2011). ``Social norms and energy conservation.'' \textit{Journal of Public Economics}, 95(9–10), 1082–1095.
+
+\bibitem[Fehr and Schmidt(1999)]{FehrSchmidt1999}
+Fehr, E., \& Schmidt, K. M. (1999). ``A theory of fairness, competition, and cooperation.'' \textit{Quarterly Journal of Economics}, 114(3), 817–868.
+
+\bibitem[Johnson and Goldstein(2003)]{Johnson2003}
+Johnson, E. J., \& Goldstein, D. (2003). ``Do defaults save lives?'' \textit{Science}, 302(5649), 1338–1339.
+
+\bibitem[Kahneman and Tversky(1974)]{Kahneman1974}
+Kahneman, D., \& Tversky, A. (1974). ``Judgment under uncertainty: Heuristics and biases.'' \textit{Science}, 185(4157), 1124–1131.
+
+\bibitem[Kahneman and Tversky(1979)]{Kahneman1979}
+Kahneman, D., \& Tversky, A. (1979). ``Prospect theory: An analysis of decision under risk.'' \textit{Econometrica}, 47(2), 263–291.
+
+\bibitem[Laibson(1997)]{Laibson1997}
+Laibson, D. (1997). ``Golden eggs and hyperbolic discounting.'' \textit{Quarterly Journal of Economics}, 112(2), 443–478.
+
+\bibitem[Simon(1955)]{Simon1955}
+Simon, H. A. (1955). ``A behavioral model of rational choice.'' \textit{Quarterly Journal of Economics}, 69(1), 99–118.
+
+\bibitem[Thaler and Benartzi(2004)]{ThalerBenartzi2004}
+Thaler, R. H., \& Benartzi, S. (2004). ``Save More Tomorrow™: Using behavioral economics to increase employee saving.'' \textit{Journal of Political Economy}, 112(S1), S164–S187.
+
+\bibitem[Thaler and Sunstein(2008)]{ThalerSunstein2008}
+Thaler, R. H., \& Sunstein, C. R. (2008). \textit{Nudge: Improving decisions about health, wealth, and happiness.} Yale University Press.
+
+\bibitem[Tversky and Kahneman(1981)]{Tversky1981}
+Tversky, A., \& Kahneman, D. (1981). ``The framing of decisions and the psychology of choice.'' \textit{Science}, 211(4481), 453–458.
+
+\bibitem[Akerlof and Kranton(2010)]{AkerlofKranton2010}
+Akerlof, G. A., \& Kranton, R. E. (2010). \textit{Identity Economics: How our identities shape our work, wages, and well-being.} Princeton University Press.
+
+\end{thebibliography}
+\endgroup
+
+\end{document}
+
+
+\end{document}

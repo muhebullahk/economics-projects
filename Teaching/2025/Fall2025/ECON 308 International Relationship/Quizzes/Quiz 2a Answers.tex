@@ -1,0 +1,152 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{Solving for $L_M$ Step-by-Step}
+\author{Specific-Factors Model Example}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Setup}
+
+We have the production functions:
+\[
+Q_M = K^{1/3}L_M^{2/3}, \qquad Q_F = T^{1/2}L_F^{1/2}, \qquad L_F = 90 - L_M.
+\]
+
+Given endowments:
+\[
+K=64 \;(\Rightarrow K^{1/3}=4), \qquad T=100 \;(\Rightarrow T^{1/2}=10).
+\]
+
+The equilibrium condition for labor mobility is:
+\[
+P_M \cdot MPL_M = P_F \cdot MPL_F.
+\]
+
+The marginal products are:
+\[
+MPL_M = \frac{2}{3}K^{1/3}L_M^{-1/3} = \frac{8}{3}L_M^{-1/3}, \qquad
+MPL_F = \frac{1}{2}T^{1/2}L_F^{-1/2} = 5(90-L_M)^{-1/2}.
+\]
+
+---
+
+\section*{Case 1: Initial Prices $P_M=2$, $P_F=1$}
+
+\noindent Step 1: Substitute into the equilibrium condition
+\[
+2 \cdot \frac{8}{3}L_M^{-1/3} = 1 \cdot 5(90 - L_M)^{-1/2},
+\]
+which simplifies to
+\[
+\frac{16}{3}L_M^{-1/3} = 5(90 - L_M)^{-1/2}.
+\]
+
+\bigskip
+\noindent Step 2: Take reciprocals to make exponents positive
+\[
+\frac{3}{16}L_M^{1/3} = \frac{1}{5}(90 - L_M)^{1/2}.
+\]
+
+\bigskip
+\noindent Step 3: Clear constants and square both sides to eliminate the square root
+\[
+\left(\frac{15}{16}\right)^2 L_M^{2/3} = (90 - L_M),
+\]
+or equivalently,
+\[
+\frac{225}{256}L_M^{2/3} = 90 - L_M.
+\]
+
+\bigskip
+\noindent Step 4: Substitute $y = L_M^{1/3}$ so that $L_M = y^3$ and $L_M^{2/3} = y^2$
+\[
+\frac{225}{256}y^2 = 90 - y^3 \quad \Rightarrow \quad y^3 + \frac{225}{256}y^2 - 90 = 0.
+\]
+
+\bigskip
+\noindent Step 5: Solve the cubic numerically  
+Testing values:
+
+\[
+\begin{aligned}
+y=4.20 &\Rightarrow f(y) = 4.20^3 + \frac{225}{256}(4.20)^2 - 90 \approx -0.42,\\
+y=4.22 &\Rightarrow f(y) \approx +0.81.
+\end{aligned}
+\]
+By interpolation, $y \approx 4.2068$ gives $f(y) \approx 0$.
+
+\bigskip
+\noindent Step 6: Compute $L_M$
+\[
+L_M = y^3 \approx (4.2068)^3 \approx 74.45.
+\]
+Hence:
+\[
+\boxed{L_M = 74.45, \quad L_F = 90 - 74.45 = 15.55.}
+\]
+
+---
+
+\section*{Case 2: After Price Increase $P_M=3$, $P_F=1$}
+
+\noindent Step 1: New wage condition
+\[
+3 \cdot \frac{8}{3}L_M^{-1/3} = 5(90 - L_M)^{-1/2} \quad \Rightarrow \quad 8L_M^{-1/3} = 5(90 - L_M)^{-1/2}.
+\]
+
+\bigskip
+\noindent Step 2: Take reciprocals and square
+\[
+\left(\frac{5}{8}\right)^2 L_M^{2/3} = 90 - L_M,
+\]
+\[
+\frac{25}{64}L_M^{2/3} = 90 - L_M.
+\]
+
+\bigskip
+\noindent Step 3: Substitute $y = L_M^{1/3}$ again
+\[
+y^3 + \frac{25}{64}y^2 - 90 = 0.
+\]
+
+\bigskip
+\noindent Step 4: Solve numerically  
+\[
+\begin{aligned}
+y=4.35 &\Rightarrow f(y) \approx -0.28,\\
+y=4.36 &\Rightarrow f(y) \approx +0.33.
+\end{aligned}
+\]
+The root is near $y = 4.3534$.
+
+\bigskip
+\noindent Step 5: Compute $L_M$
+\[
+L_M = y^3 \approx (4.3534)^3 \approx 82.59,
+\]
+so
+\[
+\boxed{L_M = 82.59, \quad L_F = 90 - 82.59 = 7.41.}
+\]
+
+---
+
+\section*{Summary of Results}
+\[
+\begin{array}{lcc}
+\text{Case} & L_M & L_F \\
+\hline
+P_M = 2 & 74.45 & 15.55 \\
+P_M = 3 & 82.59 & 7.41 \\
+\end{array}
+\]
+
+\noindent As $P_M$ rises, labor moves into manufacturing, confirming the positive link between the relative price of $M$ and $L_M$ predicted by the specific-factors model.
+
+\end{document}

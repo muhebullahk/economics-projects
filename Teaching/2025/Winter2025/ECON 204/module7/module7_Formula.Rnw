@@ -1,0 +1,234 @@
+\documentclass[letterpaper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+\usepackage{framed}
+\usepackage{alltt}
+\pdfpagewidth 8.5in
+\pdfpageheight 11.0in
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+
+\usepackage[hmargin=3cm,vmargin=3.5cm]{geometry}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{dcolumn}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage[justification=centering]{caption}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{pbox}
+\newcounter{exer}
+\numberwithin{exer}{section}
+\usepackage{color}
+\usepackage[round]{natbib}
+\bibliographystyle{plainnat}
+
+\pagestyle{fancyplain}
+\usepackage{lastpage}
+\definecolor{hellgrau2}{gray}{.6}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{1pt \color{hellgrau2}}
+\newcommand{\co}{CO\ensuremath{_2} }
+\fancyfoot{}
+\fancyhf{}
+\rfoot{\textbf{Page \thepage\ of \pageref{LastPage}}}
+ \lfoot{\textbf{Econ 102}}
+ \cfoot{\textbf{Module 7: Formulas}}
+
+\usepackage{mdframed}
+\usepackage{ntheorem}
+\theoremstyle{nonumberplain}
+\theorembodyfont{\upshape}
+\definecolor{bisque}{rgb}{1.0, 0.89, 0.77}
+\definecolor{etonblue}{rgb}{0.59, 0.78, 0.64}
+\definecolor{blizzardblue}{rgb}{0.67, 0.9, 0.93}
+\definecolor{cornsilk}{rgb}{1.0, 0.97, 0.86}
+\definecolor{banana}{rgb}{0.98, 0.91, 0.71}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=bisque,ntheorem]{background}{Optional background Information}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=etonblue,ntheorem]{important}{Important}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=cornsilk,ntheorem]{anime}{Suggested Animation}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=banana,ntheorem]{pause}{Pause \& Practice}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=bisque,ntheorem]{devel}{Note to the developers}
+\usepackage{soul}
+\newcommand{\mathcolorbox}[1]{\colorbox{blizzardblue}{$\displaystyle #1$}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\noindent
+ \textsc{\Large ECON 102: Inequality Formulas}\\[.1cm]
+ \begin{center}
+   \line(1,0){450}\\[0.2cm]
+   \end{center}
+
+In this document, we present the most important formulas used in
+Module 7. 
+
+\section*{Income Share}
+
+To illustrate, suppose the population is composed of 20 individuals
+with the following incomes:
+\begin{center}
+<<echo=FALSE, results='asis' >>=
+set.seed(121212)
+x <- matrix(sample(30:200, 20),2,10)
+xs <- matrix(sort(c(x)),2,10, byrow=TRUE)
+library(xtable)
+print(xtable(x, display=c('s', rep('d',10))), floating=FALSE,
+      include.rownames=FALSE, include.colnames=FALSE)
+@ 
+\end{center}
+The first step is to sort the income:
+\begin{center}
+<<echo=FALSE, results='asis' >>=
+print(xtable(xs, display=c('s', rep('d',10))), floating=FALSE,
+      include.rownames=FALSE, include.colnames=FALSE)
+@ 
+\end{center}
+
+\subsection*{Income Share by Quintile}
+
+We group the population in five equally populated groups from the
+poorest to the richest and we compute the total income in each group:
+
+\begin{center}
+<<echo=FALSE, results='asis' >>=
+xq <- matrix(sort(x), nrow=5, byrow=TRUE)
+xq <- cbind(xq, rowSums(xq))
+add <- list()
+add$pos <- list(0)
+add$command <- "&&&&&Total\\\\"
+colnames(xq) <- c('','','','','Total')
+rownames(xq) <- paste("Quintile ", 1:5, sep="")
+print(xtable(xq, display=c('s', rep('d',5)), 
+             align=c('l','c','c','c','c|','|c')), floating=FALSE,
+      include.colnames=FALSE,add.to.row=add)
+     
+@ 
+\end{center}
+Then, we divide the total of each group by the total income. For
+example, the income share in the first quintile is 
+\[
+\frac{\Sexpr{xq[1,5]}}{\Sexpr{paste(xq[,5], collapse='+')}}\times 100 = 
+\Sexpr{round(xq[1,5]/sum(xq[,5])*100,4)}\%
+\]
+The income shares by quintile in percentage are therefore:
+\begin{center}
+<<echo=FALSE, results='asis' >>=
+sh <- round(matrix(xq[,5]/sum(xq[,5])*100),4)
+rownames(sh) <- paste("Quintile ", 1:5, sep="")
+print(xtable(sh, display=c('s', 'f'), digits=4), floating=FALSE,
+      include.colnames=FALSE)
+     
+@ 
+\end{center}
+
+\subsubsection*{Cumulative Income Share by Quintile}
+
+The cumulative sum of a list of numbers $\{X_1, ..., X_n\}$ is the following list:
+\begin{eqnarray*}
+&&X_1\\
+&&X_1+X_2\\
+&&X_1+X_2+X_3\\
+&&X_1+X_2+X_3+X_4\\
+&& \vdots\\
+&& X_1+X_2+X_3+X_4+\cdots+X_n
+\end{eqnarray*}
+
+Apply this definition to the income shares and we obtain the
+cumulative income shares. The second column is the cumulative
+population share (20\% of population are in each quintile).
+\begin{center}
+<<echo=FALSE, results='asis' >>=
+csh <- cbind(matrix(round(cumsum(sh),1)), c(20,40,60,80,100))            
+rownames(csh) <- rownames(sh)
+colnames(csh) <- c("Cum. income share", "Population Share")
+print(xtable(csh, display=c('s', 'f','f'), digits=1), floating=FALSE)
+@ 
+\end{center}
+
+\subsubsection*{Gini Coefficient From Quintiles}
+
+Let $h_i$ be the cumulative income share for quintile i not expressed
+in percentage, then the Gini coefficient is:
+\[
+G = 0.8 - 0.4\times(h_1+h_2+h_3+h_4)
+\]
+In this case, it is equal to \Sexpr{.8-.4*sum(csh[1:4,1]/100)}.
+
+\subsection*{Income Share by Decile}
+
+We group the population in 10 equally populated groups from the poorest
+to the richest and we compute the total income in each group:
+
+\begin{center}
+<<echo=FALSE, results='asis' >>=
+xq <- matrix(sort(x), nrow=10, byrow=TRUE)
+xq <- cbind(xq, rowSums(xq))
+add <- list()
+add$pos <- list(0)
+add$command <- "&&&Total\\\\"
+rownames(xq) <- paste("Decile ", 1:10, sep="")
+print(xtable(xq, display=c('s', rep('d',3)), 
+             align=c('l','c','c|','|c')), floating=FALSE,
+      include.colnames=FALSE,add.to.row=add)
+     
+@ 
+\end{center}
+
+Then, we divide the total of each group by the total income as for
+the quintile case. The income shares by decile in percentage are
+therefore:
+\begin{center}
+<<echo=FALSE, results='asis' >>=
+sh <- round(matrix(xq[,3]/sum(xq[,3])*100),4)
+rownames(sh) <- paste("Decile ", 1:10, sep="")
+print(xtable(sh, display=c('s', 'f'), digits=4, align=c('l','c')),
+      floating=FALSE, include.colnames=FALSE)    
+@ 
+\end{center}
+
+\subsubsection*{Cumulative Income Share by Decile}
+
+We apply the same formula presented earlier for the quintiles:
+
+\begin{center}
+<<echo=FALSE, results='asis' >>=
+csh <- cbind(matrix(round(cumsum(sh),1)), seq(10,100,by=10))
+rownames(csh) <- rownames(sh)
+colnames(csh) <- c("Cum. income share", "Population Share")
+print(xtable(csh, display=c('s', 'f','f'), digits=1, align=c('l','c','c')), 
+      floating=FALSE)
+@ 
+\end{center}
+
+\subsubsection*{Gini Coefficient From Quintiles}
+
+Let $h_i$ be the cumulative income share for decile i, then the Gini
+coefficient is:
+\[
+G = 0.9 - 0.2\times(h_1+h_2+h_3+h_4+h_5+h_6+h_7+h_8+h_9)
+\]
+In this case, it is equal to \Sexpr{.9-.2*sum(csh[1:9,1]/100)}.
+
+\section*{The Median}
+
+The median is the number that separates a sample in two equal groups
+after sorting the observations.
+
+\subsubsection*{Odd Number of Observations}
+
+If the series is $\{X_1, X_2, X_3, X_4, X_5\}$ with
+$X_1<X_2<X_3<X_4<X_5$, the median is equal to $X_3$.
+
+\subsubsection*{Even Number of Observations}
+
+If the series is $\{X_1, X_2, X_3, X_4, X_5, X_6\}$ with
+$X_1<X_2<X_3<X_4<X_5<X_6$, the median (one version of it) is equal to
+$(X_3+X_4)/2$.
+
+\end{document}

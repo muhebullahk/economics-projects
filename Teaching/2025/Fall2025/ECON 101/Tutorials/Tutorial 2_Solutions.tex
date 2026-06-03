@@ -1,0 +1,325 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm, bm, mathtools}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\sisetup{group-separator={,},group-minimum-digits=3}
+
+\title{Tutorial 2 -- Solutions}
+\author{ECON 101 -- Macroeconomics}
+\date{Fall 2025}
+
+\newcommand{\defn}[1]{\textbf{#1}}
+\newcommand{\bn}{\vspace{0.25em}\noindent}
+
+\begin{document}
+\maketitle
+
+
+
+
+
+\section*{Problem 1: Expenditure Approach}
+
+\subsection*{Given}
+All values are in billions of dollars.
+\[
+C=1{,}800,\quad I=600,\quad G=720,\quad X=450,\quad M=520.
+\]
+
+\subsection*{Key definitions}
+\bn \defn{GDP (expenditure approach)} adds spending on final goods and services:
+\[
+Y = C + I + G + (X - M) \equiv C+I+G+\text{NX},
+\]
+where \(\text{NX}=X-M\) is net exports.\\
+\defn{GDP per capita} is GDP divided by population.\\
+\defn{Output gap (\%)} is \(\displaystyle \frac{Y - Y^*}{Y^*}\times 100\), where \(Y\) is actual GDP and \(Y^*\) is potential GDP.
+
+\subsection*{(a) Nominal GDP}
+First compute net exports:
+\[
+\text{NX} = X - M = 450 - 520 = -70.
+\]
+Then GDP:
+\[
+Y = 1{,}800 + 600 + 720 + (-70) = 3{,}050.
+\]
+\textbf{Answer:} \(\boxed{\$3{,}050\ \text{billion}}\).
+
+\subsection*{(b) GDP per capita}
+Population \(= 40\) million. Convert units consistently:
+\[
+\text{GDP per capita} = \frac{3{,}050\ \text{billion}}{40\ \text{million}}
+= \frac{3{,}050\times 10^9}{40\times 10^6}
+= 76{,}250.
+\]
+\textbf{Answer:} \(\boxed{\$76{,}250\ \text{per person}}\).
+
+\subsection*{(c) Output gap}
+Potential GDP \(Y^* = 3{,}800\) billion.
+\[
+\text{Output gap} = \frac{Y - Y^*}{Y^*}\times 100
+= \frac{3{,}050 - 3{,}800}{3{,}800}\times 100
+= \frac{-750}{3{,}800}\times 100 \approx -19.74\%.
+\]
+\textbf{Answer:} \(\boxed{-19.7\%\ \text{(recessionary gap)}}\).
+
+\paragraph{Interpretation.}
+A negative gap means the economy is producing below its sustainable capacity.
+
+\bigskip
+\hrule
+\bigskip
+
+\section*{Problem 2: Income Approach}
+
+\subsection*{Given}
+All values are in billions.
+\[
+\text{Wages}=1{,}500,\quad \text{Rent}=200,\quad \text{Interest}=250,\quad \text{Profits}=400,\\
+\text{Indirect taxes (less subsidies)}=250,\quad \text{Depreciation}=300.
+\]
+
+\subsection*{Key definitions}
+\bn \defn{Net Domestic Income (factor cost)} sums factor payments:
+\[
+\text{NDI}_{\text{fc}} = \text{Wages}+\text{Rent}+\text{Interest}+\text{Profits}.
+\]
+\defn{GDP at market prices} adds indirect taxes and depreciation to net domestic income:
+\[
+\text{GDP}_{\text{mp}} = \text{NDI}_{\text{fc}} + \text{Indirect taxes (less subsidies)} + \text{Depreciation}.
+\]
+
+\subsection*{(a) Net Domestic Income at factor cost}
+\[
+\text{NDI}_{\text{fc}} = 1{,}500 + 200 + 250 + 400 = 2{,}350.
+\]
+\textbf{Answer:} \(\boxed{\$2{,}350\ \text{billion}}\).
+
+\subsection*{(b) GDP at market prices}
+\[
+\text{GDP}_{\text{mp}} = 2{,}350 + 250 + 300 = 2{,}900.
+\]
+\textbf{Answer:} \(\boxed{\$2{,}900\ \text{billion}}\).
+
+\subsection*{(c) Comparison to Problem 1}
+Problem 1 found \(Y=3{,}050\) (expenditure side). Here we have \(2{,}900\) (income side). The difference is
+\[
+\text{Statistical discrepancy} = 3{,}050 - 2{,}900 = 150\ \text{billion}.
+\]
+\paragraph{Interpretation.} Conceptually, expenditure and income measures of GDP are equal, but in practice data come from different sources and timing, so statistical discrepancies arise.
+
+\bigskip
+\hrule
+\bigskip
+
+\section*{Problem 3: Nominal vs. Real GDP and the GDP Deflator}
+
+\subsection*{Data}
+\begin{center}
+\begin{tabular}{c c c c c}
+\toprule
+Year & Qty Apples & Price Apples & Qty Laptops & Price Laptops \\
+\midrule
+2022 & 1{,}000 & \$2 & 200 & \$1{,}000 \\
+2023 & 1{,}200 & \$3 & 220 & \$1{,}100 \\
+2024 & 1{,}300 & \$3 & 250 & \$1{,}200 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Key definitions}
+\bn \defn{Nominal GDP} uses current-year prices and quantities.\\
+\defn{Real GDP (base 2022)} values quantities at 2022 prices.\\
+\defn{GDP deflator} \(=\frac{\text{Nominal GDP}}{\text{Real GDP}}\times 100\). It is a broad price index for domestically produced final goods and services.
+
+\subsection*{(a) Nominal GDP}
+Compute each year:
+\[
+\begin{aligned}
+\text{Nominal }2022 &= 1{,}000\cdot 2 + 200\cdot 1{,}000 = 2{,}000 + 200{,}000 = \$202{,}000,\\
+\text{Nominal }2023 &= 1{,}200\cdot 3 + 220\cdot 1{,}100 = 3{,}600 + 242{,}000 = \$245{,}600,\\
+\text{Nominal }2024 &= 1{,}300\cdot 3 + 250\cdot 1{,}200 = 3{,}900 + 300{,}000 = \$303{,}900.
+\end{aligned}
+\]
+
+\subsection*{(b) Real GDP (base 2022)}
+Use 2022 prices: \(p_A=2\), \(p_L=1{,}000\).
+\[
+\begin{aligned}
+\text{Real }2022 &= 1{,}000\cdot 2 + 200\cdot 1{,}000 = \$202{,}000,\\
+\text{Real }2023 &= 1{,}200\cdot 2 + 220\cdot 1{,}000 = 2{,}400 + 220{,}000 = \$222{,}400,\\
+\text{Real }2024 &= 1{,}300\cdot 2 + 250\cdot 1{,}000 = 2{,}600 + 250{,}000 = \$252{,}600.
+\end{aligned}
+\]
+
+\subsection*{(c) GDP deflator}
+\[
+\begin{aligned}
+\text{Deflator }2022 &= \frac{202{,}000}{202{,}000}\times 100 = 100.0,\\
+\text{Deflator }2023 &= \frac{245{,}600}{222{,}400}\times 100 \approx 110.4,\\
+\text{Deflator }2024 &= \frac{303{,}900}{252{,}600}\times 100 \approx 120.37.
+\end{aligned}
+\]
+\textbf{Interpretation.} The price level of domestically produced final goods and services rose about \(10.4\%\) from 2022 to 2023 and about \(9.0\%\) from 2023 to 2024 (see next part).
+
+\subsection*{(d) Inflation rate (GDP deflator) from 2023 to 2024}
+\[
+\pi_{23\to 24} = \frac{120.37 - 110.4}{110.4}\times 100 \approx 9.03\%.
+\]
+\textbf{Answer:} \(\boxed{9.0\%\ \text{(approximately)}}\).
+
+\bigskip
+\hrule
+\bigskip
+
+\section*{Problem 4: Underground Economy Adjustment}
+
+\subsection*{Given}
+Measured GDP \(= \$2{,}900\) billion. Underground economy \(=7\%\) of measured GDP. Population \(=39\) million.
+
+\subsection*{(a) Size of underground economy}
+\[
+0.07 \times 2{,}900 = 203.
+\]
+\textbf{Answer:} \(\boxed{\$203\ \text{billion}}\).
+
+\subsection*{(b) Adjusted GDP including underground activity}
+\[
+\text{Adjusted GDP} = 2{,}900 + 203 = \boxed{3{,}103\ \text{billion dollars}}.
+\]
+
+\subsection*{(c) Effect on GDP per capita}
+Measured GDP per capita:
+\[
+\frac{2{,}900\times 10^9}{39\times 10^6} = 74{,}358.97 \approx \$74{,}359.
+\]
+Adjusted GDP per capita:
+\[
+\frac{3{,}103\times 10^9}{39\times 10^6} = 79{,}564.10 \approx \$79{,}564.
+\]
+Difference:
+\[
+79{,}564 - 74{,}359 = \boxed{\$5{,}205\ \text{per person (approx.)}}.
+\]
+
+\subsection*{(d) Why exclusion distorts comparisons}
+Countries differ in how much activity is unreported and in enforcement quality. If Country A has more unreported activity than Country B, measured GDP understates A relative to B, biasing international comparisons of living standards and productivity.
+
+\bigskip
+\hrule
+\bigskip
+
+\section*{Problem 5: Chain-Weighted Real GDP}
+
+\subsection*{Data}
+\begin{center}
+\begin{tabular}{c c c c c}
+\toprule
+Year & Qty Coffee & Price Coffee & Qty Textbooks & Price Textbooks \\
+\midrule
+2023 & 500 & \$4 & 100 & \$60 \\
+2024 & 600 & \$5 & 120 & \$70 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Key definitions}
+\bn \defn{Nominal GDP} in year \(t\): \( \sum_i p_{it}q_{it}\).\\
+\defn{Laspeyres real GDP growth} uses base-year prices.\\
+\defn{Paasche real GDP growth} uses current-year prices.\\
+\defn{Chain-weighted growth} between \(t-1\) and \(t\):
+\[
+1+g_{\text{chain}}=\sqrt{(1+g_L)(1+g_P)}\quad\Longrightarrow\quad g_{\text{chain}}=\sqrt{(1+g_L)(1+g_P)}-1.
+\]
+
+\subsection*{(a) Nominal GDP}
+\[
+\begin{aligned}
+\text{Nominal }2023 &= 500\cdot 4 + 100\cdot 60 = 2{,}000 + 6{,}000 = \$8{,}000,\\
+\text{Nominal }2024 &= 600\cdot 5 + 120\cdot 70 = 3{,}000 + 8{,}400 = \$11{,}400.
+\end{aligned}
+\]
+
+\subsection*{(b) Real 2024 using 2023 prices (Laspeyres numerator)}
+Use 2023 prices: coffee \$4, textbook \$60.
+\[
+\text{Real }2024@2023p = 600\cdot 4 + 120\cdot 60 = 2{,}400 + 7{,}200 = \boxed{\$9{,}600}.
+\]
+
+\subsection*{(c) Real 2023 using 2024 prices (Paasche denominator)}
+Use 2024 prices: coffee \$5, textbook \$70.
+\[
+\text{Real }2023@2024p = 500\cdot 5 + 100\cdot 70 = 2{,}500 + 7{,}000 = \boxed{\$9{,}500}.
+\]
+
+\subsection*{(d) Chain-weighted real GDP growth from 2023 to 2024}
+Laspeyres growth (base 2023 prices):
+\[
+g_L=\frac{\text{Real }2024@2023p - \text{Real }2023@2023p}{\text{Real }2023@2023p}
+=\frac{9{,}600 - 8{,}000}{8{,}000}=0.20.
+\]
+Paasche growth (current 2024 prices):
+\[
+g_P=\frac{\text{Real }2024@2024p - \text{Real }2023@2024p}{\text{Real }2023@2024p}
+=\frac{11{,}400 - 9{,}500}{9{,}500}=0.20.
+\]
+Chain-weighted growth:
+\[
+1+g_{\text{chain}}=\sqrt{(1+0.20)(1+0.20)}=\sqrt{1.2\cdot 1.2}=1.2\quad\Rightarrow\quad g_{\text{chain}}=0.20.
+\]
+\textbf{Answer:} \(\boxed{20\%}\).
+
+\subsection*{(e) Why chain-weighting is preferred}
+It updates expenditure weights each period and takes the geometric average of Laspeyres and Paasche growth rates. This reduces substitution bias that occurs when consumers shift toward relatively cheaper goods, something a fixed-base index can miss.
+
+\bigskip
+\hrule
+\bigskip
+
+\section*{Problem 6: GDP, Hours, and Productivity}
+
+\subsection*{Given}
+Both countries have GDP per capita \(=\$40{,}000\). Hours per worker:
+\[
+\text{Country A: }2{,}200\ \text{hours/year},\qquad
+\text{Country B: }1{,}600\ \text{hours/year}.
+\]
+
+\subsection*{Key definitions}
+\bn \defn{Labour productivity per hour} \(\approx \frac{\text{GDP per worker}}{\text{hours per worker}}\).
+With only GDP per capita given, assume, for illustration, similar population-to-worker ratios so that comparisons based on GDP per capita per hour are informative.
+
+\subsection*{(a) GDP per hour worked}
+\[
+\begin{aligned}
+\text{A: } & \frac{40{,}000}{2{,}200} \approx \$18.18\ \text{per hour},\\
+\text{B: } & \frac{40{,}000}{1{,}600} = \$25.00\ \text{per hour}.
+\end{aligned}
+\]
+\textbf{Answer:} \(\boxed{\text{A } \approx \$18.18/\text{hr},\quad \text{B }=\$25.00/\text{hr}}\).
+
+\subsection*{(b) Which country is more productive?}
+\textbf{Country B}, because it produces the same GDP per person with fewer hours, implying higher output per hour.
+
+\subsection*{(c) Why GDP per capita alone is incomplete}
+GDP per capita ignores hours worked, leisure, household production, income distribution, environmental quality, and non-market benefits. A country can have the same GDP per capita with fewer hours, indicating higher productivity and possibly higher well-being due to more leisure.
+
+\bigskip
+\hrule
+\bigskip
+
+\section*{Appendix: Quick Reference Formulas}
+\begin{itemize}[leftmargin=*]
+  \item Expenditure GDP: \(Y=C+I+G+(X-M)\).
+  \item Income GDP: \(\text{GDP}_{\text{mp}}=\text{Wages}+\text{Rent}+\text{Interest}+\text{Profits}+\text{Indirect taxes (less subsidies)}+\text{Depreciation}\).
+  \item Nominal GDP: \(\sum_i p_{it}q_{it}\). Real GDP (base \(b\)): \(\sum_i p_{ib}q_{it}\).
+  \item GDP deflator: \(\displaystyle \frac{\text{Nominal GDP}}{\text{Real GDP}}\times 100\).
+  \item Inflation (deflator): \(\displaystyle \frac{P_t-P_{t-1}}{P_{t-1}}\times 100\).
+  \item Chain growth: \(1+g_{\text{chain}}=\sqrt{(1+g_L)(1+g_P)}\).
+\end{itemize}
+
+\end{document}

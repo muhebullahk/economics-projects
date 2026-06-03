@@ -1,0 +1,339 @@
+\documentclass[letterpaper]{article}\usepackage[]{graphicx}\usepackage[]{color}
+% maxwidth is the original width if it is less than linewidth
+% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}\usepackage[]{graphicx}\usepackage[]{color}
+\usepackage{framed}
+\usepackage{alltt}
+\pdfpagewidth 8.5in
+\pdfpageheight 11.0in
+
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+
+\usepackage[hmargin=3cm,vmargin=3.5cm]{geometry}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{dcolumn}
+\usepackage{fancyhdr}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage[justification=centering]{caption}
+\usepackage{enumerate}
+\usepackage{graphicx}
+\usepackage{cancel}
+\usepackage{pbox}
+\newcounter{exer}
+\numberwithin{exer}{section}
+\usepackage{color}
+\usepackage[round]{natbib}
+\bibliographystyle{plainnat}
+
+\pagestyle{fancyplain}
+\usepackage{lastpage}
+\definecolor{hellgrau2}{gray}{.6}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{1pt \color{hellgrau2}}
+\newcommand{\co}{CO\ensuremath{_2} }
+\fancyfoot{}
+\fancyhf{}
+\rfoot{\textbf{Page \thepage\ of \pageref{LastPage}}}
+ \lfoot{\textbf{Econ 102}}
+ \cfoot{\textbf{Module 7: Formulas}}
+
+\usepackage{mdframed}
+\usepackage{ntheorem}
+\theoremstyle{nonumberplain}
+\theorembodyfont{\upshape}
+\definecolor{bisque}{rgb}{1.0, 0.89, 0.77}
+\definecolor{etonblue}{rgb}{0.59, 0.78, 0.64}
+\definecolor{blizzardblue}{rgb}{0.67, 0.9, 0.93}
+\definecolor{cornsilk}{rgb}{1.0, 0.97, 0.86}
+\definecolor{banana}{rgb}{0.98, 0.91, 0.71}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=bisque,ntheorem]{background}{Optional background Information}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=etonblue,ntheorem]{important}{Important}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=cornsilk,ntheorem]{anime}{Suggested Animation}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=banana,ntheorem]{pause}{Pause \& Practice}
+\newmdtheoremenv[leftmargin=20, rightmargin=20,backgroundcolor=bisque,ntheorem]{devel}{Note to the developers}
+\usepackage{soul}
+\newcommand{\mathcolorbox}[1]{\colorbox{blizzardblue}{$\displaystyle #1$}}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+\noindent
+ \textsc{\Large ECON 102: Inequality Formulas}\\[.1cm]
+ \begin{center}
+   \line(1,0){450}\\[0.2cm]
+   \end{center}
+
+In this document, we present the most important formulas used in
+Module 7. 
+
+\section*{Income Share}
+
+To illustrate, suppose the population is composed of 20 individuals
+with the following incomes:
+\begin{center}
+% latex table generated in R 4.0.2 by xtable 1.8-4 package
+% Sun Jul 12 15:32:00 2020
+\begin{tabular}{rrrrrrrrrr}
+  \hline
+  \hline
+ 39 & 104 &  76 & 193 & 114 & 134 & 183 &  61 &  75 &  99 \\ 
+  143 & 103 &  32 & 121 & 111 &  54 & 130 & 117 & 152 &  57 \\ 
+   \hline
+\end{tabular}
+
+\end{center}
+The first step is to sort the income:
+\begin{center}
+% latex table generated in R 4.0.2 by xtable 1.8-4 package
+% Sun Jul 12 15:32:00 2020
+\begin{tabular}{rrrrrrrrrr}
+  \hline
+  \hline
+ 32 &  39 &  54 &  57 &  61 &  75 &  76 &  99 & 103 & 104 \\ 
+  111 & 114 & 117 & 121 & 130 & 134 & 143 & 152 & 183 & 193 \\ 
+   \hline
+\end{tabular}
+
+\end{center}
+
+\subsection*{Income Share by Quintile}
+
+We group the population in five equally populated groups from the
+poorest to the richest and we compute the total income in each group:
+
+\begin{center}
+% latex table generated in R 4.0.2 by xtable 1.8-4 package
+% Sun Jul 12 15:32:00 2020
+\begin{tabular}{lcccc||c}
+  \hline
+  &&&&&Total\\ \hline
+Quintile 1 &  32 &  39 &  54 &  57 & 182 \\ 
+  Quintile 2 &  61 &  75 &  76 &  99 & 311 \\ 
+  Quintile 3 & 103 & 104 & 111 & 114 & 432 \\ 
+  Quintile 4 & 117 & 121 & 130 & 134 & 502 \\ 
+  Quintile 5 & 143 & 152 & 183 & 193 & 671 \\ 
+   \hline
+\end{tabular}
+
+\end{center}
+Then, we divide the total of each group by the total income. For
+example, the income share in the first quintile is 
+\[
+\frac{182}{182+311+432+502+671}\times 100 = 
+8.6749\%
+\]
+The income shares by quintile in percentage are therefore:
+\begin{center}
+% latex table generated in R 4.0.2 by xtable 1.8-4 package
+% Sun Jul 12 15:32:00 2020
+\begin{tabular}{rr}
+  \hline
+  \hline
+Quintile 1 & 8.6749 \\ 
+  Quintile 2 & 14.8236 \\ 
+  Quintile 3 & 20.5910 \\ 
+  Quintile 4 & 23.9276 \\ 
+  Quintile 5 & 31.9828 \\ 
+   \hline
+\end{tabular}
+
+\end{center}
+
+\subsubsection*{Cumulative Income Share by Quintile}
+
+The cumulative sum of a list of numbers $\{X_1, ..., X_n\}$ is the following list:
+\begin{eqnarray*}
+&&X_1\\
+&&X_1+X_2\\
+&&X_1+X_2+X_3\\
+&&X_1+X_2+X_3+X_4\\
+&& \vdots\\
+&& X_1+X_2+X_3+X_4+\cdots+X_n
+\end{eqnarray*}
+
+Apply this definition to the income shares and we obtain the
+cumulative income shares. The second column is the cumulative
+population share (20\% of population are in each quintile).
+\begin{center}
+% latex table generated in R 4.0.2 by xtable 1.8-4 package
+% Sun Jul 12 15:32:00 2020
+\begin{tabular}{rrr}
+  \hline
+ & Cum. income share & Population Share \\ 
+  \hline
+Quintile 1 & 8.7 & 20.0 \\ 
+  Quintile 2 & 23.5 & 40.0 \\ 
+  Quintile 3 & 44.1 & 60.0 \\ 
+  Quintile 4 & 68.0 & 80.0 \\ 
+  Quintile 5 & 100.0 & 100.0 \\ 
+   \hline
+\end{tabular}
+
+\end{center}
+
+\subsubsection*{Gini Coefficient From Quintiles}
+
+Let $h_i$ be the cumulative income share for quintile i not expressed
+in percentage, then the Gini coefficient is:
+\[
+G = 0.8 - 0.4\times(h_1+h_2+h_3+h_4)
+\]
+In this case, it is equal to 0.2228.
+
+\subsection*{Income Share by Decile}
+
+We group the population in 10 equally populated groups from the poorest
+to the richest and we compute the total income in each group:
+
+\begin{center}
+% latex table generated in R 4.0.2 by xtable 1.8-4 package
+% Sun Jul 12 15:32:00 2020
+\begin{tabular}{lcc||c}
+  \hline
+  &&&Total\\ \hline
+Decile 1 &  32 &  39 &  71 \\ 
+  Decile 2 &  54 &  57 & 111 \\ 
+  Decile 3 &  61 &  75 & 136 \\ 
+  Decile 4 &  76 &  99 & 175 \\ 
+  Decile 5 & 103 & 104 & 207 \\ 
+  Decile 6 & 111 & 114 & 225 \\ 
+  Decile 7 & 117 & 121 & 238 \\ 
+  Decile 8 & 130 & 134 & 264 \\ 
+  Decile 9 & 143 & 152 & 295 \\ 
+  Decile 10 & 183 & 193 & 376 \\ 
+   \hline
+\end{tabular}
+
+\end{center}
+
+Then, we divide the total of each group by the total income as for
+the quintile case. The income shares by decile in percentage are
+therefore:
+\begin{center}
+% latex table generated in R 4.0.2 by xtable 1.8-4 package
+% Sun Jul 12 15:32:00 2020
+\begin{tabular}{lc}
+  \hline
+  \hline
+Decile 1 & 3.3842 \\ 
+  Decile 2 & 5.2908 \\ 
+  Decile 3 & 6.4824 \\ 
+  Decile 4 & 8.3413 \\ 
+  Decile 5 & 9.8665 \\ 
+  Decile 6 & 10.7245 \\ 
+  Decile 7 & 11.3441 \\ 
+  Decile 8 & 12.5834 \\ 
+  Decile 9 & 14.0610 \\ 
+  Decile 10 & 17.9218 \\ 
+   \hline
+\end{tabular}
+
+\end{center}
+
+\subsubsection*{Cumulative Income Share by Decile}
+
+We apply the same formula presented earlier for the quintiles:
+
+\begin{center}
+% latex table generated in R 4.0.2 by xtable 1.8-4 package
+% Sun Jul 12 15:32:00 2020
+\begin{tabular}{lcc}
+  \hline
+ & Cum. income share & Population Share \\ 
+  \hline
+Decile 1 & 3.4 & 10.0 \\ 
+  Decile 2 & 8.7 & 20.0 \\ 
+  Decile 3 & 15.2 & 30.0 \\ 
+  Decile 4 & 23.5 & 40.0 \\ 
+  Decile 5 & 33.4 & 50.0 \\ 
+  Decile 6 & 44.1 & 60.0 \\ 
+  Decile 7 & 55.4 & 70.0 \\ 
+  Decile 8 & 68.0 & 80.0 \\ 
+  Decile 9 & 82.1 & 90.0 \\ 
+  Decile 10 & 100.0 & 100.0 \\ 
+   \hline
+\end{tabular}
+
+\end{center}
+
+\subsubsection*{Gini Coefficient From Quintiles}
+
+Let $h_i$ be the cumulative income share for decile i, then the Gini
+coefficient is:
+\[
+G = 0.9 - 0.2\times(h_1+h_2+h_3+h_4+h_5+h_6+h_7+h_8+h_9)
+\]
+In this case, it is equal to 0.2324.
+
+\section*{The Median}
+
+The median is the number that separates a sample in two equal groups
+after sorting the observations.
+
+\subsubsection*{Odd Number of Observations}
+
+If the series is $\{X_1, X_2, X_3, X_4, X_5\}$ with
+$X_1<X_2<X_3<X_4<X_5$, the median is equal to $X_3$.
+
+\subsubsection*{Even Number of Observations}
+
+If the series is $\{X_1, X_2, X_3, X_4, X_5, X_6\}$ with
+$X_1<X_2<X_3<X_4<X_5<X_6$, the median (one version of it) is equal to
+$(X_3+X_4)/2$.
+
+
+
+\end{document}

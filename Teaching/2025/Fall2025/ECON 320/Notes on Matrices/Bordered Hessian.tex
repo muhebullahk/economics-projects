@@ -1,0 +1,129 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath,amssymb,amsfonts,mathtools,geometry}
+\geometry{margin=1in}
+
+\begin{document}
+
+\title{Determinant of the Bordered Hessian (with 3$\times$3 Example)}
+\author{}
+\date{}
+\maketitle
+
+\paragraph{Setup.}
+Let \(f:\mathbb{R}^n\to\mathbb{R}\) be maximized (or minimized) subject to \(m\) equality constraints \(g(x)=0\), where \(g:\mathbb{R}^n\to\mathbb{R}^m\).
+The Lagrangian is
+\[
+\mathcal{L}(x,\lambda)=f(x)-\lambda^\top g(x), \qquad
+g(x)=\begin{bmatrix}g_1(x)\\ \vdots \\ g_m(x)\end{bmatrix}.
+\]
+At a stationary point \((x^\ast,\lambda^\ast)\), define the constraint Jacobian and the Lagrangian Hessian
+\[
+G \;=\; \nabla g(x^\ast)\in\mathbb{R}^{m\times n},
+\qquad
+H \;=\; \nabla_{xx}^2 \mathcal{L}(x^\ast,\lambda^\ast)\in\mathbb{R}^{n\times n}.
+\]
+The \emph{bordered Hessian} is the \((m+n)\times(m+n)\) block matrix
+\[
+B \;=\;
+\begin{bmatrix}
+\mathbf{0}_{m\times m} & G\\
+G^\top & H
+\end{bmatrix}.
+\]
+
+\paragraph{Determinant via block/Schur complement.}
+Assume \(H\) is invertible. Using the block determinant identity,
+\[
+\det\!\begin{bmatrix}A&B\\C&D\end{bmatrix}
+=\det(D)\,\det(A-BD^{-1}C),
+\]
+with \(A=\mathbf{0},\,B=G,\,C=G^\top,\,D=H\), we get
+\[
+\boxed{\;
+\det(B)\;=\;\det(H)\,\det\!\bigl(\,A-BD^{-1}C\,\bigr)
+\;=\;\det(H)\,\det\!\bigl(-\,G\,H^{-1}G^\top\bigr)
+\;=\;(-1)^m\,\det(H)\,\det\!\bigl(GH^{-1}G^\top\bigr).
+\;}
+\]
+For \(m=1\) (one constraint), writing \(G=[\,g_1\;\cdots\;g_n\,]\),
+\[
+\boxed{\;\det(B)\;=\;-\;\det(H)\;\;G\,H^{-1}G^\top.\;}
+\]
+
+\paragraph{Exact \(3\times 3\) bordered Hessian (one constraint, two variables).}
+Take \(n=2,\; m=1\). Write
+\[
+H=\begin{bmatrix} a & b\\ b & c\end{bmatrix},\qquad
+G=\begin{bmatrix} g_1 & g_2\end{bmatrix}.
+\]
+Then the bordered Hessian is
+\[
+B \;=\;
+\begin{bmatrix}
+0 & g_1 & g_2 \\
+g_1 & a & b \\
+g_2 & b & c
+\end{bmatrix}.
+\]
+The \(2\times 2\) Hessian determinant is \(\Delta=\det(H)=ac-b^2\), and
+\[
+H^{-1}=\frac{1}{\Delta}\begin{bmatrix} c & -b\\ -b & a\end{bmatrix}.
+\]
+Hence
+\[
+G\,H^{-1}G^\top
+= \frac{1}{\Delta}\bigl(c\,g_1^2 - 2b\,g_1 g_2 + a\,g_2^2\bigr),
+\qquad
+\det(B) \;=\; -\,\det(H)\cdot G H^{-1}G^\top
+\;=\; -\bigl(c\,g_1^2 - 2b\,g_1 g_2 + a\,g_2^2\bigr).
+\]
+
+\paragraph{Direct hand expansion check (same \(3\times 3\)).}
+Expanding \(\det(B)\) along the first row:
+\[
+\det(B)
+= 0\cdot(\cdots)
+- g_1\cdot \det\!\begin{bmatrix} g_1 & b\\ g_2 & c\end{bmatrix}
++ g_2\cdot \det\!\begin{bmatrix} g_1 & a\\ g_2 & b\end{bmatrix}.
+\]
+Compute the \(2\times 2\) minors:
+\[
+\det\!\begin{bmatrix} g_1 & b\\ g_2 & c\end{bmatrix}=g_1 c - b g_2,
+\qquad
+\det\!\begin{bmatrix} g_1 & a\\ g_2 & b\end{bmatrix}=g_1 b - a g_2.
+\]
+Therefore
+\[
+\det(B)
+= -\,g_1(g_1 c - b g_2)\;+\;g_2(g_1 b - a g_2)
+= -\,c\,g_1^2 + 2b\,g_1 g_2 - a\,g_2^2
+= -\bigl(c\,g_1^2 - 2b\,g_1 g_2 + a\,g_2^2\bigr),
+\]
+which exactly matches the Schur complement result above.
+
+\paragraph{Bordered principal minors and second-order tests (quick reference).}
+For \(m\) equality constraints, define the bordered principal minors of order \(m+k\) (border first, then successively add one decision variable):
+\[
+\Delta_{m+k} \;=\; \det\bigl(\text{leading }(m+k)\times(m+k)\text{ principal submatrix of }B\bigr),
+\quad k=1,\ldots,n.
+\]
+\begin{itemize}
+\item \textbf{Maximization:} At a regular stationary point, a sufficient condition for a local maximum is
+\[
+(-1)^m\,\Delta_{m+1}>0,\quad (-1)^m\,\Delta_{m+2}>0,\;\ldots,\;(-1)^m\,\Delta_{m+n}>0.
+\]
+\item \textbf{Minimization:} A sufficient condition for a local minimum is
+\[
+(-1)^m\,\Delta_{m+1}<0,\quad (-1)^m\,\Delta_{m+2}<0,\;\ldots,\;(-1)^m\,\Delta_{m+n}<0.
+\]
+\end{itemize}
+These criteria use the signs of bordered minors rather than \(\det(B)\) alone. When \(H\) is invertible, the Schur formula above is a fast way to compute \(\det(B)\) (and the top-order minor) exactly.
+
+\paragraph{Remarks.}
+\begin{itemize}
+\item The ordering of rows/columns matters: the standard convention borders the constraints first, then appends the Hessian block \(H\).
+\item If \(H\) is singular, the Schur complement formula is not applicable as written. In that case, compute \(\det(B)\) directly (e.g., expansion or row/column operations that preserve determinants).
+\item For multiple constraints, \(\det(GH^{-1}G^\top)\) is the squared volume (up to scaling) induced by the metric \(H^{-1}\) on the constraint gradients; the \((-1)^m\) factor tracks the $m$-fold sign from the zero block on the border.
+\end{itemize}
+
+\end{document}

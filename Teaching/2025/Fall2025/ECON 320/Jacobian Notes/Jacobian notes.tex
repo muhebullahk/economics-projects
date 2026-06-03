@@ -1,0 +1,178 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage{enumitem}
+\setlist[enumerate]{leftmargin=*}
+
+\title{Comparative Statics: System, Jacobian, Determinants, and Sign Test}
+\author{ECON 320 -- Introduction to Mathematical Economics}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+\section*{System and Base Point}
+Consider the nonlinear system with parameters $(\alpha,\beta,\gamma)$:
+\[
+\begin{cases}
+F_1:\ x^2 + y + z = \alpha,\\
+F_2:\ xy - z = \beta,\\
+F_3:\ y^2 + z^2 = \gamma.
+\end{cases}
+\]
+At $(x,y,z)=(1,1,0)$ the system holds for $(\alpha,\beta,\gamma)=(2,1,1)$. We study local effects around this point.
+
+\section*{Step 1. Jacobian with respect to $(x,y,z)$}
+\[
+J(x,y,z)=
+\begin{bmatrix}
+\partial_x F_1 & \partial_y F_1 & \partial_z F_1\\
+\partial_x F_2 & \partial_y F_2 & \partial_z F_2\\
+\partial_x F_3 & \partial_y F_3 & \partial_z F_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+2x & 1 & 1\\
+y  & x & -1\\
+0  & 2y & 2z
+\end{bmatrix}.
+\]
+At $(1,1,0)$,
+\[
+J=
+\begin{bmatrix}
+2 & 1 & 1\\
+1 & 1 & -1\\
+0 & 2 & 0
+\end{bmatrix}.
+\]
+
+\section*{Step 2. Determinant of the Jacobian and IFT}
+Compute $\Delta=\det J$ at $(1,1,0)$:
+\[
+\Delta
+=2\det\!\begin{bmatrix}1&-1\\ 2&0\end{bmatrix}
+-1\det\!\begin{bmatrix}1&1\\ 2&0\end{bmatrix}
++0\cdot(\cdots)
+=2(2)-(-2)=6.
+\]
+Since $\Delta=6\neq 0$, the Implicit Function Theorem applies, so $(x,y,z)$ are differentiable functions of $(\alpha,\beta,\gamma)$ locally.
+
+\section*{Step 3. Linearization and Cramer's Rule}
+Total differentiation yields
+\[
+J
+\begin{bmatrix}
+dx\\ dy\\ dz
+\end{bmatrix}
+=
+\begin{bmatrix}
+d\alpha\\ d\beta\\ d\gamma
+\end{bmatrix}.
+\]
+For a single parameter change, set the right side to the corresponding unit vector and use Cramer's rule:
+\[
+\frac{\partial x}{\partial \theta}=\frac{\Delta_1^{(\theta)}}{\Delta},\quad
+\frac{\partial y}{\partial \theta}=\frac{\Delta_2^{(\theta)}}{\Delta},\quad
+\frac{\partial z}{\partial \theta}=\frac{\Delta_3^{(\theta)}}{\Delta},\quad
+\theta\in\{\alpha,\beta,\gamma\}.
+\]
+
+\subsection*{With respect to $\alpha$}
+Right-hand side $b_\alpha=(1,0,0)^\top$.
+\[
+\Delta_1^{(\alpha)}=
+\det\!\begin{bmatrix}
+1 & 1 & 1\\
+0 & 1 & -1\\
+0 & 2 & 0
+\end{bmatrix}=2,\quad
+\Delta_2^{(\alpha)}=
+\det\!\begin{bmatrix}
+2 & 1 & 1\\
+1 & 0 & -1\\
+0 & 0 & 0
+\end{bmatrix}=0,\quad
+\Delta_3^{(\alpha)}=
+\det\!\begin{bmatrix}
+2 & 1 & 1\\
+1 & 1 & 0\\
+0 & 2 & 0
+\end{bmatrix}=2.
+\]
+Therefore
+\[
+\boxed{\ \frac{\partial x}{\partial \alpha}=\frac{1}{3},\quad
+\frac{\partial y}{\partial \alpha}=0,\quad
+\frac{\partial z}{\partial \alpha}=\frac{1}{3}\ }.
+\]
+
+\subsection*{With respect to $\beta$}
+Right-hand side $b_\beta=(0,1,0)^\top$.
+\[
+\Delta_1^{(\beta)}=
+\det\!\begin{bmatrix}
+0 & 1 & 1\\
+1 & 1 & -1\\
+0 & 2 & 0
+\end{bmatrix}=2,\quad
+\Delta_2^{(\beta)}=
+\det\!\begin{bmatrix}
+2 & 0 & 1\\
+1 & 1 & -1\\
+0 & 0 & 0
+\end{bmatrix}=0,\quad
+\Delta_3^{(\beta)}=
+\det\!\begin{bmatrix}
+2 & 1 & 0\\
+1 & 1 & 1\\
+0 & 2 & 0
+\end{bmatrix}=-4.
+\]
+Therefore
+\[
+\boxed{\ \frac{\partial x}{\partial \beta}=\frac{1}{3},\quad
+\frac{\partial y}{\partial \beta}=0,\quad
+\frac{\partial z}{\partial \beta}=-\frac{2}{3}\ }.
+\]
+
+\subsection*{With respect to $\gamma$}
+Right-hand side $b_\gamma=(0,0,1)^\top$.
+\[
+\Delta_1^{(\gamma)}=
+\det\!\begin{bmatrix}
+0 & 1 & 1\\
+0 & 1 & -1\\
+1 & 2 & 0
+\end{bmatrix}=-2,\quad
+\Delta_2^{(\gamma)}=
+\det\!\begin{bmatrix}
+2 & 0 & 1\\
+1 & 0 & -1\\
+0 & 1 & 0
+\end{bmatrix}=3,\quad
+\Delta_3^{(\gamma)}=
+\det\!\begin{bmatrix}
+2 & 1 & 0\\
+1 & 1 & 0\\
+0 & 2 & 1
+\end{bmatrix}=1.
+\]
+Therefore
+\[
+\boxed{\ \frac{\partial x}{\partial \gamma}=-\frac{1}{3},\quad
+\frac{\partial y}{\partial \gamma}=\frac{1}{2},\quad
+\frac{\partial z}{\partial \gamma}=\frac{1}{6}\ }.
+\]
+
+\section*{Step 4. Sign Test Summary}
+Since $\Delta>0$, each sign is determined by the numerator's sign:
+\[
+\begin{array}{lcl}
+\alpha:\ (\partial x/\partial\alpha,\ \partial y/\partial\alpha,\ \partial z/\partial\alpha)=(+,\ 0,\ +),\\[4pt]
+\beta:\ (\partial x/\partial\beta,\ \partial y/\partial\beta,\ \partial z/\partial\beta)=(+,\ 0,\ -),\\[4pt]
+\gamma:\ (\partial x/\partial\gamma,\ \partial y/\partial\gamma,\ \partial z/\partial\gamma)=(-,\ +,\ +).
+\end{array}
+\]
+
+\end{document}

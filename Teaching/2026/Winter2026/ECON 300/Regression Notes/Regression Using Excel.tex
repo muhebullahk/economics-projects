@@ -1,0 +1,363 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tcolorbox}
+\usepackage{caption}
+
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+\setlist[itemize]{noitemsep, topsep=2pt}
+\setlist[enumerate]{noitemsep, topsep=2pt}
+
+\newcommand{\bhat}{\widehat{\beta}}
+\newcommand{\yhat}{\widehat{Y}}
+\newcommand{\uhat}{\widehat{u}}
+
+\title{\textbf{OLS Regression in Excel}\\[0.9em]
+\large ECON 300 - Labour Economics}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Learning Objectives}
+By the end of these notes, you will be able to:
+\begin{itemize}
+  \item Explain what a regression is and what OLS (Ordinary Least Squares) does.
+  \item Set up consumption and income data in Excel.
+  \item Make a scatter plot and add a regression (trendline) in Excel.
+  \item Run OLS using Excel's \emph{Regression} tool (Analysis ToolPak).
+  \item Interpret key outputs: coefficients, $R^2$, and p-values.
+  \item Compute predicted values and residuals and create a residual plot.
+\end{itemize}
+
+\section*{What is Regression? (Plain Language)}
+A \textbf{regression} is a method used to summarize how an outcome variable changes with a predictor variable.
+
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Key Idea]
+Regression fits a line through a scatter plot of data points to describe the relationship between two variables.
+\end{tcolorbox}
+
+In this note, we study how \textbf{Consumption} depends on \textbf{Income}.
+
+\section*{Variables and the Model}
+\subsection*{Definitions}
+\begin{itemize}
+  \item \textbf{Income} ($Y_i$): the income for observation $i$ (e.g., household $i$).
+  \item \textbf{Consumption} ($C_i$): the consumption for observation $i$.
+  \item \textbf{Observation} ($i$): one unit in the data (e.g., one household).
+\end{itemize}
+
+\subsection*{The Simple Linear Regression Model}
+We write:
+\begin{equation}
+C_i = \beta_0 + \beta_1 Y_i + u_i,
+\end{equation}
+where:
+\begin{itemize}
+  \item $\beta_0$ is the \textbf{intercept} (also called \textbf{autonomous consumption}).
+  \item $\beta_1$ is the \textbf{slope} (interpreted as the \textbf{marginal propensity to consume}, MPC).
+  \item $u_i$ is the \textbf{error term}: everything affecting consumption besides income.
+\end{itemize}
+
+\subsection*{Interpretation}
+\begin{itemize}
+  \item If $\beta_1 > 0$, higher income is associated with higher consumption.
+  \item The \textbf{MPC} ($\beta_1$) is: ``If income increases by 1 unit, consumption increases by $\beta_1$ units (on average).'' 
+\end{itemize}
+
+\section*{What Does OLS Do?}
+\textbf{OLS} (Ordinary Least Squares) chooses $\bhat_0$ and $\bhat_1$ to make the fitted line as close as possible to the data points.
+
+\subsection*{Fitted Values and Residuals}
+Given estimates $\bhat_0$ and $\bhat_1$, the predicted consumption is:
+\begin{equation}
+\widehat{C}_i = \bhat_0 + \bhat_1 Y_i.
+\end{equation}
+The \textbf{residual} is:
+\begin{equation}
+\uhat_i = C_i - \widehat{C}_i.
+\end{equation}
+Residuals are the vertical gaps between the points and the fitted line.
+
+\subsection*{Least Squares Criterion}
+OLS picks $\bhat_0$ and $\bhat_1$ to minimize the \textbf{Sum of Squared Residuals (SSR)}:
+\begin{equation}
+\text{SSR} = \sum_{i=1}^n \uhat_i^2 = \sum_{i=1}^n (C_i - \bhat_0 - \bhat_1 Y_i)^2.
+\end{equation}
+
+\section*{Step 1: Enter Consumption and Income Data in Excel}
+Open Excel and create two columns:
+
+\begin{center}
+\begin{tabular}{>{\raggedleft\arraybackslash}p{0.22\linewidth} >{\raggedleft\arraybackslash}p{0.22\linewidth}}
+\toprule
+\textbf{Income} ($Y$) & \textbf{Consumption} ($C$) \\
+\midrule
+20 & 18 \\
+25 & 21 \\
+30 & 24 \\
+35 & 27 \\
+40 & 30 \\
+45 & 33 \\
+50 & 36 \\
+55 & 38 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Excel Setup]
+\begin{enumerate}
+  \item In cell \texttt{A1} type \texttt{Income}.
+  \item In cell \texttt{B1} type \texttt{Consumption}.
+  \item Enter the values in rows 2--9.
+\end{enumerate}
+\end{tcolorbox}
+
+\paragraph{Units.} You can interpret the numbers as ``thousand dollars'' to keep the scale simple.
+
+\section*{Step 2: Make a Scatter Plot (Graphical Illustration)}
+A scatter plot shows the relationship visually.
+
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Why we plot first]
+Before running regression, always plot the data to see whether a linear relationship is reasonable.
+\end{tcolorbox}
+
+\subsection*{Excel Steps (Scatter Plot)}
+\begin{enumerate}
+  \item Highlight the range \texttt{A1:B9}.
+  \item Go to \textbf{Insert} $\rightarrow$ \textbf{Charts} $\rightarrow$ \textbf{Scatter} $\rightarrow$ \textbf{Scatter with only markers}.
+  \item Ensure the horizontal axis is \textbf{Income} and the vertical axis is \textbf{Consumption}.
+\end{enumerate}
+
+\subsection*{Add Axis Titles (Recommended)}
+\begin{enumerate}
+  \item Click the chart.
+  \item Use \textbf{Chart Elements} (the ``+'' icon in Windows) or the chart formatting menu (Mac).
+  \item Add \textbf{Axis Titles}:
+  \begin{itemize}
+    \item Horizontal: \texttt{Income}
+    \item Vertical: \texttt{Consumption}
+  \end{itemize}
+\end{enumerate}
+
+\section*{Step 3: Add a Linear Trendline (Quick Regression Line)}
+Excel can draw the OLS line directly on the plot using a \textbf{trendline}.
+
+\subsection*{Excel Steps (Trendline + Equation + $R^2$)}
+\begin{enumerate}
+  \item Click one of the data points in the scatter plot.
+  \item Right-click $\rightarrow$ \textbf{Add Trendline}.
+  \item Choose \textbf{Linear}.
+  \item Check:
+  \begin{itemize}
+    \item \textbf{Display Equation on chart}
+    \item \textbf{Display R-squared value on chart}
+  \end{itemize}
+\end{enumerate}
+
+\subsection*{What the equation means}
+If Excel shows something like:
+\[
+C = 6.5 + 0.583Y,
+\]
+then:
+\begin{itemize}
+  \item Intercept $6.5$ = predicted consumption when income is $0$.
+  \item Slope $0.583$ = MPC: when income rises by 1 unit, predicted consumption rises by $0.583$ units.
+\end{itemize}
+
+\section*{Step 4: Enable the Analysis ToolPak (Regression Output Table)}
+To get a full regression table (coefficients, standard errors, p-values), you need the \textbf{Analysis ToolPak}.
+
+\subsection*{Windows}
+\begin{enumerate}
+  \item \textbf{File} $\rightarrow$ \textbf{Options} $\rightarrow$ \textbf{Add-ins}.
+  \item At the bottom: \textbf{Manage: Excel Add-ins} $\rightarrow$ \textbf{Go}.
+  \item Check \textbf{Analysis ToolPak} $\rightarrow$ \textbf{OK}.
+\end{enumerate}
+
+\subsection*{Mac}
+\begin{enumerate}
+  \item \textbf{Tools} $\rightarrow$ \textbf{Excel Add-ins}.
+  \item Check \textbf{Analysis ToolPak} $\rightarrow$ \textbf{OK}.
+\end{enumerate}
+
+\section*{Step 5: Run OLS Using Data Analysis $\rightarrow$ Regression}
+\subsection*{Excel Steps (Regression Tool)}
+\begin{enumerate}
+  \item Go to \textbf{Data} tab.
+  \item Click \textbf{Data Analysis}.
+  \item Select \textbf{Regression} $\rightarrow$ \textbf{OK}.
+\end{enumerate}
+
+You will see a dialog with boxes. Fill them in as follows:
+
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Regression Dialog Settings]
+\begin{itemize}
+  \item \textbf{Input Y Range} (Outcome): \texttt{B1:B9} \quad (Consumption)
+  \item \textbf{Input X Range} (Predictor): \texttt{A1:A9} \quad (Income)
+  \item Check \textbf{Labels} (because row 1 has headers).
+  \item Choose \textbf{Output Range}: e.g., \texttt{D1} (or select ``New Worksheet Ply'').
+  \item Optional (recommended): check \textbf{Residuals}.
+\end{itemize}
+\end{tcolorbox}
+
+\section*{Step 6: Understand the Regression Output}
+Excel produces several blocks. Focus on the following.
+
+\subsection*{A) Coefficients Table (Most Important)}
+You will see rows like:
+\begin{itemize}
+  \item \textbf{Intercept}
+  \item \textbf{Income}
+\end{itemize}
+and columns like:
+\begin{itemize}
+  \item \textbf{Coefficient}
+  \item \textbf{Standard Error}
+  \item \textbf{t Stat}
+  \item \textbf{P-value}
+\end{itemize}
+
+\paragraph{Coefficient (Interpretation).}
+\begin{itemize}
+  \item Intercept coefficient $\bhat_0$: predicted consumption when income is 0.
+  \item Income coefficient $\bhat_1$: predicted change in consumption for a 1-unit increase in income (the MPC).
+\end{itemize}
+
+\paragraph{Standard Error (Uncertainty).}
+A standard error measures how uncertain the coefficient estimate is. Smaller standard error means more precise estimate.
+
+\paragraph{t-statistic.}
+\[
+t = \frac{\text{Coefficient}}{\text{Standard Error}}.
+\]
+Bigger $|t|$ means stronger evidence the coefficient is different from zero.
+
+\paragraph{p-value.}
+The p-value answers:
+\begin{quote}
+If the true effect were 0, how likely would we see a coefficient this large (in absolute value) just by chance?
+\end{quote}
+Rule of thumb:
+\[
+\text{If p-value } < 0.05, \text{ we say the coefficient is statistically significant.}
+\]
+
+\subsection*{B) $R^2$ (Goodness of Fit)}
+$R^2$ is the fraction of variation in consumption explained by income (in a linear way).
+\[
+0 \le R^2 \le 1.
+\]
+Interpretation examples:
+\begin{itemize}
+  \item $R^2 = 0.80$: income explains 80\% of the variation in consumption.
+  \item $R^2 = 0.10$: income explains only 10\% (weak linear fit).
+\end{itemize}
+
+\subsection*{C) ``Significance F'' (Overall Test)}
+In a one-predictor model, this is closely related to testing whether the slope is zero.
+A small value (e.g., $<0.05$) suggests the regression model explains consumption better than a model with no predictor.
+
+\newpage
+\section*{Step 7: Compute Predicted Consumption and Residuals in Excel}
+Even if Excel outputs residuals, you should know how to compute them.
+
+\subsection*{A) Predicted Consumption}
+Suppose your regression output shows:
+\[
+\bhat_0 = \text{(Intercept)}, \quad \bhat_1 = \text{(Income coefficient)}.
+\]
+Store them in two cells. For example:
+\begin{itemize}
+  \item Put $\bhat_0$ in cell \texttt{E2}
+  \item Put $\bhat_1$ in cell \texttt{E3}
+\end{itemize}
+(Or just reference the cells where Excel printed them.)
+
+In column \texttt{C}:
+\begin{itemize}
+  \item \texttt{C1}: \texttt{Predicted\_C}
+  \item \texttt{C2}: type the formula:
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Excel Formula: Predicted Consumption]
+\texttt{= \$E\$2 + \$E\$3 * A2}
+\end{tcolorbox}
+
+Copy the formula down to \texttt{C9}.
+
+\subsection*{B) Residuals}
+In column \texttt{D}:
+\begin{itemize}
+  \item \texttt{D1}: \texttt{Residual}
+  \item \texttt{D2}: type:
+\end{itemize}
+
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Excel Formula: Residual]
+\texttt{= B2 - C2}
+\end{tcolorbox}
+
+Copy the formula down to \texttt{D9}.
+
+\section*{Step 8: Make the Residual Plot (Model Check)}
+A residual plot checks whether a straight line is a reasonable summary.
+
+\subsection*{Excel Steps (Residual Plot)}
+\begin{enumerate}
+  \item Highlight \texttt{A1:A9} (Income).
+  \item Hold Ctrl (Windows) or Cmd (Mac) and also select \texttt{D1:D9} (Residuals).
+  \item Insert $\rightarrow$ Scatter (only markers).
+  \item Title the chart: \texttt{Residuals vs Income}.
+\end{enumerate}
+
+\subsection*{How to interpret the residual plot}
+\begin{itemize}
+  \item \textbf{Good sign:} residuals look randomly scattered around 0.
+  \item \textbf{Warning sign:} a curve pattern (suggests nonlinearity).
+  \item \textbf{Warning sign:} ``fan shape'' (spread increasing with income) suggests unequal variance.
+\end{itemize}
+
+\section*{Alternative Method: Regression Using Excel Functions (No ToolPak)}
+Excel can compute slope, intercept, and $R^2$ using built-in functions.
+
+\subsection*{Slope (MPC)}
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Excel Function: SLOPE]
+\texttt{=SLOPE(B2:B9, A2:A9)}
+\end{tcolorbox}
+
+\subsection*{Intercept (Autonomous Consumption)}
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Excel Function: INTERCEPT]
+\texttt{=INTERCEPT(B2:B9, A2:A9)}
+\end{tcolorbox}
+
+\subsection*{$R^2$}
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Excel Function: RSQ]
+\texttt{=RSQ(B2:B9, A2:A9)}
+\end{tcolorbox}
+
+\section*{How to Write the Final Answer (Economic Interpretation)}
+Once you have estimates, write a sentence like:
+
+\begin{tcolorbox}[colback=gray!5, colframe=black!40, title=Interpretation Template]
+The estimated consumption function is $\widehat{C} = \bhat_0 + \bhat_1 Y$. The slope $\bhat_1$ is the MPC: a one-unit increase in income is associated with an average increase of $\bhat_1$ units in consumption. The intercept $\bhat_0$ is autonomous consumption (predicted consumption when income is zero). The $R^2$ indicates how much of the variation in consumption is explained by income.
+\end{tcolorbox}
+
+\section*{Summary}
+\begin{itemize}
+  \item Regression fits a line: $C = \beta_0 + \beta_1 Y + u$.
+  \item OLS chooses coefficients to minimize squared residuals.
+  \item $\bhat_1$ (slope) is the MPC.
+  \item Always: (1) scatter plot, (2) regression output, (3) residual plot.
+\end{itemize}
+
+\end{document}

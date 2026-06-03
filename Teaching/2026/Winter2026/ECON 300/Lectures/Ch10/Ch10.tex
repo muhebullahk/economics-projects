@@ -1,0 +1,322 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+\usepackage{xcolor}
+\definecolor{accent}{RGB}{0,92,184}
+\definecolor{soft}{RGB}{233,244,255}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{title}{fg=white,bg=accent}
+\setbeamercolor{frametitle}{fg=accent}
+\setbeamercolor{block title}{bg=accent!12,fg=accent}
+\setbeamercolor{block body}{bg=soft}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}
+
+% ---------- SAFE FALLBACK FOR TRANSITIONS ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- PLACEHOLDER BOX (compile-safe; no images required) ----------
+\newcommand{\placeholderbox}[2][0.82\linewidth]{%
+  \begin{center}
+    \fbox{\begin{minipage}[c][0.46\textheight][c]{#1}
+      \centering \vspace{0.25em}
+      \textbf{#2}\\[0.6em]
+      \emph{Insert figure/diagram here later.}
+    \end{minipage}}
+  \end{center}
+}
+
+% ---------- TITLE ----------
+\title{\textbf{Chapter 10: Wage Structures Across Markets  \vspace{.5cm}\\  }}
+\subtitle{ {\large ECON 300 - Labour Economics}}
+%\institute{UNBC}
+\author{Muhebullah Karimzada}
+
+\date{Winter 2026}
+
+
+\begin{document}
+
+% ============================================================
+% TITLE
+% ============================================================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ============================================================
+\section{Learning Objectives \& Main Questions}
+% ============================================================
+
+\begin{frame}{Learning Objectives}
+\transfade
+\begin{itemize}[<+->]
+  \item Understand the Roy model with heterogeneous skills and market sorting.
+  \item Explain wage differences across labour markets via supply, demand, and institutions.
+  \item Compare wages across occupations, industries, regions, firm size, and sectors.
+  \item Interpret interindustry differentials through the lens of efficiency wages.
+  \item Discuss why the public sector often pays more than the private sector.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Main Questions}
+\transfade
+\begin{itemize}[<+->]
+  \item Why do wages vary across labour markets even for apparently identical workers?
+  \item Are public sector workers overpaid?
+  \item Why are wages higher in Alberta than in Ontario?
+  \item What drives interprovincial migration decisions?
+  \item Do higher wages at large firms contradict the neoclassical model?
+  \item Which industries/occupations pay the most—and is it due to worker skills?
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Explorations with the 2016 Census}
+% ============================================================
+
+\begin{frame}{Earnings Model: Returns to Traits}
+\transfade
+\small
+Individual (log) wages depend on schooling, experience, ability/luck, and other traits:
+\[
+\ln Y_i = \alpha + r S_i + \beta_1 \mathrm{EXP}_i + \beta_2 \mathrm{EXP}_i^2 + \gamma X_i + \varepsilon_i
+\]
+\begin{itemize}[<+->]
+  \item $Y$: earnings;\; $S$: years of schooling;\; $r$: return to schooling (IRR interpretation);
+  \item $\mathrm{EXP}$: experience proxy;\; $X$: controls;\; $\varepsilon$: unobservables.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Pure Regional, Occupational, and Industry Premia}
+\transfade
+\begin{itemize}[<+->]
+  \item Conditional wage differences remain after adjusting for $S$, $\mathrm{EXP}$, $X$.
+  \item “Premiums” summarize province, occupation, and industry effects.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Table 10.1 — Earnings Differentials by Province, Canada, 2015}
+\transfade
+\scriptsize
+\begin{tabular}{lcc}
+\toprule
+\textbf{Province} & \textbf{\% Jobs} & \textbf{Premium} \\
+\midrule
+Newfoundland and Labrador & 1.3 & 4.1 \\
+Prince Edward Island & 0.3 & $-12.8$ \\
+Nova Scotia & 2.7 & $-8.1$ \\
+New Brunswick & 2.1 & $-11.1$ \\
+Quebec & 22.8 & $-11.5$ \\
+Ontario & 39.9 & --- \\
+Manitoba & 3.5 & $-2.6$ \\
+Saskatchewan & 2.8 & 10.1 \\
+Alberta & 13.1 & 18.1 \\
+British Columbia & 12.1 & 1.6 \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Table 10.1 — Earnings Differentials by Occupation and Industry, Canada, 2015}
+\transfade
+\scriptsize
+\begin{tabular}{lcc|lcc}
+\toprule
+\multicolumn{3}{c}{\textbf{Occupation}} & \multicolumn{3}{c}{\textbf{Industry}} \\
+\textbf{Group} & \textbf{\% Jobs} & \textbf{Premium} & \textbf{Group} & \textbf{\% Jobs} & \textbf{Premium} \\
+\midrule
+Senior management & 2.0 & 56.1 & Agriculture, forestry, and fishing & 1.5 & $-35.1$ \\
+Middle management & 5.0 & 28.5 & Other primary & 2.4 & 51.3 \\
+Other management & 9.1 & 9.5 & Utilities & 1.5 & 38.5 \\
+Professionals (business/finance) & 3.4 & 14.8 & Construction & 10.2 & $-4.2$ \\
+Finance and administration & 5.8 & $-15.6$ & Manufacturing & 16.2 & --- \\
+Clerical & 1.1 & $-25.6$ & Wholesale trade & 6.4 & 1.7 \\
+Professionals (science) & 8.0 & 14.2 & Retail trade & 9.6 & $-23.6$ \\
+Other science occupations & 5.8 & $-2.1$ & Transportation/warehousing & 7.1 & $-0.7$ \\
+Professionals (health) & 1.0 & 30.9 & Information and culture & 2.9 & 5.4 \\
+Other health occupations & 1.0 & 0.9 & Finance and insurance & 4.5 & 16.2 \\
+Professionals (education/social) & 4.8 & 10.4 & Real estate and leasing & 1.3 & $-8.9$ \\
+Other education/social & 3.0 & 10.0 & Professional services & 7.9 & $-3.1$ \\
+Professionals (arts/culture/rec) & 1.4 & $-21.3$ & Admin/support, waste mgmt & 3.5 & $-25.7$ \\
+Sales and service supervisors & 4.4 & $-9.5$ & Educational services & 4.5 & $-16.4$ \\
+Sales representatives & 5.7 & $-18.7$ & Health and social assistance & 3.5 & $-22.8$ \\
+Sales and services support & 4.2 & $-33.4$ & Accommodation and food & 3.6 & $-57.6$ \\
+Trade workers & 15.3 & --- & Other services (excl.\ public admin) & 4.6 & $-27.8$ \\
+Transportation/trade helpers & 10.1 & $-22.7$ & Public administration & 8.8 & 6.8 \\
+Supervisors/tech (primary/secondary) & 5.8 & $-8.2$ &  &  &  \\
+Labourers & 3.3 & $-30.4$ &  &  &  \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+% ============================================================
+\section{Occupational Wage Structures}
+% ============================================================
+
+\begin{frame}{NOC and Occupational Wage Structure}
+\transfade
+\begin{itemize}[<+->]
+  \item National Occupational Classification (NOC): 26 two-digit major groups; 17 broad classes; hundreds of detailed codes.
+  \item Occupational wage gaps reflect nonpecuniary traits, human capital, endowed skills, demand shifts, and institutions.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 10.1 — Occupational Wage Differentials \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Figure 10.1 — Comparative wage levels by occupation.}
+\end{frame}
+
+\begin{frame}{Why Do Occupations Pay Differently?}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Compensating differentials}: risk, conditions, schedule.
+  \item \textbf{Human capital}: training requirements and entry costs.
+  \item \textbf{Endowments}: innate abilities valued differently across jobs.
+  \item \textbf{Short-run demand}: cyclical/sectoral shifts.
+  \item \textbf{Noncompetitive factors}: licensing, entry limits, unions, wage laws.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Heterogeneous Workers and the Roy Model}
+% ============================================================
+
+\begin{frame}{The Roy Model: Sorting by Comparative Advantage}
+\transfade
+\begin{itemize}[<+->]
+  \item Workers have different skill vectors; wages differ by match quality across occupations.
+  \item Individuals self-select into the occupation yielding the highest wage for their skill bundle.
+  \item Implication: observed wage distributions reflect \textbf{sorting}, not just treatment effects.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Regional Wage Structures \& Mobility}
+% ============================================================
+
+\begin{frame}{Regional Wage Gaps and Mobility}
+\transfade
+\begin{itemize}[<+->]
+  \item Reasons: geographic preferences; compensating differences (cost of living, remoteness, climate, congestion, pollution).
+  \item Short run: disequilibrium encourages mobility; long run: convergence via flows of labour/capital.
+  \item Frictions: moving costs, policy barriers (e.g., licensing), and networks.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Migration Decision: Benefits vs.\ Costs}
+\transfade
+\begin{itemize}[<+->]
+  \item Move if present value of wage/personal benefits exceeds moving and adaptation costs.
+  \item Influences: age, unemployment rates, business cycle, distance, cultural differences.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Effect of an Oil Shock on Regional Wages \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Oil shock — Alberta wage premium; spillovers to construction/services; migration inflows.}
+\end{frame}
+
+% ============================================================
+\section{Interindustry Wage Differentials}
+% ============================================================
+
+\begin{frame}{What Drives Interindustry Wage Gaps?}
+\transfade
+\begin{itemize}[<+->]
+  \item Composition: occupation mix and worker traits.
+  \item Region dominance and product-market forces (trade, technology, deregulation).
+  \item Nonpecuniary aspects: conditions, seasonality, cyclicality.
+  \item Noncompetitive factors: monopoly rents, unions, wage floors, licensing.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Efficiency Wages and “Good Jobs”}
+\transfade
+\begin{itemize}[<+->]
+  \item Firms may pay above-market wages to improve morale, deter shirking, reduce turnover, and discourage unionization.
+  \item Higher wages can create applicant queues and persistent interindustry premia.
+  \item Competitive pressure (imports, deregulation, more rivals) tends to compress premia.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Empirical Regularities}
+\transfade
+\begin{itemize}[<+->]
+  \item Interindustry wage structure is \textbf{stable} over time and across countries.
+  \item Product-market competition lowers wages relative to protected industries.
+  \item Pure interindustry differentials (rents) persist—consistent with efficiency wages.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Firm Size and Wage Differences}
+% ============================================================
+
+\begin{frame}{Interfirm Differentials and Size}
+\transfade
+\begin{itemize}[<+->]
+  \item Larger firms often pay more—due to rents, internal labor markets, scale economies, and sorting.
+  \item Also reflect nonpecuniary factors and union presence in larger firms.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Public vs.\ Private Sector}
+% ============================================================
+
+\begin{frame}{Public–Private Wage Differentials}
+\transfade
+\begin{itemize}[<+->]
+  \item Public sector: about one-fifth of Canadian employment; higher wages and benefits on average.
+  \item Reasons: job security, benefit generosity, political constraints, monopsony power, unionization, and demand inelasticity.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 10.2 — Public Sector Employment, Canada, 1987–2019 \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Figure 10.2 — Public sector employment share over time.}
+\end{frame}
+
+% ============================================================
+\section{Chapter Summary}
+% ============================================================
+
+\begin{frame}{Summary}
+\transfade
+\begin{itemize}[<+->]
+  \item Wage structure has multiple dimensions: occupation, industry, region, firm size, and sector.
+  \item Roy model explains sorting and the mapping from heterogeneous skills to observed wages.
+  \item Interindustry and interfirm differentials persist due to rents, institutions, and compensating differences.
+  \item Public sector typically pays more; interpretation requires adjusting for traits and benefits.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge{\textbf{Thank You!}} \\
+
+\end{frame}
+
+\end{document}

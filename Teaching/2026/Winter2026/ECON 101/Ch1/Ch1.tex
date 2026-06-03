@@ -1,0 +1,505 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+\usepackage{xcolor}
+\definecolor{accent}{RGB}{0,92,184}
+\definecolor{soft}{RGB}{233,244,255}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{title}{fg=white,bg=accent}
+\setbeamercolor{frametitle}{fg=accent}
+\setbeamercolor{block title}{bg=accent!12,fg=accent}
+\setbeamercolor{block body}{bg=soft}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}
+
+% ---------- SAFE TRANSITION FALLBACK ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- PLACEHOLDER BOX (FIGURES/DIAGRAMS) ----------
+\newcommand{\placeholderbox}[2][0.82\linewidth]{%
+  \begin{center}
+    \fbox{\begin{minipage}[c][0.46\textheight][c]{#1}
+      \centering \vspace{0.25em}
+      \textbf{#2}\\[0.6em]
+      \emph{Insert figure/diagram here later.}
+    \end{minipage}}
+  \end{center}
+}
+
+% ---------- TITLE ----------
+\title{\textbf{Economics: Foundations and Models  \vspace{.5cm}\\  }}
+\subtitle{ {\large ECON 101 - Macroeconomics}}
+%\institute{UNBC}
+\author{Muhebullah Karimzada}
+\date{Winter 2026}
+
+
+\begin{document}
+
+% ============================================================
+% TITLE
+% ============================================================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+%
+ %============================================================
+\begin{frame}{Outline}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{1.1} Three Key Economic Ideas
+  \item \textbf{1.2} The Economic Problems All Societies Must Solve
+  \item \textbf{1.3} Economic Models
+  \item \textbf{1.4} Microeconomics and Macroeconomics
+  \item \textbf{1.5} The Language of Economics
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{What Is Economics?}
+% ============================================================
+
+\begin{frame}{What Is Economics? (1 of 2)}
+\transfade
+\begin{itemize}[<+->]
+  \item People make \textbf{choices} as they try to attain their goals.
+  \item Choices are necessary because we live in a world of \alert{scarcity}.
+  \item \textbf{Scarcity:} a situation in which unlimited wants exceed the limited resources available to fulfill those wants.
+  \item \textbf{Economics} is the study of the choices people make to attain their goals, given their scarce resources.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{What Is Economics? (2 of 2)}
+\transfade
+\begin{itemize}[<+->]
+  \item Economists study these choices using \textbf{economic models}:
+  \begin{itemize}[<+->]
+    \item \textbf{Economic model:} a simplified version of reality used to analyze real-world economic situations.
+  \end{itemize}
+  \item Typical economics questions:
+  \begin{itemize}[<+->]
+    \item How are the prices of goods and services determined?
+    \item How do government spending and taxation affect the economy?
+    \item Why do governments control the prices of some goods?
+    \item Why are some countries wealthier than others?
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Everyday Examples of Scarcity}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Your time:} cannot work, study, and relax at the same time.
+  \item \textbf{Government budgets:} more spending on health care may mean less on education or infrastructure.
+  \item \textbf{Environmental trade-offs:} more production today may mean less clean air tomorrow.
+\end{itemize}
+\end{frame}
+
+
+
+% ============================================================
+\section{Three Key Economic Ideas (1.1)}
+% ============================================================
+
+\begin{frame}{Three Key Economic Ideas}
+\transfade
+\begin{itemize}[<+->]
+  \item People are \textbf{rational}.
+  \item People respond to \textbf{incentives}.
+  \item Optimal decisions are made at the \textbf{margin}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{1. People Are Rational}
+\transfade
+\begin{itemize}[<+->]
+  \item Economists generally assume that people are \textbf{rational}.
+  \item \textbf{Rational:} people make choices based on what they believe will make them happy.
+  \item They do not deliberately do things to make themselves worse off.
+  \item Rational decision makers weigh \alert{costs} and \alert{benefits}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Example: A \$5 Cup of Coffee}
+\transfade
+\begin{itemize}[<+->]
+  \item You will not buy a \$5 cup of coffee unless you believe the benefit is worth at least:
+  \begin{itemize}[<+->]
+    \item the time and effort it takes you to earn \$5, \textbf{plus}
+    \item the value of any other item you could have bought with the \$5.
+  \end{itemize}
+  \item \textbf{Hubbard-style interpretation:} Think in terms of \alert{opportunity cost}:
+  \begin{itemize}[<+->]
+    \item If the best alternative use of \$5 is a bus pass or saving for tuition, you compare happiness from coffee vs.\ that alternative.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{2. People Respond to Incentives}
+\transfade
+\begin{itemize}[<+->]
+  \item As \textbf{costs} and \textbf{benefits} change, so do people's actions.
+  \item Example: Do Canadian banks choose to get robbed?
+  \begin{itemize}[<+->]
+    \item Bullet-resistant shields cost \$20{,}000.
+    \item Typical loss due to an armed robbery is \$1{,}200.
+    \item Armed robbery is rare.
+    \item \textbf{Result:} Many banks choose not to install bullet-resistant shields.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{More Incentive Examples}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Students:} Higher course weight or harder marking may increase study time.
+  \item \textbf{Firms:} A carbon tax raises the cost of emissions, encouraging cleaner technologies.
+  \item \textbf{Households:} Higher interest rates increase the reward to saving but raise borrowing costs.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{3. Optimal Decisions Are Made at the Margin}
+\transfade
+\begin{itemize}[<+->]
+  \item Most decisions involve doing a \textbf{little more} or a \textbf{little less} of something.
+  \item Example: Should you watch an extra hour of TV or study instead?
+  \item \textbf{Marginal cost (MC):} the additional cost from a small increase in activity.
+  \item \textbf{Marginal benefit (MB):} the additional benefit from that small increase.
+  \item Comparing MC and MB is called \textbf{marginal analysis}.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Worked Example: Study vs.\ TV}
+\transfade
+\small
+Suppose:
+\begin{itemize}[<+->]
+  \item Extra hour of TV: MB = 8 ``happiness points'', MC = 0 points.
+  \item Extra hour of study: increases exam grade by 2 percentage points, which you value at 12 points of happiness (less stress, better GPA).
+  \item \textbf{Decision:} If you switch from TV to study:
+  \begin{itemize}[<+->]
+    \item MB (study) = 12, MC (giving up TV) = 8.
+    \item Net gain = 4 points \(\Rightarrow\) better to study the extra hour.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Economic Problems All Societies Must Solve (1.2)}
+% ============================================================
+
+\begin{frame}{Three Fundamental Questions}
+\transfade
+\textbf{1.2 Learning Objective}\\[0.3em]
+Discuss how an economy answers these questions:
+\begin{itemize}[<+->]
+  \item \textbf{What} goods and services will be produced?
+  \item \textbf{How} will the goods and services be produced?
+  \item \textbf{Who} will receive the goods and services produced?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{1. What Goods and Services Will Be Produced?}
+\transfade
+\begin{itemize}[<+->]
+  \item All societies must decide which goods and services to produce.
+  \item Producing more of one thing means producing less of another.
+  \item This is a \textbf{trade-off}, resulting from the scarcity of productive resources.
+  \item \textbf{Opportunity cost:} the value of the best alternative given up.
+  \item Example: The opportunity cost of increased funding for health care might be fewer university scholarships.
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}{2. How Will the Goods Be Produced?}
+\transfade
+\begin{itemize}[<+->]
+  \item A firm may have multiple methods for producing the same output.
+  \item \textbf{Example 1 (Music production):}
+  \begin{itemize}[<+->]
+    \item Hire a great singer and use standard production techniques; or
+    \item Hire a mediocre singer and use Auto-Tune to correct inaccuracies.
+  \end{itemize}
+  \item \textbf{Example 2 (Manufacturing labour):}
+  \begin{itemize}[<+->]
+    \item As labour costs rise, firms may substitute capital (machines) for labour; or
+    \item Move production to a country with cheaper labour.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{3. Who Will Receive the Goods and Services?}
+\transfade
+\begin{itemize}[<+->]
+  \item Who gets what is closely tied to \alert{income distribution}.
+  \item People with higher incomes can buy more goods and services.
+  \item Governments can change the income distribution through:
+  \begin{itemize}[<+->]
+    \item \textbf{Taxes}
+    \item \textbf{Transfers} (e.g., EI, child benefits, social assistance)
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Centrally Planned vs.\ Market vs.\ Mixed Economies}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Centrally planned economy:} government decides how economic resources will be allocated.
+  \item \textbf{Market economy:} decisions of households and firms interacting in markets allocate resources.
+  \item \textbf{Mixed economy:} most decisions are market-based, but government plays a significant role.
+  \item Canada today is a \textbf{mixed economy}:
+  \begin{itemize}[<+->]
+    \item Hospitals: centrally planned by provincial governments.
+    \item Fast food: organized by markets.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Efficiency and Equity}
+\transfade
+\begin{itemize}[<+->]
+  \item Market economies tend to be more \textbf{efficient} than centrally planned economies.
+  \item \textbf{Productive efficiency:} goods and services produced at the lowest possible cost.
+  \item \textbf{Allocative efficiency:} production in accordance with consumer preferences:
+  \begin{itemize}[<+->]
+    \item Each good produced up to the point where last unit's \textbf{MB} equals its \textbf{MC}.
+  \end{itemize}
+  \item \textbf{Equity:} the fair distribution of economic benefits.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Source of Efficiency}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Productive efficiency} comes from \alert{competition} among firms.
+  \item \textbf{Allocative efficiency} arises from \alert{voluntary exchange}:
+  \begin{itemize}[<+->]
+    \item When buyer and seller both benefit from trade.
+    \item Transactions continue until no further mutual gains are possible.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{When Markets May Fail}
+\transfade
+\begin{itemize}[<+->]
+  \item Markets may not result in fully efficient outcomes:
+  \begin{itemize}[<+->]
+    \item It takes time to discover the most efficient production methods.
+    \item Governments may interfere with market outcomes (taxes, controls).
+    \item Market outcomes can ignore those not directly involved:
+    \begin{itemize}[<+->]
+      \item \textbf{Externalities} (e.g., pollution).
+    \end{itemize}
+  \end{itemize}
+  \item Economic efficiency is not the only objective; \textbf{equity} matters too.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Economic Models (1.3)}
+% ============================================================
+
+\begin{frame}{Economic Models}
+\transfade
+\begin{itemize}[<+->]
+  \item Economists develop models to analyze real-world issues.
+  \item Building a model often follows these steps:
+  \begin{itemize}[<+->]
+    \item Decide on the assumptions.
+    \item Formulate a testable hypothesis.
+    \item Use economic data to test the hypothesis.
+    \item Revise the model if it fails to explain the data well.
+    \item Retain the revised model for similar questions in the future.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Important Features of Economic Models}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Assumptions:} every model needs them to be tractable and useful.
+  \item \textbf{Hypothesis testing:} good models generate testable predictions.
+  \item \textbf{Economic variable:} something measurable that can take different values (e.g., income, unemployment rate).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Scientific Nature of Economics}
+\transfade
+\begin{itemize}[<+->]
+  \item Economists try to mimic the scientific method:
+  \begin{itemize}[<+->]
+    \item Develop models
+    \item Derive predictions
+    \item Compare with data
+  \end{itemize}
+  \item Economics is a \textbf{social science}:
+  \begin{itemize}[<+->]
+    \item People may have strong views about what results ``should'' be.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Positive vs.\ Normative Analysis}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Positive analysis:} based on facts and logic.
+  \begin{itemize}[<+->]
+    \item ``If the minimum wage rises, some low-skill employment will fall.''
+  \end{itemize}
+  \item \textbf{Normative analysis:} based on value judgments.
+  \begin{itemize}[<+->]
+    \item ``The minimum wage should be higher to ensure a living standard.''
+    \item Words like ``should'' or ``ought'' often signal normative statements.
+  \end{itemize}
+  \item Economics \textbf{tries} to focus on positive analysis, while recognizing normative debates.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Apply the Concept: Cap on House Prices (1 of 2)}
+\transfade
+\begin{itemize}[<+->]
+  \item Consider a government \textbf{cap} on house prices.
+  \item \textbf{Potential benefits:}
+  \begin{itemize}[<+->]
+    \item Lower home prices for buyers.
+    \item Lower housing costs free up income for other spending.
+  \end{itemize}
+  \item \textbf{Potential costs:}
+  \begin{itemize}[<+->]
+    \item Fewer houses built.
+    \item Fewer jobs in construction and related sectors.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Apply the Concept: Cap on House Prices (2 of 2)}
+\transfade
+\begin{itemize}[<+->]
+  \item Both benefits and costs are \textbf{positive} effects we can try to measure.
+  \item How much each effect matters is a \textbf{normative} judgment.
+  \item This example illustrates:
+  \begin{itemize}[<+->]
+    \item Trade-offs and opportunity cost.
+    \item Distinction between positive and normative analysis.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Microeconomics and Macroeconomics (1.4)}
+% ============================================================
+
+\begin{frame}{Microeconomics and Macroeconomics}
+\transfade
+\textbf{1.4 Learning Objective}\\[0.3em]
+Distinguish between microeconomics and macroeconomics.
+\begin{itemize}[<+->]
+  \item \textbf{Microeconomics:} the study of how households and firms make choices, how they interact in markets, and how governments attempt to influence their choices.
+  \item \textbf{Macroeconomics:} the study of the economy as a whole, including inflation, unemployment, and economic growth.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Examples: Micro vs.\ Macro Questions}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Micro:}
+  \begin{itemize}[<+->]
+    \item Why did Netflix raise its subscription price?
+    \item How will a tax on sugary drinks affect soft drink sales?
+  \end{itemize}
+  \item \textbf{Macro:}
+  \begin{itemize}[<+->]
+    \item Why does Canada experience recessions?
+    \item What causes inflation to rise or fall?
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+% ============================================================
+\section{The Language of Economics (1.5)}
+% ============================================================
+
+\begin{frame}{The Language of Economics (1 of 2)}
+\transfade
+\textbf{1.5 Learning Objective}\\[0.3em]
+Define important economic terms.
+\begin{itemize}[<+->]
+  \item Economics has its own terms and jargon with specific, precise meanings.
+  \item Sometimes these terms are used differently than in everyday language.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Language of Economics (2 of 2)}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Technology:} the processes a firm uses to turn inputs into outputs of goods and services.
+  \item \textbf{Capital:} durable manufactured goods used to produce other goods and services.
+  \item Pay close attention to terms defined in class and in the textbook:
+  \begin{itemize}[<+->]
+    \item Using terms correctly helps you think like an economist.
+    \item On exams, definitions are often tested directly or indirectly.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Chapter Summary}
+% ============================================================
+
+\begin{frame}{Summary}
+\transfade
+\begin{itemize}[<+->]
+  \item Economics is about how individuals and societies make choices under \textbf{scarcity}.
+  \item Three key ideas:
+  \begin{itemize}[<+->]
+    \item People are rational.
+    \item People respond to incentives.
+    \item Optimal decisions are made at the margin.
+  \end{itemize}
+  \item Societies face three fundamental questions: what, how, and who.
+  \item Market, centrally planned, and mixed economies differ in how they answer these questions.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Summary (continued)}
+\transfade
+\begin{itemize}[<+->]
+  \item Economic models simplify reality to generate testable predictions.
+  \item Economists distinguish between \textbf{positive} (what is) and \textbf{normative} (what ought to be) analysis.
+  \item Microeconomics focuses on individual markets; macroeconomics looks at the economy as a whole.
+  \item Mastering the \textbf{language of economics} (terms like scarcity, opportunity cost, technology, capital) is essential for success in this course.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\begin{frame}
+\centering
+\Huge \textbf{Thank you!}
+\end{frame}
+
+\end{document}

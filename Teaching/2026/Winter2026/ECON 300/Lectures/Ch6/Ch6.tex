@@ -1,0 +1,266 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+\usepackage{xcolor}
+\definecolor{accent}{RGB}{0,92,184}
+\definecolor{soft}{RGB}{233,244,255}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{title}{fg=white,bg=accent}
+\setbeamercolor{frametitle}{fg=accent}
+\setbeamercolor{block title}{bg=accent!12,fg=accent}
+\setbeamercolor{block body}{bg=soft}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}
+
+% ---------- SAFE FALLBACK FOR TRANSITIONS ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- PLACEHOLDER BOX (compile-safe; no images required) ----------
+\newcommand{\placeholderbox}[2][0.82\linewidth]{%
+  \begin{center}
+    \fbox{\begin{minipage}[c][0.46\textheight][c]{#1}
+      \centering \vspace{0.25em}
+      \textbf{#2}\\[0.6em]
+      \emph{Insert figure/diagram here later.}
+    \end{minipage}}
+  \end{center}
+}
+
+% ---------- TITLE ----------
+\title{\textbf{Labour Demand, Nonwage Benefits, and Quasi-Fixed Costs \vspace{.5cm}\\  }}
+\subtitle{ {\large ECON 300 - Labour Economics}}
+%\institute{UNBC}
+\author{Muhebullah Karimzada}
+
+\date{Winter 2026}
+
+
+\begin{document}
+
+% ============================================================
+% TITLE
+% ============================================================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ============================================================
+\section{Learning Objectives \& Main Questions}
+% ============================================================
+
+\begin{frame}{Learning Objectives}
+\transfade
+\begin{itemize}[<+->]
+  \item Outline quasi-fixed costs of labour and how they differ from variable (per-hour) costs.
+  \item Distinguish workers vs.\ hours as separate margins of labour input.
+  \item Explain the role of nonwage benefits in total compensation and in labour-demand modelling.
+  \item Show how quasi-fixed costs create a wedge between VMP and the wage, shaping hoarding and dynamics.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Main Questions}
+\transfade
+\begin{itemize}[<+->]
+  \item Why can payroll-tax \textbf{ceilings} reduce employment?
+  \item Why are less-expensive, unskilled workers more likely to be laid off in downturns?
+  \item Can limits on weekly hours or overtime \textbf{create} jobs for others?
+  \item Did short-time work/worksharing help save jobs in 2008–2009?
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Nonwage Benefits \& Total Compensation}
+% ============================================================
+
+\begin{frame}{Figure 6.1: Components of Total Compensation — \textit{Placeholder}}
+\transfade
+\placeholderbox{Figure 6.1 — Components of total compensation.}
+\end{frame}
+
+\begin{frame}{Figure 6.2: Total Compensation, Wage, and Nonwage Benefits — \textit{Placeholder}}
+\transfade
+\placeholderbox{Figure 6.2 — Wage vs.\ nonwage benefits over time/levels.}
+\end{frame}
+
+\begin{frame}{Nonwage Benefits and Total Compensation}
+\transfade
+\begin{block}{Unconditional Cash Transfers vs.\ Transfers-In-Kind}
+\end{block}
+\begin{columns}[T,onlytextwidth]
+\column{0.52\textwidth}
+\textbf{Employee Benefits}
+\begin{itemize}[<+->]
+  \item Taxes
+  \item Group purchase
+  \item Adverse selection
+\end{itemize}
+
+\column{0.48\textwidth}
+\textbf{Employer Benefits}
+\begin{itemize}[<+->]
+  \item Production planning
+  \item Deferred compensation
+\end{itemize}
+\end{columns}
+\end{frame}
+
+% ============================================================
+\section{Quasi-Fixed Labour Costs}
+% ============================================================
+
+\begin{frame}{Definition and Sources}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Independent of hours} worked; incurred per employee.
+  \item Arise from:
+    \begin{itemize}[<+->]
+      \item Hiring costs
+      \item Training costs
+      \item Dismissal costs
+      \item Nonwage benefits
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Variable vs.\ Quasi-Fixed Costs}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Variable} labour costs: vary with hours.
+  \item \textbf{Quasi-fixed:} incurred per employee, \emph{independent} of hours.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Recurring vs.\ Nonrecurring}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Recurring}: payroll taxes.
+  \item \textbf{Nonrecurring}: hiring/orienting new employees; dismissals.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{General Effect of Quasi-Fixed Costs}
+\transfade
+\begin{itemize}[<+->]
+  \item Raise MC of hiring another \textbf{worker} relative to adding \textbf{hours} on existing workers.
+  \item Discourage expansion along the \textbf{employment} margin; encourage more hours per worker.
+  \item Hiring continues until present value of expected future revenues equals present value of additional costs.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Profit-Maximizing Employment Rule}
+\transfade
+\small
+\[
+\underbrace{H+T}_{\text{hiring+training}}
+\;+\;
+\sum_{t=1}^{N}\frac{W_t}{(1+R)^{\,t}}
+\;\;\le\;\;
+\sum_{t=1}^{N}\frac{\text{VMP}_t}{(1+R)^{\,t}}
+\]
+\smallskip
+\textbf{Where:}\; \(H+T\) = hiring and training costs;\; \(W_t\) = wage in period \(t\);\;
+\(R\) = discount rate;\; \(N\) = expected length of employment;\;
+\(\text{MRP}_t (\text{VMP}_t)\) = expected value of marginal product.
+\end{frame}
+
+\begin{frame}{WORKED EXAMPLE: Quasi-fixed Costs and Training}
+\transfade
+\scriptsize
+\begin{tabular}{lccccccc}
+\toprule
+\multicolumn{1}{c}{\textbf{Costs}} &
+\textbf{Employment Duration (N)} &
+\textbf{Fixed (H + T)} &
+\textbf{Variable ($\sum W_t$)} &
+\textbf{Total} &
+\textbf{Benefits ($\sum \mathrm{VMP}_t$)} &
+\textbf{Total Profit} &
+\textbf{Yearly Profit} \\
+\midrule
+ & 1 year & \$15{,}000 & \$25{,}000 & \$40{,}000 & \$30{,}000 & $-{\$}10{,}000$ & $-{\$}10{,}000$ \\
+ & 2 years & \$15{,}000 & \$50{,}000 & \$65{,}000 & \$60{,}000 & $-{\$}5{,}000$ & $-{\$}2{,}500$ \\
+ & 3 years & \$15{,}000 & \$75{,}000 & \$90{,}000 & \$90{,}000 & \$0 & \$0 \\
+ & 4 years & \$15{,}000 & \$100{,}000 & \$115{,}000 & \$120{,}000 & \$5{,}000 & \$1{,}250 \\
+ & 5 years & \$15{,}000 & \$125{,}000 & \$140{,}000 & \$150{,}000 & \$10{,}000 & \$2{,}000 \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+% ============================================================
+\section{Phenomena Explained by Fixed Costs}
+% ============================================================
+
+\begin{frame}{Some Phenomena Explained by Fixed Costs}
+\transfade
+\begin{itemize}[<+->]
+  \item Overtime
+  \item Temporary help agencies
+  \item Layoffs
+  \item Segmentation of labour markets
+  \item Resistance to work-sharing
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 6.3: Nonrecurring Fixed Employment Costs and Changes in Labour Demand — \textit{Placeholder}}
+\transfade
+\placeholderbox{Figure 6.3 — Labour-demand shifts with nonrecurring fixed employment costs.}
+\end{frame}
+
+% ============================================================
+\section{Worksharing and Job Creation}
+% ============================================================
+
+\begin{frame}{Worksharing and Job Creation}
+\transfade
+\begin{itemize}[<+->]
+  \item Overtime Restrictions and Job Creation
+  \item Nonwage Benefit and Part-time work
+  \item Short-time Work and the Great Recession of 2008--2009
+  \item Subsidizing Employment Sharing
+  \item Workers and the Demand for Worksharing
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Chapter Summary}
+% ============================================================
+
+\begin{frame}{Summary}
+\transfade
+\begin{itemize}[<+->]
+  \item Labour compensation includes substantial \textbf{nonwage} benefits.
+  \item \textbf{Quasi-fixed} costs matter for employment vs.\ hours choices.
+  \item These costs create a \textbf{wedge} between VMP and the wage.
+  \item Implications for overtime, layoffs, segmentation, and worksharing policies.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge{\textbf{Thank You!}} \\
+
+\end{frame}
+
+\end{document}

@@ -1,0 +1,350 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+\usepackage{xcolor}
+\definecolor{accent}{RGB}{0,92,184}
+\definecolor{soft}{RGB}{233,244,255}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{title}{fg=white,bg=accent}
+\setbeamercolor{frametitle}{fg=accent}
+\setbeamercolor{block title}{bg=accent!12,fg=accent}
+\setbeamercolor{block body}{bg=soft}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}
+
+% ---------- SAFE FALLBACK FOR TRANSITIONS ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- PLACEHOLDER BOX (compile-safe; no images required) ----------
+\newcommand{\placeholderbox}[2][0.82\linewidth]{%
+  \begin{center}
+    \fbox{\begin{minipage}[c][0.46\textheight][c]{#1}
+      \centering \vspace{0.25em}
+      \textbf{#2}\\[0.6em]
+      \emph{Insert figure/diagram here later.}
+    \end{minipage}}
+  \end{center}
+}
+
+% ---------- TITLE ----------
+\title{\textbf{Labour Supply over the Life Cycle \vspace{.5cm}\\  }}
+\subtitle{ {\large ECON 300 - Labour Economics}}
+%\institute{UNBC}
+\author{Muhebullah Karimzada}
+
+\date{Winter 2026}
+
+
+
+\begin{document}
+
+% ============================================================
+% TITLE
+% ============================================================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ============================================================
+\section{Learning Objectives \& Main Questions}
+% ============================================================
+
+\begin{frame}{Learning Objectives}
+\transfade
+\begin{itemize}[<+->]
+  \item Explain why cross-sectional age comparisons can be misleading.
+  \item Distinguish the effects of \textbf{temporary} vs.\ \textbf{permanent} wage changes on labour supply.
+  \item Describe how economists model household choices over paid work, unpaid work, and fertility.
+  \item Outline Canada’s three-tier pension system and retirement incentives.
+  \item Use diagrams to show how public pensions affect retirement timing and income.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Main Questions}
+\transfade
+\begin{itemize}[<+->]
+  \item Do men’s and women’s labour supply patterns evolve similarly with age?
+  \item How do life-cycle planning horizons change labour-supply responses to wages?
+  \item What new complexities arise when modelling each period of life?
+  \item How do labour-saving household technologies reshape time allocation?
+  \item How do fertility choices interact with women’s labour supply?
+  \item What determines retirement age, and how do pensions shape it?
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Characterizing Life-Cycle Labour Supply}
+% ============================================================
+
+\begin{frame}{Age--Participation Profiles}
+\transfade
+\begin{itemize}[<+->]
+  \item Participation rates vary systematically with age for both men and women.
+  \item Women’s age profiles have shifted upward over successive cohorts.
+  \item Interpretation requires disentangling \alert{age}, \alert{period}, and \alert{cohort} effects.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 4.1 — Age--Labour Force Participation Profiles \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Figure 4.1 — Plot age-participation profiles for men and women; show cohort shifts.}
+\end{frame}
+
+\begin{frame}{Cohort Effect: Definition}
+\transfade
+\begin{itemize}[<+->]
+  \item The difficulty of separating the influence of \textbf{age} from \textbf{year of birth} (vintage) at a point in time.
+  \item For women, newer cohorts tend to be more attached to the labour market than earlier cohorts.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Worked Example — What Is a Cohort Effect?}
+\transfade
+\small
+\begin{tabular}{lccc}
+\toprule
+ & \textbf{Observed in 2000} & \textbf{2005} & \textbf{2010} \\
+\midrule
+\textbf{Older Cohort, born in 1975:} & & & \\
+\quad Age & 25 & 30 & 35 \\
+\quad Participation Rate & 75\% & 80\% & 85\% \\
+\addlinespace[0.25em]
+\textbf{Younger Cohort, born 1980:} & & & \\
+\quad Age & 20 & 25 & 30 \\
+\quad Participation Rate & 75\% & 80\% & 85\% \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.4em}
+\footnotesize
+\textbf{Takeaway:} Cross-section comparisons can confound true aging patterns with cohort differences. Tracking cohorts over time isolates life-cycle effects.
+\end{frame}
+
+% ============================================================
+\section{Dynamic Life-Cycle Model}
+% ============================================================
+
+\begin{frame}{Two Modelling Approaches}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Sequence of static problems:} convenient but ignores forward-looking behaviour.
+  \item \textbf{Dynamic framework:} individuals choose consumption and leisure for each of \(N\) periods to maximize lifetime utility given an intertemporal budget constraint.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Assumptions \& Setup}
+\transfade
+\begin{itemize}[<+->]
+  \item Horizon of \(N\) periods; preferences over \((c_t,\ell_t)_{t=1}^N\).
+  \item For intuition, start with no nonlabour income and perfect foresight.
+  \item Labour supply each period links through \textbf{present-value} budget constraint.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Lifetime Income Constraint (Two-Period Illustration)}
+\transfade
+\small
+Income each period: \(y_t = w_t h_t\), with \(h_t = T - \ell_t\).\par
+Let real interest rate be \(r\). Present-value constraint:
+\[
+\text{PV}_0(c) \;=\; \sum_{t=1}^{2}\frac{c_t}{(1+r)^{t-1}}
+\;=\; \sum_{t=1}^{2}\frac{w_t (T-\ell_t)}{(1+r)^{t-1}} \;=\; \text{PV}_0(y).
+\]
+Equivalently, replacing \(h_t\) by \(\ell_t\): higher wages raise the opportunity cost of leisure across periods.
+\end{frame}
+
+\begin{frame}{Figure 4.2 — Dynamic Life-Cycle Wage Changes \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Figure 4.2 — Contrast temporary vs.\ permanent and anticipated vs.\ unanticipated wage changes; show income vs.\ substitution effects.}
+\end{frame}
+
+\begin{frame}{Temporary vs.\ Permanent Wage Increases}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Temporary} increase: strong substitution effect in that period, modest income effect.
+  \item \textbf{Permanent} increase: larger lifetime income effect; labour supply response distributed across periods.
+  \item Anticipation matters: planned time shifts differ if change is known in advance.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Household Production}
+% ============================================================
+
+\begin{frame}{Households as Producers and Consumers}
+\transfade
+\begin{itemize}[<+->]
+  \item Households allocate scarce time among \textbf{pure leisure}, \textbf{household work}, and other activities.
+  \item Utility from consumption often requires time inputs (e.g., cooking).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Basic Framework}
+\transfade
+\small
+Utility over produced goods \(Z_i\):\quad \(U=f(Z_1,\dots,Z_n)\), \quad
+\(Z_i=g_i(X_1,\dots,X_m; h_i)\)\par
+\begin{itemize}[<+->]
+  \item \(X\): market-purchased inputs; \(h_i\): time spent producing \(Z_i\).
+  \item \textbf{Leisure} is not purely separate; time is an input into many \(Z_i\).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Worked Example — Food at Home vs.\ Precooked}
+\transfade
+\small
+Utility \(u=f(\text{nutrition}, \text{rest})\).\par
+\begin{itemize}[<+->]
+  \item Prices affecting choices:
+  \begin{itemize}[<+->]
+    \item Price of leisure \(= W\) (wage).
+    \item Unit nutrition from raw food: \(P_R + Wd\) (goods price + time).
+    \item Unit nutrition from precooked food: \(P_C\).
+  \end{itemize}
+  \item \textbf{Comparative statics:}
+  \begin{itemize}[<+->]
+    \item \(\downarrow P_C\): more precooked, more leisure; effect on raw food ambiguous.
+    \item \(\downarrow P_R\): more raw food, less leisure; effect on precooked ambiguous.
+    \item \(\uparrow W\): tilt away from time-intensive goods.
+    \item \(\downarrow d\): cheaper home production; leisure/labour supply depends on income vs.\ substitution.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Fertility and Childbearing}
+% ============================================================
+
+\begin{frame}{Determinants of Fertility}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Income:} higher income can raise desired children (income effect), but higher potential earnings raise the opportunity cost of time (substitution effect).
+  \item \textbf{Cost of children:} foregone earnings, direct expenses.
+  \item \textbf{Prices of related goods:} daycare, education, medical care.
+  \item \textbf{Tastes and preferences:} social norms, family planning, cultural and religious factors.
+  \item \textbf{Technology:} contraceptives and labour-saving home production.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Retirement Decisions and Pensions}
+% ============================================================
+
+\begin{frame}{Retirement: Definitions and Policy Relevance}
+\transfade
+\begin{itemize}[<+->]
+  \item Retirement can mean leaving the labour force, reducing hours, or moving to less demanding work.
+  \item Implications for private savings, unemployment, labour force size, and national income.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Theoretical Determinants of Retirement}
+\transfade
+\begin{itemize}[<+->]
+  \item Mandatory retirement provisions (compulsory vs.\ automatic).
+  \item Wealth and earnings:
+    \begin{itemize}[<+->]
+      \item \(\uparrow\) Wealth \(\Rightarrow\) income effect \(\Rightarrow\) more leisure (earlier retirement).
+      \item \(\uparrow\) Earnings: income and substitution effects offset; net effect ambiguous.
+    \end{itemize}
+  \item Health, job difficulty, and family composition (e.g., dual earners).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Canada’s Pension System: Three Tiers}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Old Age Security (OAS):} tax-financed demogrant at 65; GIS supplements are means-tested.
+  \item \textbf{CPP/QPP:} social insurance funded by compulsory employer/employee contributions; benefits linked to prior earnings.
+  \item \textbf{Employer Pensions and Private Savings:} defined benefit/contribution plans, RRSPs, and other private arrangements.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Formal Income--Leisure Model with Pension}
+\transfade
+\small
+\[
+Y_p = B + (1 - p - t)\,W\,(T - \ell),
+\]
+where \(Y_p\): income of a pension receiver; \(B\): pension; \(W\): wage; \(T\): time endowment; \(\ell\): leisure; \(p\): payroll tax rate; \(t\): implicit tax (clawback).
+\end{frame}
+
+\begin{frame}{Figure 4.3 — Budget Constraints under Social Insurance Pensions \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Figure 4.3 — Budget lines with pension \(B\) and implicit tax/clawback; assume payroll tax \(p=0\) for illustration.}
+\end{frame}
+
+\begin{frame}{Employer-Sponsored Pensions: Types}
+\transfade
+\begin{itemize}[<+->]
+  \item Flat benefit, earnings-based benefit, and defined-contribution plans.
+  \item \textbf{Other provisions:} backloading; early/special retirement; postponed retirement penalties.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Backloading and Retirement Incentives}
+\transfade
+\begin{itemize}[<+->]
+  \item Benefits increase more steeply with seniority; encourages retention.
+  \item Young workers: incentive to stay; older workers: incentive to delay retirement \emph{until} vesting thresholds, then retire.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Early/Special vs.\ Postponed Retirement}
+\transfade
+\begin{itemize}[<+->]
+  \item Early retirement: often at age \(\sim55\) with 10+ years of service (less generous due to shorter service).
+  \item Special provisions: ages \(60\)–\(62\) with 20+ years; common in earnings-based plans; extensively subsidized.
+  \item Postponed retirement: penalties beyond normal age in some plans.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Picking the Perfect Retirement Age \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Decision Map — Weigh pension wealth, health, job strain, spouse’s work, and implicit taxes.}
+\end{frame}
+
+% ============================================================
+\section{Chapter Summary}
+% ============================================================
+
+\begin{frame}{Summary}
+\transfade
+\begin{itemize}[<+->]
+  \item Life-cycle labour supply shows systematic age patterns; women’s profiles have shifted up across cohorts.
+  \item Dynamic models link period-by-period labour supply through a present-value constraint.
+  \item Household production embeds time costs into consumption; technology and wages tilt choices.
+  \item Fertility responds to income, prices of related goods, tastes, and technology, interacting with women’s labour supply.
+  \item Canada’s pensions (OAS, CPP/QPP, employer/private plans) and plan design shape retirement timing and incomes.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge{\textbf{Thank You!}} \\
+
+\end{frame}
+
+\end{document}

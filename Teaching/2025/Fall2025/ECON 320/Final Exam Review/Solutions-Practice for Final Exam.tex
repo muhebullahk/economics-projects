@@ -1,0 +1,657 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{setspace,enumitem,microtype}
+
+\setstretch{1.2}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{8pt}
+
+\title{Solutions -- Practice Problem Set for the Final Exam}
+\author{ECON 320 -- Introduction to Mathematical Economics}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1 (Functions and Graphs)}
+
+Function:
+\[
+f(x)=\frac{3x^2 - 4x + 5}{x+2}.
+\]
+
+\textbf{(a) Domain}
+
+The only restriction is that the denominator cannot be zero:
+\[
+x+2 \neq 0 \quad \Rightarrow \quad x \neq -2.
+\]
+So the domain is
+\[
+\{x \in \mathbb{R} : x \neq -2\}.
+\]
+
+\textbf{(b) Asymptotes}
+
+\emph{Vertical asymptote:} where the denominator is zero and the numerator is nonzero.
+
+At \(x=-2\),
+\[
+3x^2 -4x +5 \big|_{x=-2} = 3(4) -4(-2) +5 = 12+8+5 =25 \neq 0.
+\]
+Thus there is a \textbf{vertical asymptote} at
+\[
+x=-2.
+\]
+
+\emph{Horizontal (or oblique) asymptote:} compare degrees. The numerator is degree 2, denominator degree 1, so we expect a \textbf{slant (oblique)} asymptote, not a horizontal one.
+
+Perform polynomial division:
+\[
+\frac{3x^2 - 4x + 5}{x+2}.
+\]
+
+Divide \(3x^2\) by \(x\): quotient term \(3x\). Multiply back:
+\[
+3x(x+2)=3x^2+6x.
+\]
+Subtract:
+\[
+(3x^2 - 4x +5) - (3x^2+6x) = -10x +5.
+\]
+Next term: divide \(-10x\) by \(x\): \(-10\). Multiply:
+\[
+-10(x+2) = -10x -20.
+\]
+Subtract:
+\[
+(-10x +5) - (-10x -20) = 25.
+\]
+Thus
+\[
+\frac{3x^2 - 4x + 5}{x+2} = 3x - 10 + \frac{25}{x+2}.
+\]
+As \(x\to\pm\infty\), the term \(25/(x+2) \to 0\). Therefore the \textbf{oblique asymptote} is
+\[
+y = 3x - 10.
+\]
+
+\textbf{(c) Intercepts and shape}
+
+\emph{y-intercept:} set \(x=0\):
+\[
+f(0)=\frac{3(0)^2 -4(0) +5}{0+2}=\frac{5}{2}.
+\]
+So the y-intercept is \((0, 5/2)\).
+
+\emph{x-intercepts:} set \(f(x)=0\), so numerator must be zero:
+\[
+3x^2 -4x +5 = 0.
+\]
+Compute discriminant:
+\[
+\Delta = (-4)^2 -4(3)(5) = 16 - 60 = -44 < 0.
+\]
+No real roots, so \textbf{no x-intercepts}.
+
+\emph{Sketch:}
+\begin{itemize}
+    \item Vertical asymptote at \(x=-2\).
+    \item Oblique asymptote \(y=3x-10\).
+    \item Passes through \((0, 5/2)\), no x-intercepts.
+\end{itemize}
+The graph is a rational curve approaching the oblique asymptote for large \(|x|\), and blowing up near \(x=-2\).
+
+
+
+\section*{Problem 2 (Linear Models and Elasticity)}
+
+Demand and supply:
+\[
+Q_d = 120 - 2P, \qquad Q_s = -20 + 3P.
+\]
+
+\textbf{(a) Equilibrium}
+
+Set \(Q_d = Q_s\):
+\[
+120 - 2P = -20 + 3P
+\]
+\[
+120 + 20 = 3P + 2P \quad \Rightarrow \quad 140 = 5P \quad \Rightarrow \quad P^\ast = 28.
+\]
+Then equilibrium quantity:
+\[
+Q^\ast = Q_d(P^\ast) = 120 - 2(28) = 120 - 56 = 64.
+\]
+So \((P^\ast, Q^\ast) = (28, 64)\).
+
+\textbf{(b) Price elasticity of demand at equilibrium}
+
+Demand: \(Q_d(P) = 120 - 2P\).
+\[
+\frac{dQ_d}{dP} = -2.
+\]
+Elasticity of demand at \((P^\ast,Q^\ast)\):
+\[
+E_d = \frac{dQ_d}{dP}\cdot \frac{P^\ast}{Q^\ast} = (-2)\cdot \frac{28}{64} = -\frac{56}{64} = -\frac{7}{8} \approx -0.875.
+\]
+Demand is inelastic at equilibrium in absolute value.
+
+\textbf{(c) Price elasticity of supply at equilibrium}
+
+Supply: \(Q_s(P) = -20 + 3P\).
+\[
+\frac{dQ_s}{dP} = 3.
+\]
+Elasticity:
+\[
+E_s = \frac{dQ_s}{dP}\cdot \frac{P^\ast}{Q^\ast} = 3\cdot \frac{28}{64} = \frac{84}{64} = \frac{21}{16} \approx 1.3125.
+\]
+Supply is elastic at equilibrium.
+
+
+
+\section*{Problem 3 (Differentiation)}
+
+\[
+y = (3x^2 + 5x) e^{0.2x}.
+\]
+
+\textbf{(a) First derivative}
+
+Use product rule: if \(y = u v\), then \(y' = u'v + uv'\).
+
+Let
+\[
+u(x)=3x^2+5x, \quad v(x)=e^{0.2x}.
+\]
+Then
+\[
+u'(x)=6x+5, \quad v'(x)=0.2 e^{0.2x}.
+\]
+Thus
+\[
+y' = u'v + uv' = (6x+5)e^{0.2x} + (3x^2+5x)\cdot 0.2 e^{0.2x}.
+\]
+We can factor out \(e^{0.2x}\):
+\[
+y' = e^{0.2x}\big[(6x+5) + 0.2(3x^2+5x)\big].
+\]
+Simplify inside:
+\[
+0.2(3x^2+5x) = 0.6x^2 + x.
+\]
+So
+\[
+y' = e^{0.2x}(0.6x^2 + 7x + 5).
+\]
+
+\textbf{(b) Second derivative}
+
+Differentiate \(y' = e^{0.2x}(0.6x^2 + 7x + 5)\) again using product rule.
+
+Let
+\[
+a(x)=e^{0.2x}, \quad b(x)=0.6x^2 + 7x + 5.
+\]
+Then
+\[
+a'(x)=0.2 e^{0.2x}, \quad b'(x)=1.2x + 7.
+\]
+Thus
+\[
+y'' = a'b + ab' = 0.2 e^{0.2x}(0.6x^2 + 7x + 5) + e^{0.2x}(1.2x + 7).
+\]
+Factor out \(e^{0.2x}\):
+\[
+y'' = e^{0.2x}\left[0.2(0.6x^2 + 7x + 5) + (1.2x + 7)\right].
+\]
+Compute inside:
+\[
+0.2(0.6x^2 + 7x + 5) = 0.12x^2 + 1.4x + 1.
+\]
+So
+\[
+y'' = e^{0.2x}(0.12x^2 + 1.4x + 1 + 1.2x + 7)
+= e^{0.2x}(0.12x^2 + 2.6x + 8).
+\]
+
+
+\section*{Problem 4 (Single-Variable Optimization)}
+
+Cost:
+\[
+C(Q)=20Q + 5Q^2.
+\]
+Price:
+\[
+P(Q)=100 - Q.
+\]
+
+\textbf{(a) Profit function}
+
+Total revenue:
+\[
+R(Q)=P(Q)\cdot Q = (100 - Q)Q = 100Q - Q^2.
+\]
+Profit:
+\[
+\pi(Q)=R(Q) - C(Q) = (100Q - Q^2) - (20Q + 5Q^2).
+\]
+Simplify:
+\[
+\pi(Q)=100Q - Q^2 - 20Q - 5Q^2 = 80Q - 6Q^2.
+\]
+
+\textbf{(b) First-order condition}
+
+\[
+\pi'(Q)=80 - 12Q.
+\]
+FOC:
+\[
+\pi'(Q)=0 \quad \Rightarrow \quad 80 - 12Q = 0.
+\]
+
+\textbf{(c) Critical points}
+
+Solve:
+\[
+80 = 12Q \quad \Rightarrow \quad Q^\ast = \frac{80}{12} = \frac{20}{3} \approx 6.67.
+\]
+
+\textbf{(d) Max or min?}
+
+We know \(\pi(Q)\) is a concave quadratic (coefficient of \(Q^2\) is \(-6<0\)), so the stationary point is a maximum.
+
+\newpage
+
+\section*{Problem 5 (Exponential and Logarithmic Functions)}
+
+\[
+Y(t)=500 e^{0.04t}.
+\]
+
+\textbf{(a) Instantaneous growth rate}
+
+Differentiate:
+\[
+\frac{dY}{dt} = 500 \cdot 0.04 e^{0.04t} = 20 e^{0.04t}.
+\]
+Proportional growth rate:
+\[
+\frac{1}{Y}\frac{dY}{dt} = \frac{20 e^{0.04t}}{500 e^{0.04t}} = 0.04.
+\]
+So the growth rate is \(4\%\) per unit time.
+
+\textbf{(b) Value at \(t=20\)}
+
+\[
+Y(20)=500 e^{0.04\cdot 20}=500 e^{0.8}.
+\]
+You can leave it as \(500 e^{0.8}\) or approximate numerically if desired.
+
+\textbf{(c) Elasticity of \(Y\) with respect to \(t\)}
+
+Elasticity:
+\[
+E_{Y,t} = \frac{dY}{dt}\cdot \frac{t}{Y} = (0.04 Y)\cdot \frac{t}{Y} = 0.04 t.
+\]
+So elasticity increases linearly with time: at larger \(t\), the same absolute change in \(t\) has a larger percentage effect on \(Y\).
+
+
+
+\section*{Problem 6 (Multivariable Optimization)}
+
+\[
+f(x,y)=20x + 10y - x^2 - y^2 - 2xy.
+\]
+
+\textbf{(a) First-order partial derivatives}
+
+\[
+f_x = 20 - 2x - 2y,\qquad f_y = 10 - 2y - 2x.
+\]
+
+\textbf{(b) Stationary points}
+
+Set both equal to zero:
+\[
+20 - 2x - 2y = 0 \quad \Rightarrow \quad x + y = 10,
+\]
+\[
+10 - 2x - 2y = 0 \quad \Rightarrow \quad x + y = 5.
+\]
+These two equations are inconsistent (10 \(\neq\) 5). Thus there is \textbf{no point} \((x,y)\) that satisfies both FOCs.
+
+Conclusion: \textbf{no stationary points} in \(\mathbb{R}^2\).
+
+\textbf{(c) Hessian matrix}
+
+\[
+f_{xx} = -2,\quad f_{yy}=-2,\quad f_{xy}=f_{yx}=-2.
+\]
+So
+\[
+H = \begin{bmatrix}
+-2 & -2\\
+-2 & -2
+\end{bmatrix}.
+\]
+
+\textbf{(d) Determinant of Hessian}
+
+\[
+\det(H) = (-2)(-2) - (-2)^2 = 4 - 4 = 0.
+\]
+The Hessian is singular (not invertible).
+
+\textbf{(e) Classification}
+
+Because no point satisfies the FOCs, there are no stationary points to classify. The function is unbounded in at least one direction in the plane when we allow \((x,y)\) to vary freely.
+
+
+
+\section*{Problem 7 (Constrained Optimization)}
+
+\[
+U(x,y)=x^{1/3} y^{2/3}, \qquad 4x + 2y = 120.
+\]
+
+\textbf{(a) Lagrangian}
+
+\[
+\mathcal{L}(x,y,\lambda) = x^{1/3}y^{2/3} - \lambda(4x + 2y - 120).
+\]
+
+\textbf{(b) First-order conditions}
+
+Partial derivatives:
+\[
+\frac{\partial \mathcal{L}}{\partial x}
+= \frac{1}{3}x^{-2/3} y^{2/3} - 4\lambda = 0,
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial y}
+= \frac{2}{3}x^{1/3} y^{-1/3} - 2\lambda = 0,
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial \lambda}
+= -(4x + 2y - 120) = 0 \quad \Rightarrow\quad 4x + 2y = 120.
+\]
+
+\textbf{(c) Optimal bundle \((x^\ast,y^\ast)\)}
+
+From the first two equations, we can eliminate \(\lambda\).
+
+First equation:
+\[
+\frac{1}{3}x^{-2/3} y^{2/3} = 4\lambda \quad \Rightarrow \quad \lambda = \frac{1}{12}x^{-2/3}y^{2/3}.
+\]
+Second equation:
+\[
+\frac{2}{3}x^{1/3} y^{-1/3} = 2\lambda \quad \Rightarrow \quad \lambda = \frac{1}{3}x^{1/3}y^{-1/3}.
+\]
+
+Set these expressions for \(\lambda\) equal:
+\[
+\frac{1}{12}x^{-2/3}y^{2/3} = \frac{1}{3}x^{1/3}y^{-1/3}.
+\]
+Multiply both sides by 12:
+\[
+x^{-2/3}y^{2/3} = 4 x^{1/3}y^{-1/3}.
+\]
+Bring like terms together:
+\[
+\frac{y^{2/3}}{x^{2/3}} = 4 \cdot x^{1/3}y^{-1/3}.
+\]
+Rewrite the right side:
+\[
+4 x^{1/3}y^{-1/3} = 4 \cdot \frac{x^{1/3}}{y^{1/3}}.
+\]
+Thus:
+\[
+\left(\frac{y}{x}\right)^{2/3} = 4 \left(\frac{x}{y}\right)^{1/3}.
+\]
+
+Combine exponents by writing both sides with \((y/x)^{1/3}\):
+\[
+\left(\frac{y}{x}\right)^{2/3} = 4 \left(\frac{1}{(y/x)}\right)^{1/3}
+= 4 \left(\frac{y}{x}\right)^{-1/3}.
+\]
+So
+\[
+\left(\frac{y}{x}\right)^{2/3} \left(\frac{y}{x}\right)^{1/3}
+= 4,
+\]
+\[
+\left(\frac{y}{x}\right)^{(2/3+1/3)} = \frac{y}{x} = 4.
+\]
+Thus
+\[
+\frac{y}{x} = 4 \quad \Rightarrow \quad y=4x.
+\]
+
+Use the budget constraint:
+\[
+4x + 2y = 4x + 2(4x) = 4x + 8x = 12x = 120 \quad \Rightarrow \quad x^\ast = 10.
+\]
+Then
+\[
+y^\ast = 4(10) = 40.
+\]
+
+\textbf{(d) Bordered Hessian matrix}
+
+Constraint: \(g(x,y) = 4x + 2y - 120 = 0\), so \(g_x=4\), \(g_y=2\).
+
+Second derivatives of \(U\):
+\[
+U = x^{1/3}y^{2/3}.
+\]
+We already had:
+\[
+U_x = \frac{1}{3}x^{-2/3}y^{2/3}, \quad U_y = \frac{2}{3}x^{1/3}y^{-1/3}.
+\]
+Then
+\[
+U_{xx} = \frac{\partial}{\partial x}\left(\frac{1}{3}x^{-2/3}y^{2/3}\right)
+= \frac{1}{3}\cdot (-\tfrac{2}{3})x^{-5/3}y^{2/3}
+= -\frac{2}{9}x^{-5/3}y^{2/3},
+\]
+\[
+U_{yy} = \frac{\partial}{\partial y}\left(\frac{2}{3}x^{1/3}y^{-1/3}\right)
+= \frac{2}{3}\cdot(-\tfrac{1}{3})x^{1/3}y^{-4/3}
+= -\frac{2}{9}x^{1/3}y^{-4/3},
+\]
+\[
+U_{xy} = \frac{\partial}{\partial y}\left(\frac{1}{3}x^{-2/3}y^{2/3}\right)
+= \frac{1}{3}\cdot \frac{2}{3}x^{-2/3}y^{-1/3}
+= \frac{2}{9}x^{-2/3}y^{-1/3}.
+\]
+
+Bordered Hessian:
+\[
+H_B =
+\begin{bmatrix}
+0 & g_x & g_y\\
+g_x & U_{xx} & U_{xy}\\
+g_y & U_{xy} & U_{yy}
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 & 4 & 2\\
+4 & U_{xx} & U_{xy}\\
+2 & U_{xy} & U_{yy}
+\end{bmatrix}.
+\]
+This is the required form (no need to evaluate determinant).
+
+
+\section*{Problem 8 (Envelope Theorem)}
+
+Maximize
+\[
+f(x,b)=bx - x^2
+\]
+over \(x\) (no constraints), parameter \(b\).
+
+\textbf{(a) First-order condition}
+
+\[
+\frac{\partial f}{\partial x} = b - 2x.
+\]
+FOC:
+\[
+b - 2x = 0.
+\]
+
+\textbf{(b) Optimal \(x^\ast(b)\)}
+
+Solve \(b - 2x=0\):
+\[
+2x = b \quad \Rightarrow \quad x^\ast(b) = \frac{b}{2}.
+\]
+
+\textbf{(c) Value function \(v(b)\)}
+
+\[
+v(b) = f(x^\ast(b), b)
+= b\left(\frac{b}{2}\right) - \left(\frac{b}{2}\right)^2
+= \frac{b^2}{2} - \frac{b^2}{4}
+= \frac{b^2}{4}.
+\]
+
+\textbf{(d) Envelope theorem}
+
+Envelope theorem: for unconstrained max,
+\[
+v'(b) = \left.\frac{\partial f(x,b)}{\partial b}\right|_{x=x^\ast(b)}.
+\]
+But
+\[
+\frac{\partial f}{\partial b} = x.
+\]
+So
+\[
+v'(b) = x^\ast(b) = \frac{b}{2}.
+\]
+
+We can check by differentiating \(v(b)\) directly:
+\[
+v(b) = \frac{b^2}{4} \quad \Rightarrow \quad v'(b) = \frac{2b}{4} = \frac{b}{2}.
+\]
+This matches the envelope theorem result.
+
+\hrule
+\vspace{10pt}
+
+\section*{Problem 9 (Integration)}
+
+\textbf{(a)} \(\displaystyle \int (6x^3 - 4x + 5)\, dx\)
+
+Integrate term by term:
+\[
+\int 6x^3 dx = 6\cdot \frac{x^4}{4} = \frac{3}{2}x^4,
+\]
+\[
+\int (-4x)\,dx = -4\cdot \frac{x^2}{2} = -2x^2,
+\]
+\[
+\int 5\,dx = 5x.
+\]
+Thus
+\[
+\int (6x^3 - 4x + 5)\, dx = \frac{3}{2}x^4 - 2x^2 + 5x + C.
+\]
+
+\textbf{(b)} \(\displaystyle \int_0^2 e^{3t}\, dt\)
+
+Antiderivative:
+\[
+\int e^{3t}\, dt = \frac{1}{3}e^{3t} + C.
+\]
+Evaluate from 0 to 2:
+\[
+\int_0^2 e^{3t}\, dt = \left.\frac{1}{3}e^{3t}\right|_0^2
+= \frac{1}{3}\big(e^{6} - e^{0}\big)
+= \frac{1}{3}(e^{6} - 1).
+\]
+
+\textbf{(c)} \(\displaystyle \int \frac{2x + 1}{x^2 + x}\, dx\)
+
+Recognize that denominator \(x^2 + x\) has derivative
+\[
+\frac{d}{dx}(x^2 + x) = 2x + 1,
+\]
+which is exactly the numerator.
+
+Thus,
+\[
+\int \frac{2x + 1}{x^2 + x}\, dx
+= \int \frac{\frac{d}{dx}(x^2 + x)}{x^2 + x}\, dx
+= \ln|x^2 + x| + C.
+\]
+
+
+
+\section*{Problem 10 (Economic Dynamics)}
+
+Differential equation:
+\[
+\frac{dy}{dt} + 3y = 12.
+\]
+
+\textbf{(a) General solution}
+
+This is a first-order linear ODE: \(y' + 3y = 12\).
+
+Solve homogeneous part:
+\[
+y' + 3y = 0 \quad \Rightarrow \quad \frac{dy}{dt} = -3y.
+\]
+Solution:
+\[
+y_h(t) = C e^{-3t}.
+\]
+
+Find a particular solution \(y_p\). Try a constant:
+\[
+y_p(t)=k.
+\]
+Then \(y_p' = 0\). Plug into equation:
+\[
+0 + 3k = 12 \quad \Rightarrow \quad k=4.
+\]
+
+General solution:
+\[
+y(t) = y_h + y_p = C e^{-3t} + 4.
+\]
+
+\textbf{(b) Particular solution with \(y(0)=0\)}
+
+Use initial condition:
+\[
+y(0) = C e^{0} + 4 = C + 4 = 0 \quad \Rightarrow \quad C=-4.
+\]
+So
+\[
+y(t) = 4 - 4 e^{-3t}.
+\]
+
+\textbf{(c) Long-run behavior}
+
+As \(t \to \infty\),
+\[
+e^{-3t} \to 0 \quad \Rightarrow \quad y(t) \to 4.
+\]
+Interpretation: the variable \(y(t)\) converges to a steady-state level of 4 over time.
+
+\end{document}

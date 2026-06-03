@@ -1,0 +1,316 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc} % important for pdflatex + any UTF-8 characters
+\usepackage{amsmath, amssymb}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\setlength{\parindent}{0pt}
+
+\title{Solutions -- Practice Problem Set 2}
+\author{ECON 300 -- Labour Economics}
+\date{Winter 2026}
+
+\begin{document}
+\maketitle
+
+
+\subsection*{Problem 1: }
+
+\textbf{Program parameters:}
+\[
+G = 600,\quad t = 0.5,\quad w = 20.
+\]
+While the individual is on the benefit, disposable income is:
+\[
+C = G + (1-t)wh \quad \text{(as long as benefits are positive)}.
+\]
+
+\begin{enumerate}
+\item \textbf{Break-even level of earnings.}
+
+Benefits fall to zero when the reduction in benefits equals the guarantee. With a tax-back rate $t$, benefits are reduced by $t \cdot (wh)$ when earnings are $wh$.
+Break-even occurs when:
+\[
+t(wh) = G.
+\]
+Solve for earnings:
+\[
+wh = \frac{G}{t} = \frac{600}{0.5} = 1200.
+\]
+So the break-even level of \textbf{earnings} is \$1200 per week.
+
+If you want the break-even \textbf{hours}, divide by the wage:
+\[
+h^{BE} = \frac{1200}{20} = 60.
+\]
+So benefits reach zero at \textbf{60 hours} per week.
+
+\item \textbf{Effective net wage while receiving benefits.}
+
+When benefits are being reduced at rate $t$, each additional dollar of earnings reduces benefits by $t$ dollars.
+So the net gain from an extra dollar of earnings is $(1-t)$.
+
+Therefore, the \textbf{effective net wage} is:
+\[
+w_{\text{net}} = (1-t)w = (1-0.5)\cdot 20 = 10.
+\]
+
+\item \textbf{Comparison and implication for labour supply incentives.}
+
+The market wage is \$20, but while receiving benefits the worker effectively keeps only \$10 per hour.
+That means the program reduces the slope of the budget constraint during the benefit range and lowers the opportunity cost of leisure (relative to the no-program case).
+Mechanically, a lower net wage reduces the substitution incentive to work and tends to reduce hours of work (especially on the intensive margin).
+
+\item \textbf{Why high benefit reduction rates may discourage work.}
+
+A high tax-back rate $t$ implies a low net-of-tax share $(1-t)$.
+As $t$ rises toward 1, the effective net wage $(1-t)w$ falls toward zero.
+This makes additional work yield little increase in disposable income, weakening work incentives.
+In extreme cases, if $t=1$ then additional earnings reduce benefits dollar-for-dollar, so disposable income does not rise with work, creating strong disincentives to increase hours.
+\end{enumerate}
+
+\subsection*{Problem 2: }
+
+Let total available time be $T=80$ hours per week. Let leisure be $L$ and hours of work be:
+\[
+h = T - L.
+\]
+
+\textbf{(i) No income support.} If there is no non-labour income, the budget constraint is:
+\[
+C = w(T-L).
+\]
+In $(L,C)$ space this is a straight line with:
+\begin{itemize}
+\item Leisure intercept at $L=T$ (if $h=0$, then $L=T$),
+\item Consumption intercept at $C=wT$ (if $L=0$, work all time),
+\item Slope $-w$.
+\end{itemize}
+
+\textbf{(ii) Guaranteed income with tax-back rate $t<1$.}
+A standard income maintenance program with guarantee $G$ and reduction rate $t$ generates a \emph{kinked} budget constraint:
+\[
+C =
+\begin{cases}
+G + (1-t)w(T-L), & \text{if benefits are positive},\\
+w(T-L), & \text{after benefits are exhausted}.
+\end{cases}
+\]
+Key features:
+\begin{itemize}
+\item At $h=0$ (i.e., $L=T$), consumption equals $G$.
+\item While on benefit, slope is $-(1-t)w$, which is flatter than $-w$ because $(1-t)w<w$.
+\item After the break-even point, the slope returns to $-w$ (no benefits).
+\end{itemize}
+
+\begin{enumerate}
+\item \textbf{Draw both constraints.} 
+Plot $C=w(T-L)$ for the no-program case. For the program case, start at $(L=T,C=G)$ and draw a line with slope $-(1-t)w$ until the break-even point, then continue with slope $-w$.
+
+\item \textbf{Label $G$ and the break-even point.}
+\begin{itemize}
+\item The guaranteed income $G$ is the vertical intercept of the program constraint at $L=T$.
+\item Break-even occurs where benefit reaches zero, i.e., $twh=G$ (equivalently $t w(T-L)=G$).
+\end{itemize}
+
+\item \textbf{Slope changes.} The slope of the budget constraint is the \emph{net wage} in consumption units per hour of leisure.
+\begin{itemize}
+\item No-program slope: $-w$.
+\item Program slope while on benefit: $-(1-t)w$ (flatter).
+\item After break-even: back to $-w$.
+\end{itemize}
+So, the program reduces the net return to working within the benefit region.
+
+\item \textbf{Indifference curves and predicted labour supply effects.}
+
+Two margins matter:
+\begin{itemize}
+\item \textbf{Extensive margin (participation):} Because consumption at $h=0$ rises from $0$ (or from any baseline) to $G$, some individuals who would otherwise work might choose not to participate, especially if their preferred choice is near the endowment point.
+\item \textbf{Intensive margin (hours):} For those who still work, the flatter slope $(1-t)w$ reduces the substitution incentive to work. This tends to lower hours while on benefit. However, the income effect of higher resources can also increase leisure further if leisure is normal.
+\end{itemize}
+Overall, income support typically reduces labour supply, but the magnitude depends on preferences and the program design.
+\end{enumerate}
+
+\subsection*{Problem 3: }
+
+Answer each briefly (3--5 sentences).
+
+\begin{enumerate}
+\item \textbf{Negative income tax (NIT) vs traditional welfare.}
+
+A negative income tax is usually framed as a unified schedule where individuals receive a transfer when income is below a threshold, with benefits reduced smoothly as earnings rise.
+Traditional welfare programs often have categorical eligibility, complex rules, and may feature sharp cutoffs that can create large effective marginal tax rates.
+Conceptually, the NIT emphasizes a simpler, more continuous budget constraint, reducing ``welfare wall'' effects relative to abrupt benefit loss.
+
+\item \textbf{Why an EITC may increase participation but reduce hours for some.}
+
+An earned income tax credit typically \emph{subsidizes} earnings in the phase-in region, raising the effective wage and encouraging labour force entry (higher participation).
+In the phase-out region, the credit is withdrawn as earnings rise, which raises effective marginal tax rates and can reduce hours for some workers who are already employed.
+Thus, EITC designs often increase labour supply on the extensive margin but can have ambiguous or negative effects on hours for higher earners within the eligible range.
+
+\item \textbf{Extensive vs intensive margin.}
+
+The extensive margin refers to the decision of whether to work at all (participation), while the intensive margin refers to how many hours to work conditional on participating.
+Policies like fixed benefits or entry bonuses mainly affect participation, whereas changes in net wages (tax rates, benefit reduction rates) affect hours.
+Empirically and theoretically, these margins can respond differently, so separating them helps interpret the total labour supply response.
+
+\item \textbf{Equity-efficiency trade-offs with targeting.}
+
+Targeting benefits to low-income workers improves equity by directing resources to those with the greatest need and often reduces program cost.
+However, targeting typically requires benefits to be reduced as earnings rise, which increases effective marginal tax rates and can reduce work incentives (efficiency cost).
+Hence, better redistribution often comes at the cost of weaker labour supply incentives unless the program is designed to mitigate high implicit taxes.
+\end{enumerate}
+
+
+
+\subsection*{Problem 5: }
+
+\textbf{Production function:}
+\[
+Q = 10L^{0.5} = 10\sqrt{L}.
+\]
+\textbf{Given:} $P=4$, $w=8$.
+
+\begin{enumerate}
+\item \textbf{Marginal product of labour (MPL).}
+
+Compute the derivative:
+\[
+MPL = \frac{dQ}{dL} = \frac{d}{dL}\left(10L^{1/2}\right)
+= 10 \cdot \frac{1}{2}L^{-1/2}
+= 5L^{-1/2}
+= \frac{5}{\sqrt{L}}.
+\]
+
+\item \textbf{Value of marginal product (VMPL).}
+
+\[
+VMPL = P \cdot MPL = 4 \cdot \frac{5}{\sqrt{L}} = \frac{20}{\sqrt{L}}.
+\]
+
+\item \textbf{Optimal employment level.}
+
+In a competitive labour market, the firm hires labour until:
+\[
+VMPL = w.
+\]
+So:
+\[
+\frac{20}{\sqrt{L}} = 8
+\quad \Rightarrow \quad
+20 = 8\sqrt{L}
+\quad \Rightarrow \quad
+\sqrt{L} = \frac{20}{8} = 2.5
+\quad \Rightarrow \quad
+L^* = (2.5)^2 = 6.25.
+\]
+
+So the optimal employment is:
+\[
+L^* = 6.25.
+\]
+(Interpreting $L$ as a continuous measure of labour input; if $L$ must be integer workers, the firm would compare profits at $L=6$ and $L=7$.)
+
+\item \textbf{Why labour demand is downward sloping in $w$.}
+
+From the condition $VMPL=w$, we can solve for $L$ as a function of $w$:
+\[
+\frac{20}{\sqrt{L}} = w
+\quad \Rightarrow \quad
+\sqrt{L} = \frac{20}{w}
+\quad \Rightarrow \quad
+L(w) = \left(\frac{20}{w}\right)^2.
+\]
+As $w$ rises, $\frac{20}{w}$ falls, so $L(w)$ falls. This gives a downward-sloping labour demand curve.
+Economically, because of diminishing marginal product, higher wages make additional labour less profitable, so the firm reduces employment.
+\end{enumerate}
+
+\subsection*{Problem 6: }
+
+From Problem 5, the labour demand curve (for the firm) is given by:
+\[
+w = VMPL = \frac{20}{\sqrt{L}}
+\quad \text{or equivalently} \quad
+L(w) = \left(\frac{20}{w}\right)^2.
+\]
+
+\begin{enumerate}
+\item \textbf{Draw the labour demand curve.}
+In $(L,w)$ space, plot:
+\[
+w(L)=\frac{20}{\sqrt{L}},
+\]
+which is downward sloping and convex (flattens as $L$ increases).
+
+\item \textbf{Equilibrium employment at $w=8$ and $w=12$.}
+
+At $w=8$:
+\[
+L(8)=\left(\frac{20}{8}\right)^2 = (2.5)^2 = 6.25.
+\]
+
+At $w=12$:
+\[
+L(12)=\left(\frac{20}{12}\right)^2 = \left(\frac{5}{3}\right)^2 = \frac{25}{9} \approx 2.78.
+\]
+
+So when the wage rises from 8 to 12, employment falls from $6.25$ to about $2.78$.
+
+\item \textbf{Wage change vs output price or technology change.}
+
+A \textbf{wage change} causes a movement along a given labour demand curve because the curve itself is defined by $VMPL(L)$.
+
+A change in \textbf{output price} $P$ changes VMPL at every $L$ because $VMPL=P\cdot MPL$. Higher $P$ increases VMPL and shifts labour demand outward (upward in $(L,w)$ space).
+
+A change in \textbf{technology} changes the production function and MPL at every $L$. If technology raises productivity (higher MPL), VMPL rises and labour demand shifts outward as well.
+\end{enumerate}
+
+\subsection*{Problem 7: }
+
+Now suppose output price increases from $P=4$ to $P=6$, holding the production function fixed.
+
+\begin{enumerate}
+\item \textbf{Recalculate optimal $L$ when $P=6$.}
+
+We already have:
+\[
+MPL = \frac{5}{\sqrt{L}}.
+\]
+So new VMPL is:
+\[
+VMPL = P \cdot MPL = 6 \cdot \frac{5}{\sqrt{L}} = \frac{30}{\sqrt{L}}.
+\]
+Set $VMPL=w$ with $w=8$:
+\[
+\frac{30}{\sqrt{L}} = 8
+\quad \Rightarrow \quad
+30 = 8\sqrt{L}
+\quad \Rightarrow \quad
+\sqrt{L} = \frac{30}{8} = 3.75
+\quad \Rightarrow \quad
+L^* = (3.75)^2 = 14.0625.
+\]
+
+So:
+\[
+L^* \approx 14.06.
+\]
+
+\item \textbf{Intuition.}
+
+When the output price rises, each unit of output is worth more, so the revenue generated by an additional unit of labour rises.
+Because $VMPL=P\cdot MPL$, a higher $P$ increases VMPL at every $L$, making it profitable to hire more labour until the higher VMPL is driven back down to the wage through diminishing marginal product.
+
+\item \textbf{Movement along vs shift.}
+
+\begin{itemize}
+\item A \textbf{movement along} labour demand occurs when $w$ changes holding $P$ and technology fixed. The firm changes $L$ because the hiring condition $VMPL=w$ changes due to $w$.
+\item A \textbf{shift} in labour demand occurs when $P$ or technology changes, because $VMPL(L)$ changes at every $L$. Here, higher $P$ shifts labour demand outward (upward): at any given $L$, the firm is willing to pay a higher wage, and at any given wage, it hires more labour.
+\end{itemize}
+\end{enumerate}
+
+\vfill
+\textbf{End of Solutions}
+
+\end{document}

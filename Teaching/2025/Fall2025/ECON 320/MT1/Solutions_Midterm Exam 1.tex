@@ -1,0 +1,319 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsfonts, bm}
+\usepackage{enumitem}
+\setlist[enumerate]{nosep}
+\setlength{\parskip}{0.7em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+{\Large \textbf{Solutions -- Midterm Exam 1}} \\[0.9em]
+\textbf{ECON 320 -- Introduction to Mathematical Economics} \\[0.7em]
+
+October 01, 2025
+ \\[0.8em]
+Instructor: Muhebullah Karimzada
+\end{center}
+
+\hrule
+\begin{enumerate}
+
+
+
+\item Let $U=\mathbb{R}$ and
+\[
+A=\{x\in\mathbb{R}: x^2-7x+12\ge 0\}, \quad
+B=\{x\in\mathbb{R}: |x-4|\le 3\}, \quad
+C=\{x\in\mathbb{R}: 1<x<5\}.
+\]
+
+\subsection*{(a) Write $A$, $B$, $C$ as unions of intervals.}
+Factor $x^2-7x+12=(x-3)(x-4)$.
+\[
+(x-3)(x-4)\ge 0 \iff x\le 3 \;\text{or}\; x\ge 4.
+\]
+Hence $A=(-\infty,3]\cup[4,\infty)$.
+
+For $B$: $|x-4|\le 3 \iff -3\le x-4\le 3 \iff 1\le x\le 7$, so $B=[1,7]$.
+
+For $C$: $C=(1,5)$.
+
+\subsection*{(b) Compute $A\cap B$, $A\cup C$, $B\setminus C$.}
+\[
+A\cap B = \big((-\infty,3]\cup[4,\infty)\big)\cap[1,7]
+= [1,3]\cup[4,7].
+\]
+\[
+A\cup C = \big((-\infty,3]\cup[4,\infty)\big)\cup(1,5)
+= (-\infty,3]\cup(1,5)\cup[4,\infty)=\mathbb{R}.
+\]
+\[
+B\setminus C = [1,7]\setminus(1,5)=\{1\}\cup[5,7]=[1,1]\cup[5,7].
+\]
+
+\subsection*{(c) Verify $(A\cup B)\setminus C=(A\setminus C)\cup(B\setminus C)$.}
+This is a standard identity: for any sets $X,Y,Z$,
+\[
+(X\cup Y)\setminus Z = (X\setminus Z)\cup(Y\setminus Z).
+\]
+\emph{Proof:} If $x\in (X\cup Y)\setminus Z$, then $(x\in X$ or $x\in Y)$ and $x\notin Z$, so $x\in(X\setminus Z)\cup(Y\setminus Z)$.
+Conversely, if $x\in(X\setminus Z)\cup(Y\setminus Z)$, then either $x\in X$ or $x\in Y$ and $x\notin Z$, hence $x\in (X\cup Y)\setminus Z$.
+Thus equality holds. 
+
+\newpage
+
+\item
+
+Let
+\[
+u(x,y)=x^2y - y^3 + \ln(1+xy),\qquad x=r^2,\; y=s^3,\; r>0,\; s>0.
+\]
+
+\subsection*{(a) Compute $\partial u/\partial x$ and $\partial u/\partial y$.}
+Differentiate term by term:
+\[
+u_x = 2xy + \frac{y}{1+xy}, \qquad
+u_y = x^2 - 3y^2 + \frac{x}{1+xy}.
+\]
+
+\subsection*{(b) Compute $\partial u/\partial r$ and $\partial u/\partial s$ in terms of $r,s$.}
+Chain rule:
+\[
+\frac{\partial u}{\partial r} = u_x\,\frac{\partial x}{\partial r} + u_y\,\frac{\partial y}{\partial r}
+= u_x\cdot (2r) + u_y\cdot 0
+= 2r\,u_x\Big|_{(x,y)=(r^2,s^3)}.
+\]
+\[
+\Rightarrow\quad \frac{\partial u}{\partial r}
+=2r\left(2(r^2)s^3+\frac{s^3}{1+r^2s^3}\right)
+= 4r^3 s^3 + \frac{2r s^3}{1+r^2 s^3}.
+\]
+Similarly,
+\[
+\frac{\partial u}{\partial s} = u_x\cdot 0 + u_y\cdot \frac{\partial y}{\partial s}
+= u_y\cdot (3s^2)
+= 3s^2\,u_y\Big|_{(x,y)=(r^2,s^3)}.
+\]
+\[
+\Rightarrow\quad \frac{\partial u}{\partial s}
+= 3s^2\left(r^4 - 3s^6 + \frac{r^2}{1+r^2 s^3}\right).
+\]
+
+
+\vspace{1cm}
+\item
+
+Let $F(x,y)=\ln(y+2x)-x^2+3y-10$ and suppose $F(x,y)=0$ defines $y$ as a function of $x$ near $x=1$.
+
+\subsection*{(a) Find $y$ such that $F(1,y)=0$ and verify conditions.}
+At $x=1$,
+\[
+F(1,y)=\ln(y+2)-1+3y-10=\ln(y+2)+3y-11.
+\]
+We need $\ln(y+2)+3y-11=0$ with $y>-2$ for domain.
+By inspection: $y=3$ gives $\ln 5 +9-11\approx 1.609-2=-0.391$; $y=3.12$ gives $\ln(5.12)+9.36-11\approx 1.634+(-1.64)=-0.006$; $y\approx 3.121$ gives $\approx 0$.
+So the root is $y^\ast\approx 3.121$.
+
+Implicit function theorem requires $F_y(1,y^\ast)\neq 0$. Compute
+\[
+F_x = \frac{2}{y+2x}-2x,\qquad
+F_y = \frac{1}{y+2x}+3.
+\]
+At $(1,y^\ast)$, $F_y= \frac{1}{y^\ast+2}+3>0$, hence an implicit function exists locally.
+
+\subsection*{(b) Compute $\dfrac{dy}{dx}$ at $(1,y^\ast)$.}
+By implicit differentiation,
+\[
+\frac{dy}{dx} = -\frac{F_x}{F_y}
+= -\frac{\frac{2}{y+2x}-2x}{\frac{1}{y+2x}+3}.
+\]
+At $(1,y^\ast)$ with $y^\ast\approx 3.121$, we have $y^\ast+2\approx 5.121$,
+\[
+F_x \approx \frac{2}{5.121}-2 \approx 0.3906-2=-1.6094,\quad
+F_y \approx \frac{1}{5.121}+3 \approx 0.1953+3=3.1953.
+\]
+Thus
+\[
+\left.\frac{dy}{dx}\right|_{(1,y^\ast)} \approx -\frac{-1.6094}{3.1953}\approx 0.504.
+\]
+
+\subsection*{(c) Linear approximation for $x:1\to 1.04$.}
+Total differential $dF=F_x\,dx+F_y\,dy=0$ gives
+\[
+dy \approx -\frac{F_x}{F_y}\,dx \approx 0.504\times 0.04 \approx 0.0202.
+\]
+So $y$ increases by about $0.020$ when $x$ rises from $1$ to $1.04$.
+
+\vspace{1 cm}
+
+\item
+
+Transformation $(u,v,w)\mapsto(x,y,z)$:
+\[
+x = u^2 + 2vw,\quad
+y = v^2 + 2uw,\quad
+z = w^2 + 2uv.
+\]
+
+\subsection*{(a) Compute $J=\partial(x,y,z)/\partial(u,v,w)$.}
+Partial derivatives:
+\[
+\frac{\partial x}{\partial u}=2u,\; \frac{\partial x}{\partial v}=2w,\; \frac{\partial x}{\partial w}=2v;\qquad
+\frac{\partial y}{\partial u}=2w,\; \frac{\partial y}{\partial v}=2v,\; \frac{\partial y}{\partial w}=2u;
+\]
+\[
+\frac{\partial z}{\partial u}=2v,\; \frac{\partial z}{\partial v}=2u,\; \frac{\partial z}{\partial w}=2w.
+\]
+Hence
+\[
+J=\begin{bmatrix}
+2u & 2w & 2v\\
+2w & 2v & 2u\\
+2v & 2u & 2w
+\end{bmatrix}
+= 8\cdot\frac{1}{8}\begin{bmatrix}
+2u & 2w & 2v\\
+2w & 2v & 2u\\
+2v & 2u & 2w
+\end{bmatrix}.
+\]
+It is convenient to factor $2$ from each row:
+\[
+\det(J)=2^3 \det\!\begin{bmatrix}
+u & w & v\\
+w & v & u\\
+v & u & w
+\end{bmatrix}.
+\]
+Call the $3\times 3$ matrix above $M$.
+
+Compute $\det(M)$ by expansion along the first row:
+\[
+\det(M) = u\begin{vmatrix} v & u\\ u & w\end{vmatrix}
+ - w\begin{vmatrix} w & u\\ v & w\end{vmatrix}
+ + v\begin{vmatrix} w & v\\ v & u\end{vmatrix}.
+\]
+Evaluate minors:
+\[
+\begin{vmatrix} v & u\\ u & w\end{vmatrix}=vw-u^2,\qquad
+\begin{vmatrix} w & u\\ v & w\end{vmatrix}=w^2-uv,\qquad
+\begin{vmatrix} w & v\\ v & u\end{vmatrix}=uw-v^2.
+\]
+Thus
+\[
+\det(M)=u(vw-u^2) - w(w^2-uv) + v(uw-v^2)
+= 3uvw-(u^3+v^3+w^3).
+\]
+Therefore
+\[
+\boxed{\;\det(J)=8\big(3uvw-u^3-v^3-w^3\big).\;}
+\]
+
+\subsection*{(b) Evaluate at $(u,v,w)=(1,-2,3)$ and test invertibility.}
+Plugging in:
+\[
+3uvw = 3\cdot 1\cdot (-2)\cdot 3 = -18,\qquad
+u^3+v^3+w^3 = 1+(-8)+27 = 20.
+\]
+Hence
+\[
+\det(J)=8(-18-20)=8(-38)=-304\neq 0.
+\]
+Conclusion: $J$ is nonsingular, so the mapping is locally invertible at $(1,-2,3)$ (inverse function theorem).
+
+\vspace{1 cm}
+
+\item
+Utility
+\[
+U(x_1,x_2,\ell)=\ln x_1 + \ln x_2 + \beta \ln \ell,\quad \beta>0,
+\]
+budget/time constraint
+\[
+p_1x_1+p_2x_2+w\ell=I,
+\]
+and first-order conditions (given)
+\[
+\begin{cases}
+F_1=p_1x_1+p_2x_2+w\ell - I=0,\\
+F_2=\dfrac{1}{x_1}-\lambda p_1=0,\\
+F_3=\dfrac{1}{x_2}-\lambda p_2=0.
+\end{cases}
+\]
+We treat $(x_1,x_2,\ell)$ as endogenous for comparative statics, with parameters $(p_1,p_2,w,I)$ and $\lambda$ entering $F_2,F_3$ as given.
+
+\subsection*{(a) Jacobian $J=\partial(F_1,F_2,F_3)/\partial(x_1,x_2,\ell)$.}
+\[
+\frac{\partial F_1}{\partial (x_1,x_2,\ell)}=(p_1,\; p_2,\; w),\qquad
+\frac{\partial F_2}{\partial (x_1,x_2,\ell)}=\Big(-\frac{1}{x_1^2},\; 0,\; 0\Big),\qquad
+\frac{\partial F_3}{\partial (x_1,x_2,\ell)}=\Big(0,\; -\frac{1}{x_2^2},\; 0\Big).
+\]
+Thus
+\[
+\boxed{\;
+J=\begin{bmatrix}
+p_1 & p_2 & w\\[2pt]
+-\dfrac{1}{x_1^2} & 0 & 0\\[6pt]
+0 & -\dfrac{1}{x_2^2} & 0
+\end{bmatrix}.
+\;}
+\]
+
+\subsection*{(b) Evaluate $J$ and $\det(J)$ at $(p_1,p_2,w,\beta,I)=(2,1,1,1,12)$ and $(x_1,x_2,\ell)=(2,4,6)$.}
+Substitute $p_1=2,\,p_2=1,\,w=1,\,x_1=2,\,x_2=4$:
+\[
+J=\begin{bmatrix}
+2 & 1 & 1\\[2pt]
+-\dfrac{1}{4} & 0 & 0\\[6pt]
+0 & -\dfrac{1}{16} & 0
+\end{bmatrix}.
+\]
+Compute determinant (expand along third column; only the $(1,3)$ entry is nonzero):
+\[
+\det(J) = 1\cdot \det\begin{bmatrix}
+-\dfrac{1}{4} & 0\\[4pt]
+0 & -\dfrac{1}{16}
+\end{bmatrix}
+= \left(-\frac{1}{4}\right)\left(-\frac{1}{16}\right)-0
+= \frac{1}{64} > 0.
+\]
+$J$ is nonsingular at the given bundle.
+
+\subsection*{(c) Signs of $\dfrac{\partial x_1}{\partial I}$, $\dfrac{\partial x_2}{\partial I}$, $\dfrac{\partial \ell}{\partial I}$ via Cramer/sign test.}
+Treat $I$ as the parameter. The derivative system comes from differentiating $F(\cdot)=0$ w.r.t.\ $I$:
+\[
+J\begin{bmatrix}
+\dfrac{\partial x_1}{\partial I}\\[4pt]
+\dfrac{\partial x_2}{\partial I}\\[4pt]
+\dfrac{\partial \ell}{\partial I}
+\end{bmatrix}
+= -\begin{bmatrix}
+\frac{\partial F_1}{\partial I}\\[4pt]
+\frac{\partial F_2}{\partial I}\\[4pt]
+\frac{\partial F_3}{\partial I}
+\end{bmatrix}
+= -\begin{bmatrix}
+-1\\ 0\\ 0
+\end{bmatrix}
+=\begin{bmatrix}
+1\\ 0\\ 0
+\end{bmatrix}.
+\]
+Let $v=(x_{1I},x_{2I},\ell_I)^\top$. Solve $Jv=(1,0,0)^\top$:
+
+From row 2: $-(1/x_1^2)\,x_{1I}=0 \Rightarrow x_{1I}=0$.\\
+From row 3: $-(1/x_2^2)\,x_{2I}=0 \Rightarrow x_{2I}=0$.\\
+From row 1: $p_1 x_{1I}+p_2 x_{2I}+w\ell_I=1 \Rightarrow w\ell_I=1 \Rightarrow \ell_I=1/w>0$.
+
+Therefore,
+\[
+\boxed{\,\frac{\partial x_1}{\partial I}=0,\qquad \frac{\partial x_2}{\partial I}=0,\qquad \frac{\partial \ell}{\partial I}=\frac{1}{w}>0.\,}
+\]
+
+\emph{Interpretation.} Given the three-equation system specified (budget and two FOCs for $x_1,x_2$), a marginal increase in income is absorbed entirely by leisure to maintain the FOCs $1/x_i=\lambda p_i$ with the same $\lambda$ entering $F_2,F_3$; the goods do not adjust at the margin in this restricted system. With a full system including the leisure FOC $U_\ell-\lambda w=0$, all three would typically increase with $I$ in Cobb–Douglas.
+
+
+\end{enumerate}
+\end{document}

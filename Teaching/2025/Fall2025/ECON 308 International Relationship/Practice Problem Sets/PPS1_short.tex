@@ -1,0 +1,144 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm, bm, mathtools}
+\usepackage{booktabs, array}
+\usepackage{enumitem}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+\sisetup{round-mode=places,round-precision=2,group-separator={,}}
+
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\R}{\mathbb{R}}
+
+\title{Practice Problem Set 1}
+\author{ECON 308 -- International Economic Relations}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+
+
+\begin{enumerate}[leftmargin=*]
+\item Explain why country size (GDP) and geographic distance are strong predictors of bilateral trade flows. Provide at least one microeconomic channel for each.
+%\item Define ``home bias'' in trade. Describe one empirical method for detecting a border effect in a gravity regression and one interpretation of finding a large border effect.
+%\item Why do small economies often exhibit higher trade-to-GDP ratios than large economies? Include at least one scale or variety argument.
+%\item Chapter 2 highlights both inter-industry and intra-industry trade. Briefly differentiate them and give one example of each between advanced economies.
+\end{enumerate}
+
+
+\begin{enumerate}[leftmargin=*, resume]
+%\item Define both. Explain, using unit labor requirements, how a country can gain from trade even if it has an absolute disadvantage in \emph{both} goods.
+\item In the Ricardian model with free trade, what pins down relative wages across countries? Explain the role of world prices and specialization.
+%\item Distinguish between the production possibility frontier (PPF) and the consumption possibility frontier (CPF) under autarky versus free trade. Why does the CPF typically lie outside the PPF with trade?
+\item Briefly explain why, under perfect competition, autarky relative prices equal unit labor cost ratios, and how opening to trade changes the mapping from technology to prices and wages.
+\end{enumerate}
+\bigskip
+
+
+
+\begin{enumerate}[leftmargin=*, resume]
+\item
+The (log) gravity model is
+\[
+\ln T_{ij}=\alpha + \beta_1 \ln Y_i + \beta_2 \ln Y_j - \gamma \ln D_{ij},
+\]
+with $T_{ij}$ bilateral exports from $i$ to $j$, $Y$ GDP, and $D$ great-circle distance (km). Suppose $\beta_1=\beta_2=1$, $\gamma=1$, and $e^\alpha=10^{-6}$ so that
+\[
+T_{ij}=10^{-6}\,\frac{Y_i Y_j}{D_{ij}}.
+\]
+Consider the following economies (values in billions of US dollars; distances in km):
+\[
+\begin{array}{@{}lrrrr@{}}
+\toprule
+\text{Country} & Y \ (\$\,\text{bn}) & & & \\
+\midrule
+A & 2{,}000 &&&\\
+B & 1{,}000 &&&\\
+C & \phantom{0}500 &&&\\
+\bottomrule
+\end{array}
+\qquad
+\begin{array}{@{}lrrr@{}}
+\toprule
+ & A & B & C\\
+\midrule
+A & - & 6{,}000 & 1{,}500\\
+B & 6{,}000 & - & 2{,}000\\
+C & 1{,}500 & 2{,}000 & - \\
+\bottomrule
+\end{array}
+\]
+\begin{enumerate}
+\item Compute the predicted bilateral exports $T_{AB}$, $T_{AC}$, and $T_{BC}$.
+\item By what \emph{percent} does $T_{AB}$ change if $D_{AB}$ falls by 10\%? (Use the elasticity implied by the model.)
+\item If both $Y_A$ and $Y_B$ rise by 5\%, what is the approximate percentage change in $T_{AB}$?
+\item Suppose the true $T_{AB}$ observed in data is \$\num{1.3} billion. Compute the (log) residual $\ln T^{\text{obs}}_{AB}-\ln T^{\text{pred}}_{AB}$ and provide one economic interpretation of a positive residual.
+\end{enumerate}
+
+\end{enumerate}
+
+
+
+
+
+\newpage
+
+\begin{enumerate}[leftmargin=*, resume]
+\item 
+Two countries, Home ($H$) and Foreign ($F$), produce Wine ($W$) and Cloth ($C$) with one input, labor. Unit labor requirements are:
+\[
+\begin{array}{@{}lcc@{}}
+\toprule
+ & a_{LW} & a_{LC} \\
+\midrule
+H & 2 & 4 \\
+F & 6 & 3 \\
+\bottomrule
+\end{array}
+\qquad
+\text{Labor endowments: } L_H=240,\; L_F=240.
+\]
+\begin{enumerate}
+\item Compute each country’s autarky opportunity cost of $W$ in terms of $C$ and vice versa. Identify comparative advantage.
+\item Draw (or describe algebraically) each country’s PPF. What is each country’s autarky relative price $P_W/P_C$ under competitive pricing equal to unit labor cost?
+\item Find the range of world relative prices $P_W/P_C$ consistent with complete specialization.
+\item Suppose the world relative price is $P_W/P_C=1.2$. Determine specialization, production bundles, and the pattern of trade.
+\item Compute the real wage in each country under free trade in terms of each good (units of $W$ and units of $C$ purchasable per unit of labor income).
+\end{enumerate}
+
+\item 
+Continue from previous question with $P_W/P_C$ moving from $1.2$ to $0.8$.
+\begin{enumerate}
+\item Re-evaluate which country (if any) changes specialization as the relative price falls to $0.8$. Explain.
+\item Compute the real wage of each country in terms of $W$ and $C$ at $P_W/P_C=0.8$ and compare to autarky.
+\item Which country’s real wage benefits from an improvement in its terms of trade? Explain using the Ricardian logic.
+\end{enumerate}
+
+\item 
+There are three countries with the following unit labor requirements:
+\[
+\begin{array}{@{}lcc@{}}
+\toprule
+ & a_{LW} & a_{LC} \\
+\midrule
+1 & 1 & 2 \\
+2 & 2 & 3 \\
+3 & 4 & 5 \\
+\bottomrule
+\end{array}
+\quad L_1=L_2=L_3=100.
+\]
+\begin{enumerate}
+\item Order countries by comparative advantage in $W$ relative to $C$.
+\item Derive the world relative supply (WRS) schedule $RS^{W/C}(P_W/P_C)$ by progressively ``turning on'' countries into $W$ as $P_W/P_C$ rises. State the price thresholds where kinks occur.
+\item If world relative demand is $RD^{W/C}=1.1 - 0.2(P_W/P_C)$ (for $P_W/P_C\in[0,5]$), solve for the free-trade equilibrium $P_W/P_C$ and identify which countries produce which good.
+\end{enumerate}
+
+
+\end{enumerate}
+
+
+
+\end{document}

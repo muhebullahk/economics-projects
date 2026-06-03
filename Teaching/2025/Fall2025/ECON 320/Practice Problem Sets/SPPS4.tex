@@ -1,0 +1,348 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts, geometry, bm}
+\geometry{margin=1in}
+\setlength{\parskip}{0.7em}
+\setlength{\parindent}{0pt}
+
+\title{Solutions -- Practice Problem Set 4}
+\author{ECON 320 -- Introduction to Mathematical Economics}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+\section*{Optimization of Multivariable Functions (Chapter 11)}
+
+\textbf{1. Key definitions}
+
+\textit{Critical point:} A point $x^\ast$ where $\nabla f(x^\ast)=\mathbf{0}$. \\
+\textit{Gradient:} $\nabla f=(\partial f/\partial x_1,\ldots,\partial f/\partial x_n)^\top$ (direction of steepest ascent). \\
+\textit{Hessian:} $H(x)=\nabla^2 f(x)$, the matrix of second partials. \\
+\textit{Definiteness:} A symmetric matrix $H$ is PD/ND/indefinite according to the sign of the quadratic form $v^\top H v$ for all nonzero $v$ (or via Sylvester’s criterion using leading principal minors).
+
+\medskip
+
+\textbf{2. Classification in $\mathbb{R}^2$ via Hessian}
+Let $H=\begin{bmatrix}f_{xx}&f_{xy}\\ f_{yx}&f_{yy}\end{bmatrix}$ at a stationary point.
+With $D=\det(H)=f_{xx}f_{yy}-f_{xy}^2$:
+\[
+\begin{cases}
+D>0,\ f_{xx}>0 \ \Rightarrow\ \text{local minimum};\\
+D>0,\ f_{xx}<0 \ \Rightarrow\ \text{local maximum};\\
+D<0 \ \Rightarrow\ \text{saddle};\\
+D=0 \ \Rightarrow\ \text{inconclusive}.
+\end{cases}
+\]
+
+\medskip
+
+\textbf{3.} $f(x,y)=4x^2+y^2-4xy+2x-3y$.
+
+\underline{Step 1: FOCs.} 
+\[
+f_x=8x-4y+2,\quad f_y=2y-4x-3.
+\]
+Set to zero:
+\[
+\begin{cases}
+8x-4y+2=0 \ \Rightarrow\ 4x-2y=-1,\\
+2y-4x-3=0 \ \Rightarrow\ 4x-2y=-3.
+\end{cases}
+\]
+Inconsistent $\Rightarrow$ \emph{no stationary point}.
+
+\underline{Step 2: Second derivatives.}
+\[
+H=\begin{bmatrix}8&-4\\-4&2\end{bmatrix},\quad \det(H)=8\cdot 2-(-4)^2=16-16=0.
+\]
+Singular Hessian indicates a flat direction in the quadratic form; combined with linear terms, the gradient system is inconsistent, hence no critical point (the function is unbounded along feasible directions).
+
+\medskip
+
+\textbf{4.} $f(x,y)=3x^2y-y^3-12x^2+12y$.
+
+\underline{Step 1: FOCs.}
+\[
+f_x=6xy-24x=6x(y-4),\qquad f_y=3x^2-3y^2+12.
+\]
+So $f_x=0 \Rightarrow x=0$ or $y=4$.
+
+\textit{Case A: $x=0$.} Then $f_y= -3y^2+12=0 \Rightarrow y=\pm 2$.
+Points: $(0,2)$ and $(0,-2)$.
+
+\textit{Case B: $y=4$.} Then $f_y=3x^2-48+12=3x^2-36=0\Rightarrow x=\pm 2\sqrt{3}$.
+Points: $(2\sqrt{3},4)$ and $(-2\sqrt{3},4)$.
+
+\underline{Step 2: Hessian and classification.}
+\[
+f_{xx}=6y-24,\quad f_{xy}=6x,\quad f_{yy}=-6y,\quad 
+D=f_{xx}f_{yy}-f_{xy}^2.
+\]
+Evaluate:
+
+\begin{itemize}
+\item $(0,2)$: $f_{xx}=-12,\ f_{yy}=-12,\ f_{xy}=0 \Rightarrow D=144>0$ and $f_{xx}<0$ $\Rightarrow$ \textbf{local maximum}.
+\item $(0,-2)$: $f_{xx}=-36,\ f_{yy}=12,\ f_{xy}=0 \Rightarrow D=-432<0$ $\Rightarrow$ \textbf{saddle}.
+\item $(\pm 2\sqrt{3},4)$: $f_{xx}=0,\ f_{yy}=-24,\ f_{xy}=\pm 12\sqrt{3}$ $\Rightarrow D=-432<0$ $\Rightarrow$ \textbf{saddles}.
+\end{itemize}
+
+\medskip
+
+\textbf{5.} $f(x,y,z)=2x^2+y^2+z^2-2xy-4xz+6yz-3x+y+2z$.
+
+\underline{Step 1: FOCs.}
+\[
+\begin{cases}
+f_x=4x-2y-4z-3=0,\\
+f_y=2y-2x+6z+1=0,\\
+f_z=2z-4x+6y+2=0.
+\end{cases}
+\]
+Solve:
+\[
+(x^\ast,y^\ast,z^\ast)=\left(\frac{17}{18},\frac{5}{18},\frac{1}{18}\right).
+\]
+
+\underline{Step 2: Hessian and classification.}
+\[
+H=\begin{bmatrix}
+4&-2&-4\\
+-2&2&6\\
+-4&6&2
+\end{bmatrix},\quad \det(H)=-72<0.
+\]
+Negative determinant for a $3\times 3$ symmetric Hessian $\Rightarrow$ \textbf{indefinite} $\Rightarrow$ \textbf{saddle point} at the stationary point.
+
+\medskip
+
+\textbf{6.} $Q(x,y)=x^{1/2}y^{1/2}$.
+
+\underline{Marginal products.}
+\[
+MP_x=\frac{\partial Q}{\partial x}=\frac{1}{2}x^{-1/2}y^{1/2},\quad 
+MP_y=\frac{\partial Q}{\partial y}=\frac{1}{2}x^{1/2}y^{-1/2}.
+\]
+
+\underline{Diminishing marginal returns.}
+\[
+\frac{\partial^2 Q}{\partial x^2}=-\frac{1}{4}x^{-3/2}y^{1/2}<0,\quad 
+\frac{\partial^2 Q}{\partial y^2}=-\frac{1}{4}x^{1/2}y^{-3/2}<0.
+\]
+
+\underline{Returns to scale.}
+For $t>0$, $Q(tx,ty)=t^{1/2}t^{1/2}Q(x,y)=tQ(x,y)$ $\Rightarrow$ \textbf{constant returns to scale}.
+
+\medskip
+
+\textbf{7.} Profit maximization.
+
+\textit{(a) One product.} $p=100-2Q$, $C(Q)=10Q+\tfrac12 Q^2$.
+\[
+\pi(Q)=pQ-C(Q)=(100-2Q)Q-(10Q+\tfrac12 Q^2)=90Q-\tfrac{5}{2}Q^2.
+\]
+FOC: $\pi'(Q)=90-5Q=0\Rightarrow Q^\ast=18$. SOC: $\pi''(Q)=-5<0$ $\Rightarrow$ \textbf{maximum}.
+
+\textit{(b) Two products.} 
+\[
+\pi(x,y)=100x+80y -x^2-y^2-xy -20(x+y).
+\]
+FOCs:
+\[
+\pi_x=80-2x-y=0,\qquad \pi_y=60-2y-x=0.
+\]
+Solve:
+\[
+2x+y=80,\quad x+2y=60 \ \Rightarrow\ (x^\ast,y^\ast)=\left(\frac{100}{3},\frac{40}{3}\right).
+\]
+Hessian:
+\[
+H=\begin{bmatrix}-2&-1\\-1&-2\end{bmatrix}.
+\]
+Eigenvalues $-3$ and $-1$ $\Rightarrow$ \textbf{negative definite} $\Rightarrow$ \textbf{strict global maximum}.
+
+
+\newpage
+
+\section*{Optimization with Equality Constraints (Chapter 12)}
+
+\textbf{8. Economic meaning of the multiplier $\lambda$}
+
+In $\max f(x)$ s.t. $g(x)=\bar{c}$, the Lagrange multiplier $\lambda^\ast$ equals the \emph{shadow value}:
+\[
+\lambda^\ast=\frac{\partial \mathcal{L}}{\partial \bar{c}}=\frac{\partial f^\ast}{\partial \bar{c}},
+\]
+the marginal improvement in the optimal objective value when the constraint is relaxed by one unit.
+\begin{itemize}
+\item \textit{Utility maximization (budget):} $\lambda$ is the marginal utility of income.
+\item \textit{Cost minimization (output target):} $\lambda$ is the marginal cost of relaxing the output requirement (i.e., Lagrangean shadow price on the constraint).
+\end{itemize}
+
+\medskip
+
+\textbf{9. Second-order conditions (bordered Hessian)}
+
+With $m$ equality constraints, bordered Hessian
+\[
+H_b=\begin{bmatrix}
+0 & G\\
+G^\top & H
+\end{bmatrix},\quad 
+G=\nabla g(x^\ast)\in\mathbb{R}^{m\times n},\ H=\nabla_{xx}^2\mathcal{L}(x^\ast,\lambda^\ast).
+\]
+For the highest-order leading principal minor (of full $H_b$):
+\[
+(-1)^m\det(H_b)\begin{cases}
+<0 & \text{maximum},\\
+>0 & \text{minimum}.
+\end{cases}
+\]
+Intuition: the border flips sign $m$ times because we test curvature \emph{restricted to the tangent space} of the constraints.
+
+\medskip
+
+\textbf{10.} $\max f(x,y)=xy$ s.t. $x+y=10$.
+
+\underline{Step 1: Lagrangian \& FOCs.}
+\[
+\mathcal{L}=xy-\lambda(x+y-10),\quad
+\mathcal{L}_x=y-\lambda=0,\ \mathcal{L}_y=x-\lambda=0,\ x+y=10.
+\]
+Thus $x=y=\lambda$ and $2x=10\Rightarrow (x^\ast,y^\ast)=(5,5)$.
+
+\underline{Step 2: SOC via restriction or border.}
+On the line $y=10-x$, $f(x)=x(10-x)=10x-x^2$ with $f''(x)=-2<0$ $\Rightarrow$ \textbf{maximum}.\\
+Bordered Hessian:
+\[
+H=\begin{bmatrix}0&1\\1&0\end{bmatrix},\ 
+G=\begin{bmatrix}1&1\end{bmatrix},\ 
+H_b=\begin{bmatrix}
+0&1&1\\
+1&0&1\\
+1&1&0
+\end{bmatrix},
+\]
+$\det(H_b)=2>0$. For $m=1$, $(-1)^m\det(H_b)=-2<0$ $\Rightarrow$ \textbf{maximum}.
+
+\medskip
+
+\textbf{11.} $\max Q=4\sqrt{xy}$ s.t. $2x+y=100$ (maximize output given a cost).
+
+\underline{Step 1: FOCs.}
+\[
+\mathcal{L}=4\sqrt{xy}-\lambda(2x+y-100).
+\]
+\[
+\mathcal{L}_x=\frac{2y}{\sqrt{xy}}-2\lambda=0\ \Rightarrow\ \lambda=\sqrt{\frac{y}{x}},
+\quad
+\mathcal{L}_y=\frac{2x}{\sqrt{xy}}-\lambda=0\ \Rightarrow\ \lambda=2\sqrt{\frac{x}{y}}.
+\]
+Equate: $\sqrt{y/x}=2\sqrt{x/y}\Rightarrow y/x=4x/y\Rightarrow y=2x$.
+Constraint: $2x+y=100\Rightarrow 2x+2x=100\Rightarrow x^\ast=25,\ y^\ast=50$.
+
+\underline{Step 2: SOC.} $4\sqrt{xy}$ is concave on $\mathbb{R}_{++}^2$ and the constraint is affine $\Rightarrow$ \textbf{global maximum}.\\
+(If one insists on a second-derivative check: restrict to $y=100-2x$, consider $\phi(x)=4\sqrt{x(100-2x)}$; then $\phi''(25)<0$.)
+
+\underline{Step 3: Economic meaning.} $\lambda^\ast=\sqrt{y/x}=\sqrt{2}$ is the marginal increase in maximal $Q$ per marginal increase in the expenditure cap.
+
+\medskip
+
+\textbf{12.} $\min f=x^2+y^2+z^2$ s.t. $x+y+z=3$.
+
+\underline{Step 1: FOCs.}
+\[
+\mathcal{L}=x^2+y^2+z^2-\lambda(x+y+z-3),\quad
+2x-\lambda=0,\ 2y-\lambda=0,\ 2z-\lambda=0.
+\]
+Thus $x=y=z=\lambda/2$. Constraint $\Rightarrow 3(\lambda/2)=3\Rightarrow \lambda=2$.
+Hence $(x^\ast,y^\ast,z^\ast)=(1,1,1)$.
+
+\underline{Step 2: SOC.} $f$ is strictly convex; affine constraint $\Rightarrow$ unique \textbf{global minimum}.\\
+(For the bordered Hessian, $H=2I_3$, $G=[1,1,1]$, $\det(H_b)=-12<0$; with $m=1$, $(-1)^m\det(H_b)>0$ holds for a minimum.)
+
+\medskip
+
+\textbf{13.} $f=x^2+y^2$  s.t.  $x+2y=4$.
+
+\underline{Step 1: FOCs.}
+\[
+\mathcal{L}=x^2+y^2-\lambda(x+2y-4),\ 
+2x-\lambda=0,\ 2y-2\lambda=0.
+\]
+Thus $x=\lambda/2,\ y=\lambda$. Constraint $\Rightarrow \lambda/2+2\lambda=4\Rightarrow \tfrac{5}{2}\lambda=4\Rightarrow \lambda=\tfrac{8}{5}$.
+Hence $(x^\ast,y^\ast)=(\tfrac{4}{5},\tfrac{8}{5})$.
+
+\underline{Step 2: SOC \& existence.} $f$ is strictly convex, constraint affine $\Rightarrow$ unique \textbf{global minimum}. No maximum (unbounded above along the line).
+
+\medskip
+
+\textbf{14.} $U(x,y)=x^{0.4}y^{0.6}$, budget $4x+2y=100$.
+
+\underline{Step 1: FOCs (MRS = price ratio).}
+\[
+\frac{MU_x}{MU_y}=\frac{0.4\,x^{-0.6}y^{0.6}}{0.6\,x^{0.4}y^{-0.4}}
+=\frac{2}{3}\cdot \frac{y}{x}
+=\frac{p_x}{p_y}=\frac{4}{2}=2
+\ \Rightarrow\ \frac{2}{3}\cdot \frac{y}{x}=2\ \Rightarrow\ y=3x.
+\]
+Budget: $4x+2(3x)=10x=100\Rightarrow x^\ast=10,\ y^\ast=30$.
+
+\underline{Step 2: SOC.} Cobb–Douglas utility is strictly concave on $\mathbb{R}_{++}^2$; budget is affine $\Rightarrow$ \textbf{global maximum}. (Bordered-Hessian or second-derivative along the budget line would confirm.)
+
+\medskip
+
+\textbf{15.} Identity: $\det(H_b)=\det(H)\,\det(-G H^{-1}G^\top)$ (when $H$ is nonsingular)
+
+Let $A=0_{m\times m}$, $B=G$, $C=G^\top$, $D=H$. By the block determinant formula (Schur complement),
+\[
+\det\begin{bmatrix}A&B\\ C&D\end{bmatrix}
+=\det(D)\,\det\big(A-BD^{-1}C\big)
+=\det(H)\,\det\big(0-GH^{-1}G^\top\big).
+\]
+Thus $\det(H_b)=\det(H)\,\det(-G H^{-1}G^\top)$.
+Interpretation: $-GH^{-1}G^\top$ is the (negative) \emph{projected curvature} of $\mathcal{L}$ on the constraint normals; its sign determines concavity/convexity in feasible directions.
+
+\medskip
+
+\textbf{16.} $\min f=x^2+y^2+z^2$ s.t. 
+$\begin{cases}
+x+y+z=3,\\
+x-y+2z=4.
+\end{cases}$
+
+\underline{Step 1: Lagrangian \& FOCs.}
+\[
+\mathcal{L}=x^2+y^2+z^2-\lambda_1(x+y+z-3)-\lambda_2(x-y+2z-4).
+\]
+\[
+2x-\lambda_1-\lambda_2=0,\quad 2y-\lambda_1+\lambda_2=0,\quad 2z-\lambda_1-2\lambda_2=0.
+\]
+
+\underline{Step 2: Solve with constraints.}
+From the three FOCs:
+\[
+x=\tfrac{1}{2}(\lambda_1+\lambda_2),\quad
+y=\tfrac{1}{2}(\lambda_1-\lambda_2),\quad
+z=\tfrac{1}{2}(\lambda_1+2\lambda_2).
+\]
+Plug into constraints:
+\[
+\begin{cases}
+x+y+z=\tfrac{3}{2}\lambda_1+\tfrac{1}{2}\lambda_2=3,\\
+x-y+2z=\tfrac{1}{2}\lambda_1+\tfrac{7}{2}\lambda_2=4.
+\end{cases}
+\]
+Solve:
+\[
+\lambda_1=\tfrac{10}{7},\quad \lambda_2=\tfrac{6}{7}.
+\]
+Hence
+\[
+x^\ast=\tfrac{8}{7},\quad y^\ast=\tfrac{2}{7},\quad z^\ast=\tfrac{11}{7}.
+\]
+
+\underline{Step 3: SOC.}
+$f$ is strictly convex, constraints affine $\Rightarrow$ unique \textbf{global minimum}.\\
+(If desired, bordered-Hessian check: with $H=2I_3$, $G=\begin{bmatrix}1&1&1\\ 1&-1&2\end{bmatrix}$,
+$\det(H_b)=\det(H)\det(-GH^{-1}G^\top)=8\cdot \det\!\big(-\tfrac12 GG^\top\big)=8\cdot \tfrac{1}{4}\det(GG^\top)=8\cdot \tfrac{1}{4}\cdot 14=28>0$; for $m=2$, $(-1)^m\det(H_b)>0$ confirms a minimum.)
+
+\end{document}

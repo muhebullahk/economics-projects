@@ -1,0 +1,192 @@
+\documentclass[12pt]{article}
+
+% ---------- Compatibility & Fonts ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+
+% ---------- Layout & Math ----------
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{setspace,enumitem,microtype}
+\setstretch{1.2}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+
+\begin{document}
+
+\begin{center}
+{\Large \textbf{Solutions -- Midterm Exam 2}} \\[0.9em]
+\textbf{ECON 320 -- Introduction to Mathematical Economics} \\[0.7em]
+
+November 05, 2025
+ \\[0.8em]
+Instructor: Muhebullah Karimzada
+\end{center}
+
+\hrule
+
+\hrule
+\vspace{8pt}
+
+\section*{Problem 1  (12 points)}
+
+A firm's profit: \(\pi(Q)=120Q-6Q^2-180\).
+
+\textbf{(a) First-order condition and critical point (4 pts).}
+\[
+\pi'(Q)=120-12Q \quad\Rightarrow\quad \pi'(Q)=0 \Rightarrow 120-12Q=0 \Rightarrow Q^\star=10.
+\]
+
+\textbf{(b) Second derivative and classification (3 pts).}
+\[
+\pi''(Q)=-12<0 \quad\Rightarrow\quad \text{strictly concave} \Rightarrow Q^\star=10 \text{ is a (global) maximum.}
+\]
+
+\textbf{(c) Maximum profit (3 pts).}
+\[
+\pi^\star=\pi(10)=120(10)-6(10)^2-180=1200-600-180=420.
+\]
+
+\textbf{(d) Interpretation (2 pts).}
+\(Q^\star\) is the profit-maximizing output. Concavity (\(\pi''<0\)) means marginal profit is decreasing; the unique stationary point is the global maximizer.
+
+\hrule
+\vspace{8pt}
+
+\section*{Problem 2 (12 points)}
+
+Population \(P(t)=200 e^{0.03t}\), technology \(A(t)=e^{0.02t}\), output \(Y(t)=A(t)\,P(t)^{0.5}\).
+
+\textbf{(a) Instantaneous growth rate of \(Y(t)\) via log-differentiation (4 pts).}
+
+\[
+\ln Y(t)=\ln A(t)+\tfrac{1}{2}\ln P(t)=0.02t+\tfrac{1}{2}\big(\ln 200+0.03t\big)
+= \tfrac{1}{2}\ln 200 + (0.02+0.015)t.
+\]
+Therefore
+\[
+\frac{d}{dt}\ln Y(t)=0.035 \quad\Rightarrow\quad \frac{1}{Y(t)}\frac{dY}{dt}=0.035.
+\]
+So \(Y\) grows at \(3.5\%\) per unit time; equivalently \(\dfrac{dY}{dt}=0.035\,Y\).
+
+\textbf{(b) Compute \(Y(10)\) (3 pts).}
+\[
+Y(t)=\sqrt{200}\,e^{0.035 t}\quad\Rightarrow\quad Y(10)=\sqrt{200}\,e^{0.35}.
+\]
+Using \(\sqrt{200}\approx 14.1421\) and \(e^{0.35}\approx 1.4191\),
+\[
+Y(10)\approx 14.1421\times 1.4191 \approx 20.07.
+\]
+
+\textbf{(c) Higher population growth: \(0.03 \to 0.04\) (3 pts).}
+\[
+\frac{1}{Y}\frac{dY}{dt}=\frac{d}{dt}\ln Y = 0.02+\tfrac{1}{2}(0.04)=0.02+0.02=0.04.
+\]
+Thus the new growth rate is \(4\%\).
+
+\textbf{(d) Interpretation (2 pts).}
+Output growth equals TFP growth (2\%) plus labor/population growth weighted by its elasticity (0.5). A 1 percentage-point increase in population growth raises the output growth rate by 0.5 percentage points, showing the relative roles of technology and population.
+
+\hrule
+\vspace{8pt}
+
+\section*{Problem 3 (13 points)}
+
+\(f(x,y)=12x+8y-x^2-y^2-xy\).
+
+\textbf{(a) First-order conditions and stationary point(s) (4 pts).}
+\[
+f_x=12-2x-y,\qquad f_y=8-2y-x.
+\]
+Solve \(f_x=f_y=0\):
+\[
+\begin{cases}
+12-2x-y=0\\
+8-2y-x=0
+\end{cases}
+\Rightarrow
+\begin{cases}
+y=12-2x\\
+8-2(12-2x)-x=0
+\end{cases}
+\Rightarrow -16+3x=0 \Rightarrow x^\star=\dfrac{16}{3},\quad
+y^\star=12-2\cdot\dfrac{16}{3}=\dfrac{4}{3}.
+\]
+
+\textbf{(b) Hessian and determinant (4 pts).}
+\[
+H=\begin{bmatrix}
+f_{xx} & f_{xy}\\
+f_{yx} & f_{yy}
+\end{bmatrix}
+=
+\begin{bmatrix}
+-2 & -1\\
+-1 & -2
+\end{bmatrix},\qquad \det(H)=(-2)(-2)-(-1)^2=4-1=3>0.
+\]
+
+\textbf{(c) Classification (3 pts).}
+Since \(f_{xx}=-2<0\) and \(\det(H)>0\), \(H\) is negative definite. Therefore \((x^\star,y^\star)\) is a strict local maximum. Because \(H\) is constant and negative definite everywhere, it is also the global maximizer.
+
+\textbf{(d) Economic interpretation (2 pts).}
+Negative diagonals indicate diminishing returns to each input; \(f_{xy}=-1<0\) shows inputs are gross substitutes (raising one reduces the marginal product of the other). Global concavity implies a unique optimum.
+
+\hrule
+\vspace{8pt}
+
+\section*{Problem 4 (13 points)}
+
+Maximize \(U(x,y)=x^{0.5}y^{0.5}\) subject to \(2x+y=100\).
+
+\textbf{(a) Lagrangian and FOCs (4 pts).}
+\[
+\mathcal{L}(x,y,\lambda)=x^{1/2}y^{1/2}-\lambda(2x+y-100).
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial x}=\tfrac{1}{2}x^{-1/2}y^{1/2}-2\lambda=0,\quad
+\frac{\partial \mathcal{L}}{\partial y}=\tfrac{1}{2}x^{1/2}y^{-1/2}-\lambda=0,\quad
+2x+y-100=0.
+\]
+
+%\textbf{(b) Solve for \(x^\*,y^\*,\lambda^\*\) (5 pts).}
+From the first two FOCs, equate:
+\[
+\tfrac{1}{2}x^{-1/2}y^{1/2}=2\lambda,\qquad x^{1/2}y^{-1/2}=\lambda
+\ \Rightarrow\ 
+\frac{\tfrac{1}{2}x^{-1/2}y^{1/2}}{x^{1/2}y^{-1/2}}=1
+\ \Rightarrow\ 
+\tfrac{1}{2}\cdot\frac{y}{x}=1 \Rightarrow \frac{y}{x}=2.
+\]
+Thus \(y=2x\). Budget: \(2x+y=4x=100 \Rightarrow x^\star=25,\ y^\star=50\).
+Multiplier from \(\lambda=\tfrac{1}{2}x^{1/2}y^{-1/2}\):
+\[
+\lambda^\star=\frac{1}{2}\sqrt{\frac{x^\star}{y^\star}}
+=\frac{1}{2}\sqrt{\frac{25}{50}}=\frac{1}{2\sqrt{2}}\approx 0.3536.
+\]
+
+\textbf{(c) Bordered Hessian check (2 pts).}
+Second derivatives:
+\[
+U_{xx}=-\tfrac{1}{4}x^{-3/2}y^{1/2},\quad
+U_{yy}=-\tfrac{1}{4}x^{1/2}y^{-3/2},\quad
+U_{xy}=\tfrac{1}{4}x^{-1/2}y^{-1/2}.
+\]
+Constraint \(g(x,y)=2x+y-100\) gives \(g_x=2,\ g_y=1\). The bordered Hessian
+\[
+H_B=\begin{bmatrix}
+0 & 2 & 1\\
+2 & U_{xx} & U_{xy}\\
+1 & U_{xy} & U_{yy}
+\end{bmatrix}_{(x^\star,y^\star)}
+\]
+has \(\det(H_B)>0\) at \((25,50)\), confirming a local maximum. Alternatively, note \(U\) is strictly concave on \(\mathbb{R}^2_{++}\) and the constraint is linear, implying a unique global maximum.
+
+\textbf{(d) Interpreting \(\lambda^\star\) and envelope estimate (2 pts).}
+With budget \(2x+y=I\) and \(I=100\), the envelope theorem gives \(\partial U^\star/\partial I=\lambda^\star\), the marginal utility of income. For \(\Delta I=5\),
+\[
+\Delta U \approx \lambda^\star \Delta I = \frac{1}{2\sqrt{2}}\times 5 \approx 1.7678.
+\]
+
+\end{document}

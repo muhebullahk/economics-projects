@@ -1,0 +1,633 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsfonts, geometry, setspace, tcolorbox, amsthm}
+\geometry{margin=1in}
+\setstretch{1.3}
+\setlength{\parindent}{0pt}
+
+\tcbset{colback=gray!5, colframe=black!70, boxrule=0.6pt, arc=2pt, 
+left=6pt, right=6pt, top=4pt, bottom=4pt}
+
+\newtheorem{definition}{Definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem{example}{Example}
+
+\title{\textbf{Integration and Economic Dynamics}\\[7pt]
+\large ECON 320 - Introduction to Mathematical Economics}
+\author{Muhebullah Karimzada}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+
+
+
+
+
+%=========================================================
+\section*{1. Motivation: Why Integration in Economics?}
+
+So far, you may be familiar with \textbf{derivatives}: 
+\[
+\frac{dy}{dx}, \quad f'(x), \quad \frac{dQ}{dP}, \quad \text{etc.}
+\]
+Derivatives describe \emph{instantaneous change}. For example:
+\begin{itemize}
+\item Marginal cost is the derivative of total cost with respect to quantity.
+\item Marginal utility is the derivative of total utility with respect to consumption.
+\item Marginal product is the derivative of output with respect to an input.
+\end{itemize}
+
+However, many economic questions are about \textbf{accumulation over time or over quantity}, such as:
+\begin{itemize}
+\item Given marginal cost, what is total cost between $Q=0$ and $Q=100$?
+\item Given investment as a function of time, what will the capital stock be after 10 years?
+\item Given an income flow $Y(t)$, what is the present value of all future income?
+\end{itemize}
+
+To answer such questions, we need a mathematical tool that \emph{adds up} small contributions:
+\[
+\text{Total} = \text{sum of many tiny pieces}.
+\]
+This is exactly what \textbf{integration} does.
+
+
+
+%=========================================================
+\section*{2. What is an Integral? First Intuition}
+
+\subsection*{2.1 Area Under a Curve as a Sum}
+
+Consider a function $f(x)$ defined on the interval $[a,b]$. Visually, we can think of $f(x)$ as a curve. Suppose we want the \textbf{area under the curve} from $x=a$ to $x=b$.
+
+A natural idea:
+\begin{enumerate}
+\item Divide $[a,b]$ into many small sub-intervals of width $\Delta x$.
+\item On each small interval, approximate the area by a rectangle:
+\[
+\text{height} \approx f(x_i), \quad \text{width} = \Delta x.
+\]
+\item Add up all these small rectangular areas:
+\[
+\text{Total area} \approx \sum_i f(x_i)\Delta x.
+\]
+\end{enumerate}
+As we make $\Delta x$ smaller and smaller (more and more rectangles), this approximation becomes better and better.
+
+\subsection*{2.2 The Limit: From Sum to Integral}
+
+Formally, the \textbf{definite integral} of $f(x)$ from $a$ to $b$ is defined as:
+\[
+\int_a^b f(x)\,dx = \lim_{\Delta x \to 0} \sum_i f(x_i)\Delta x.
+\]
+
+This is a limit of sums. That is why we say the integral is a \emph{continuous sum}.
+
+\begin{tcolorbox}
+\textbf{Definite Integral:} $\displaystyle \int_a^b f(x)\,dx$ is the limiting value of sums of the form $\sum f(x_i)\Delta x$ as $\Delta x\to 0$. It represents the \emph{area under the curve} $y=f(x)$ from $x=a$ to $x=b$ (when $f(x)\ge 0$).
+\end{tcolorbox}
+\newpage
+%=========================================================
+\section*{3. Relationship Between Derivatives and Integrals}
+
+It turns out that there is a deep relationship between differentiation and integration.
+
+Suppose $F(x)$ is a function such that 
+\[
+F'(x) = f(x).
+\]
+Then we say $F(x)$ is an \textbf{antiderivative} (or \textbf{indefinite integral}) of $f(x)$.
+
+\begin{tcolorbox}
+\textbf{Fundamental Theorem of Calculus (informal)}  
+
+If $F'(x) = f(x)$, then:
+\[
+\int_a^b f(x)\, dx = F(b) - F(a).
+\]
+
+In words: to compute the definite integral of $f(x)$ from $a$ to $b$, find any function $F(x)$ whose derivative is $f(x)$, then take $F(b)-F(a)$.
+\end{tcolorbox}
+
+This theorem tells us:
+\begin{itemize}
+\item Integration can be done by finding antiderivatives.
+\item Differentiation and integration are inverse operations.
+\end{itemize}
+
+%=========================================================
+\section*{4. Indefinite Integrals: Basic Rules (With Steps)}
+
+An \textbf{indefinite integral} has the form:
+\[
+\int f(x)\, dx = F(x) + C,
+\]
+where $F'(x) = f(x)$ and $C$ is an arbitrary constant (because the derivative of a constant is zero).
+
+\subsection*{4.1 Power Rule}
+
+We start from the derivative:
+\[
+\frac{d}{dx}x^{n+1} = (n+1)x^n.
+\]
+We want to \emph{reverse} this. Suppose we want $\int x^n dx$.
+
+\textbf{Step 1:} Guess that the antiderivative has the form $A x^{n+1}$.
+
+\textbf{Step 2:} Differentiate:
+\[
+\frac{d}{dx} (A x^{n+1}) = A (n+1) x^n.
+\]
+
+\textbf{Step 3:} We want this to equal $x^n$, so set:
+\[
+A (n+1) = 1 \quad \Rightarrow \quad A = \frac{1}{n+1}.
+\]
+
+\textbf{Conclusion:}
+\[
+\int x^n dx = \frac{x^{n+1}}{n+1} + C, \quad \text{for } n\ne -1.
+\]
+
+\subsection*{4.2 Integral of $1/x$}
+
+We know 
+\[
+\frac{d}{dx} \ln|x| = \frac{1}{x}.
+\]
+
+Thus:
+\[
+\int \frac{1}{x} dx = \ln|x| + C.
+\]
+
+\subsection*{4.3 Exponential Functions}
+
+We know:
+\[
+\frac{d}{dx} e^{ax} = a e^{ax}.
+\]
+
+To find $\int e^{ax}dx$, follow similar steps:
+
+\textbf{Step 1:} Guess that the antiderivative is $B e^{ax}$.
+
+\textbf{Step 2:} Differentiate:
+\[
+\frac{d}{dx} (B e^{ax}) = B a e^{ax}.
+\]
+
+\textbf{Step 3:} We want this to equal $e^{ax}$, so:
+\[
+Ba = 1 \quad \Rightarrow \quad B = \frac{1}{a}.
+\]
+
+\textbf{Conclusion:}
+\[
+\int e^{ax} dx = \frac{1}{a} e^{ax} + C.
+\]
+
+\subsection*{4.4 Linearity of the Integral}
+
+If $k$ is a constant and $f,g$ are functions:
+\[
+\int [kf(x)]dx = k\int f(x)dx,
+\]
+\[
+\int [f(x) + g(x)]dx = \int f(x)dx + \int g(x)dx.
+\]
+
+We can justify this by using the linearity of differentiation and then reversing the process.
+
+\textbf{Example (step-by-step):}
+\[
+\int (3x^2 + 4x)dx.
+\]
+
+\textbf{Step 1:} Apply linearity:
+\[
+\int (3x^2 + 4x)dx = \int 3x^2 dx + \int 4x dx.
+\]
+
+\textbf{Step 2:} Pull constants out:
+\[
+=3 \int x^2 dx + 4\int x dx.
+\]
+
+\textbf{Step 3:} Use power rule:
+\[
+=3 \left(\frac{x^3}{3}\right) + 4\left(\frac{x^2}{2}\right) + C
+= x^3 + 2x^2 + C.
+\]
+\newpage
+%=========================================================
+\section*{5. Definite Integrals and the Fundamental Theorem of Calculus}
+
+\subsection*{5.1 Definite Integrals}
+
+A \textbf{definite integral} from $a$ to $b$ is written:
+\[
+\int_a^b f(x)dx.
+\]
+
+This is a number (not a function). Using an antiderivative $F(x)$ with $F'(x)=f(x)$:
+
+\[
+\int_a^b f(x)dx = F(b) - F(a).
+\]
+
+\textbf{Example:}
+\[
+\int_0^2 (3x^2 + 4x)dx.
+\]
+
+We already know antiderivative:
+\[
+\int (3x^2 + 4x)dx = x^3 + 2x^2 + C.
+\]
+
+So:
+\[
+\int_0^2 (3x^2 + 4x)dx = [x^3 + 2x^2]_0^2 = (2^3 + 2\cdot 2^2) - (0^3 + 2\cdot 0^2).
+\]
+
+Compute step-by-step:
+\[
+2^3 = 8, \quad 2^2 = 4, \quad 2\cdot 4 = 8.
+\]
+So:
+\[
+x^3 + 2x^2 \text{ at } x=2 \text{ is } 8 + 8 = 16,
+\]
+and at $x=0$:
+\[
+0^3 + 2\cdot 0^2 = 0.
+\]
+
+Therefore:
+\[
+\int_0^2 (3x^2 + 4x)dx = 16 - 0 = 16.
+\]
+
+\begin{tcolorbox}
+\textbf{Economic Reading:} If $3x^2+4x$ were the marginal cost, then the total cost of producing from 0 to 2 units would be 16 (plus any fixed cost).
+\end{tcolorbox}
+
+%=========================================================
+\section*{6. Economic Applications: Static (No Time Yet)}
+
+\subsection*{6.1 Total Cost from Marginal Cost}
+
+Suppose marginal cost is $MC(Q)$, and fixed cost is $F$. Then:
+\[
+TC(Q) = F + \int_0^Q MC(q)dq.
+\]
+
+\textbf{Example:}
+\[
+MC(Q) = 10 + 2Q, \quad F=50.
+\]
+
+\textbf{Step 1:} Compute the integral:
+\[
+\int_0^Q (10+2q)dq = \int_0^Q 10\,dq + \int_0^Q 2q\,dq.
+\]
+
+\textbf{Step 2:} Integrate separately:
+\[
+\int_0^Q 10\,dq = 10Q, \quad
+\int_0^Q 2q\,dq = 2\cdot \frac{Q^2}{2} = Q^2.
+\]
+
+\textbf{Step 3:} Add:
+\[
+\int_0^Q (10+2q)dq = 10Q + Q^2.
+\]
+
+\textbf{Step 4:} Add fixed cost:
+\[
+TC(Q) = 50 + 10Q + Q^2.
+\]
+
+\subsection*{6.2 Consumer Surplus}
+
+Demand curve: $P(Q)$, market price: $P^*$. Quantity traded: $Q^*$.
+
+\[
+CS = \int_0^{Q^*} P(Q)dQ - P^* Q^*.
+\]
+
+This is literally the area under the demand curve above the horizontal price line.
+\newpage
+%=========================================================
+\section*{7. Integration and Economic Dynamics: Stocks and Flows}
+
+Now we move from \emph{static} applications to \emph{dynamic} ones.
+
+\subsection*{7.1 Flows Accumulating into Stocks}
+
+Let $I(t)$ be net investment (a \textbf{flow}), measured per unit of time.  
+
+Capital stock $K(t)$ is a \textbf{stock}.
+
+The change in capital over a small time $\Delta t$ is approximately:
+\[
+\Delta K \approx I(t)\Delta t.
+\]
+
+To get total change over $[0,t]$, we add up all tiny changes:
+\[
+K(t) - K(0) \approx \sum I(t_i)\Delta t.
+\]
+
+In the limit:
+\[
+K(t) - K(0) = \int_0^t I(s)ds.
+\]
+
+So:
+\[
+\boxed{K(t) = K(0) + \int_0^t I(s)ds.}
+\]
+
+This is the basic \textbf{stock-flow} relationship.
+
+\subsection*{7.2 Example: Constant Investment}
+
+Suppose $I(t) = \bar{I}$, a constant.
+
+Then:
+\[
+K(t) = K(0) + \int_0^t \bar{I}\ ds = K(0) + \bar{I} t.
+\]
+
+This is just a straight line: capital grows at a constant rate over time.
+\newpage
+%=========================================================
+\section*{8. Introducing Differential Equations}
+
+A \textbf{differential equation} is an equation that involves an unknown function and its derivatives.
+
+Example:
+\[
+\frac{dK}{dt} = I(t).
+\]
+
+This equation says: the rate of change of $K$ with respect to time equals the investment flow.
+
+If we know $I(t)$, we can integrate to get $K(t)$:
+\[
+K(t)=K(0)+\int_0^t I(s)ds.
+\]
+
+So integration is the natural tool for solving many differential equations.
+
+%=========================================================
+\section*{9. Example: Capital Accumulation with Depreciation}
+
+Consider:
+\[
+\frac{dK}{dt} = I - \delta K,
+\]
+where:
+\begin{itemize}
+\item $I$ is \emph{constant net investment}.
+\item $\delta$ is the \emph{depreciation rate}.
+\end{itemize}
+
+This is a first-order linear differential equation.
+
+\subsection*{9.1 Rewrite the Equation}
+
+We can rewrite as:
+\[
+\frac{dK}{dt} + \delta K = I.
+\]
+
+Now it is in the standard form:
+\[
+\frac{dK}{dt} + P(t)K = Q(t),
+\]
+with $P(t)=\delta$ (constant), $Q(t)=I$ (constant).
+
+\subsection*{9.2 Integrating Factor Method (Step by Step)}
+
+We choose an \textbf{integrating factor} $\mu(t)$ such that:
+\[
+\mu(t) = e^{\int P(t)dt} = e^{\int \delta dt} = e^{\delta t}.
+\]
+
+\textbf{Step 1:} Multiply both sides of the differential equation by $\mu(t) = e^{\delta t}$:
+\[
+e^{\delta t}\frac{dK}{dt} + \delta e^{\delta t}K = I e^{\delta t}.
+\]
+
+\textbf{Step 2:} Recognize that the left-hand side is:
+\[
+\frac{d}{dt}(e^{\delta t}K).
+\]
+We can verify this:
+
+Take $e^{\delta t}K$ and differentiate with respect to $t$:
+\[
+\frac{d}{dt}(e^{\delta t}K) = e^{\delta t}\frac{dK}{dt} + \delta e^{\delta t}K.
+\]
+So indeed:
+\[
+\frac{d}{dt}(e^{\delta t}K) = I e^{\delta t}.
+\]
+
+\textbf{Step 3:} Integrate both sides from $0$ to $t$:
+\[
+\int_0^t \frac{d}{ds}(e^{\delta s}K(s)) ds = \int_0^t I e^{\delta s} ds.
+\]
+
+Left-hand side:
+\[
+\int_0^t \frac{d}{ds}(e^{\delta s}K(s)) ds = e^{\delta t}K(t) - e^{0}K(0) = e^{\delta t}K(t) - K(0).
+\]
+
+Right-hand side:
+\[
+\int_0^t I e^{\delta s} ds = I \int_0^t e^{\delta s}ds.
+\]
+Compute:
+\[
+\int_0^t e^{\delta s}ds = \left[\frac{1}{\delta} e^{\delta s}\right]_0^t = \frac{1}{\delta} e^{\delta t} - \frac{1}{\delta} e^{0} = \frac{1}{\delta}(e^{\delta t} - 1).
+\]
+
+Thus:
+\[
+\int_0^t I e^{\delta s} ds = I \cdot \frac{1}{\delta}(e^{\delta t} - 1) = \frac{I}{\delta}(e^{\delta t} - 1).
+\]
+
+\textbf{Step 4:} Put both sides together:
+\[
+e^{\delta t}K(t) - K(0) = \frac{I}{\delta}(e^{\delta t} - 1).
+\]
+
+\textbf{Step 5:} Solve for $K(t)$:
+\[
+e^{\delta t}K(t) = K(0) + \frac{I}{\delta}(e^{\delta t} - 1).
+\]
+
+Divide by $e^{\delta t}$:
+\[
+K(t) = K(0)e^{-\delta t} + \frac{I}{\delta}(1 - e^{-\delta t}).
+\]
+
+\begin{tcolorbox}
+\textbf{Capital Accumulation Solution}  
+\[
+K(t) = K(0)e^{-\delta t} + \frac{I}{\delta}(1 - e^{-\delta t}).
+\]
+
+\begin{itemize}
+\item $K(0)e^{-\delta t}$ is the depreciating initial stock.
+\item $\frac{I}{\delta}(1-e^{-\delta t})$ captures the build-up of new capital from investment.
+\item As $t\to\infty$, $e^{-\delta t}\to 0$, so
+\[
+K(\infty) = \frac{I}{\delta},
+\]
+which is the steady-state capital stock where net investment equals depreciation.
+\end{itemize}
+\end{tcolorbox}
+
+\newpage
+%=========================================================
+\section*{10. Debt Dynamics: Another Example}
+
+Let $B(t)$ be government debt at time $t$. Suppose:
+\[
+\frac{dB}{dt} = rB + D(t),
+\]
+where:
+\begin{itemize}
+\item $r$ is the interest rate on debt.
+\item $D(t)$ is the (primary) deficit at time $t$.
+\end{itemize}
+
+\subsection*{10.1 Rearranging and Integrating Factor}
+
+Rewrite:
+\[
+\frac{dB}{dt} - rB = D(t).
+\]
+
+Here $P(t) = -r$, so:
+\[
+\mu(t) = e^{\int -r dt} = e^{-rt}.
+\]
+
+Multiply both sides by $e^{-rt}$:
+\[
+e^{-rt}\frac{dB}{dt} - r e^{-rt} B = D(t) e^{-rt}.
+\]
+
+Left side is:
+\[
+\frac{d}{dt}(e^{-rt}B).
+\]
+
+Check:
+\[
+\frac{d}{dt}(e^{-rt}B) = e^{-rt}\frac{dB}{dt} + (-r e^{-rt})B = e^{-rt}\frac{dB}{dt} - r e^{-rt} B.
+\]
+Correct.
+
+So we have:
+\[
+\frac{d}{dt}(e^{-rt}B) = D(t) e^{-rt}.
+\]
+
+Integrate from $0$ to $t$:
+\[
+\int_0^t \frac{d}{ds}(e^{-rs}B(s)) ds = \int_0^t D(s)e^{-rs}ds.
+\]
+
+Left-hand side:
+\[
+e^{-rt}B(t) - e^{0}B(0) = e^{-rt}B(t) - B(0).
+\]
+
+Thus:
+\[
+e^{-rt}B(t) - B(0) = \int_0^t D(s)e^{-rs}ds.
+\]
+
+Solve for $B(t)$:
+\[
+e^{-rt}B(t) = B(0) + \int_0^t D(s)e^{-rs}ds,
+\]
+\[
+B(t) = e^{rt}\left[ B(0) + \int_0^t D(s)e^{-rs}ds \right].
+\]
+
+\begin{tcolorbox}
+\textbf{Debt Solution}  
+\[
+B(t) = e^{rt}\left[ B(0) + \int_0^t D(s)e^{-rs}ds \right].
+\]
+
+Interpretation:
+\begin{itemize}
+\item $B(0)e^{rt}$ is the initial debt grown at interest rate $r$.
+\item The integral term represents the accumulation of discounted deficits over time.
+\end{itemize}
+\end{tcolorbox}
+
+%=========================================================
+\section*{11. Present Value as an Integral}
+
+In continuous time, if $Y(t)$ is a flow of income and $r$ is the constant discount rate, the present value (PV) is:
+\[
+PV = \int_0^\infty Y(t) e^{-rt}dt.
+\]
+
+\subsection*{11.1 Example: Constant Income Stream}
+
+Suppose $Y(t)=Y$ (constant). Then:
+\[
+PV = \int_0^\infty Y e^{-rt}dt = Y\int_0^\infty e^{-rt}dt.
+\]
+
+Compute the integral:
+\[
+\int_0^\infty e^{-rt}dt = \lim_{T\to\infty} \int_0^T e^{-rt}dt.
+\]
+
+First compute up to $T$:
+\[
+\int_0^T e^{-rt}dt = \left[-\frac{1}{r}e^{-rt}\right]_0^T = -\frac{1}{r}e^{-rT} + \frac{1}{r}e^{0} = \frac{1}{r}(1 - e^{-rT}).
+\]
+
+Now take the limit as $T\to\infty$:
+\[
+\lim_{T\to\infty} \frac{1}{r}(1 - e^{-rT}) = \frac{1}{r}(1-0) = \frac{1}{r}.
+\]
+
+So:
+\[
+PV=Y\cdot \frac{1}{r} = \frac{Y}{r}.
+\]
+
+This is the continuous-time analog of the perpetuity formula.
+
+%=========================================================
+\section*{12. Summary and Economic Insights}
+
+\begin{tcolorbox}
+\textbf{Core Messages}
+\begin{itemize}
+\item Integration is the mathematical tool that sums infinitely many tiny contributions (areas, flows).
+\item The definite integral is the limit of Riemann sums and gives areas under curves.
+\item The indefinite integral (antiderivative) reverses differentiation.
+\item In economics, integration is used to compute total cost, total revenue, consumer surplus, and more.
+\item A stock (capital, debt, knowledge) is often the integral of its net flow (investment, deficit, R\&D).
+\item Differential equations model how economic variables evolve over continuous time.
+\item The integrating factor method allows us to solve a wide class of linear first-order differential equations.
+\item Present value in continuous time is an integral of discounted flows.
+\end{itemize}
+\end{tcolorbox}
+
+
+\end{document}

@@ -1,0 +1,325 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+\usepackage{xcolor}
+\definecolor{accent}{RGB}{0,92,184}
+\definecolor{soft}{RGB}{233,244,255}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{title}{fg=white,bg=accent}
+\setbeamercolor{frametitle}{fg=accent}
+\setbeamercolor{block title}{bg=accent!12,fg=accent}
+\setbeamercolor{block body}{bg=soft}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}
+
+% ---------- SAFE TRANSITION FALLBACK ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- PLACEHOLDER BOX (compile-safe; no images required) ----------
+\newcommand{\placeholderbox}[2][0.82\linewidth]{%
+  \begin{center}
+    \fbox{\begin{minipage}[c][0.46\textheight][c]{#1}
+      \centering \vspace{0.25em}
+      \textbf{#2}\\[0.6em]
+      \emph{Insert figure/diagram here later.}
+    \end{minipage}}
+  \end{center}
+}
+
+% ---------- TITLE ----------
+\title{\textbf{Union Impact on Wage and Nonwage Outcomes  \vspace{.5cm}\\  }}
+\subtitle{ {\large ECON 300 - Labour Economics}}
+%\institute{UNBC}
+\author{Muhebullah Karimzada}
+
+\date{Winter 2026}
+
+
+
+\begin{document}
+
+% ============================================================
+% TITLE
+% ============================================================
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ============================================================
+\section{Learning Objectives \& Main Questions}
+% ============================================================
+
+\begin{frame}{Learning Objectives}
+\transfade
+\begin{itemize}[<+->]
+  \item Discuss difficulties in measuring the impact of unions on members' wages and methods to overcome them.
+  \item Describe mechanisms whereby unions may affect nonunion wages.
+  \item Explain how unions affect wage inequality and the distribution of income.
+  \item Evaluate how union impacts differ by skill, gender, sector, and product-market competition.
+  \item Analyze effects on productivity, investment, profitability, and overall efficiency.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Main Questions}
+\transfade
+\begin{itemize}[<+->]
+  \item How do we estimate the \alert{causal} wage effect of unions?
+  \item By how much do unions raise members' wages, and for whom the most?
+  \item What happens to nonunion wages and employment?
+  \item Do unions raise or reduce overall income inequality?
+  \item What are the effects on productivity and firm profits?
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Union Wage Impact: Two-Sector Model}
+% ============================================================
+
+\begin{frame}{Basic Two-Sector Framework}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{Union--nonunion wage differential:} percentage difference in wages between union and nonunion workers.
+  \item Predictions:
+    \begin{itemize}[<+->]
+      \item Union increases wage in the organized sector, reduces employment there.
+      \item Displaced workers flow to nonunion sector $\Rightarrow$ wage there falls.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 15.1 -- Two-Sector Model of General Equilibrium \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Figure 15.1 -- Two-Sector Model of General Equilibrium.}
+\end{frame}
+
+\begin{frame}{Additional Impacts and Threat Effects}
+\transfade
+\begin{itemize}[<+->]
+  \item Nonunion firms may raise wages to compete for workers.
+  \item \textbf{Threat effect:} nonunion employers raise wages to reduce risk of unionization.
+  \item Threat effect stronger when:
+    \begin{itemize}[<+->]
+      \item Union wage is high
+      \item Nonunion sector easy to organize
+      \item Potential union aggressive
+      \item Employers strongly averse to unionization
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Wait or Queue Unemployment}
+\transfade
+\begin{itemize}[<+->]
+  \item Workers may rationally \textbf{wait} for union jobs due to higher pay.
+  \item Nonunion supply increase $<$ union employment reduction (queuing attenuates spillovers).
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Measurement \& Empirical Evidence}
+% ============================================================
+
+\begin{frame}{Estimating the Pure Union Differential}
+\transfade
+\begin{itemize}[<+->]
+  \item Must control for:
+    \begin{itemize}[<+->]
+      \item Skills and labour quality
+      \item Job assignment characteristics
+      \item Education, training, experience
+      \item Other productivity-related factors
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Empirical Evidence: Headline Findings}
+\transfade
+\begin{itemize}[<+->]
+  \item Unions cause higher wages.
+  \item Typical union--nonunion differential:
+    \begin{itemize}[<+->]
+      \item U.S.: 10--20\%
+      \item Canada: 10--25\%
+    \end{itemize}
+  \item \textbf{Longitudinal} (panel) estimates controlling for person fixed effects: $\sim$10\%.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Worked Example -- Computing a Union Premium}
+\transfade
+\small
+\begin{itemize}[<+->]
+  \item Nonunion pay structure (illustrative): $Y = 8000 + 2000\,S + 500\,X$.
+  \item For a union worker with $S=12$ and $X=10$:
+\[
+Y_U^\ast = 8000 + 2000(12) + 500(10) = \$37{,}000.
+\]
+  \item Observed union earnings: $Y_U = \$44{,}000$.
+  \item \textbf{Pure union premium:} $Y_U - Y_U^\ast = \$7{,}000$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Table: Worked Example Summary (Exact Values)}
+\transfade
+\small
+\begin{tabular}{lcc}
+\toprule
+\textbf{Quantity} & \textbf{Expression} & \textbf{Value} \\
+\midrule
+Expected nonunion earnings for union worker & $Y_U^\ast = 8000 + 2000(12) + 500(10)$ & \$37{,}000 \\
+Observed union earnings & $Y_U$ & \$44{,}000 \\
+Pure union earnings premium & $Y_U - Y_U^\ast$ & \$7{,}000 \\
+\bottomrule
+\end{tabular}
+\end{frame}
+
+\begin{frame}{Decomposition Idea}
+\transfade
+\begin{itemize}[<+->]
+  \item Use Blinder--Oaxaca to split average union--nonunion earnings difference into:
+    \begin{itemize}[<+->]
+      \item Part due to \textbf{endowments} (education, experience, occupation mix, etc.)
+      \item Part due to \textbf{coefficients} (structure or returns differences)
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Heterogeneity in Impacts}
+% ============================================================
+
+\begin{frame}{Variation in the Union Wage Impact}
+\transfade
+\begin{itemize}[<+->]
+  \item \textbf{By union density:} larger differentials where organization is widespread; often nonlinear.
+  \item \textbf{By firm size:} positive relation with wages in both union and nonunion sectors; stronger for nonunion.
+  \item \textbf{By industry and sector:} smaller in public sector; lower where foreign competition is stronger.
+  \item \textbf{By skill and gender:} highest among low-skilled; union and nonunion wages similarly responsive to gender.
+  \item \textbf{Over cycle/time:} union wages exhibit less cyclical variation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 15.2 -- Union vs.\ Nonunion Wages by Characteristics \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Figure 15.2 -- Relationship between union and nonunion wages and personal/job characteristics.}
+\end{frame}
+
+% ============================================================
+\section{Inequality, Dispersion, and Distribution}
+% ============================================================
+
+\begin{frame}{Unions and Wage Dispersion}
+\transfade
+\begin{itemize}[<+->]
+  \item Less wage dispersion among union workers in Canada.
+  \item Larger impact on blue-collar wages.
+  \item Net effect tends to \textbf{reduce} overall wage dispersion and inequality.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 15.3 -- Wage Dispersion in Union vs.\ Nonunion Sectors \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Figure 15.3 -- Wage dispersion comparison between union and nonunion sectors.}
+\end{frame}
+
+% ============================================================
+\section{Resource Allocation \& Efficiency}
+% ============================================================
+
+\begin{frame}{Union Impact on Resource Allocation and Welfare}
+\transfade
+\begin{itemize}[<+->]
+  \item Wage and employment changes affect allocation of labour and capital.
+  \item Potential \textbf{deadweight losses} if workers shift to lower-productivity nonunion jobs.
+  \item Magnitude depends on:
+    \begin{itemize}[<+->]
+      \item Labour supply elasticity
+      \item Extent of queuing/unemployment
+      \item Whether wage--employment are jointly negotiated (efficient contracts)
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 15.4 -- Union Wage Impact and Allocative Inefficiency \textit{(Placeholder)}}
+\transfade
+\placeholderbox{Figure 15.4 -- Areas of deadweight loss under two-sector model with union wage.}
+\end{frame}
+
+% ============================================================
+\section{Nonwage Outcomes}
+% ============================================================
+
+\begin{frame}{Fringe Benefits and Total Compensation}
+\transfade
+\begin{itemize}[<+->]
+  \item Nonwage benefits are a higher share of compensation in union firms.
+  \item Worker preferences (median voter) and life-cycle demands shape packages.
+  \item Benefits can raise retention and reduce turnover.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Employment, Work Rules, and Conditions}
+\transfade
+\begin{itemize}[<+->]
+  \item Employers may substitute away from higher-cost union labour; output prices may rise.
+  \item Unions may bargain on employment levels; \textbf{featherbedding} can fix labour--capital ratios.
+  \item Nonunion settings: more flexibility and fewer rules; faster pace often noted.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Turnover, Productivity, Profitability, and Investment}
+\transfade
+\begin{itemize}[<+->]
+  \item Turnover is typically lower in unionized firms (deferred compensation more prevalent).
+  \item Unions can increase capital intensity and select more productive labour.
+  \item Potential positive channels: morale, communication, and cooperation.
+  \item On balance, profit impacts depend on product-market conditions and bargaining outcomes.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Chapter Summary}
+% ============================================================
+
+\begin{frame}{Summary}
+\transfade
+\begin{itemize}[<+->]
+  \item Two-sector model clarifies wage, employment, and spillover effects.
+  \item Identification requires rich controls; panel methods shrink differentials toward $\sim$10\%.
+  \item Union impacts vary by density, firm size, industry, sector, skill, and competition.
+  \item Unions generally compress wage dispersion; efficiency losses hinge on elasticities and contracting.
+  \item Nonwage outcomes include higher benefits, lower turnover, and changes in productivity and profits.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\begin{frame}
+\centering
+\Huge{\textbf{Thank You!}} \\
+
+\end{frame}
+
+\end{document}

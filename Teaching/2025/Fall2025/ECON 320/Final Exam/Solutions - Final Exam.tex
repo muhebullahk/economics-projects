@@ -1,0 +1,543 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsfonts, bm}
+\usepackage{enumitem}
+\setlist[enumerate]{nosep}
+\setlength{\parskip}{0.7em}
+\setlength{\parindent}{0pt}
+
+\begin{document}
+
+\begin{center}
+{\Large \textbf{Solutions -- Final Exam}} \\[0.9em]
+\textbf{ECON 320 -- Introduction to Mathematical Economics} \\[0.7em]
+
+December 10, 2025
+ \\[0.8em]
+Instructor: Muhebullah Karimzada
+\end{center}
+
+\hrule
+
+\textbf{Instructions:}
+\begin{itemize}
+\item You are allowed \textbf{120 minutes} to complete the exam.
+    \item Show all work. Unsupported answers receive little credit.
+
+    \item Unless stated otherwise, all variables are real and differentiable as needed.
+\end{itemize}
+
+\hrule
+\section*{Multiple Choice Questions (20 points)}
+
+Each question is worth 2 points. Correct options are indicated and briefly justified.
+
+\textbf{1.} \(Q = \sqrt{P+10} - I\).
+
+\[
+\frac{\partial Q}{\partial I} = -1.
+\]
+
+\textbf{Answer:} (b) \(-1\).
+
+\medskip
+
+\textbf{2.} \(z = x^2 y^3\).
+
+\[
+z_x = 2x y^3,\qquad z_y = 3x^2 y^2,
+\]
+\[
+dz = z_x\,dx + z_y\,dy = 2x y^3\,dx + 3x^2 y^2\,dy.
+\]
+
+\textbf{Answer:} (a).
+
+\medskip
+
+\textbf{3.} \(f(x)=4x - x^3\).
+
+\[
+f'(x)=4 - 3x^2 = 0 \Rightarrow x^2=\frac{4}{3} \Rightarrow x=\pm \sqrt{\frac{4}{3}}.
+\]
+Second derivative:
+\[
+f''(x) = -6x.
+\]
+At \(x=\sqrt{4/3}>0\), \(f''(x) < 0 \Rightarrow\) local maximum.
+
+\textbf{Answer:} (a) local maximum.
+
+\medskip
+
+\textbf{4.} \(Y = A K^{0.5} L^{0.5}\).
+
+In Cobb--Douglas, elasticity of \(Y\) w.r.t.\ \(K\) equals the exponent on \(K\), here \(0.5\).
+
+\textbf{Answer:} (a) \(0.5\).
+
+\medskip
+
+\textbf{5.} \(f(x,y)=3x^2 + 4xy + y^2\).
+
+\[
+f_{xx}=6,\quad f_{yy}=2,\quad f_{xy}=f_{yx}=4,
+\]
+\[
+\det(H)=6\cdot 2 - 4^2 = 12 - 16 = -4 < 0,
+\]
+so the stationary point (if any) is a saddle.
+
+\textbf{Answer:} (a) saddle point.
+
+\medskip
+
+\textbf{6.} \(\max U(x,y)=xy\) s.t.\ \(x+y=10\).
+
+The Lagrange multiplier \(\lambda\) measures the marginal increase in maximum utility if the right-hand side of the constraint (10) is increased: shadow value of relaxing the constraint.
+
+\textbf{Answer:} (c) marginal utility of relaxing the constraint.
+
+\medskip
+
+\textbf{7.} \(\max_x f(x,a)=ax - x^2\).
+
+Envelope theorem: 
+\[
+\frac{dv}{da} = \left.\frac{\partial f}{\partial a}\right|_{x=x^\ast(a)} = x^\ast.
+\]
+
+\textbf{Answer:} (a) \(x\).
+
+\medskip
+
+\textbf{8.} Demand \(P(Q)=20-Q\), price \(P=10\).
+
+At \(P=10\), \(10=20-Q \Rightarrow Q=10\).  
+Consumer surplus is area of triangle:
+\[
+\text{CS} = \frac{1}{2}(\text{choke price}-P)\cdot Q
+= \frac{1}{2}(20-10)\cdot 10 = \frac{1}{2}\cdot 10\cdot 10 = 50.
+\]
+
+\textbf{Answer:} (b) 50.
+
+\medskip
+
+\textbf{9.} \(\dfrac{dy}{dt}=4y\), \(y(0)=3\).
+
+Solve:
+\[
+y(t)=Ce^{4t},\quad y(0)=3 \Rightarrow C=3 \Rightarrow y(t)=3e^{4t}.
+\]
+
+\textbf{Answer:} (b) \(y=3e^{4t}\).
+
+\medskip
+\newpage
+\textbf{10.} \(Y(t)=K^{0.3} L^{0.7} e^{0.02 t}\) with \(K,L\) constant.
+
+\[
+\frac{dY}{dt} = K^{0.3} L^{0.7} \cdot 0.02 e^{0.02 t} = 0.02 Y.
+\]
+
+\textbf{Answer:} (a) \(\frac{dY}{dt}=0.02Y\).
+
+\bigskip
+
+\section*{Problems (80 points total)}
+
+\subsection*{Problem 1 (16 points)}
+
+A firm produces
+\[
+Q = x^{1/2} y^{1/3}.
+\]
+
+\textbf{(a) Compute \(dQ\). (5 pts)}
+
+Partial derivatives:
+\[
+Q_x = \frac{\partial Q}{\partial x}
+= \frac{1}{2} x^{-1/2} y^{1/3},
+\qquad 
+Q_y = \frac{\partial Q}{\partial y}
+= \frac{1}{3} x^{1/2} y^{-2/3}.
+\]
+Total differential:
+\[
+dQ = Q_x\,dx + Q_y\,dy
+= \frac{1}{2} x^{-1/2} y^{1/3}\,dx
++ \frac{1}{3} x^{1/2} y^{-2/3}\,dy.
+\]
+
+\textbf{(b) If the firm controls only \(x\), compute \(dQ/dx\). (3 pts)}
+
+Holding \(y\) fixed:
+\[
+\frac{dQ}{dx} = Q_x = \frac{1}{2} x^{-1/2} y^{1/3}.
+\]
+
+\textbf{(c) Profit \(\pi(x)=40Q - x - y - 5\), find optimal \(x\) (with \(y\) fixed). (5 pts)}
+
+Substitute \(Q\):
+\[
+\pi(x) = 40 x^{1/2} y^{1/3} - x - y - 5.
+\]
+Differentiate w.r.t.\ \(x\) (treating \(y\) as constant):
+\[
+\pi'(x) = 40 \cdot \frac{1}{2} x^{-1/2} y^{1/3} - 1
+= 20 x^{-1/2} y^{1/3} - 1.
+\]
+FOC:
+\[
+20 x^{-1/2} y^{1/3} - 1 = 0
+\quad\Rightarrow\quad
+20 x^{-1/2} y^{1/3} = 1.
+\]
+Solve for \(x\). Rearrange:
+\[
+x^{-1/2} = \frac{1}{20 y^{1/3}}
+\quad\Rightarrow\quad
+x^{1/2} = 20 y^{1/3}.
+\]
+Squaring:
+\[
+x^\ast = (20 y^{1/3})^2 = 400 y^{2/3}.
+\]
+
+\textbf{(d) Maximum or minimum? (3 pts)}
+
+Second derivative:
+\[
+\pi''(x) = \frac{d}{dx}\left(20 x^{-1/2} y^{1/3} - 1\right)
+= 20 y^{1/3} \cdot \left(-\frac{1}{2} x^{-3/2}\right)
+= -10 y^{1/3} x^{-3/2}.
+\]
+For \(x>0\) and \(y>0\), \(x^{-3/2}>0\), \(y^{1/3}>0\), hence
+\[
+\pi''(x^\ast) < 0,
+\]
+so \(\pi\) is locally concave and \(x^\ast\) is a local maximum (and global maximum on \(x>0\)).
+
+\bigskip
+
+\subsection*{Problem 2 (16 points)}
+
+\[
+R(t)=500 e^{0.03 t}(1+t^{1/2}).
+\]
+
+\textbf{(a) Compute \(\frac{dR}{dt}\). (5 pts)}
+
+Write \(R(t) = 500 u(t) v(t)\) with
+\[
+u(t) = e^{0.03 t}, \quad v(t) = 1 + t^{1/2}.
+\]
+Then
+\[
+u'(t) = 0.03 e^{0.03 t},\quad v'(t) = \frac{1}{2} t^{-1/2}.
+\]
+Product rule:
+\[
+\frac{dR}{dt} = 500 \big(u'v + uv'\big)
+= 500\left[0.03 e^{0.03 t}(1+t^{1/2}) + e^{0.03 t}\frac{1}{2}t^{-1/2}\right].
+\]
+Factor:
+\[
+\frac{dR}{dt} 
+= 500 e^{0.03 t}\left[0.03(1+t^{1/2}) + \frac{1}{2}t^{-1/2}\right].
+\]
+
+\textbf{(b) Growth rate \(g(t) = \frac{1}{R}\frac{dR}{dt}\). (4 pts)}
+
+\[
+R(t) = 500 e^{0.03 t}(1+t^{1/2}),
+\]
+so
+\[
+g(t) 
+= \frac{\frac{dR}{dt}}{R}
+= \frac{500 e^{0.03 t}\left[0.03(1+t^{1/2}) + \frac{1}{2}t^{-1/2}\right]}{500 e^{0.03 t} (1+t^{1/2})}.
+\]
+Cancel the common factor:
+\[
+g(t)
+= \frac{0.03(1+t^{1/2}) + \frac{1}{2}t^{-1/2}}{1+t^{1/2}}
+= 0.03 + \frac{1}{2}\, \frac{t^{-1/2}}{1+t^{1/2}}.
+\]
+
+\textbf{(c) Elasticity of \(R\) w.r.t.\ time. (4 pts)}
+
+Elasticity:
+\[
+E_{R,t} = \frac{dR}{dt}\cdot \frac{t}{R} = g(t)\, t.
+\]
+Hence
+\[
+E_{R,t}(t) 
+= t\left[0.03 + \frac{1}{2}\frac{t^{-1/2}}{1+t^{1/2}}\right]
+= 0.03 t + \frac{t^{1/2}}{2(1+t^{1/2})}.
+\]
+
+\textbf{(d) Accelerating or decelerating growth? (3 pts)}
+
+Observe:
+\[
+g(t) = 0.03 + \frac{1}{2}\frac{t^{-1/2}}{1+t^{1/2}}.
+\]
+The second term is positive for \(t>0\) but \emph{decreases} as \(t\) increases, and
+\[
+\lim_{t\to\infty} g(t) = 0.03.
+\]
+So the growth rate declines toward a constant \(3\%\). Revenue growth is \emph{decelerating}, approaching a steady growth rate.
+
+\bigskip
+
+\subsection*{Problem 3 (16 points)}
+
+\[
+f(x,y)=20x - 4x^2 + 10y - 3y^2 - xy.
+\]
+
+\textbf{(a) First-order partial derivatives. (4 pts)}
+
+\[
+f_x = 20 - 8x - y,
+\qquad
+f_y = 10 - 6y - x.
+\]
+
+\textbf{(b) Solve the first-order conditions. (4 pts)}
+
+Set \(f_x=f_y=0\):
+\[
+20 - 8x - y = 0 \quad \Rightarrow \quad y = 20 - 8x,
+\]
+\[
+10 - 6y - x = 0 \quad \Rightarrow \quad 6y + x = 10 \Rightarrow y = \frac{10 - x}{6}.
+\]
+Equate the two expressions for \(y\):
+\[
+20 - 8x = \frac{10 - x}{6}.
+\]
+Multiply both sides by 6:
+\[
+120 - 48x = 10 - x
+\quad\Rightarrow\quad
+120 - 10 = 48x - x
+\quad\Rightarrow\quad
+110 = 47x.
+\]
+Thus
+\[
+x^\ast = \frac{110}{47}.
+\]
+Then
+\[
+y^\ast = 20 - 8x^\ast
+= 20 - 8\left(\frac{110}{47}\right)
+= \frac{20\cdot 47 - 8\cdot 110}{47}
+= \frac{940 - 880}{47}
+= \frac{60}{47}.
+\]
+
+\textbf{(c) Hessian and determinant at the critical point. (4 pts)}
+
+Second derivatives:
+\[
+f_{xx} = -8,\quad f_{yy} = -6,\quad f_{xy}=f_{yx} = -1.
+\]
+Hessian:
+\[
+H = \begin{bmatrix}
+-8 & -1\\
+-1 & -6
+\end{bmatrix}.
+\]
+Determinant:
+\[
+\det(H) = (-8)(-6) - (-1)^2 = 48 - 1 = 47 > 0.
+\]
+
+\textbf{(d) Classification. (4 pts)}
+
+We have \(f_{xx}=-8<0\) and \(\det(H)>0\), which implies the Hessian is negative definite. Therefore, \((x^\ast,y^\ast) = \big(\frac{110}{47}, \frac{60}{47}\big)\) is a strict local maximum. Since \(f\) is a quadratic with a negative definite Hessian everywhere, this is also the unique global maximum.
+
+\bigskip
+
+\subsection*{Problem 4 (16 points)}
+
+\[
+U(x,y)=x^{1/2}y^{1/2},\qquad p_x x + p_y y = I.
+\]
+
+\textbf{(a) Lagrangian and FOCs. (5 pts)}
+
+Lagrangian:
+\[
+\mathcal{L}(x,y,\lambda) = x^{1/2}y^{1/2} - \lambda(p_x x + p_y y - I).
+\]
+First-order conditions:
+\[
+\frac{\partial \mathcal{L}}{\partial x}
+= \frac{1}{2}x^{-1/2}y^{1/2} - \lambda p_x = 0,
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial y}
+= \frac{1}{2}x^{1/2}y^{-1/2} - \lambda p_y = 0,
+\]
+\[
+\frac{\partial \mathcal{L}}{\partial \lambda}
+= -(p_x x + p_y y - I) = 0
+\quad\Rightarrow\quad
+p_x x + p_y y = I.
+\]
+
+\textbf{(b) Solve for \(x^\ast\) and \(y^\ast\). (5 pts)}
+
+Divide the first FOC by the second (eliminate \(\lambda\)):
+\[
+\frac{\frac{1}{2}x^{-1/2}y^{1/2}}{\frac{1}{2}x^{1/2}y^{-1/2}}
+= \frac{\lambda p_x}{\lambda p_y}
+\quad\Rightarrow\quad
+\frac{y/x}{1} = \frac{p_x}{p_y}.
+\]
+On the left:
+\[
+\frac{x^{-1/2}y^{1/2}}{x^{1/2}y^{-1/2}} 
+= x^{-1} y = \frac{y}{x}.
+\]
+Hence:
+\[
+\frac{y}{x} = \frac{p_x}{p_y}
+\quad\Rightarrow\quad
+y = \frac{p_x}{p_y} x.
+\]
+Use the budget constraint:
+\[
+p_x x + p_y y = I
+\quad\Rightarrow\quad
+p_x x + p_y \left(\frac{p_x}{p_y}x\right) = p_x x + p_x x = 2 p_x x = I,
+\]
+so
+\[
+x^\ast = \frac{I}{2p_x}.
+\]
+Then
+\[
+y^\ast = \frac{p_x}{p_y} x^\ast
+= \frac{p_x}{p_y}\cdot \frac{I}{2p_x}
+= \frac{I}{2p_y}.
+\]
+
+\textbf{(c) Use the envelope theorem to compute \(\partial V / \partial I\). (3 pts)}
+
+The indirect utility function is
+\[
+V(p_x,p_y,I) = U(x^\ast,y^\ast) 
+= \left(\frac{I}{2p_x}\right)^{1/2}\left(\frac{I}{2p_y}\right)^{1/2}
+= \frac{I}{2\sqrt{p_x p_y}}.
+\]
+
+By the envelope theorem for this equality-constrained maximization,
+\[
+\frac{\partial V}{\partial I} = \lambda^\ast,
+\]
+where \(\lambda^\ast\) is the optimal Lagrange multiplier.
+
+We can compute directly from \(V\):
+\[
+\frac{\partial V}{\partial I} 
+= \frac{1}{2\sqrt{p_x p_y}}.
+\]
+Thus \(\lambda^\ast = \dfrac{1}{2\sqrt{p_x p_y}}\).
+
+\textbf{(d) Interpretation. (3 pts)}
+
+\(\partial V/\partial I = \lambda^\ast\) is the \emph{marginal utility of income}: the increase in maximum attainable utility from a one-unit increase in income. It is positive and decreasing in the geometric mean of prices \(\sqrt{p_x p_y}\): higher prices reduce the marginal value of additional income.
+
+\bigskip
+
+\subsection*{Problem 5 (16 points)}
+
+Capital evolves as
+\[
+\frac{dK}{dt} = I(t) - \delta K,\qquad I(t)=50 e^{0.01 t},\quad \delta = 0.05.
+\]
+
+\textbf{(a) Solve the differential equation for \(K(t)\). (6 pts)}
+
+Rewrite in standard linear form:
+\[
+\frac{dK}{dt} + 0.05 K = 50 e^{0.01 t}.
+\]
+Integrating factor:
+\[
+\mu(t) = e^{\int 0.05 dt} = e^{0.05 t}.
+\]
+Multiply both sides by \(\mu(t)\):
+\[
+e^{0.05t}\frac{dK}{dt} + 0.05 e^{0.05 t} K = 50 e^{0.05 t} e^{0.01 t}
+= 50 e^{0.06 t}.
+\]
+Left-hand side is derivative of \(K e^{0.05 t}\):
+\[
+\frac{d}{dt}(K e^{0.05 t}) = 50 e^{0.06 t}.
+\]
+Integrate:
+\[
+K(t)e^{0.05 t} = \int 50 e^{0.06 t} dt = \frac{50}{0.06} e^{0.06 t} + C
+= \frac{2500}{3} e^{0.06 t} + C.
+\]
+Thus
+\[
+K(t) = \frac{2500}{3} e^{0.06 t} e^{-0.05 t} + C e^{-0.05 t}
+= \frac{2500}{3} e^{0.01 t} + C e^{-0.05 t}.
+\]
+
+\textbf{(b) Particular solution with \(K(0)=100\). (4 pts)}
+
+At \(t=0\),
+\[
+K(0) = \frac{2500}{3}\cdot 1 + C\cdot 1 = \frac{2500}{3} + C = 100.
+\]
+Hence
+\[
+C = 100 - \frac{2500}{3} = \frac{300 - 2500}{3} = -\frac{2200}{3}.
+\]
+So
+\[
+K(t) = \frac{2500}{3} e^{0.01 t} - \frac{2200}{3} e^{-0.05 t}.
+\]
+
+\textbf{(c) Compute \(\displaystyle \int_0^{20} I(t)\, dt\). (3 pts)}
+
+\[
+\int_0^{20} I(t)\, dt = \int_0^{20} 50 e^{0.01 t}\, dt
+= 50 \int_0^{20} e^{0.01 t}\, dt
+= 50 \left[\frac{1}{0.01} e^{0.01 t}\right]_0^{20}
+= 50 \cdot 100 (e^{0.2} - 1).
+\]
+So
+\[
+\int_0^{20} I(t)\, dt = 5000 (e^{0.2} - 1).
+\]
+
+\textbf{(d) Long-run behavior of \(K(t)\). (3 pts)}
+
+From
+\[
+K(t) = \frac{2500}{3} e^{0.01 t} - \frac{2200}{3} e^{-0.05 t},
+\]
+as \(t \to \infty\),
+\[
+e^{0.01 t} \to \infty,\quad e^{-0.05 t} \to 0.
+\]
+Thus
+\[
+K(t) \sim \frac{2500}{3} e^{0.01 t} \to \infty.
+\]
+Economically: because investment grows over time at a positive rate (1\%) and dominates depreciation in the long run, the capital stock keeps increasing without bound, growing asymptotically at net rate \(1\%\).
+
+\end{document}

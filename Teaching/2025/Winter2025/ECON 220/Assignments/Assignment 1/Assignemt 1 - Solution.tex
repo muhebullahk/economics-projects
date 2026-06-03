@@ -1,0 +1,146 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+
+\title{Analyzing Global Trade and Economic Growth using Excel}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+This guide provides detailed instructions on how to analyze the relationship between global trade and economic growth using Excel. You will collect data on GDP and trade volume, calculate key ratios, perform correlation and regression analysis, and visualize trends.
+
+\section{Step 1: Collect Data}
+You need to gather data on GDP and trade volume (exports + imports) for a selection of countries over the past 30 years. Follow these steps to collect the data:
+
+\begin{itemize}
+    \item Go to a reliable database:
+    \begin{itemize}
+        \item \textbf{World Bank} (https://data.worldbank.org/)
+        \item \textbf{IMF} (https://www.imf.org/en/Data)
+        \item \textbf{UNCTAD} (https://unctad.org/statistics)
+    \end{itemize}
+    \item Download GDP (Gross Domestic Product) data and trade volume data (Exports + Imports) for countries of interest (e.g., U.S., China, India, Germany).
+    \item For GDP data, search for \textbf{GDP (current US\$)} or \textbf{GDP growth}.
+    \item For trade volume, search for \textbf{total trade} or \textbf{exports + imports}.
+    \item Export this data as CSV or Excel files.
+\end{itemize}
+
+\section{Step 2: Organize Data in Excel}
+\begin{itemize}
+    \item Open the downloaded data in Excel.
+    \item Organize it in a table with countries as rows and years as columns. You should have two main columns:
+    \begin{itemize}
+        \item \textbf{Column 1:} Country
+        \item \textbf{Column 2:} Year (spanning the 30 years of data)
+        \item \textbf{Column 3:} GDP (current US\$ or GDP growth rate)
+        \item \textbf{Column 4:} Trade Volume (Exports + Imports)
+    \end{itemize}
+\end{itemize}
+
+Example table structure:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+Country & Year & GDP (US\$) & Trade Volume (US\$) \\
+\hline
+Country1 & 1990 & 1,000,000 & 500,000 \\
+Country1 & 1991 & 1,100,000 & 520,000 \\
+... & ... & ... & ... \\
+\hline
+\end{tabular}
+\end{center}
+
+\section{Step 3: Calculate the Trade-to-GDP Ratio}
+The \textbf{trade-to-GDP ratio} shows the share of a country’s GDP that comes from international trade. Here's how to calculate it:
+
+\begin{itemize}
+    \item Add a new column called \textbf{Trade-to-GDP Ratio} next to the trade volume.
+    \item In the first cell of the \textbf{Trade-to-GDP Ratio} column, input the formula to calculate the ratio for the first country and year:
+    \[
+    \text{Trade-to-GDP Ratio} = \frac{\text{Trade Volume}}{\text{GDP}}
+    \]
+    \item For example, if Trade Volume is in Column D and GDP is in Column C, for Row 2, the formula would look like:
+    \[
+    = \frac{D2}{C2}
+    \]
+    \item Drag this formula down to calculate the ratio for all years and countries.
+\end{itemize}
+
+\section{Step 4: Create a Trade-to-GDP Ratio Plot}
+To visualize the trade-to-GDP ratio over time:
+
+\begin{itemize}
+    \item Select the \textbf{Year} and \textbf{Trade-to-GDP Ratio} columns for a specific country.
+    \item Go to the \textbf{Insert} tab, and select \textbf{Line Chart}.
+    \item The chart will plot the \textbf{Trade-to-GDP Ratio} against the \textbf{Year}.
+    \item You can repeat this for multiple countries by selecting different data ranges and creating separate graphs or combining them into one graph.
+\end{itemize}
+
+\section{Step 5: Analyze the Correlation Between Trade and GDP Growth}
+To analyze how trade volume correlates with GDP growth:
+
+\subsection{Calculate GDP Growth}
+\begin{itemize}
+    \item Add a new column for \textbf{GDP Growth}.
+    \item In the first year, you can leave the GDP growth blank.
+    \item In the next year (Row 3), use this formula to calculate GDP growth as a percentage change from the previous year:
+    \[
+    \text{GDP Growth} = \frac{C3 - C2}{C2}
+    \]
+    This will give you the annual growth rate. Drag the formula down for all rows.
+\end{itemize}
+
+\subsection{Correlation Analysis}
+\begin{itemize}
+    \item Highlight the \textbf{GDP Growth} and \textbf{Trade Volume} columns (for the same years).
+    \item Go to the \textbf{Data} tab, and click on \textbf{Data Analysis}. If Data Analysis is not visible, you may need to install the \textbf{Analysis ToolPak} from Excel options.
+    \item Choose \textbf{Correlation} and select the two columns to analyze. Click \textbf{OK}.
+    \item Excel will generate a correlation coefficient. This number will tell you how strongly GDP growth is related to trade volume. A positive number means they are positively correlated, while a negative number means they are inversely related.
+\end{itemize}
+
+\section{Step 6: Regression Analysis (Optional)}
+To assess the relationship between trade volume and GDP growth more rigorously, you can perform a regression analysis:
+
+\begin{itemize}
+    \item Go to the \textbf{Data} tab, click on \textbf{Data Analysis}, and choose \textbf{Regression}.
+    \item For the \textbf{Input Y Range}, select the GDP growth column.
+    \item For the \textbf{Input X Range}, select the trade volume column.
+    \item Choose the output range to display the regression results and click \textbf{OK}.
+\end{itemize}
+
+This will give you coefficients, R-squared values, and significance levels, which help determine if trade volume has a statistically significant impact on GDP growth.
+
+\section{Step 7: Compare Results Across Countries}
+Repeat the process for different countries and compare:
+
+\begin{itemize}
+    \item \textbf{Trade-to-GDP Ratios}: Which countries have higher or lower trade-to-GDP ratios?
+    \item \textbf{Correlation Coefficients}: Are countries with higher trade volumes also experiencing higher GDP growth?
+    \item \textbf{Regression Results}: Which countries have a stronger statistical relationship between trade and GDP growth?
+\end{itemize}
+
+\section{Step 8: Discuss the Results}
+After conducting the analysis:
+
+\begin{itemize}
+    \item Write a summary discussing whether higher trade volume correlates with higher GDP growth.
+    \item Compare developed and developing countries—do they exhibit similar patterns?
+    \item Discuss any significant differences and potential reasons behind them.
+\end{itemize}
+
+\section{Step 9: Presentation of Findings}
+\begin{itemize}
+    \item Prepare a table summarizing key findings.
+    \item Use charts to visually present trends in \textbf{Trade-to-GDP Ratios} and \textbf{GDP Growth}.
+    \item Include regression results and correlation analysis to strengthen your argument.
+\end{itemize}
+
+\section{Conclusion}
+This step-by-step guide provides the framework for analyzing the relationship between global trade and economic growth using Excel. The results from your analysis will allow you to discuss the impacts of trade on economic performance in different countries.
+
+\end{document}

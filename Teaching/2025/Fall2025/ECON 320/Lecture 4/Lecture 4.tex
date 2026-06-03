@@ -1,0 +1,351 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb, amsthm, bm, mathtools}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage{microtype}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+
+% ---------- Handy macros ----------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\dd}{\,\mathrm{d}}
+\newcommand{\pd}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\dtotal}[2]{\frac{\mathrm{d} #1}{\mathrm{d} #2}}
+\newcommand{\dytotal}[1]{\frac{\mathrm{d} y}{\mathrm{d} #1}}
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\brak}[1]{\left[#1\right]}
+\newcommand{\paren}[1]{\left(#1\right)}
+\newcommand{\curly}[1]{\left\{#1\right\}}
+\DeclareMathOperator{\sign}{sign}
+\DeclareMathOperator{\adj}{adj}
+
+\title{\Large Comparative-Static Analysis of General-Function Models\\[10pt]
+\large ECON 320 - Introduction to Mathematical Economics}
+\author{Muhebullah Karimzada}
+\date{Fall 2025}
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\newpage
+\section{Differentials}
+
+For a single-variable function $y=f(x)$, a \emph{small} change $\Delta x$ induces a change in $y$ that is well approximated by the \emph{differential}
+\[
+\dd y \;=\; f'(x)\,\dd x.
+\]
+Formally, $\Delta y = f'(x)\Delta x + o(\Delta x)$ where $o(\Delta x)/\Delta x \to 0$ as $\Delta x\to 0$.
+
+\subsection*{Linear approximation \& error intuition}
+The tangent line at $(x_0,f(x_0))$ is
+\[
+L(x) \;=\; f(x_0) + f'(x_0)(x-x_0),
+\]
+so for small $\Delta x$, $f(x_0+\Delta x) \approx L(x_0+\Delta x)$ and the approximation error is second order.
+
+\subsection*{Point elasticity via differentials}
+If $y=f(x)>0$ and $x>0$, the (arc-)point elasticity is
+\[
+\varepsilon_{y,x} \;\equiv\; \frac{\dd y}{\dd x}\cdot\frac{x}{y}
+\;=\; \frac{\dd\ln y}{\dd\ln x}.
+\]
+\textbf{Quick use:} $\dd \ln y \approx \varepsilon_{y,x}\, \dd \ln x$. If quantity $Q(p)$ has price elasticity $\varepsilon_{Q,p}$, then a $1\%$ change in $p$ yields about a $\varepsilon_{Q,p}\%$ change in $Q$.
+
+\paragraph{Example 8.1 (Elasticity from a log form).}
+If $\ln y = \alpha + \beta \ln x$, then $\varepsilon_{y,x}=\beta$ at every point. A $5\%$ increase in $x$ raises $y$ by roughly $5\beta\%$.
+
+\section{Total Differentials}
+\subsection*{Definition}
+For $z=f(x_1,\dots,x_n)$ with $f$ differentiable,
+\[
+\dd z \;=\; \sum_{i=1}^n f_{x_i}\,\dd x_i
+\;=\; f_{x_1}\dd x_1 + \cdots + f_{x_n}\dd x_n.
+\]
+This is the best linear approximation to $\Delta z$ from small simultaneous changes in the arguments.
+
+\paragraph{Example 8.2 (Cobb--Douglas production).}
+Let $Q=f(K,L)=A K^\alpha L^{1-\alpha}$ with $A>0$, $\alpha\in(0,1)$. Then
+\[
+\dd Q \;=\; \alpha A K^{\alpha-1}L^{1-\alpha}\dd K \;+\; (1-\alpha)A K^\alpha L^{-\alpha}\dd L.
+\]
+In growth-rate form: $\dd\ln Q = \alpha\,\dd\ln K + (1-\alpha)\,\dd\ln L$.
+
+\paragraph{Example 8.3 (Price index).}
+For $P=\paren{\sum_i w_i p_i^\theta}^{1/\theta}$, the total differential is
+\[
+\dd P = \frac{1}{\theta}\paren{\sum_i w_i p_i^\theta}^{\frac{1}{\theta}-1} 
+\brak{\sum_i w_i \theta p_i^{\theta-1}\,\dd p_i}
+= \sum_i \omega_i\,\dd p_i,
+\]
+with weights $\omega_i=\dfrac{w_i p_i^{\theta-1}}{\sum_j w_j p_j^{\theta-1}}$.
+
+\section{Rules of Differentials}
+For differentiable $u,v>0$ and constant $a$:
+\begin{enumerate}[label=(\roman*)]
+\item $\dd(a)=0$, \quad $\dd(au)=a\,\dd u$.
+\item \textbf{Sum/difference:} $\dd(u\pm v)=\dd u\pm \dd v$.
+\item \textbf{Product:} $\dd(uv)=u\,\dd v+v\,\dd u$.
+\item \textbf{Quotient:} $\displaystyle \dd\!\paren{\frac{u}{v}}=\frac{v\,\dd u-u\,\dd v}{v^2}$.
+\item \textbf{Power:} $\dd(u^n)=n u^{n-1}\dd u$ for any real $n$.
+\item \textbf{Exponential/log:} $\dd(e^u)=e^u\,\dd u$, \quad $\dd(\ln u)=\dfrac{\dd u}{u}$.
+\end{enumerate}
+
+\paragraph{Example 8.4 (Average--marginal link).}
+If $AC(Q)=C(Q)/Q$, then
+\[
+\dd AC = \frac{Q\,\dd C - C\,\dd Q}{Q^2}
+\;\Rightarrow\;
+\left.\dtotal{AC}{Q}\right|_{Q}=\frac{MC-AC}{Q}.
+\]
+$AC$ rises when $MC>AC$ and falls when $MC<AC$.
+
+\section{Total Derivatives}
+\subsection*{Chain rule with one endogenous channel}
+Suppose $z=f(x,y)$ and $y=y(x)$. A small change in $x$ induces
+\[
+\dtotal{z}{x} \;=\; f_x + f_y\,\dtotal{y}{x}.
+\]
+This is the total derivative---it captures both the direct effect ($f_x$) and the \emph{indirect} effect through $y$.
+
+\paragraph{Example 8.5 (Profit with demand feedback).}
+Let $\pi(p)=p\,Q(p)-C\!\paren{Q(p)}$. Then
+\[
+\dtotal{\pi}{p} 
+= Q(p) + p Q'(p) - C'(Q)Q'(p)
+= Q + \underbrace{\paren{p - MR(Q)}Q'}_{\text{feedback term}},
+\]
+where $MR(Q)\equiv C'(Q)$ at optimum. The term $p Q'(p)$ appears because $Q$ responds to $p$.
+
+\subsection*{Chain rule with multiple channels}
+If $z=f(\vect{x};\alpha)$, $x_i=x_i(\alpha)$,
+\[
+\dtotal{z}{\alpha}
+= f_\alpha + \sum_{i} f_{x_i}\,\dtotal{x_i}{\alpha}.
+\]
+
+\paragraph{Variation on a theme (Parameters).}
+Let $U(x,y;\theta)$ be an indirect utility with a taste parameter $\theta$. Then
+\[
+\dtotal{U}{\theta} = U_\theta + U_x x_\theta + U_y y_\theta.
+\]
+At a Marshallian optimum, envelope logic often simplifies $U_x$ and $U_y$ terms (see Varian, \emph{Microeconomic Analysis}, ch.~5).
+
+\section{Derivatives of Implicit Functions}
+\subsection*{One equation, one endogenous variable}
+If $F(x,y)=0$ defines $y=y(x)$ and $F_y\neq 0$,
+\[
+\dytotal{x} \;=\; -\frac{F_x}{F_y}.
+\]
+\emph{Derivation:} Totally differentiate $F(x,y)=0$:
+\[
+F_x\,\dd x + F_y\,\dd y = 0 \;\Rightarrow\; \frac{\dd y}{\dd x} = -\frac{F_x}{F_y}.
+\]
+
+\paragraph{Example 8.6 (Keynesian income with general consumption).}
+Equilibrium: $Y=C(Y)+I+\bar{G}$. Define $F(Y;\bar{G})\equiv Y-C(Y)-I-\bar{G}=0$.
+Then
+\[
+\frac{\dd Y}{\dd \bar{G}}
+= -\frac{F_{\bar{G}}}{F_Y}
+= \frac{1}{1-C'(Y)}
+\;>\;0
+\quad \text{if } C'(Y)\in(0,1).
+\]
+This reproduces the multiplier without solving the reduced form explicitly.
+
+\subsection*{Multivariate implicit functions via matrices}
+Let $\vect{F}(\vect{x};\alpha)=\vect{0}$ with $\vect{x}=(x_1,\dots,x_n)'$. The $n\times n$ Jacobian
+\[
+J \;\equiv\; \pd{\vect{F}}{\vect{x}}
+\;=\;
+\begin{bmatrix}
+F_{1x_1}&\cdots&F_{1x_n}\\
+\vdots&\ddots&\vdots\\
+F_{nx_1}&\cdots&F_{nx_n}
+\end{bmatrix}.
+\]
+Differentiating w.r.t.\ parameter $\alpha$:
+\[
+J\,\dtotal{\vect{x}}{\alpha} + \pd{\vect{F}}{\alpha} = \vect{0}
+\;\;\Rightarrow\;\;
+\dtotal{\vect{x}}{\alpha} \;=\; -\,J^{-1}\pd{\vect{F}}{\alpha},
+\]
+provided $\det J\neq 0$ (implicit-function conditions).
+
+\paragraph{Cramer's rule representation (qualitative signs).}
+Let $G\equiv \pd{\vect{F}}{\alpha}$.
+Then the $i$th component is
+\[
+\dtotal{x_i}{\alpha} = -\,\frac{\det J^{(i)}}{\det J},
+\]
+where $J^{(i)}$ replaces the $i$th column of $J$ by $G$. This is useful for sign analysis when only partial-derivative signs are known.
+
+\section{Comparative Statics of General-Function Models}
+\subsection*{Why ``general-function''?}
+Often economic models are given by \emph{behavioral} and \emph{equilibrium} equations that do not admit convenient explicit (reduced-form) solutions. Comparative statics proceeds by total differentiation of the defining system.
+
+\subsection*{Two-equation market model}
+Let price $p$ and quantity $Q$ be endogenous; income $m$ and input price $w$ exogenous. With general demand and supply,
+\[
+\begin{cases}
+F_1(p,Q;m)\equiv Q - D(p,m)=0,\\
+F_2(p,Q;w)\equiv Q - S(p,w)=0.
+\end{cases}
+\]
+The Jacobian and parameter blocks are
+\[
+J=
+\begin{bmatrix}
+- D_p & 1\\
+- S_p & 1
+\end{bmatrix},
+\qquad
+\pd{\vect{F}}{m}=
+\begin{bmatrix}
+- D_m\\
+0
+\end{bmatrix}.
+\]
+Solve $J\begin{bmatrix}\dd p\\ \dd Q\end{bmatrix} + \begin{bmatrix}-D_m\\0\end{bmatrix}\dd m=\vect{0}$,
+so $\begin{bmatrix}\dd p\\ \dd Q\end{bmatrix} = J^{-1}\!\begin{bmatrix}D_m\\0\end{bmatrix}\dd m$.
+By Cramer,
+\[
+\frac{\dd p}{\dd m}=\frac{\det \begin{bmatrix} D_m & 1\\ 0 & 1\end{bmatrix}}{\det J}
+=\frac{D_m}{\,S_p - D_p\,},
+\qquad
+\frac{\dd Q}{\dd m}=\frac{\det \begin{bmatrix} -D_p & D_m\\ -S_p & 0\end{bmatrix}}{\det J}
+=\frac{D_m S_p}{\,S_p - D_p\,}.
+\]
+With $D_p<0$, $S_p>0$, $D_m>0$ we have $\dd p/\dd m>0$ and $\dd Q/\dd m>0$.
+
+\paragraph{Interpretation.}
+Income shifts demand out. Whether $p$ or $Q$ moves more depends on the \emph{relative slopes} $D_p$ and $S_p$; steeper supply (large $S_p$) tilts the adjustment toward price changes.
+
+\subsection*{Tax incidence in the general model (per-unit tax $t$)}
+Let the consumer pays $p$, firm receives $p-t$:
+\[
+\begin{cases}
+Q - D(p,m)=0,\\
+Q - S(p-t,w)=0.
+\end{cases}
+\]
+Differentiate w.r.t.\ $t$. The parameter block is $G=(0,\; +S_{p}\!)'$. With $\det J=S_p - D_p>0$,
+\[
+\frac{\dd p}{\dd t}=\frac{S_p}{S_p - D_p}, \qquad
+\frac{\dd Q}{\dd t}=\frac{-\,D_p S_p}{S_p - D_p}.
+\]
+\emph{Incidence:} $0<\dd p/\dd t<1$. The side with the \emph{less elastic} curve bears more of the tax (Varian, ch.~2).
+
+\subsection*{Keynesian income model without solving the reduced form}
+Equilibrium: $Y = C(Y-T)+I+\bar{G}$ with $T$ exogenous for simplicity. Define $F(Y;\bar{G})\equiv Y - C(Y-T) - I - \bar{G}=0$.
+Then
+\[
+\frac{\dd Y}{\dd \bar{G}}=\frac{1}{1 - C'(Y-T)}=\frac{1}{1-c}\quad\text{when } C'(Y-T)=c.
+\]
+The method works even when $C(\cdot)$ is nonlinear, where the usual ``solve-for-$Y$'' trick is messy.
+
+\subsection*{General $n\times n$ comparative statics recipe}
+\begin{enumerate}[label=\arabic*.]
+\item Write the system $\vect{F}(\vect{x};\alpha)=\vect{0}$ and identify endogenous $\vect{x}$ and exogenous $\alpha$.
+\item Compute the Jacobian $J=\pd{\vect{F}}{\vect{x}}$ and check $\det J\neq 0$ (existence/uniqueness, IFT).
+\item Totally differentiate: $J\,\dd \vect{x} + \pd{\vect{F}}{\alpha}\dd \alpha=\vect{0}$.
+\item Solve: $\dtotal{\vect{x}}{\alpha}=-J^{-1}\pd{\vect{F}}{\alpha}$ (Cramer's rule for signs).
+\item \textbf{Qualitative signs:} Use known signs of partials to infer signs of minors and hence the signs of the effects.
+\end{enumerate}
+
+\paragraph{Worked 2$\times$2 template (memorize).}
+For
+\[
+\begin{cases}
+F_1(x,y;\alpha)=0,\\
+F_2(x,y;\alpha)=0,
+\end{cases}
+\quad
+J=\begin{bmatrix}F_{1x}&F_{1y}\\F_{2x}&F_{2y}\end{bmatrix},\;
+G=\begin{bmatrix}F_{1\alpha}\\F_{2\alpha}\end{bmatrix},
+\]
+\[
+\frac{\dd x}{\dd \alpha}
+= -\,\frac{\det \begin{bmatrix} F_{1\alpha} & F_{1y}\\ F_{2\alpha} & F_{2y}\end{bmatrix}}{\det J},
+\qquad
+\frac{\dd y}{\dd \alpha}
+= -\,\frac{\det \begin{bmatrix} F_{1x} & F_{1\alpha}\\ F_{2x} & F_{2\alpha}\end{bmatrix}}{\det J}.
+\]
+\emph{Mnemonic:} replace the column of the variable you want by $G$, take the determinant, divide by $\det J$, and stick on a minus sign.
+
+\section{Limitations of Comparative Statics}
+\begin{itemize}
+\item \textbf{Local/linear:} Results are first-order (tangent-line) approximations. Large parameter changes may require higher-order terms or global analysis.
+\item \textbf{Equilibrium selection:} If multiple equilibria exist, comparative statics describes \emph{one} local branch around a point. Dynamics or stability are not addressed here.
+\item \textbf{Sign indeterminacy:} Without information on partial-derivative \emph{magnitudes} (or the signs of cofactors), directions of change can be ambiguous.
+\item \textbf{Regularity conditions:} Differentiability and a nonsingular Jacobian are essential (implicit-function theorem). Kinks, corners, and discrete adjustments are outside the scope.
+\item \textbf{Path vs.\ endpoints:} Comparative statics compares equilibria---it says \emph{nothing} about the time path (adjustment dynamics are in later chapters).
+\end{itemize}
+
+\section*{Extended worked examples}
+
+\subsection*{E1. Nested feedback in a general demand system}
+Two goods with demands $Q_1=D_1(p_1,p_2,m)$, $Q_2=D_2(p_1,p_2,m)$; market clearing fixes $(p_1,p_2)$ given $(m,\bar{Q}_1,\bar{Q}_2)$:
+\[
+\begin{cases}
+\bar{Q}_1 - D_1(p_1,p_2,m)=0,\\
+\bar{Q}_2 - D_2(p_1,p_2,m)=0.
+\end{cases}
+\]
+Let $\alpha=m$. The Jacobian is $J=-\begin{bmatrix} D_{1p_1}&D_{1p_2}\\ D_{2p_1}&D_{2p_2}\end{bmatrix}$ and $G=-\begin{bmatrix}D_{1m}\\ D_{2m}\end{bmatrix}$. Then
+\[
+\dtotal{p_1}{m}
+= -\,\frac{\det \begin{bmatrix} -D_{1m} & -D_{1p_2}\\ -D_{2m} & -D_{2p_2}\end{bmatrix}}{\det J}
+=\frac{\det \begin{bmatrix} D_{1m} & D_{1p_2}\\ D_{2m} & D_{2p_2}\end{bmatrix}}{\det \begin{bmatrix} D_{1p_1}&D_{1p_2}\\ D_{2p_1}&D_{2p_2}\end{bmatrix}}.
+\]
+Cross-price effects $D_{ip_j}$ govern whether income raises $p_1$ more than $p_2$.
+
+\subsection*{E2. Imperfect competition with cost shifter}
+A monopolist faces $Q=D(p)$, cost $C(Q;\omega)$ with cost shifter $\omega$ (e.g.\ wage). FOC: $MR(Q)=MC(Q;\omega)$. Write $F(Q;\omega)\equiv p(Q)+Qp'(Q)-C_Q(Q;\omega)=0$.
+\[
+\frac{\dd Q^\ast}{\dd \omega} 
+= -\frac{F_\omega}{F_Q}
+= \frac{C_{Q\omega}}{\,2p'(Q)+Qp''(Q)-C_{QQ}(Q;\omega)\,}.
+\]
+Under $p'<0$, $p''\le 0$, $C_{QQ}\ge 0$, the denominator is $<0$ and $C_{Q\omega}>0$ implies $\dd Q^\ast/\dd\omega<0$.
+
+\subsection*{E3. Comparative statics in IS--LM (qualitative)}
+Let $Y,r$ be endogenous; government spending $G$ a parameter:
+\[
+\begin{cases}
+F_1(Y,r;G) \equiv Y - C(Y-T) - I(r) - G = 0,\\
+F_2(Y,r;M) \equiv M/P - L(Y,r) = 0.
+\end{cases}
+\]
+$J=\begin{bmatrix}1-C_Y & \; I_r\\ -L_Y & \; -L_r\end{bmatrix}$, $G=( -1,\,0)'$.
+Then
+\[
+\frac{\dd Y}{\dd G} = -\,\frac{\det \begin{bmatrix} -1 & I_r\\ 0 & -L_r\end{bmatrix}}{\det J}
+=\frac{L_r}{(1-C_Y)L_r + I_r L_Y}\;>\;0,
+\]
+given $C_Y\in(0,1)$, $I_r<0$, $L_Y>0$, $L_r>0$. The interest-rate response is
+\[
+\frac{\dd r}{\dd G} = -\,\frac{\det \begin{bmatrix} 1-C_Y & -1\\ -L_Y & 0\end{bmatrix}}{\det J}
+=\frac{L_Y}{(1-C_Y)L_r + I_r L_Y}\;>\;0.
+\]
+
+\section*{Study guide \& tips}
+\begin{itemize}
+\item \textbf{Always label variables by role.} Pick \emph{endogenous} vector $\vect{x}$ and \emph{exogenous} parameters $\alpha$ early; it clarifies $J$ and $G$ immediately.
+\item \textbf{Check the Jacobian sign.} For 2$\times$2 systems, $\det J>0$ is a common regularity condition ensuring a unique local solution.
+\item \textbf{Use log-differentials for elasticities.} They turn percentage changes into additive terms and make multiplicative functions linear.
+\item \textbf{Cramer's rule for signs.} Even without solving, you can learn a lot by replacing one column and inspecting signs of the resulting $2\times2$ determinant.
+\end{itemize}
+
+\newpage
+\section*{References}
+\begin{itemize}
+\item Chiang, A.\ C.\ \& Wainwright, K.\ (2005). \emph{Fundamental Methods of Mathematical Economics} (4th ed.). McGraw--Hill. (Ch.~8).
+\item Simon, C.\ P.\ \& Blume, L.\ (1994). \emph{Mathematics for Economists}. (Implicit Function Theorem; Jacobians; comparative statics).
+\item Varian, H.\ R.\ (1992/1999). \emph{Microeconomic Analysis}, 3rd ed. (Comparative statics, elasticities, monopoly incidence).
+\end{itemize}
+
+\end{document}
