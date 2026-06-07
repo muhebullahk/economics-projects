@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chess — by Azizullah Karimzada</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{--cell:60px;}
+    @media(max-width:540px){:root{--cell:42px;}}
+
+    body{
+      font-family:'Segoe UI',sans-serif;
+      background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);
+      min-height:100vh;
+      display:flex;flex-direction:column;align-items:center;
+      padding:20px 12px 40px;gap:12px;color:#e0e0e0;
+    }
+
+    header{text-align:center;}
+    .game-title{
+      font-size:2rem;font-weight:900;letter-spacing:4px;
+      background:linear-gradient(135deg,#e2c275,#f0d090,#c8a84b);
+      -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+    }
+    .byline{font-size:.75rem;color:#888;letter-spacing:1px;margin-top:2px;}
+
+    .mode-row{display:flex;gap:8px;}
+    .mode-btn{
+      padding:6px 20px;border-radius:20px;border:2px solid #c8a84b;
+      background:transparent;color:#c8a84b;font-size:.82rem;font-weight:700;
+      cursor:pointer;transition:all .2s;
+    }
+    .mode-btn.active,.mode-btn:hover{background:#c8a84b;color:#1a1a2e;}
+
+    #status{
+      font-size:.95rem;font-weight:700;text-align:center;min-height:1.4em;
+      padding:6px 20px;border-radius:12px;background:rgba(255,255,255,.07);
+    }
+    #status.check{background:#c62828cc;color:#fff;}
+    #status.over{background:#1b5e20cc;color:#fff;}
+
+    .captured-row{
+      display:flex;align-items:center;gap:4px;font-size:1.2rem;
+      min-height:28px;background:rgba(255,255,255,.05);
+      border-radius:8px;padding:2px 10px;width:calc(8*var(--cell));
+      flex-wrap:wrap;
+    }
+    .cap-label{font-size:.65rem;color:#888;letter-spacing:1px;text-transform:uppercase;margin-right:4px;}
+
+    .board-wrap{
+      display:flex;align-items:flex-start;gap:4px;
+    }
+    .rank-labels{
+      display:flex;flex-direction:column;
+      width:16px;height:calc(8*var(--cell));
+      justify-content:space-around;align-items:center;
+    }
+    .rank-labels span{font-size:.7rem;color:#888;line-height:1;}
+
+    .board-col{display:flex;flex-direction:column;}
+
+    #board{
+      display:grid;
+      grid-template-columns:repeat(8,var(--cell));
+      grid-template-rows:repeat(8,var(--cell));
+      border:2px solid #c8a84b;border-radius:3px;
+      overflow:hidden;
+    }
+
+    .cell{
+      width:var(--cell);height:var(--cell);
+      display:flex;align-items:center;justify-content:center;
+      cursor:pointer;position:relative;user-select:none;
+      transition:background .1s;
+    }
+    .cell.light{background:#f0d9b5;}
+    .cell.dark{background:#b58863;}
+    .cell.sel.light{background:#f6f669;}
+    .cell.sel.dark{background:#baca2b;}
+    .cell.check-sq{background:#c62828!important;}
+    .cell.last-from.light{background:#cdd16f;}
+    .cell.last-from.dark{background:#aaa23a;}
+    .cell.last-to.light{background:#cdd16f;}
+    .cell.last-to.dark{background:#aaa23a;}
+
+    .dot{
+      position:absolute;width:30%;height:30%;
+      background:rgba(0,0,0,.22);border-radius:50%;
+      pointer-events:none;
+    }
+    .ring{
+      position:absolute;inset:0;
+      border:calc(var(--cell)*.12) solid rgba(0,0,0,.22);
+      border-radius:50%;pointer-events:none;
+    }
+
+    .piece{
+      font-size:calc(var(--cell)*.72);line-height:1;
+      cursor:pointer;z-index:1;
+    }
+    .piece.w{filter:drop-shadow(0 1px 2px rgba(0,0,0,.5));}
+    .piece.b{filter:drop-shadow(0 1px 2px rgba(0,0,0,.3));}
+
+    .file-labels{
+      display:flex;width:calc(8*var(--cell));
+      justify-content:space-around;padding:0 0;
+    }
+    .file-labels span{font-size:.7rem;color:#888;width:var(--cell);text-align:center;}
+
+    .controls{display:flex;gap:10px;align-items:center;margin-top:4px;}
+    .new-btn{
+      padding:10px 28px;border:none;border-radius:24px;
+      background:linear-gradient(135deg,#c8a84b,#e2c275);
+      color:#1a1a2e;font-size:.95rem;font-weight:800;cursor:pointer;
+      transition:transform .15s,opacity .15s;
+    }
+    .new-btn:hover{transform:scale(1.04);}
+
+    /* Promotion modal */
+    #promo-modal{
+      display:none;position:fixed;inset:0;
+      background:rgba(0,0,0,.7);align-items:center;justify-content:center;z-index:100;
+    }
+    #promo-modal.open{display:flex;}
+    .promo-box{
+      background:#2a2a3e;border:2px solid #c8a84b;border-radius:20px;
+      padding:24px;text-align:center;display:flex;flex-direction:column;gap:14px;
+    }
+    .promo-box h3{font-size:1rem;color:#c8a84b;letter-spacing:2px;}
+    .promo-choices{display:flex;gap:12px;}
+    .promo-btn{
+      width:64px;height:64px;border:2px solid #555;border-radius:12px;
+      background:#1a1a2e;font-size:2.4rem;cursor:pointer;line-height:1;
+      transition:border-color .15s,background .15s;
+    }
+    .promo-btn:hover{border-color:#c8a84b;background:#0f3460;}
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="game-title">♟ CHESS</div>
+  <div class="byline">by Azizullah Karimzada</div>
+</header>
+
+<div class="mode-row">
+  <button class="mode-btn active" id="btn-pvp" onclick="setMode('pvp')">2 Players</button>
+  <button class="mode-btn"        id="btn-ai"  onclick="setMode('ai')">vs Computer</button>
+</div>
+
+<div id="status">White's turn</div>
+
+<div class="captured-row" id="cap-black">
+  <span class="cap-label">Captured</span>
+</div>
+
+<div class="board-wrap">
+  <div class="rank-labels" id="ranks"></div>
+  <div class="board-col">
+    <div id="board"></div>
+    <div class="file-labels" id="files"></div>
+  </div>
+</div>
+
+<div class="captured-row" id="cap-white">
+  <span class="cap-label">Captured</span>
+</div>
+
+<div class="controls">
+  <button class="new-btn" onclick="newGame()">New Game</button>
+</div>
+
+<div id="promo-modal">
+  <div class="promo-box">
+    <h3>PROMOTE PAWN</h3>
+    <div class="promo-choices" id="promo-choices"></div>
+  </div>
+</div>
+
+<script>
+// ── Symbols ───────────────────────────────────────────────────────────
+const SYM={w:{K:'♔',Q:'♕',R:'♖',B:'♗',N:'♘',P:'♙'},b:{K:'♚',Q:'♛',R:'♜',B:'♝',N:'♞',P:'♟'}};
+const VAL={P:100,N:320,B:330,R:500,Q:900,K:20000};
+
+// ── Engine helpers ────────────────────────────────────────────────────
+const inB=(r,c)=>r>=0&&r<8&&c>=0&&c<8;
+const opp=c=>c==='w'?'b':'w';
+const cpB=b=>b.map(r=>r.map(c=>c?{...c}:null));
+const N_D=[[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]];
+const K_D=[[0,1],[0,-1],[1,0],[-1,0],[1,1],[1,-1],[-1,1],[-1,-1]];
+const R_D=[[0,1],[0,-1],[1,0],[-1,0]];
+const B_D=[[1,1],[1,-1],[-1,1],[-1,-1]];
+
+function initBoard(){
+  const b=Array(8).fill(null).map(()=>Array(8).fill(null));
+  const back=['R','N','B','Q','K','B','N','R'];
+  for(let c=0;c<8;c++){
+    b[0][c]={type:back[c],color:'b'};
+    b[1][c]={type:'P',color:'b'};
+    b[6][c]={type:'P',color:'w'};
+    b[7][c]={type:back[c],color:'w'};
+  }
+  return b;
+}
+
+function attacked(board,r,c,by){
+  for(const[dr,dc]of N_D){const nr=r+dr,nc=c+dc;if(inB(nr,nc)&&board[nr][nc]?.color===by&&board[nr][nc]?.type==='N')return true;}
+  for(const[dr,dc]of K_D){const nr=r+dr,nc=c+dc;if(inB(nr,nc)&&board[nr][nc]?.color===by&&board[nr][nc]?.type==='K')return true;}
+  for(const[dr,dc]of R_D){let nr=r+dr,nc=c+dc;while(inB(nr,nc)){if(board[nr][nc]){if(board[nr][nc].color===by&&'RQ'.includes(board[nr][nc].type))return true;break;}nr+=dr;nc+=dc;}}
+  for(const[dr,dc]of B_D){let nr=r+dr,nc=c+dc;while(inB(nr,nc)){if(board[nr][nc]){if(board[nr][nc].color===by&&'BQ'.includes(board[nr][nc].type))return true;break;}nr+=dr;nc+=dc;}}
+  const pd=by==='w'?1:-1; // white pawns sit below (higher row), attack upward
+  const fr=r+pd;
+  for(const dc of[-1,1])if(inB(fr,c+dc)&&board[fr][c+dc]?.color===by&&board[fr][c+dc]?.type==='P')return true;
+  return false;
+}
+
+function inCheck(board,color){
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++)
+    if(board[r][c]?.type==='K'&&board[r][c]?.color===color)return attacked(board,r,c,opp(color));
+  return true;
+}
+
+function pseudoMoves(board,r,c,ep,castle){
+  const p=board[r][c];if(!p)return[];
+  const{type:t,color:col}=p,enemy=opp(col),moves=[];
+  const add=(r2,c2,ex={})=>moves.push({from:[r,c],to:[r2,c2],pt:t,pc:col,...ex});
+
+  if(t==='P'){
+    const d=col==='w'?-1:1,start=col==='w'?6:1,pr=col==='w'?0:7;
+    if(inB(r+d,c)&&!board[r+d][c]){
+      if(r+d===pr){for(const pp of['Q','R','B','N'])add(r+d,c,{promo:pp});}
+      else{add(r+d,c);if(r===start&&!board[r+2*d][c])add(r+2*d,c);}
+    }
+    for(const dc of[-1,1]){
+      const nr=r+d,nc=c+dc;if(!inB(nr,nc))continue;
+      if(board[nr][nc]?.color===enemy){
+        if(nr===pr){for(const pp of['Q','R','B','N'])add(nr,nc,{promo:pp,cap:board[nr][nc]});}
+        else add(nr,nc,{cap:board[nr][nc]});
+      }
+      if(ep&&ep[0]===nr&&ep[1]===nc)add(nr,nc,{epCap:true,cap:board[r][nc]});
+    }
+  }else if(t==='N'){
+    for(const[dr,dc]of N_D){const nr=r+dr,nc=c+dc;if(inB(nr,nc)&&board[nr][nc]?.color!==col)add(nr,nc,{cap:board[nr][nc]||null});}
+  }else if(t==='K'){
+    for(const[dr,dc]of K_D){const nr=r+dr,nc=c+dc;if(inB(nr,nc)&&board[nr][nc]?.color!==col)add(nr,nc,{cap:board[nr][nc]||null});}
+    if(col==='w'&&r===7&&c===4){
+      if(castle.wK&&!board[7][5]&&!board[7][6]&&board[7][7]?.type==='R'&&board[7][7]?.color==='w')add(7,6,{castling:'K'});
+      if(castle.wQ&&!board[7][3]&&!board[7][2]&&!board[7][1]&&board[7][0]?.type==='R'&&board[7][0]?.color==='w')add(7,2,{castling:'Q'});
+    }
+    if(col==='b'&&r===0&&c===4){
+      if(castle.bK&&!board[0][5]&&!board[0][6]&&board[0][7]?.type==='R'&&board[0][7]?.color==='b')add(0,6,{castling:'K'});
+      if(castle.bQ&&!board[0][3]&&!board[0][2]&&!board[0][1]&&board[0][0]?.type==='R'&&board[0][0]?.color==='b')add(0,2,{castling:'Q'});
+    }
+  }else{
+    const dirs=t==='R'?R_D:t==='B'?B_D:[...R_D,...B_D];
+    for(const[dr,dc]of dirs){let nr=r+dr,nc=c+dc;while(inB(nr,nc)){if(board[nr][nc]){if(board[nr][nc].color===enemy)add(nr,nc,{cap:board[nr][nc]});break;}add(nr,nc);nr+=dr;nc+=dc;}}
+  }
+  return moves;
+}
+
+function applyMove(board,move,castle){
+  const[r,c]=move.from,[r2,c2]=move.to,p=board[r][c],nc={...castle};
+  if(move.epCap)board[r][c2]=null;
+  board[r2][c2]=move.promo?{type:move.promo,color:p.color}:p;
+  board[r][c]=null;
+  if(move.castling){
+    if(r2===7){if(move.castling==='K'){board[7][5]=board[7][7];board[7][7]=null;}else{board[7][3]=board[7][0];board[7][0]=null;}}
+    else{if(move.castling==='K'){board[0][5]=board[0][7];board[0][7]=null;}else{board[0][3]=board[0][0];board[0][0]=null;}}
+  }
+  if(p.type==='K'){if(p.color==='w'){nc.wK=false;nc.wQ=false;}else{nc.bK=false;nc.bQ=false;}}
+  if(p.type==='R'){if(r===7&&c===7)nc.wK=false;if(r===7&&c===0)nc.wQ=false;if(r===0&&c===7)nc.bK=false;if(r===0&&c===0)nc.bQ=false;}
+  if(r2===7&&c2===7)nc.wK=false;if(r2===7&&c2===0)nc.wQ=false;if(r2===0&&c2===7)nc.bK=false;if(r2===0&&c2===0)nc.bQ=false;
+  return nc;
+}
+
+function legalFor(board,r,c,ep,castle){
+  const p=board[r][c];if(!p)return[];
+  return pseudoMoves(board,r,c,ep,castle).filter(move=>{
+    if(move.castling){
+      if(inCheck(board,p.color))return false;
+      const mid=move.castling==='K'?5:3;
+      const tb=cpB(board);tb[r][mid]=tb[r][4];tb[r][4]=null;
+      if(inCheck(tb,p.color))return false;
+    }
+    const tb=cpB(board);applyMove(tb,move,castle);
+    return!inCheck(tb,p.color);
+  });
+}
+
+function allLegal(board,color,ep,castle){
+  const m=[];
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(board[r][c]?.color===color)m.push(...legalFor(board,r,c,ep,castle));
+  return m;
+}
+
+function epTarget(move){
+  if(move.pt==='P'&&Math.abs(move.to[0]-move.from[0])===2)return[(move.from[0]+move.to[0])/2,move.to[1]];
+  return null;
+}
+
+// ── AI (minimax depth 2) ──────────────────────────────────────────────
+const PST={
+  P:[[0,0,0,0,0,0,0,0],[50,50,50,50,50,50,50,50],[10,10,20,30,30,20,10,10],[5,5,10,25,25,10,5,5],[0,0,0,20,20,0,0,0],[5,-5,-10,0,0,-10,-5,5],[5,10,10,-20,-20,10,10,5],[0,0,0,0,0,0,0,0]],
+  N:[[-50,-40,-30,-30,-30,-30,-40,-50],[-40,-20,0,0,0,0,-20,-40],[-30,0,10,15,15,10,0,-30],[-30,5,15,20,20,15,5,-30],[-30,0,15,20,20,15,0,-30],[-30,5,10,15,15,10,5,-30],[-40,-20,0,5,5,0,-20,-40],[-50,-40,-30,-30,-30,-30,-40,-50]],
+  B:[[-20,-10,-10,-10,-10,-10,-10,-20],[-10,0,0,0,0,0,0,-10],[-10,0,5,10,10,5,0,-10],[-10,5,5,10,10,5,5,-10],[-10,0,10,10,10,10,0,-10],[-10,10,10,10,10,10,10,-10],[-10,5,0,0,0,0,5,-10],[-20,-10,-10,-10,-10,-10,-10,-20]],
+  R:[[0,0,0,0,0,0,0,0],[5,10,10,10,10,10,10,5],[-5,0,0,0,0,0,0,-5],[-5,0,0,0,0,0,0,-5],[-5,0,0,0,0,0,0,-5],[-5,0,0,0,0,0,0,-5],[-5,0,0,0,0,0,0,-5],[0,0,0,5,5,0,0,0]],
+  Q:[[-20,-10,-10,-5,-5,-10,-10,-20],[-10,0,0,0,0,0,0,-10],[-10,0,5,5,5,5,0,-10],[-5,0,5,5,5,5,0,-5],[0,0,5,5,5,5,0,-5],[-10,5,5,5,5,5,0,-10],[-10,0,5,0,0,0,0,-10],[-20,-10,-10,-5,-5,-10,-10,-20]],
+  K:[[-30,-40,-40,-50,-50,-40,-40,-30],[-30,-40,-40,-50,-50,-40,-40,-30],[-30,-40,-40,-50,-50,-40,-40,-30],[-30,-40,-40,-50,-50,-40,-40,-30],[-20,-30,-30,-40,-40,-30,-30,-20],[-10,-20,-20,-20,-20,-20,-20,-10],[20,20,0,0,0,0,20,20],[20,30,10,0,0,10,30,20]],
+};
+
+function evalBoard(board){
+  let s=0;
+  for(let r=0;r<8;r++)for(let c=0;c<8;c++){
+    const p=board[r][c];if(!p)continue;
+    const pv=PST[p.type][p.color==='b'?r:7-r][c];
+    s+=(p.color==='b'?1:-1)*(VAL[p.type]+pv);
+  }
+  return s;
+}
+
+function minimax(board,depth,alpha,beta,isMax,ep,castle){
+  const color=isMax?'b':'w';
+  const moves=allLegal(board,color,ep,castle);
+  if(!moves.length)return inCheck(board,color)?(isMax?-50000:50000):0;
+  if(!depth)return evalBoard(board);
+  moves.sort((a,b)=>(b.cap?VAL[b.cap.type]:0)-(a.cap?VAL[a.cap.type]:0));
+  if(isMax){
+    let best=-Infinity;
+    for(const m of moves){const nb=cpB(board),nep=epTarget(m),nc=applyMove(nb,m,castle);best=Math.max(best,minimax(nb,depth-1,alpha,beta,false,nep,nc));alpha=Math.max(alpha,best);if(beta<=alpha)break;}
+    return best;
+  }else{
+    let best=Infinity;
+    for(const m of moves){const nb=cpB(board),nep=epTarget(m),nc=applyMove(nb,m,castle);best=Math.min(best,minimax(nb,depth-1,alpha,beta,true,nep,nc));beta=Math.min(beta,best);if(beta<=alpha)break;}
+    return best;
+  }
+}
+
+function bestMove(board,ep,castle){
+  const moves=allLegal(board,'b',ep,castle);
+  if(!moves.length)return null;
+  moves.sort((a,b)=>(b.cap?VAL[b.cap.type]:0)-(a.cap?VAL[a.cap.type]:0));
+  let best=null,bestV=-Infinity;
+  for(const m of moves){
+    const nb=cpB(board),nep=epTarget(m),nc=applyMove(nb,m,castle);
+    const v=minimax(nb,2,-Infinity,Infinity,false,nep,nc);
+    if(v>bestV){bestV=v;best=m;}
+  }
+  return best;
+}
+
+// ── Game State ────────────────────────────────────────────────────────
+let G={};
+
+function newGame(){
+  G={
+    board:initBoard(),turn:'w',ep:null,
+    castle:{wK:true,wQ:true,bK:true,bQ:true},
+    sel:null,legal:[],status:'playing',check:false,
+    mode:G.mode||'pvp',capW:[],capB:[],
+    aiThinking:false,pending:null,last:null,
+  };
+  document.getElementById('promo-modal').classList.remove('open');
+  render();
+}
+
+function setMode(m){
+  G.mode=m;
+  document.getElementById('btn-pvp').classList.toggle('active',m==='pvp');
+  document.getElementById('btn-ai').classList.toggle('active',m==='ai');
+  newGame();
+}
+
+// ── Execute move ──────────────────────────────────────────────────────
+function execMove(move){
+  const nep=epTarget(move);
+  if(move.cap){(move.cap.color==='w'?G.capW:G.capB).push(move.cap);}
+  G.castle=applyMove(G.board,move,G.castle);
+  G.ep=nep;
+  G.last={from:move.from,to:move.to};
+  G.turn=opp(G.turn);
+  G.sel=null;G.legal=[];
+
+  const moves=allLegal(G.board,G.turn,G.ep,G.castle);
+  G.check=inCheck(G.board,G.turn);
+  G.status=moves.length===0?(G.check?'checkmate':'stalemate'):(G.check?'check':'playing');
+  render();
+  if(G.mode==='ai'&&G.turn==='b'&&G.status==='playing')triggerAI();
+}
+
+function triggerAI(){
+  G.aiThinking=true;updateStatus();
+  setTimeout(()=>{
+    const m=bestMove(G.board,G.ep,G.castle);
+    G.aiThinking=false;
+    if(m)execMove(m);
+  },60);
+}
+
+// ── Click handler ─────────────────────────────────────────────────────
+function handleClick(r,c){
+  if(G.status!=='playing'&&G.status!=='check')return;
+  if(G.aiThinking)return;
+  if(G.mode==='ai'&&G.turn==='b')return;
+
+  const piece=G.board[r][c];
+
+  if(G.sel){
+    const[sr,sc]=G.sel;
+    if(sr===r&&sc===c){G.sel=null;G.legal=[];render();return;}
+    if(piece?.color===G.turn){G.sel=[r,c];G.legal=legalFor(G.board,r,c,G.ep,G.castle);render();return;}
+    const here=G.legal.filter(m=>m.to[0]===r&&m.to[1]===c);
+    if(here.length){
+      if(here[0].promo!==undefined&&here[0].promo){
+        G.pending=here;showPromo();return;
+      }
+      execMove(here[0]);return;
+    }
+    G.sel=null;G.legal=[];render();
+  }else{
+    if(piece?.color===G.turn){G.sel=[r,c];G.legal=legalFor(G.board,r,c,G.ep,G.castle);render();}
+  }
+}
+
+function showPromo(){
+  const[fr,fc]=G.pending[0].from;
+  const col=G.board[fr][fc].color;
+  const box=document.getElementById('promo-choices');
+  box.innerHTML=['Q','R','B','N'].map(pp=>`<button class="promo-btn" onclick="pickPromo('${pp}')">${SYM[col][pp]}</button>`).join('');
+  document.getElementById('promo-modal').classList.add('open');
+}
+
+function pickPromo(pp){
+  document.getElementById('promo-modal').classList.remove('open');
+  const move=G.pending.find(m=>m.promo===pp);
+  G.pending=null;execMove(move);
+}
+
+// ── Render ────────────────────────────────────────────────────────────
+function render(){
+  renderBoard();updateStatus();renderCaptured();
+}
+
+function renderBoard(){
+  const el=document.getElementById('board');
+  el.innerHTML='';
+  for(let r=0;r<8;r++){
+    for(let c=0;c<8;c++){
+      const cell=document.createElement('div');
+      const light=(r+c)%2===0;
+      cell.className='cell '+(light?'light':'dark');
+
+      if(G.last){
+        if(G.last.from[0]===r&&G.last.from[1]===c)cell.classList.add('last-from');
+        if(G.last.to[0]===r&&G.last.to[1]===c)cell.classList.add('last-to');
+      }
+      if(G.sel&&G.sel[0]===r&&G.sel[1]===c)cell.classList.add('sel');
+
+      const lm=G.legal.filter(m=>m.to[0]===r&&m.to[1]===c);
+      if(lm.length){
+        const ind=document.createElement('div');
+        ind.className=lm[0].cap||G.board[r][c]?'ring':'dot';
+        cell.appendChild(ind);
+      }
+
+      if(G.check&&G.board[r][c]?.type==='K'&&G.board[r][c]?.color===G.turn)
+        cell.classList.add('check-sq');
+
+      const p=G.board[r][c];
+      if(p){
+        const sp=document.createElement('span');
+        sp.className='piece '+p.color;
+        sp.textContent=SYM[p.color][p.type];
+        cell.appendChild(sp);
+      }
+
+      cell.addEventListener('click',()=>handleClick(r,c));
+      el.appendChild(cell);
+    }
+  }
+}
+
+function updateStatus(){
+  const el=document.getElementById('status');
+  el.className='';
+  if(G.aiThinking){el.textContent='Computer is thinking…';return;}
+  if(G.status==='checkmate'){
+    el.textContent=(G.turn==='w'?'Black':'White')+' wins by checkmate!';
+    el.classList.add('over');
+  }else if(G.status==='stalemate'){
+    el.textContent='Draw — Stalemate';el.classList.add('over');
+  }else if(G.status==='check'){
+    el.textContent=(G.turn==='w'?'White':'Black')+' is in Check!';el.classList.add('check');
+  }else{
+    const who=G.mode==='ai'?(G.turn==='w'?'Your turn (White)':'Computer (Black)…'):(G.turn==='w'?'White':'Black')+"'s turn";
+    el.textContent=who;
+  }
+}
+
+function renderCaptured(){
+  const fmt=(arr,label)=>{
+    arr.sort((a,b)=>VAL[b.type]-VAL[a.type]);
+    return'<span class="cap-label">'+label+'</span>'+arr.map(p=>SYM[p.color][p.type]).join('');
+  };
+  document.getElementById('cap-black').innerHTML=fmt(G.capB,'Black captured');
+  document.getElementById('cap-white').innerHTML=fmt(G.capW,'White captured');
+}
+
+// ── Labels ────────────────────────────────────────────────────────────
+function buildLabels(){
+  const ranks=document.getElementById('ranks');
+  for(let r=8;r>=1;r--){const s=document.createElement('span');s.textContent=r;ranks.appendChild(s);}
+  const files=document.getElementById('files');
+  for(const f of'abcdefgh'){const s=document.createElement('span');s.textContent=f;files.appendChild(s);}
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────
+buildLabels();
+G.mode='pvp';
+newGame();
+</script>
+</body>
+</html>
