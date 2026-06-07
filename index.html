@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Games by Azizullah Karimzada</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: linear-gradient(135deg, #E8EAF6 0%, #F3E5F5 50%, #E0F7FA 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 48px 16px 64px;
+      gap: 40px;
+    }
+
+    header { text-align: center; }
+
+    .site-title {
+      font-size: 2.6rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      background: linear-gradient(135deg, #5C6BC0, #9C27B0, #E91E63);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .site-sub {
+      margin-top: 6px;
+      font-size: 0.9rem;
+      color: #9E9E9E;
+      letter-spacing: 1px;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .game-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      text-decoration: none;
+      color: inherit;
+      border: 3px solid transparent;
+      transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
+    }
+
+    .game-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 12px 36px var(--shadow);
+      border-color: var(--accent);
+    }
+
+    .game-icon { font-size: 4rem; }
+
+    .game-name {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--accent);
+      text-align: center;
+    }
+
+    .game-desc {
+      font-size: 0.88rem;
+      color: #777;
+      text-align: center;
+      line-height: 1.55;
+    }
+
+    .play-btn {
+      margin-top: 4px;
+      padding: 10px 32px;
+      border-radius: 24px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--accent);
+      color: #fff;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 14px var(--shadow);
+      transition: opacity 0.15s, transform 0.15s;
+    }
+
+    .game-card:hover .play-btn { opacity: 0.9; transform: scale(1.04); }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 20px;
+      background: var(--light);
+      color: var(--accent);
+      letter-spacing: 0.5px;
+    }
+
+    footer {
+      font-size: 0.78rem;
+      color: #BDBDBD;
+      letter-spacing: 1px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="site-title">GAME ARCADE</div>
+    <div class="site-sub">by Azizullah Karimzada</div>
+  </header>
+
+  <div class="games-grid">
+
+    <a class="game-card" href="Python/Projects/math_quest.html"
+       style="--accent:#5C6BC0; --light:#EDE7F6; --shadow:rgba(92,107,192,.25)">
+      <div class="game-icon">🧮</div>
+      <div class="game-name">Math Quest</div>
+      <div class="tags">
+        <span class="tag">Grade 5</span>
+        <span class="tag">Multiply</span>
+        <span class="tag">Fractions</span>
+        <span class="tag">Decimals</span>
+      </div>
+      <div class="game-desc">
+        Answer 10 math questions before the timer runs out.
+        Build streaks, earn stars, and prove your math skills!
+      </div>
+      <div class="play-btn">Play Now</div>
+    </a>
+
+    <a class="game-card" href="Python/Projects/tictactoe.html"
+       style="--accent:#E91E63; --light:#FCE4EC; --shadow:rgba(233,30,99,.25)">
+      <div class="game-icon">⭕</div>
+      <div class="game-name">Tic Tac Toe</div>
+      <div class="tags">
+        <span class="tag">2 Players</span>
+        <span class="tag">vs Computer</span>
+        <span class="tag">Strategy</span>
+      </div>
+      <div class="game-desc">
+        Classic X's and O's — play against a friend or challenge
+        the unbeatable AI powered by minimax.
+      </div>
+      <div class="play-btn">Play Now</div>
+    </a>
+
+    <a class="game-card" href="Python/Projects/candy_clicker.html"
+       style="--accent:#9C27B0; --light:#F3E5F5; --shadow:rgba(156,39,176,.25)">
+      <div class="game-icon">🍬</div>
+      <div class="game-name">Candy Clicker</div>
+      <div class="tags">
+        <span class="tag">Idle</span>
+        <span class="tag">Upgrades</span>
+        <span class="tag">Buildings</span>
+      </div>
+      <div class="game-desc">
+        Click to collect candies, buy buildings, and unlock
+        upgrades. How many candies can you harvest?
+      </div>
+      <div class="play-btn">Play Now</div>
+    </a>
+
+  </div>
+
+  <footer>© Azizullah Karimzada &nbsp;·&nbsp; All games made with ❤️</footer>
+
+</body>
+</html>
