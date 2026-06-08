@@ -130,17 +130,17 @@
     .visitor-counter {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       background: #fff;
       border: 1.5px solid #E0E0E0;
       border-radius: 24px;
-      padding: 6px 18px;
+      padding: 7px 18px;
       font-size: 0.82rem;
       color: #9E9E9E;
       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
 
-    .visitor-counter .vc-dot {
+    .vc-dot {
       width: 8px; height: 8px;
       background: #66BB6A;
       border-radius: 50%;
@@ -151,14 +151,6 @@
     @keyframes pulse-dot {
       0%, 100% { opacity: 1; transform: scale(1); }
       50%       { opacity: 0.5; transform: scale(0.75); }
-    }
-
-    .visitor-counter .vc-num {
-      font-weight: 800;
-      font-size: 1rem;
-      color: #5C6BC0;
-      font-variant-numeric: tabular-nums;
-      min-width: 2ch;
     }
   </style>
 </head>
@@ -258,22 +250,11 @@
   <footer>
     <div class="visitor-counter">
       <span class="vc-dot"></span>
-      <span id="vc-num" class="vc-num">–</span>
-      <span>total visits</span>
+      <img src="https://hits.sh/muhebullahk.github.io/arcade.svg?style=flat&label=visitors&color=5C6BC0&labelColor=EDE7F6"
+           alt="visitor count" height="20" style="border-radius:3px; display:block;">
     </div>
     <span>© Azizullah Karimzada &nbsp;·&nbsp; All games made with ❤️</span>
   </footer>
-
-  <script>
-    fetch('https://api.countapi.xyz/hit/muhebullahk.github.io/arcade-visits')
-      .then(r => r.json())
-      .then(d => {
-        if (d.value) document.getElementById('vc-num').textContent = Number(d.value).toLocaleString();
-      })
-      .catch(() => {
-        document.querySelector('.visitor-counter').style.display = 'none';
-      });
-  </script>
 
 </body>
 </html>
