@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeSpeed — by Azizullah Karimzada</title>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+    body{
+      font-family:'Segoe UI',Tahoma,sans-serif;
+      background:#1a1a2e;
+      min-height:100vh;
+      display:flex;flex-direction:column;align-items:center;
+      padding:28px 16px 56px;gap:18px;
+      color:#cdd6f4;
+    }
+
+    header{text-align:center;}
+    .title{
+      font-size:2.2rem;font-weight:900;letter-spacing:4px;color:#e2c275;
+      text-shadow:0 0 24px rgba(226,194,117,.3);
+    }
+    .byline{font-size:.75rem;color:#555;letter-spacing:1.5px;margin-top:3px;}
+
+    /* ── Selectors ── */
+    .sel-group{display:flex;flex-direction:column;align-items:center;gap:8px;}
+    .sel-label{font-size:.65rem;color:#555;letter-spacing:2px;text-transform:uppercase;}
+    .sel-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+    .sel-btn{
+      padding:6px 18px;border-radius:20px;border:2px solid #2e2e45;
+      background:transparent;color:#777;font-size:.8rem;font-weight:700;
+      cursor:pointer;transition:all .18s;letter-spacing:.5px;
+    }
+    .sel-btn:hover{border-color:#e2c275;color:#e2c275;}
+    .sel-btn.active{border-color:#e2c275;background:#e2c275;color:#1a1a2e;}
+
+    /* ── Live Stats ── */
+    #stats-bar{
+      display:flex;gap:0;background:#232335;border-radius:16px;overflow:hidden;
+      border:1px solid #2e2e45;
+    }
+    .stat{
+      padding:12px 32px;text-align:center;border-right:1px solid #2e2e45;
+    }
+    .stat:last-child{border-right:none;}
+    .stat .sv{font-size:2rem;font-weight:900;color:#e2c275;line-height:1;font-variant-numeric:tabular-nums;}
+    .stat .sl{font-size:.6rem;color:#555;text-transform:uppercase;letter-spacing:2px;margin-top:3px;}
+    #time-val.urgent{color:#f38ba8;}
+
+    /* ── Progress bar ── */
+    .progress-wrap{width:min(720px,92vw);height:3px;background:#2e2e45;border-radius:2px;overflow:hidden;}
+    .progress-bar{height:100%;background:#e2c275;border-radius:2px;transition:width .1s linear;width:0%;}
+
+    /* ── Text area ── */
+    #text-wrap{
+      width:min(720px,92vw);height:138px;
+      overflow:hidden;position:relative;
+      background:#232335;border-radius:16px;
+      padding:22px 28px;cursor:text;
+      border:2px solid transparent;transition:border-color .2s;
+    }
+    #text-wrap.active-typing{border-color:#e2c275;}
+    #typing-text{
+      font-family:'Consolas','Fira Mono','Courier New',monospace;
+      font-size:1.2rem;line-height:46px;word-spacing:2px;
+      transition:margin-top .18s ease;
+      white-space:pre-wrap;word-break:break-all;
+    }
+
+    .ch{color:#404060;display:inline;}
+    .ch.ok{color:#cdd6f4;}
+    .ch.err{color:#f38ba8;text-decoration:underline wavy #f38ba8;}
+    .ch.extra{color:#f38ba8;background:rgba(243,139,168,.15);}
+    .ch.cur{
+      color:#cdd6f4;
+      border-left:2px solid #e2c275;
+      margin-left:-1px;
+      animation:blink 1s step-end infinite;
+    }
+    @keyframes blink{0%,100%{border-left-color:#e2c275;}50%{border-left-color:transparent;}}
+
+    /* ── Hint ── */
+    #hint{
+      font-size:.78rem;color:#3a3a55;text-align:center;
+      transition:opacity .3s;letter-spacing:.5px;
+    }
+    #hint kbd{
+      background:#232335;border:1px solid #3a3a55;border-radius:4px;
+      padding:1px 6px;font-size:.75rem;color:#666;
+    }
+
+    /* ── Results ── */
+    #results{
+      display:none;flex-direction:column;align-items:center;gap:20px;
+      width:min(520px,92vw);background:#232335;
+      border-radius:20px;padding:32px 28px;
+      border:2px solid #e2c275;
+    }
+    .res-head{
+      display:flex;flex-direction:column;align-items:center;gap:4px;
+    }
+    .res-head .rtitle{font-size:1.2rem;font-weight:900;color:#e2c275;letter-spacing:3px;}
+    .res-head .rlevel{font-size:.72rem;color:#555;letter-spacing:1.5px;text-transform:uppercase;}
+
+    .res-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;}
+    .res-box{
+      background:#1a1a2e;border-radius:12px;padding:14px 10px;text-align:center;
+    }
+    .res-box .rv{font-size:1.9rem;font-weight:900;color:#cdd6f4;line-height:1;}
+    .res-box .rl{font-size:.6rem;color:#555;text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;}
+    .res-box.pb{border:2px solid #e2c275;}
+    .res-box.pb .rv{color:#e2c275;}
+
+    .wpm-meter{width:100%;}
+    .wpm-meter-track{height:8px;background:#1a1a2e;border-radius:4px;overflow:hidden;}
+    .wpm-meter-fill{height:100%;background:linear-gradient(90deg,#4fc3f7,#e2c275);border-radius:4px;transition:width .6s ease;}
+    .wpm-meter-labels{display:flex;justify-content:space-between;font-size:.6rem;color:#444;margin-top:4px;}
+
+    .res-btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+    .rbtn{
+      padding:10px 26px;border-radius:20px;font-size:.9rem;font-weight:700;
+      cursor:pointer;transition:transform .15s;border:none;
+    }
+    .rbtn.pri{background:#e2c275;color:#1a1a2e;}
+    .rbtn.sec{background:transparent;border:2px solid #3a3a55;color:#777;}
+    .rbtn:hover{transform:scale(1.05);}
+
+    /* ── Caps lock warning ── */
+    #caps-warn{
+      display:none;font-size:.75rem;color:#f38ba8;
+      background:rgba(243,139,168,.1);border:1px solid rgba(243,139,168,.3);
+      border-radius:8px;padding:4px 14px;
+    }
+
+    @media(max-width:480px){
+      .stat{padding:10px 20px;}
+      .stat .sv{font-size:1.5rem;}
+      #typing-text{font-size:1rem;line-height:42px;}
+      #text-wrap{height:126px;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="title">⌨ TYPESPEED</div>
+  <div class="byline">by Azizullah Karimzada</div>
+</header>
+
+<div class="sel-group">
+  <div class="sel-label">Level</div>
+  <div class="sel-row" id="level-row">
+    <button class="sel-btn active" onclick="setLevel('beginner')">Beginner</button>
+    <button class="sel-btn" onclick="setLevel('intermediate')">Intermediate</button>
+    <button class="sel-btn" onclick="setLevel('advanced')">Advanced</button>
+    <button class="sel-btn" onclick="setLevel('pro')">Pro</button>
+  </div>
+  <div class="sel-label" style="margin-top:4px">Duration</div>
+  <div class="sel-row" id="time-row">
+    <button class="sel-btn" onclick="setDuration(15)">15s</button>
+    <button class="sel-btn" onclick="setDuration(30)">30s</button>
+    <button class="sel-btn active" onclick="setDuration(60)">60s</button>
+    <button class="sel-btn" onclick="setDuration(120)">120s</button>
+  </div>
+</div>
+
+<div id="stats-bar">
+  <div class="stat"><div class="sv" id="wpm-val">–</div><div class="sl">WPM</div></div>
+  <div class="stat"><div class="sv" id="acc-val">–</div><div class="sl">Accuracy</div></div>
+  <div class="stat"><div class="sv" id="time-val">60</div><div class="sl">Seconds</div></div>
+</div>
+
+<div class="progress-wrap"><div class="progress-bar" id="prog-bar"></div></div>
+
+<div id="text-wrap">
+  <div id="typing-text"></div>
+</div>
+
+<div id="caps-warn">⚠ Caps Lock is on</div>
+
+<div id="hint">Start typing to begin &nbsp;·&nbsp; <kbd>Tab</kbd> to restart &nbsp;·&nbsp; <kbd>Esc</kbd> to reset</div>
+
+<div id="results">
+  <div class="res-head">
+    <div class="rtitle">🏁 RESULT</div>
+    <div class="rlevel" id="res-level-label"></div>
+  </div>
+  <div class="res-grid">
+    <div class="res-box"><div class="rv" id="r-wpm">0</div><div class="rl">WPM</div></div>
+    <div class="res-box"><div class="rv" id="r-acc">0%</div><div class="rl">Accuracy</div></div>
+    <div class="res-box"><div class="rv" id="r-correct">0</div><div class="rl">Correct</div></div>
+    <div class="res-box"><div class="rv" id="r-errors">0</div><div class="rl">Errors</div></div>
+    <div class="res-box pb" style="grid-column:1/-1">
+      <div class="rv" id="r-best">–</div>
+      <div class="rl" id="r-best-label">Personal Best</div>
+    </div>
+  </div>
+  <div class="wpm-meter">
+    <div class="wpm-meter-track"><div class="wpm-meter-fill" id="wpm-fill"></div></div>
+    <div class="wpm-meter-labels"><span>0</span><span>50</span><span>100</span><span>150</span><span>200+</span></div>
+  </div>
+  <div class="res-btns">
+    <button class="rbtn pri" onclick="resetTest()">Try Again</button>
+    <button class="rbtn sec" onclick="window.location.href='../../index.html'">← Arcade</button>
+  </div>
+</div>
+
+<script>
+// ── Word Banks ────────────────────────────────────────────────────────
+
+const WORDS = {
+  beginner: [
+    'the','and','for','are','but','not','you','all','any','can','had','her','was','one','our',
+    'out','has','him','his','how','man','new','now','old','see','two','way','who','did','its',
+    'let','put','say','she','too','use','cat','dog','big','run','fun','top','sit','hot','lot',
+    'cut','set','hit','fit','bit','bat','hat','mat','rat','sat','car','far','arm','ask','bad',
+    'bag','bed','box','bus','buy','cup','day','eat','egg','end','fan','few','fly','gas','get',
+    'got','ice','job','joy','key','kid','law','leg','lip','log','low','map','mud','net','off',
+    'oil','own','pan','pay','pin','pot','red','sad','sea','sky','son','sun','tie','toy','win',
+    'yes','yet','add','age','ago','aid','aim','air','bit','bow','boy','bun','bus','cab','can',
+    'cap','cod','cop','cow','cry','cup','cut','den','dew','dig','dim','dip','dot','dug','dye',
+    'elf','elm','emu','era','eve','ewe','fad','fed','fee','few','fib','fin','fir','fix','foe',
+  ],
+  intermediate: [
+    'about','above','after','again','along','among','apply','begin','below','bring','build',
+    'carry','cause','check','clean','clear','close','could','cover','drink','drive','early',
+    'earth','eight','empty','enter','every','exist','extra','false','field','final','first',
+    'fixed','floor','focus','force','found','front','given','glass','going','great','green',
+    'group','guide','happy','heard','heart','heavy','holds','horse','hotel','house','human',
+    'image','index','inner','input','issue','items','judge','keeps','kinds','known','large',
+    'later','learn','legal','level','light','limit','lines','local','lower','lucky','major',
+    'makes','match','media','might','model','money','month','music','needs','never','night',
+    'noise','north','novel','often','order','other','outer','owner','pages','paper','party',
+    'pause','peace','phone','place','plain','plane','plant','point','power','price','print',
+    'proof','proud','prove','reach','ready','right','river','rough','round','route','scale',
+    'scene','sense','seven','shall','share','sharp','shift','short','since','skill','small',
+    'smart','smile','solve','space','speed','spend','split','stage','stand','state','still',
+    'stock','stone','storm','story','study','style','sugar','super','table','taste','teach',
+    'terms','thank','their','there','these','thing','think','third','those','three','times',
+    'tired','title','today','topic','total','touch','tough','tower','trade','train','treat',
+    'trend','trust','truth','twice','under','union','until','upper','urban','valid','value',
+    'visit','vital','voice','waste','watch','water','while','whole','whose','world','worry',
+    'worse','would','write','wrong','years','young','youth','zones','break','grown',
+  ],
+  advanced: [
+    'ability','absence','account','achieve','acquire','address','advance','against','ancient',
+    'another','anxiety','applied','arrange','balance','because','benefit','between','billion',
+    'capable','careful','central','certain','chapter','collect','combine','comfort','command',
+    'comment','complex','concept','concern','conduct','confirm','connect','consist','contain',
+    'context','control','council','counter','country','courage','culture','current','damaged',
+    'dealing','decided','declare','default','deliver','demands','depends','digital','discuss',
+    'display','dispute','diverse','dynamic','earlier','earning','eastern','element','endless',
+    'enhance','evident','exactly','examine','example','exclude','expense','explain','express',
+    'extreme','failure','feature','finding','foreign','formula','forward','freedom','further',
+    'general','genuine','getting','happens','highest','history','however','hundred','imagine',
+    'improve','include','instead','involve','journey','justice','keeping','kingdom','knowing',
+    'largely','leading','limited','looking','machine','maximum','measure','medical','mention',
+    'million','minimum','mission','morning','nothing','obvious','opinion','outside','pattern',
+    'perhaps','picture','popular','present','primary','private','problem','process','product',
+    'promise','protect','provide','purpose','quality','quickly','realize','receive','regular',
+    'related','release','remains','replace','require','restore','results','section','several',
+    'similar','society','someone','special','station','subject','success','support','suppose',
+    'through','typical','usually','various','version','whether','without','working','younger',
+    'service','morning','network','feeling','natural','against','outside','connect','respond',
+  ],
+  pro: [
+    'algorithm','analysis','application','architecture','authentication','authorization',
+    'bandwidth','blockchain','bootstrap','callback','codebase','compiler','concurrent',
+    'configuration','database','debugging','deployment','development','dictionary',
+    'documentation','efficiency','encryption','engineering','environment','exception',
+    'flexibility','framework','generation','identifier','immutable','implementation',
+    'inheritance','initialize','integration','interface','iteration','javascript',
+    'kubernetes','latency','localhost','middleware','multithreading','namespace',
+    'networking','optimization','overriding','pagination','parallelism','parameter',
+    'performance','persistence','platform','polymorphism','programming','protocol',
+    'refactoring','redundancy','regression','relational','repository','resilience',
+    'responsive','scalability','serialization','software','structure','synchronization',
+    'throughput','transaction','typescript','validation','variable','versioning',
+    'virtualization','vulnerability','workflow','abstraction','accessibility',
+    'asynchronous','collaboration','computational','customization','decomposition',
+    'encapsulation','extrapolation','functionality','generalization','infrastructure',
+    'initialization','maintainability','normalization','orchestration','prioritization',
+    'standardization','transformation','visualization','elasticsearch','microservice',
+    'containerization','interoperability','disambiguation','parameterization',
+    'cryptography','deduplication','idempotent','observability','telemetry','webhook',
+  ],
+};
+
+// ── State ─────────────────────────────────────────────────────────────
+let S = {
+  level:'beginner', duration:60,
+  flatText:'', typed:[],
+  started:false, finished:false,
+  startTime:null, timer:null, timeLeft:60,
+  correctChars:0, errors:0,
+};
+
+// ── Utilities ─────────────────────────────────────────────────────────
+const ri = (a,b) => Math.floor(Math.random()*(b-a+1))+a;
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=ri(0,i);[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+function buildText(level, duration){
+  const base = WORDS[level];
+  const target = Math.max(100, Math.ceil(duration * 3)); // generous buffer
+  const words = [];
+  while(words.length < target){
+    words.push(...shuffle(base));
+  }
+  return words.slice(0, target).join(' ');
+}
+
+function bestKey(level, dur){ return `ts_${level}_${dur}`; }
+function getBest(){ return parseInt(localStorage.getItem(bestKey(S.level, S.duration))||'0'); }
+function saveBest(wpm){ const k=bestKey(S.level,S.duration); if(wpm>getBest())localStorage.setItem(k,String(wpm)); }
+
+// ── Controls ──────────────────────────────────────────────────────────
+function setLevel(level){
+  S.level = level;
+  document.querySelectorAll('#level-row .sel-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['beginner','intermediate','advanced','pro'][i]===level);
+  });
+  resetTest();
+}
+
+function setDuration(d){
+  S.duration = d;
+  document.querySelectorAll('#time-row .sel-btn').forEach((b,i)=>{
+    b.classList.toggle('active',[15,30,60,120][i]===d);
+  });
+  resetTest();
+}
+
+// ── Reset ─────────────────────────────────────────────────────────────
+function resetTest(){
+  clearInterval(S.timer);
+  S.flatText = buildText(S.level, S.duration);
+  S.typed = [];
+  S.started = false;
+  S.finished = false;
+  S.startTime = null;
+  S.timeLeft = S.duration;
+  S.correctChars = 0;
+  S.errors = 0;
+
+  document.getElementById('results').style.display = 'none';
+  document.getElementById('hint').style.display = 'block';
+  document.getElementById('wpm-val').textContent = '–';
+  document.getElementById('acc-val').textContent = '–';
+  document.getElementById('time-val').textContent = S.duration;
+  document.getElementById('time-val').classList.remove('urgent');
+  document.getElementById('prog-bar').style.width = '0%';
+  document.getElementById('text-wrap').classList.remove('active-typing');
+  document.getElementById('typing-text').style.marginTop = '0px';
+
+  renderText();
+}
+
+// ── Start ─────────────────────────────────────────────────────────────
+function startTest(){
+  S.started = true;
+  S.startTime = Date.now();
+  document.getElementById('hint').style.display = 'none';
+  document.getElementById('text-wrap').classList.add('active-typing');
+
+  S.timer = setInterval(()=>{
+    S.timeLeft = Math.max(0, S.duration - Math.floor((Date.now()-S.startTime)/1000));
+    const tv = document.getElementById('time-val');
+    tv.textContent = S.timeLeft;
+    if(S.timeLeft <= 5) tv.classList.add('urgent');
+    updateLiveStats();
+    if(S.timeLeft <= 0) finishTest();
+  }, 200);
+}
+
+// ── Handle keypresses ─────────────────────────────────────────────────
+function handleChar(ch){
+  if(S.finished) return;
+  if(!S.started) startTest();
+
+  const pos = S.typed.length;
+  if(pos >= S.flatText.length) return;
+
+  const expected = S.flatText[pos];
+  const ok = ch === expected;
+  S.typed.push({ch, ok});
+  if(ok) S.correctChars++; else S.errors++;
+
+  renderText();
+  syncScroll();
+  updateLiveStats();
+  updateProgress();
+
+  if(S.typed.length >= S.flatText.length) finishTest();
+}
+
+function handleBackspace(){
+  if(S.finished || S.typed.length === 0) return;
+  const last = S.typed.pop();
+  if(last.ok) S.correctChars--; else S.errors--;
+  renderText();
+  syncScroll();
+  updateLiveStats();
+  updateProgress();
+}
+
+// ── Finish ────────────────────────────────────────────────────────────
+function finishTest(){
+  if(S.finished) return;
+  S.finished = true;
+  clearInterval(S.timer);
+
+  const elapsed = (Date.now() - S.startTime) / 60000;
+  const wpm = Math.round(S.correctChars / 5 / Math.max(elapsed, 0.01));
+  const total = S.typed.length;
+  const acc = total > 0 ? Math.round(S.correctChars / total * 100) : 100;
+  const prevBest = getBest();
+  const isNew = wpm > prevBest;
+  saveBest(wpm);
+  const best = Math.max(wpm, prevBest);
+
+  document.getElementById('r-wpm').textContent = wpm;
+  document.getElementById('r-acc').textContent = acc + '%';
+  document.getElementById('r-correct').textContent = S.correctChars;
+  document.getElementById('r-errors').textContent = S.errors;
+  document.getElementById('r-best').textContent = best + ' WPM';
+  document.getElementById('r-best-label').textContent = isNew ? '🎉 New Personal Best!' : 'Personal Best';
+  document.getElementById('res-level-label').textContent =
+    S.level.charAt(0).toUpperCase()+S.level.slice(1) + ' · ' + S.duration + 's';
+  document.getElementById('wpm-fill').style.width = Math.min(100, wpm/2) + '%';
+
+  document.getElementById('results').style.display = 'flex';
+}
+
+// ── Live stats ────────────────────────────────────────────────────────
+function updateLiveStats(){
+  if(!S.started) return;
+  const elapsed = (Date.now() - S.startTime) / 60000;
+  const wpm = elapsed > 0.05 ? Math.round(S.correctChars / 5 / elapsed) : 0;
+  const total = S.typed.length;
+  const acc = total > 0 ? Math.round(S.correctChars / total * 100) : 100;
+  document.getElementById('wpm-val').textContent = wpm;
+  document.getElementById('acc-val').textContent = acc + '%';
+}
+
+function updateProgress(){
+  const pct = S.typed.length / S.flatText.length * 100;
+  document.getElementById('prog-bar').style.width = pct + '%';
+}
+
+// ── Render text ───────────────────────────────────────────────────────
+function renderText(){
+  const txt = document.getElementById('typing-text');
+  let html = '';
+  for(let i = 0; i < S.flatText.length; i++){
+    const ch = S.flatText[i];
+    const t = S.typed[i];
+    const isCursor = i === S.typed.length;
+    const display = ch === ' ' ? '&nbsp;' : ch;
+    let cls = 'ch';
+
+    if(isCursor){
+      cls += ' cur';
+    } else if(t !== undefined){
+      cls += t.ok ? ' ok' : ' err';
+    }
+
+    // Show _ for missed space errors
+    const show = (!isCursor && t && !t.ok && ch === ' ') ? '_' : display;
+    html += `<span class="${cls}">${show}</span>`;
+  }
+  txt.innerHTML = html;
+}
+
+// ── Scroll sync ───────────────────────────────────────────────────────
+function syncScroll(){
+  requestAnimationFrame(()=>{
+    const cursor = document.querySelector('.ch.cur');
+    const txt = document.getElementById('typing-text');
+    if(!cursor || !txt) return;
+    const lineH = parseInt(getComputedStyle(txt).lineHeight) || 46;
+    const top = cursor.offsetTop;
+    const shift = Math.max(0, top - lineH);
+    txt.style.marginTop = `-${shift}px`;
+  });
+}
+
+// ── Keyboard handler ──────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if(e.key === 'Tab')    { e.preventDefault(); resetTest(); return; }
+  if(e.key === 'Escape') { e.preventDefault(); resetTest(); return; }
+  if(e.ctrlKey || e.altKey || e.metaKey) return;
+  if(e.key === 'Backspace'){ e.preventDefault(); handleBackspace(); return; }
+  if(e.key.length === 1)  { handleChar(e.key); }
+});
+
+// Caps Lock detection
+document.addEventListener('keydown', e => {
+  const warn = document.getElementById('caps-warn');
+  if(e.getModifierState && e.getModifierState('CapsLock')){
+    warn.style.display = 'block';
+  } else {
+    warn.style.display = 'none';
+  }
+});
+
+document.getElementById('text-wrap').addEventListener('click', ()=>{
+  // Visual cue that the area is focused
+  document.getElementById('text-wrap').focus();
+});
+
+// ── Boot ──────────────────────────────────────────────────────────────
+resetTest();
+</script>
+</body>
+</html>
