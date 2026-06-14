@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECON 101 — Macroeconomics Practice | Karimzada</title>
+  <style>
+    :root {
+      --navy:#003366; --navy-l:#004a99; --gold:#c8960c; --gold-l:#e8ad14;
+      --bg:#f5f7fa; --white:#fff; --text:#1a1a2e; --muted:#6b7280;
+      --border:#dde3ec; --green:#16a34a; --red:#dc2626;
+      --shadow:0 4px 20px rgba(0,0,0,.10);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Georgia','Times New Roman',serif;background:var(--bg);color:var(--text);min-height:100vh}
+    .screen{display:none} .screen.active{display:block}
+
+    /* NAV */
+    nav{background:var(--navy);padding:0 1.5rem;height:52px;display:flex;align-items:center;justify-content:space-between}
+    .nav-brand{color:#fff;font-size:.92rem;font-weight:bold}
+    .nav-brand span{color:var(--gold)}
+    .nav-back{color:rgba(255,255,255,.8);font-size:.82rem;font-family:'Helvetica Neue',Arial,sans-serif;text-decoration:none;transition:color .15s}
+    .nav-back:hover{color:var(--gold)}
+
+    /* HOME */
+    .home-hero{background:linear-gradient(135deg,var(--navy) 0%,#00509e 100%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center}
+    .home-hero .badge{display:inline-block;background:var(--gold);color:#fff;font-size:.72rem;font-family:'Helvetica Neue',Arial,sans-serif;letter-spacing:.08em;padding:.22rem .75rem;border-radius:20px;margin-bottom:.75rem;font-weight:700;text-transform:uppercase}
+    .home-hero h1{font-size:2rem;font-weight:bold;margin-bottom:.5rem}
+    .home-hero p{font-size:.93rem;opacity:.9;max-width:560px;margin:.6rem auto 0;font-family:'Helvetica Neue',Arial,sans-serif;line-height:1.6}
+    .home-body{max-width:740px;margin:0 auto;padding:2rem 1.5rem}
+    .stats-row{display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+    .stat-card{flex:1;min-width:110px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.9rem;text-align:center}
+    .stat-card .num{font-size:1.55rem;font-weight:bold;color:var(--navy)}
+    .stat-card .lbl{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;color:var(--muted);margin-top:.15rem}
+    .filter-group{margin-bottom:1.75rem}
+    .filter-label{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.75rem;font-weight:700;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin-bottom:.6rem}
+    .chip-row{display:flex;flex-wrap:wrap;gap:.4rem}
+    .chip{border:2px solid var(--border);background:var(--white);border-radius:20px;padding:.35rem .9rem;font-family:'Helvetica Neue',Arial,sans-serif;font-size:.8rem;cursor:pointer;transition:all .15s}
+    .chip.selected{border-color:var(--navy);background:var(--navy);color:#fff}
+    .chip:hover:not(.selected){border-color:var(--navy-l);color:var(--navy-l)}
+    .start-btn{display:block;width:100%;background:var(--gold);color:#fff;border:none;border-radius:8px;padding:.95rem;font-size:1rem;font-family:'Helvetica Neue',Arial,sans-serif;font-weight:700;letter-spacing:.04em;cursor:pointer;transition:background .15s,transform .1s}
+    .start-btn:hover{background:var(--gold-l);transform:translateY(-1px)}
+
+    /* QUIZ */
+    .quiz-wrap{max-width:700px;margin:0 auto;padding:1.75rem 1.5rem}
+    .progress-track{background:var(--border);border-radius:4px;height:6px;margin-bottom:1.25rem;overflow:hidden}
+    .progress-fill{height:100%;background:var(--gold);border-radius:4px;transition:width .3s ease}
+    .quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;font-family:'Helvetica Neue',Arial,sans-serif;font-size:.8rem;color:var(--muted)}
+    .type-badge{display:inline-block;padding:.2rem .65rem;border-radius:20px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+    .b-mc{background:#dbeafe;color:#1d4ed8} .b-tf{background:#fef3c7;color:#92400e}
+    .b-num{background:#dcfce7;color:#166534} .b-sa{background:#f3e8ff;color:#6b21a8}
+    .b-gr{background:#ffe4e6;color:#9f1239} .b-an{background:#e0f2fe;color:#0c4a6e}
+    .q-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.75rem;margin-bottom:1.25rem;box-shadow:var(--shadow)}
+    .q-topic-lbl{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.6rem}
+    .q-text{font-size:1rem;line-height:1.65;margin-bottom:1.1rem}
+
+    /* MC */
+    .mc-opts{display:flex;flex-direction:column;gap:.5rem}
+    .mc-opt{border:2px solid var(--border);border-radius:8px;padding:.65rem .9rem;cursor:pointer;font-family:'Helvetica Neue',Arial,sans-serif;font-size:.87rem;transition:border-color .15s,background .15s;display:flex;align-items:center;gap:.65rem}
+    .mc-opt:hover:not(.disabled){border-color:var(--navy-l);background:#f0f4ff}
+    .mc-opt.selected{border-color:var(--navy);background:#e8eef7}
+    .mc-opt.correct{border-color:var(--green);background:#f0fdf4;color:var(--green)}
+    .mc-opt.wrong{border-color:var(--red);background:#fef2f2;color:var(--red)}
+    .mc-opt.disabled{cursor:default}
+    .opt-letter{width:26px;height:26px;border-radius:50%;background:var(--bg);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0}
+    .mc-opt.correct .opt-letter{background:var(--green);border-color:var(--green);color:#fff}
+    .mc-opt.wrong .opt-letter{background:var(--red);border-color:var(--red);color:#fff}
+
+    /* TF */
+    .tf-row{display:flex;gap:.75rem}
+    .tf-btn{flex:1;padding:1rem;border:2px solid var(--border);border-radius:10px;background:var(--white);font-size:.95rem;font-weight:700;font-family:'Helvetica Neue',Arial,sans-serif;cursor:pointer;transition:all .15s}
+    .tf-btn:hover:not(.disabled){border-color:var(--navy);transform:translateY(-2px)}
+    .tf-t{color:var(--green)} .tf-f{color:var(--red)}
+    .tf-btn.selected{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .tf-btn.correct{background:#dcfce7;border-color:var(--green);color:var(--green)}
+    .tf-btn.wrong{background:#fef2f2;border-color:var(--red);color:var(--red)}
+    .tf-btn.disabled{cursor:default}
+
+    /* Numerical */
+    .num-input{width:100%;border:2px solid var(--border);border-radius:8px;padding:.7rem 1rem;font-size:1.05rem;font-family:'Georgia',serif;outline:none;transition:border-color .15s}
+    .num-input:focus{border-color:var(--navy-l)}
+    .num-input.correct{border-color:var(--green);background:#f0fdf4}
+    .num-input.wrong{border-color:var(--red);background:#fef2f2}
+    .num-hint{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.75rem;color:var(--muted);margin-top:.45rem}
+
+    /* SA / Analytical */
+    .sa-input,.an-input{width:100%;border:2px solid var(--border);border-radius:8px;padding:.7rem 1rem;font-size:.92rem;font-family:'Georgia',serif;line-height:1.6;resize:vertical;outline:none;transition:border-color .15s}
+    .sa-input{min-height:80px} .an-input{min-height:130px}
+    .sa-input:focus,.an-input:focus{border-color:var(--navy-l)}
+    .input-note{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.75rem;color:var(--muted);margin-bottom:.45rem}
+
+    /* Graph */
+    .graph-area{text-align:center;margin-bottom:1rem}
+    canvas{max-width:100%;border:1px solid var(--border);border-radius:8px;background:#fff}
+
+    /* Feedback */
+    .feedback{border-radius:8px;padding:.85rem 1.1rem;margin-top:.9rem;font-family:'Helvetica Neue',Arial,sans-serif;font-size:.87rem;line-height:1.6;display:none}
+    .feedback.show{display:block}
+    .fb-ok{background:#f0fdf4;border-left:4px solid var(--green);color:#14532d}
+    .fb-err{background:#fef2f2;border-left:4px solid var(--red);color:#7f1d1d}
+    .fb-info{background:#f0f4ff;border-left:4px solid var(--navy);color:var(--navy)}
+    .model-ans{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:.85rem 1.1rem;margin-top:.9rem;font-size:.88rem;line-height:1.65;display:none}
+    .model-ans.show{display:block}
+    .model-ans h4{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:.4rem}
+
+    /* Actions */
+    .action-row{display:flex;gap:.65rem;margin-top:1.25rem}
+    .btn-sub,.btn-next{flex:1;border:none;border-radius:8px;padding:.8rem;font-size:.92rem;font-weight:700;font-family:'Helvetica Neue',Arial,sans-serif;cursor:pointer;transition:background .15s}
+    .btn-sub{background:var(--navy);color:#fff}
+    .btn-sub:hover{background:var(--navy-l)}
+    .btn-sub:disabled{background:#9ca3af;cursor:default}
+    .btn-next{background:var(--gold);color:#fff;display:none}
+    .btn-next:hover{background:var(--gold-l)}
+    .btn-next.show{display:block}
+
+    /* RESULTS */
+    .res-wrap{max-width:620px;margin:0 auto;padding:2.5rem 1.5rem}
+    .score-ring{width:130px;height:130px;border-radius:50%;border:6px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+    .score-pct{font-size:2rem;font-weight:bold;color:var(--navy)}
+    .score-sub{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.7rem;color:var(--muted)}
+    .grade-lbl{text-align:center;font-size:1.35rem;font-weight:bold;color:var(--navy);margin-bottom:.4rem}
+    .grade-msg{text-align:center;font-family:'Helvetica Neue',Arial,sans-serif;font-size:.88rem;color:var(--muted);margin-bottom:1.5rem}
+    .bk-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:1.5rem}
+    .bk-table th{background:var(--navy);color:#fff;padding:.55rem 1rem;text-align:left;font-family:'Helvetica Neue',Arial,sans-serif;font-size:.75rem}
+    .bk-table td{padding:.5rem 1rem;border-bottom:1px solid var(--border)}
+    .bk-table tr:last-child td{border-bottom:none}
+    .res-actions{display:flex;gap:.65rem;flex-wrap:wrap}
+    .btn-retry,.btn-hm{flex:1;min-width:120px;padding:.8rem;border-radius:8px;font-size:.9rem;font-weight:700;font-family:'Helvetica Neue',Arial,sans-serif;cursor:pointer;border:none;transition:background .15s}
+    .btn-retry{background:var(--gold);color:#fff} .btn-retry:hover{background:var(--gold-l)}
+    .btn-hm{background:var(--navy);color:#fff} .btn-hm:hover{background:var(--navy-l)}
+
+    @media(max-width:540px){
+      .home-hero h1{font-size:1.6rem}
+      .q-card{padding:1.1rem}
+      .tf-row{flex-direction:column}
+      .stats-row .stat-card{min-width:80px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">ECON 101 — <span>Macroeconomics Practice</span></span>
+  <a class="nav-back" href="teaching.html">← Teaching</a>
+</nav>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+  <div class="home-hero">
+    <div class="badge">ECON 101 · UNBC · Fall 2026</div>
+    <h1>Macroeconomics Practice</h1>
+    <p>Six question types across eight topic areas — based on Hubbard, O'Brien & Serletis and standard first-year macroeconomics curricula.</p>
+  </div>
+  <div class="home-body">
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="stat-n">72</div><div class="lbl">Questions</div></div>
+      <div class="stat-card"><div class="num">6</div><div class="lbl">Types</div></div>
+      <div class="stat-card"><div class="num">8</div><div class="lbl">Topics</div></div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Topic</div>
+      <div class="chip-row" id="topic-chips">
+        <div class="chip selected" data-val="all">All Topics</div>
+        <div class="chip" data-val="foundations">Foundations &amp; PPF</div>
+        <div class="chip" data-val="national">National Income</div>
+        <div class="chip" data-val="growth">Growth &amp; Unemployment</div>
+        <div class="chip" data-val="aggregate">Aggregate Expenditure</div>
+        <div class="chip" data-val="fiscal">Fiscal Policy</div>
+        <div class="chip" data-val="money">Money &amp; Banking</div>
+        <div class="chip" data-val="monetary">Monetary Policy</div>
+        <div class="chip" data-val="open">Open Economy</div>
+      </div>
+    </div>
+    <div class="filter-group">
+      <div class="filter-label">Question Type</div>
+      <div class="chip-row" id="type-chips">
+        <div class="chip selected" data-val="all">All Types</div>
+        <div class="chip" data-val="mc">Multiple Choice</div>
+        <div class="chip" data-val="tf">True / False</div>
+        <div class="chip" data-val="num">Numerical</div>
+        <div class="chip" data-val="sa">Short Answer</div>
+        <div class="chip" data-val="graph">Graphical</div>
+        <div class="chip" data-val="an">Analytical</div>
+      </div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">Start Practice →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="s-quiz" class="screen">
+  <div class="quiz-wrap">
+    <div class="progress-track"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    <div class="quiz-meta">
+      <span id="q-counter">Q 1 of —</span>
+      <span class="type-badge" id="type-badge"></span>
+      <span id="score-live">Score: 0</span>
+    </div>
+    <div class="q-card">
+      <div class="q-topic-lbl" id="q-topic"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="graph-area" id="q-graph" style="display:none"></div>
+      <div id="q-ans-area"></div>
+      <div class="feedback" id="q-fb"></div>
+      <div class="model-ans" id="q-ma"><h4>Model Answer</h4><div id="q-ma-body"></div></div>
+    </div>
+    <div class="action-row">
+      <button class="btn-sub" id="btn-sub" onclick="submit()">Submit Answer</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="s-results" class="screen">
+  <div class="res-wrap">
+    <div class="score-ring">
+      <div class="score-pct" id="r-pct">—</div>
+      <div class="score-sub">Score</div>
+    </div>
+    <div class="grade-lbl" id="r-grade"></div>
+    <div class="grade-msg" id="r-msg"></div>
+    <table class="bk-table">
+      <thead><tr><th>Type</th><th>Correct</th><th>Total</th><th>%</th></tr></thead>
+      <tbody id="r-tbody"></tbody>
+    </table>
+    <div class="res-actions">
+      <button class="btn-retry" onclick="startQuiz()">Try Again</button>
+      <button class="btn-hm" onclick="showHome()">Home</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── QUESTION BANK ──────────────────────────────────────────────────────────
+const QB = [
+
+// ── MULTIPLE CHOICE ──────────────────────────────────────────────────────
+{t:'mc',tp:'foundations',tl:'Foundations & PPF',
+ q:'Which of the following best illustrates the concept of scarcity?',
+ opts:['A country produces more than it consumes','A student has limited time to study for two exams on the same day','A firm earns profit by selling above cost','A government has no budget deficit'],
+ a:1, ex:'Scarcity arises when unlimited wants face limited resources. Limited study time forcing a choice between two exams is a classic example of this trade-off.'},
+
+{t:'mc',tp:'foundations',tl:'Foundations & PPF',
+ q:'A point inside the Production Possibilities Frontier (PPF) indicates:',
+ opts:['Productive efficiency — all resources fully employed','Allocative efficiency — the economy produces what consumers most value','Productive inefficiency — resources are unemployed or misallocated','An unattainable output combination'],
+ a:2, ex:'A point inside the PPF means the economy is not using its resources fully or is using them poorly — some combination of unemployment and waste.'},
+
+{t:'mc',tp:'foundations',tl:'Foundations & PPF',
+ q:'The law of increasing opportunity cost explains why the PPF is:',
+ opts:['A straight line with constant slope','Concave (bowed outward) from the origin','Convex (bowed inward) toward the origin','A horizontal line'],
+ a:1, ex:'Resources are not equally suited to all uses. As more of one good is produced, increasingly unsuitable resources must be redirected, raising the opportunity cost of each additional unit — creating a concave shape.'},
+
+{t:'mc',tp:'national',tl:'National Income Accounting',
+ q:'GDP measures the total market value of:',
+ opts:['All goods and services produced within a country\'s borders in a given period, regardless of producer nationality','All goods and services produced by a country\'s residents, regardless of location','All financial transactions within a country','All goods produced, excluding services'],
+ a:0, ex:'GDP counts all final goods and services produced within a country\'s geographic borders during a specified period. Producer nationality is irrelevant — that would be GNP/GNI.'},
+
+{t:'mc',tp:'national',tl:'National Income Accounting',
+ q:'Which of the following is NOT included in GDP?',
+ opts:['New car purchases by households','Government spending on roads','A firm\'s purchase of new machinery','The resale of a 15-year-old house'],
+ a:3, ex:'GDP counts only new production. Reselling an existing house transfers ownership but creates no new output. Only the real estate agent\'s commission (a new service) would be counted.'},
+
+{t:'mc',tp:'national',tl:'National Income Accounting',
+ q:'Nominal GDP is $900 billion and the GDP deflator is 150. Real GDP (base-year prices) is:',
+ opts:['$1,350 billion','$600 billion','$750 billion','$900 billion'],
+ a:1, ex:'Real GDP = (Nominal GDP ÷ GDP Deflator) × 100 = (900 ÷ 150) × 100 = $600 billion.'},
+
+{t:'mc',tp:'growth',tl:'Growth & Unemployment',
+ q:'The natural rate of unemployment includes:',
+ opts:['Only frictional unemployment','Only structural unemployment','Frictional and structural unemployment combined','Cyclical unemployment only'],
+ a:2, ex:'The natural rate (NAIRU) equals frictional plus structural unemployment. Cyclical unemployment is zero when the economy is at the natural rate.'},
+
+{t:'mc',tp:'growth',tl:'Growth & Unemployment',
+ q:'A factory worker who loses their job because their tasks have been automated by robots suffers from:',
+ opts:['Frictional unemployment','Seasonal unemployment','Cyclical unemployment','Structural unemployment'],
+ a:3, ex:'Structural unemployment is a mismatch between workers\' skills and employer demands, often caused by technological change or industry restructuring.'},
+
+{t:'mc',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'If MPC = 0.75, the expenditure multiplier is:',
+ opts:['0.75','1.33','3','4'],
+ a:3, ex:'Multiplier = 1 ÷ (1 − MPC) = 1 ÷ 0.25 = 4. A $1 increase in autonomous spending raises equilibrium income by $4.'},
+
+{t:'mc',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'The aggregate demand (AD) curve slopes downward because a lower price level:',
+ opts:['Raises real wealth, lowers interest rates, and makes exports cheaper — all increasing quantity demanded','Reduces wages, which lowers production costs','Increases production by making inputs cheaper','Encourages firms to hire more workers'],
+ a:0, ex:'Three effects drive the downward slope: (1) wealth effect — lower prices raise real purchasing power; (2) interest rate effect — lower prices reduce money demand, lowering interest rates and boosting investment; (3) international trade effect — cheaper domestic prices raise net exports.'},
+
+{t:'mc',tp:'fiscal',tl:'Fiscal Policy',
+ q:'An expansionary fiscal policy involves:',
+ opts:['Raising taxes and cutting government spending','Cutting taxes and/or increasing government spending','Reducing the money supply','Raising the central bank\'s policy interest rate'],
+ a:1, ex:'Expansionary fiscal policy stimulates aggregate demand by increasing G, cutting taxes (raising disposable income), or both — shifting the AD curve to the right.'},
+
+{t:'mc',tp:'fiscal',tl:'Fiscal Policy',
+ q:'The "crowding out" effect means that government borrowing can:',
+ opts:['Reduce private investment by pushing up interest rates','Directly increase the price level','Reduce the money supply','Lower the exchange rate'],
+ a:0, ex:'When the government borrows more, it competes with private borrowers for loanable funds, raising interest rates. Higher rates discourage private investment, partially offsetting the fiscal stimulus.'},
+
+{t:'mc',tp:'money',tl:'Money & Banking',
+ q:'If the required reserve ratio is 10%, the simple money multiplier is:',
+ opts:['0.1','1','10','0.9'],
+ a:2, ex:'Money multiplier = 1 ÷ reserve ratio = 1 ÷ 0.10 = 10. Each dollar of reserves can support $10 of deposits through the lending process.'},
+
+{t:'mc',tp:'monetary',tl:'Monetary Policy',
+ q:'When the central bank buys government bonds in the open market, the money supply:',
+ opts:['Decreases and interest rates rise','Increases and interest rates fall','Increases and interest rates rise','Decreases and interest rates fall'],
+ a:1, ex:'The central bank pays for bonds by crediting banks\' reserve accounts, expanding reserves and the money supply. Greater money supply lowers interest rates.'},
+
+{t:'mc',tp:'open',tl:'Open Economy',
+ q:'Comparative advantage is based on:',
+ opts:['Absolute productivity in all goods','The opportunity cost of production','The total quantity of resources available','Total factor productivity rankings'],
+ a:1, ex:'A country has a comparative advantage in producing a good when it can produce it at a lower opportunity cost than its trading partners. This is the foundation of mutually beneficial trade.'},
+
+// ── TRUE / FALSE ──────────────────────────────────────────────────────────
+{t:'tf',tp:'national',tl:'National Income Accounting',
+ q:'Goods produced but not sold during the year (added to inventories) are excluded from GDP.',
+ a:false, ex:'False. Unsold inventories are counted as inventory investment (part of I in GDP = C + I + G + NX). They represent new output produced in the period.'},
+
+{t:'tf',tp:'national',tl:'National Income Accounting',
+ q:'Real GDP is a better measure of actual output growth than nominal GDP because it controls for changes in the price level.',
+ a:true, ex:'Correct. Nominal GDP rises with both price increases and output increases. Real GDP adjusts for inflation, isolating changes in actual physical output.'},
+
+{t:'tf',tp:'foundations',tl:'Foundations & PPF',
+ q:'A rational economic actor always chooses the option with the highest absolute benefit, regardless of cost.',
+ a:false, ex:'False. Rational actors compare marginal benefits with marginal costs and choose the highest net benefit. Opportunity costs must be weighed against benefits.'},
+
+{t:'tf',tp:'growth',tl:'Growth & Unemployment',
+ q:'The marginal propensity to consume (MPC) and the marginal propensity to save (MPS) always sum to one.',
+ a:true, ex:'True. Every additional dollar of disposable income is either consumed (MPC) or saved (MPS). By definition, MPC + MPS = 1.'},
+
+{t:'tf',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'An increase in consumer confidence shifts the aggregate demand curve to the right.',
+ a:true, ex:'True. Greater consumer confidence increases consumption spending at every price level, shifting AD rightward.'},
+
+{t:'tf',tp:'fiscal',tl:'Fiscal Policy',
+ q:'Fiscal policy typically works with minimal time lags because governments can quickly implement changes.',
+ a:false, ex:'False. Fiscal policy involves significant recognition lags (identifying the problem), legislative lags (passing a budget), and implementation lags (spending reaching the economy). Effects can take 12–18 months.'},
+
+{t:'tf',tp:'money',tl:'Money & Banking',
+ q:'Commercial banks create money by making loans.',
+ a:true, ex:'True. When banks lend, they credit borrowers\' deposit accounts, creating new deposits (money). This is the fractional-reserve process underlying the money multiplier.'},
+
+{t:'tf',tp:'monetary',tl:'Monetary Policy',
+ q:'Contractionary monetary policy is the correct response to a recessionary gap.',
+ a:false, ex:'False. Contractionary monetary policy (raising rates, reducing money supply) combats inflation. A recessionary gap calls for expansionary monetary policy.'},
+
+{t:'tf',tp:'growth',tl:'Growth & Unemployment',
+ q:'If the inflation rate exceeds nominal wage growth, workers\' real wages have fallen.',
+ a:true, ex:'True. Real wage growth ≈ nominal wage growth − inflation. If inflation is higher, purchasing power of wages declines.'},
+
+{t:'tf',tp:'open',tl:'Open Economy',
+ q:'A trade deficit always signals economic weakness.',
+ a:false, ex:'False. A trade deficit can reflect a strong economy with high consumer purchasing power. The U.S. ran trade deficits for decades during periods of strong growth. Context matters.'},
+
+{t:'tf',tp:'money',tl:'Money & Banking',
+ q:'M1 money supply includes savings deposits and term deposits.',
+ a:false, ex:'False. M1 includes currency in circulation and demand deposits (chequing accounts). Savings and term deposits are part of M2.'},
+
+{t:'tf',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'A rise in oil prices shifts the short-run aggregate supply (SRAS) curve to the left.',
+ a:true, ex:'True. Higher input costs reduce firms\' willingness to supply at any price level, shifting SRAS leftward — a negative supply shock.'},
+
+// ── NUMERICAL ─────────────────────────────────────────────────────────────
+{t:'num',tp:'national',tl:'National Income Accounting',
+ q:'Calculate GDP using the expenditure approach ($ billions): Consumer spending (C) = $520B, Gross Investment (I) = $130B, Government spending (G) = $175B, Exports (X) = $95B, Imports (M) = $75B.',
+ a:845, tol:1, hint:'GDP = C + I + G + (X − M)', unit:'$ billion',
+ ex:'GDP = 520 + 130 + 175 + (95 − 75) = 520 + 130 + 175 + 20 = $845 billion.'},
+
+{t:'num',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'If MPC = 0.8, what is the expenditure multiplier?',
+ a:5, tol:.05, hint:'Multiplier = 1 ÷ (1 − MPC)', unit:'',
+ ex:'Multiplier = 1 ÷ (1 − 0.8) = 1 ÷ 0.2 = 5. A $1 rise in autonomous spending increases equilibrium income by $5.'},
+
+{t:'num',tp:'growth',tl:'Growth & Unemployment',
+ q:'The CPI was 110 last year and is 121 this year. What is the annual inflation rate (%)? Round to one decimal.',
+ a:10, tol:.15, hint:'Inflation rate = ((New CPI − Old CPI) ÷ Old CPI) × 100', unit:'%',
+ ex:'Inflation = ((121 − 110) ÷ 110) × 100 = (11 ÷ 110) × 100 = 10%.'},
+
+{t:'num',tp:'national',tl:'National Income Accounting',
+ q:'Nominal GDP is $750 billion and the GDP deflator is 125. Calculate real GDP ($ billions).',
+ a:600, tol:1, hint:'Real GDP = (Nominal GDP ÷ GDP Deflator) × 100', unit:'$ billion',
+ ex:'Real GDP = (750 ÷ 125) × 100 = $600 billion.'},
+
+{t:'num',tp:'growth',tl:'Growth & Unemployment',
+ q:'A country\'s labour force is 25 million people. Of these, 2 million are unemployed. What is the unemployment rate (%)?',
+ a:8, tol:.1, hint:'Unemployment rate = (Unemployed ÷ Labour Force) × 100', unit:'%',
+ ex:'Unemployment rate = (2 ÷ 25) × 100 = 8%.'},
+
+{t:'num',tp:'money',tl:'Money & Banking',
+ q:'A bank receives a new deposit of $40,000. The required reserve ratio is 25%. What is the maximum new money the entire banking system can create ($)?',
+ a:160000, tol:100, hint:'Max new money = Deposit × (1 ÷ reserve ratio)', unit:'$',
+ ex:'Multiplier = 1 ÷ 0.25 = 4. Max new money = $40,000 × 4 = $160,000.'},
+
+{t:'num',tp:'fiscal',tl:'Fiscal Policy',
+ q:'MPC = 0.75 and government spending rises by $60 billion. By how much does equilibrium income increase ($ billions)?',
+ a:240, tol:1, hint:'ΔY = [1 ÷ (1 − MPC)] × ΔG', unit:'$ billion',
+ ex:'Multiplier = 1 ÷ 0.25 = 4. ΔY = 4 × $60B = $240 billion.'},
+
+{t:'num',tp:'open',tl:'Open Economy',
+ q:'A country exports $280 billion and imports $350 billion. What is the trade balance ($ billions)? Enter a negative number for a deficit.',
+ a:-70, tol:1, hint:'Trade balance = Exports − Imports', unit:'$ billion',
+ ex:'Trade balance = 280 − 350 = −$70 billion (trade deficit of $70B).'},
+
+// ── SHORT ANSWER ──────────────────────────────────────────────────────────
+{t:'sa',tp:'national',tl:'National Income Accounting',
+ q:'Explain the difference between GDP and GNP (GNI), and give one example of a transaction counted in Canadian GNP but not Canadian GDP.',
+ kw:['citizens','residents','borders','nationality','domestic','national','location'],
+ ma:'GDP (Gross Domestic Product) counts all output produced within a country\'s geographic borders, regardless of the producer\'s nationality. GNP (Gross National Product / GNI) counts all output produced by a country\'s residents, regardless of where they are located.\n\nExample: A Canadian-owned mining company operating in Chile contributes to Canadian GNP (owner is Canadian) but not Canadian GDP (production occurs outside Canada). Conversely, a Toyota plant in Ontario adds to Canadian GDP but not Canadian GNP (profits ultimately belong to Japanese owners).'},
+
+{t:'sa',tp:'growth',tl:'Growth & Unemployment',
+ q:'Distinguish between frictional, structural, and cyclical unemployment. Which types make up the natural rate of unemployment?',
+ kw:['frictional','structural','cyclical','natural rate','job search','skills','recession','mismatch'],
+ ma:'Frictional unemployment: short-term unemployment arising from the time it takes workers to find jobs matching their skills and preferences (e.g., a recent graduate searching for their first job). It is voluntary and normal.\n\nStructural unemployment: arises from a mismatch between workers\' skills and available jobs, often due to technological change or industrial shifts (e.g., a displaced manufacturing worker in a region shifting to service industries).\n\nCyclical unemployment: caused by economic downturns. When aggregate demand falls, firms reduce output and lay off workers.\n\nThe natural rate = frictional + structural unemployment. Cyclical unemployment is NOT included. When the economy is at the natural rate, there is no cyclical unemployment.'},
+
+{t:'sa',tp:'fiscal',tl:'Fiscal Policy',
+ q:'What is the crowding out effect, and how does it limit the effectiveness of expansionary fiscal policy?',
+ kw:['interest rates','private investment','borrowing','loanable funds','bonds','deficit','offset'],
+ ma:'Crowding out occurs when government deficit spending raises interest rates in the loanable funds market, reducing private investment.\n\nMechanism: The government borrows by issuing bonds, increasing demand for loanable funds. This pushes up interest rates. Higher rates make borrowing more expensive for businesses, discouraging capital investment. As private I falls, it partially offsets the increase in G, limiting the net increase in aggregate demand.\n\nIn extreme "complete crowding out," each dollar of G displaces exactly one dollar of private spending — the multiplier effect is eliminated.'},
+
+{t:'sa',tp:'money',tl:'Money & Banking',
+ q:'Describe the three functions of money and explain why barter economies are inefficient.',
+ kw:['medium of exchange','store of value','unit of account','double coincidence','transaction costs','barter'],
+ ma:'The three functions of money:\n1. Medium of exchange: accepted in all transactions, eliminating the need for barter.\n2. Unit of account: a common measure of value, allowing easy price comparisons.\n3. Store of value: preserves purchasing power over time (though inflation erodes this).\n\nBarter requires a "double coincidence of wants" — each party must want exactly what the other offers, at the same time. With many goods, finding a match is enormously costly and time-consuming. Money eliminates this problem, reduces transaction costs, and enables deep specialization.'},
+
+{t:'sa',tp:'monetary',tl:'Monetary Policy',
+ q:'Explain how the Bank of Canada would use monetary policy to combat a recessionary gap.',
+ kw:['interest rates','money supply','open market','aggregate demand','investment','expansionary','bonds','reserves'],
+ ma:'A recessionary gap occurs when actual GDP falls below potential GDP. The Bank of Canada implements expansionary monetary policy:\n\n1. Open market purchases: The Bank buys government bonds, crediting banks\' reserve accounts and increasing the money supply.\n2. Greater money supply lowers interest rates.\n3. Lower rates reduce the cost of borrowing for firms (↑ investment) and households (↑ consumption on durables/housing).\n4. Higher I and C shift the AD curve to the right.\n5. Higher AD raises real GDP toward potential output, reducing unemployment.'},
+
+{t:'sa',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'What is the difference between a movement along the AD curve and a shift of the AD curve? Give one example of each.',
+ kw:['price level','shift','movement','autonomous','consumer confidence','government spending','wealth effect'],
+ ma:'Movement along the AD curve: caused by a change in the domestic price level. For example, if the price level rises, real wealth falls, import demand rises, and interest rates tend to increase — reducing quantity of output demanded (move up and left along the curve).\n\nShift of the AD curve: caused by something other than the price level changing aggregate demand at every price level. For example, if the government increases spending (G), more output is demanded at every price level — the entire AD curve shifts right.'},
+
+{t:'sa',tp:'open',tl:'Open Economy',
+ q:'Explain comparative advantage and why it produces gains from trade even when one country is more productive at everything.',
+ kw:['opportunity cost','specialization','absolute advantage','comparative advantage','gains from trade','lower cost'],
+ ma:'Comparative advantage: a country has a comparative advantage in a good if it can produce it at a lower opportunity cost than its trading partners — it sacrifices fewer other goods per unit produced.\n\nEven if Country A is absolutely more productive at all goods, trade is still mutually beneficial. Country A should specialize in the good where its productivity advantage is greatest; Country B in the good where its disadvantage is smallest.\n\nWhen both countries specialize and trade, total world output rises, and both can consume combinations beyond their own PPF. This is Ricardo\'s fundamental insight: comparative advantage, not absolute advantage, determines the pattern and gains from trade.'},
+
+// ── GRAPHICAL ─────────────────────────────────────────────────────────────
+{t:'graph',tp:'foundations',tl:'Foundations & PPF',
+ q:'The diagram shows a PPF for an economy producing Wheat and Cars. Point A is inside the frontier, Point B is on the frontier, Point C is outside. Which point represents productive efficiency?',
+ gfx:'ppf_pts',
+ opts:['Point A — inside the frontier','Point B — on the frontier','Point C — outside the frontier','All three equally represent efficiency'],
+ a:1, ex:'Point B lies on the PPF — all resources are fully and efficiently employed. Point A is inside (inefficiency/unemployment); Point C is currently unattainable given existing resources and technology.'},
+
+{t:'graph',tp:'foundations',tl:'Foundations & PPF',
+ q:'The PPF has shifted outward from PPF₁ to PPF₂. Which of the following best explains this shift?',
+ gfx:'ppf_shift',
+ opts:['An increase in cyclical unemployment','A decrease in consumer preferences for one good','Technological progress or an increase in productive resources','A reduction in international trade'],
+ a:2, ex:'An outward PPF shift represents economic growth — the economy can now produce more of both goods. It is caused by technological improvement, growth in the labour force, capital accumulation, or better resource quality.'},
+
+{t:'graph',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'The AD-AS diagram shows the economy at E₁. Aggregate demand then increases to a new short-run equilibrium E₂. What is the short-run effect on the price level and real GDP?',
+ gfx:'adas',
+ opts:['Higher price level and higher real GDP','Lower price level and lower real GDP','Higher price level and lower real GDP','No change in either variable'],
+ a:0, ex:'A rightward shift of AD moves the economy up and to the right along SRAS. In the short run, both the price level and real GDP increase. In the long run, as wages adjust, output returns to potential at a higher price level.'},
+
+{t:'graph',tp:'monetary',tl:'Monetary Policy',
+ q:'The money market diagram shows MS shifting right from MS₁ to MS₂. What happens to the equilibrium interest rate?',
+ gfx:'money_mkt',
+ opts:['The interest rate rises','The interest rate falls','The interest rate is unchanged','The interest rate rises then falls'],
+ a:1, ex:'An increase in money supply creates a surplus of money at the original interest rate. Lenders compete to deploy excess reserves, driving the interest rate down to a new, lower equilibrium.'},
+
+{t:'graph',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'The Keynesian cross diagram shows a 45° line and an AE line. Where is the macroeconomic equilibrium?',
+ gfx:'kc',
+ opts:['Where the AE line crosses the horizontal axis','Where the AE line intersects the 45° line','At the steepest point of the AE line','Where the AE line is parallel to the 45° line'],
+ a:1, ex:'Equilibrium in the Keynesian model is where planned expenditure equals actual output — the intersection of the AE line and the 45° line. At this point, there is no unintended inventory change.'},
+
+{t:'graph',tp:'fiscal',tl:'Fiscal Policy',
+ q:'The AD-AS diagram shows a recessionary gap — E₁ is to the left of LRAS. Which policy response shifts AD rightward to close the gap?',
+ gfx:'rec_gap',
+ opts:['Raising taxes and cutting government spending','Increasing government spending or cutting taxes','Raising the central bank policy rate','Reducing the money supply'],
+ a:1, ex:'A recessionary gap means output < potential. Expansionary fiscal policy — higher G or lower taxes — shifts AD right, closing the gap and restoring the economy to potential GDP.'},
+
+// ── ANALYTICAL ─────────────────────────────────────────────────────────────
+{t:'an',tp:'fiscal',tl:'Fiscal Policy',
+ q:'The economy is in recession. Using the AD-AS model and the Keynesian multiplier, analyze the short-run and long-run effects of a $50 billion increase in government spending when MPC = 0.8. Identify one limitation of this policy.',
+ ma:'Short-run analysis:\nMultiplier = 1 ÷ (1 − 0.8) = 5. The $50B increase in G shifts AD rightward by up to $250B in total impact (through multiplier rounds). In the AD-AS diagram, AD moves right, raising both real GDP and the price level. If the economy was in a recessionary gap, output moves toward potential.\n\nLong-run analysis:\nIf the stimulus overshoots potential, inflationary pressure builds. Wages and input prices rise, shifting SRAS leftward until real GDP returns to potential at a permanently higher price level — the long-run effect is purely inflationary.\n\nLimitation (any one of):\n• Crowding out: government borrowing raises interest rates, reducing private investment and partially offsetting the stimulus.\n• Implementation lags: the policy may arrive after the recession has already ended, causing inflationary overheating.\n• Debt sustainability: repeated deficits raise the public debt burden, increasing future interest payments.'},
+
+{t:'an',tp:'monetary',tl:'Monetary Policy',
+ q:'Explain the transmission mechanism of monetary policy. How does a central bank\'s decision to lower its policy interest rate eventually affect inflation and output? Identify at least three channels.',
+ ma:'The monetary policy transmission mechanism describes how policy rate changes propagate through the economy:\n\n1. Investment channel: Lower rates reduce firms\' cost of borrowing. More investment projects become profitable, raising I and shifting AD right → higher output and employment.\n\n2. Consumption/household channel: Lower mortgage and consumer loan rates stimulate spending on housing and durables → C rises, AD shifts right.\n\n3. Exchange rate channel: Lower domestic rates reduce returns on domestic assets → capital flows out → currency depreciates → exports cheaper, imports costlier → NX rises, AD shifts right.\n\n4. Asset price/wealth channel: Lower rates raise the present value of equities and property → household wealth rises → consumption increases.\n\n5. Credit channel: Lower rates ease credit conditions, expanding bank lending to firms and households → investment and consumption rise.\n\nNet effect: Expansionary monetary policy shifts AD right, raising output toward potential and reducing unemployment. If the economy is at or above potential, the main effect is upward pressure on the price level.'},
+
+{t:'an',tp:'growth',tl:'Growth & Unemployment',
+ q:'Analyze the short-run trade-off between inflation and unemployment using the Phillips Curve. Then explain why economists argue this trade-off disappears in the long run.',
+ ma:'Short-Run Phillips Curve (SRPC):\nThere is an inverse relationship between inflation and unemployment in the short run. When AD rises, unemployment falls below the natural rate, but stronger demand pulls up wages and prices — raising inflation. Policy can "buy" lower unemployment at the cost of higher inflation.\n\nShifts of the SRPC:\nThe SRPC shifts upward when inflation expectations rise. Workers and firms build expected inflation into wage demands and price-setting, raising actual inflation at every unemployment rate.\n\nLong-Run Phillips Curve (LRPC) — vertical:\nIn the long run, unemployment returns to the natural rate regardless of the inflation rate. If policymakers keep unemployment below the natural rate by stimulating demand, workers eventually raise wage demands, costs rise, output falls, and unemployment returns to the natural rate — but at a permanently higher inflation rate. There is no lasting trade-off: the LRPC is a vertical line at the natural rate of unemployment (Friedman-Phelps insight).'},
+
+{t:'an',tp:'open',tl:'Open Economy',
+ q:'Canada imposes a tariff on imported steel. Analyze the effects on: (a) domestic consumers, (b) domestic producers, (c) government revenue, and (d) overall national welfare.',
+ ma:'A tariff raises the domestic price of steel above the world price.\n\n(a) Domestic consumers: Pay a higher price, consume less, and lose consumer surplus. This is a welfare loss — they pay more for both domestically produced and imported steel.\n\n(b) Domestic steel producers: Benefit from the higher domestic price. They expand output and capture some consumer surplus previously held by buyers. Producer surplus rises.\n\n(c) Government revenue: Collects tariff revenue = tariff per unit × quantity imported. This partially offsets the consumer loss.\n\n(d) National welfare:\n• Gains: producer surplus + tariff revenue\n• Losses: consumer surplus\n• The consumer loss exceeds the combined gain by two "deadweight loss" triangles: (1) inefficient domestic production — resources misallocated to domestic production that could be imported more cheaply; (2) foregone consumer gains from the reduction in imports.\n\nConclusion: The tariff creates net deadweight loss — overall national welfare falls. However, there are second-best justifications: infant industry protection, national security, terms-of-trade improvement (if Canada is large enough to affect world prices), and strategic trade policy.'},
+];
+
+// ── APP STATE ──────────────────────────────────────────────────────────────
+const S = { qs:[], cur:0, score:0, answered:false, topicF:'all', typeF:'all', res:{} };
+
+const TYPE_LABELS = {mc:'Multiple Choice',tf:'True / False',num:'Numerical',sa:'Short Answer',graph:'Graphical',an:'Analytical'};
+const TYPE_CLS = {mc:'b-mc',tf:'b-tf',num:'b-num',sa:'b-sa',graph:'b-gr',an:'b-an'};
+
+// ── CHIP SELECTION ─────────────────────────────────────────────────────────
+document.querySelectorAll('#topic-chips .chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('#topic-chips .chip').forEach(x => x.classList.remove('selected'));
+  c.classList.add('selected'); S.topicF = c.dataset.val;
+}));
+document.querySelectorAll('#type-chips .chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('#type-chips .chip').forEach(x => x.classList.remove('selected'));
+  c.classList.add('selected'); S.typeF = c.dataset.val;
+}));
+
+// ── NAVIGATION ─────────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function showHome() { showScreen('s-home'); }
+
+// ── START ──────────────────────────────────────────────────────────────────
+function startQuiz() {
+  let pool = QB.filter(q =>
+    (S.topicF === 'all' || q.tp === S.topicF) &&
+    (S.typeF  === 'all' || q.t  === S.typeF)
+  );
+  if (!pool.length) { alert('No questions match. Try different filters.'); return; }
+  S.qs = pool.sort(() => Math.random() - .5);
+  S.cur = 0; S.score = 0; S.res = {};
+  showScreen('s-quiz');
+  renderQ();
+}
+
+// ── RENDER QUESTION ────────────────────────────────────────────────────────
+function renderQ() {
+  const q = S.qs[S.cur];
+  S.answered = false;
+  const total = S.qs.length;
+
+  document.getElementById('prog').style.width = (S.cur / total * 100) + '%';
+  document.getElementById('q-counter').textContent = `Q ${S.cur+1} of ${total}`;
+  document.getElementById('score-live').textContent = `Score: ${S.score}`;
+  const badge = document.getElementById('type-badge');
+  badge.textContent = TYPE_LABELS[q.t];
+  badge.className = 'type-badge ' + TYPE_CLS[q.t];
+  document.getElementById('q-topic').textContent = q.tl;
+  document.getElementById('q-text').textContent = q.q;
+
+  const ga = document.getElementById('q-graph');
+  ga.style.display = 'none'; ga.innerHTML = '';
+  const aa = document.getElementById('q-ans-area');
+  aa.innerHTML = '';
+  const fb = document.getElementById('q-fb');
+  fb.className = 'feedback'; fb.textContent = '';
+  const ma = document.getElementById('q-ma');
+  ma.className = 'model-ans';
+  document.getElementById('q-ma-body').innerHTML = '';
+
+  document.getElementById('btn-sub').style.display = 'block';
+  document.getElementById('btn-sub').disabled = false;
+  document.getElementById('btn-next').style.display = 'none';
+
+  if (q.t === 'mc' || q.t === 'graph') {
+    if (q.t === 'graph') {
+      ga.style.display = 'block';
+      const cv = document.createElement('canvas');
+      cv.width = 420; cv.height = 280;
+      ga.appendChild(cv);
+      drawGraph(cv, q.gfx);
+    }
+    const wrap = document.createElement('div');
+    wrap.className = 'mc-opts';
+    const lets = ['A','B','C','D'];
+    (q.opts||[]).forEach((opt, i) => {
+      const d = document.createElement('div');
+      d.className = 'mc-opt';
+      d.dataset.idx = i;
+      d.innerHTML = `<span class="opt-letter">${lets[i]}</span>${opt}`;
+      d.addEventListener('click', () => {
+        if (S.answered) return;
+        document.querySelectorAll('.mc-opt').forEach(x => x.classList.remove('selected'));
+        d.classList.add('selected');
+      });
+      wrap.appendChild(d);
+    });
+    aa.appendChild(wrap);
+
+  } else if (q.t === 'tf') {
+    const row = document.createElement('div');
+    row.className = 'tf-row';
+    ['True','False'].forEach(v => {
+      const b = document.createElement('button');
+      b.className = 'tf-btn ' + (v==='True'?'tf-t':'tf-f');
+      b.textContent = v; b.dataset.v = v;
+      b.addEventListener('click', () => {
+        if (S.answered) return;
+        document.querySelectorAll('.tf-btn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+      });
+      row.appendChild(b);
+    });
+    aa.appendChild(row);
+
+  } else if (q.t === 'num') {
+    const inp = document.createElement('input');
+    inp.type = 'number'; inp.step = 'any'; inp.className = 'num-input'; inp.id = 'num-in';
+    inp.placeholder = 'Enter your answer' + (q.unit ? ` (${q.unit})` : '');
+    aa.appendChild(inp);
+    if (q.hint) {
+      const h = document.createElement('div');
+      h.className = 'num-hint'; h.textContent = 'Hint: ' + q.hint;
+      aa.appendChild(h);
+    }
+
+  } else if (q.t === 'sa') {
+    const n = document.createElement('div');
+    n.className = 'input-note'; n.textContent = 'Write 2–4 sentences. A model answer appears after submission.';
+    aa.appendChild(n);
+    const ta = document.createElement('textarea');
+    ta.className = 'sa-input'; ta.id = 'sa-in'; ta.placeholder = 'Your answer here…';
+    aa.appendChild(ta);
+
+  } else if (q.t === 'an') {
+    const n = document.createElement('div');
+    n.className = 'input-note'; n.textContent = 'Write a detailed analytical response. Compare your answer with the model answer.';
+    aa.appendChild(n);
+    const ta = document.createElement('textarea');
+    ta.className = 'an-input'; ta.id = 'an-in'; ta.placeholder = 'Your analysis here…';
+    aa.appendChild(ta);
+  }
+}
+
+// ── DRAW GRAPHS ────────────────────────────────────────────────────────────
+function drawGraph(cv, type) {
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const M = {l:58,r:28,t:28,b:44};
+  const gW = W - M.l - M.r, gH = H - M.t - M.b;
+  ctx.clearRect(0,0,W,H);
+  const gx = x => M.l + x*gW;
+  const gy = y => M.t + (1-y)*gH;
+
+  // Axes
+  ctx.strokeStyle='#374151'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(M.l,M.t); ctx.lineTo(M.l,M.t+gH); ctx.lineTo(M.l+gW,M.t+gH); ctx.stroke();
+  ctx.fillStyle='#374151'; ctx.font='12px Helvetica Neue,Arial,sans-serif'; ctx.textAlign='center';
+
+  if (type === 'ppf_pts') {
+    ctx.fillText('Cars',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Wheat',0,0); ctx.restore();
+    // Concave PPF
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath();
+    for(let i=0;i<=100;i++){
+      const t=i/100, x=Math.sin(t*Math.PI/2)*0.87, y=Math.cos(t*Math.PI/2)*0.87;
+      i===0?ctx.moveTo(gx(x),gy(y)):ctx.lineTo(gx(x),gy(y));
+    }
+    ctx.stroke();
+    // Points
+    [{x:.33,y:.33,l:'A',c:'#d97706'},{x:.616,y:.616,l:'B',c:'#059669'},{x:.8,y:.8,l:'C',c:'#dc2626'}].forEach(p=>{
+      ctx.beginPath(); ctx.arc(gx(p.x),gy(p.y),7,0,2*Math.PI);
+      ctx.fillStyle=p.c; ctx.fill();
+      ctx.fillStyle='#111'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left';
+      ctx.fillText(p.l,gx(p.x)+11,gy(p.y)-5);
+    });
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='left';
+    ctx.fillText('(inside)',gx(.33)+20,gy(.33)+4);
+    ctx.fillText('(on frontier)',gx(.616)+14,gy(.616)+14);
+    ctx.fillText('(outside)',gx(.8)+10,gy(.8)-12);
+
+  } else if (type === 'ppf_shift') {
+    ctx.fillText('Good Y',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Good X',0,0); ctx.restore();
+    const drawPPF=(sc,col,lbl)=>{
+      ctx.strokeStyle=col; ctx.lineWidth=2.5;
+      ctx.beginPath();
+      for(let i=0;i<=100;i++){const t=i/100;const x=Math.sin(t*Math.PI/2)*sc,y=Math.cos(t*Math.PI/2)*sc;i===0?ctx.moveTo(gx(x),gy(y)):ctx.lineTo(gx(x),gy(y));}
+      ctx.stroke();
+      ctx.fillStyle=col; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left';
+      ctx.fillText(lbl,gx(sc*0.72),gy(sc*0.04)-4);
+    };
+    drawPPF(0.62,'#9ca3af','PPF₁'); drawPPF(0.85,'#003366','PPF₂');
+    // Arrow
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=2; ctx.setLineDash([5,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.42),gy(.42)); ctx.lineTo(gx(.58),gy(.58)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#c8960c'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('Growth →',gx(.47),gy(.53));
+
+  } else if (type === 'adas') {
+    ctx.fillText('Real GDP',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price Level (P)',0,0); ctx.restore();
+    // LRAS
+    ctx.strokeStyle='#374151'; ctx.lineWidth=1.8; ctx.setLineDash([6,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.6),gy(0)); ctx.lineTo(gx(.6),gy(1)); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='#374151'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('LRAS',gx(.6),gy(.96));
+    // SRAS
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.08),gy(.08)); ctx.lineTo(gx(.95),gy(.9)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('SRAS',gx(.9),gy(.87));
+    // AD1
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.08),gy(.88)); ctx.lineTo(gx(.9),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.fillText('AD₁',gx(.88),gy(.1));
+    // AD2 shifted
+    ctx.strokeStyle='#2563eb'; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.26),gy(.88)); ctx.lineTo(gx(.99),gy(.13)); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='#2563eb'; ctx.fillText('AD₂',gx(.94),gy(.22));
+    // E1 (AD1 ∩ SRAS): SRAS y=0.08+x*0.82/0.87, AD1 y=0.88-x*0.82/0.82=0.88-x → solve
+    // 0.08+x*0.943=0.88-x → 1.943x=0.8 → x=0.412, y=0.468
+    const e1x=.412,e1y=.468;
+    ctx.beginPath(); ctx.arc(gx(e1x),gy(e1y),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(e1x)-7,gy(e1y)-6);
+    // E2 (AD2 ∩ SRAS): AD2 y=1.14-x, SRAS y=0.08+0.943x → 1.14-x=0.08+0.943x → 1.06=1.943x → x=0.546, y=0.594
+    const e2x=.546,e2y=.594;
+    ctx.beginPath(); ctx.arc(gx(e2x),gy(e2y),5,0,2*Math.PI); ctx.fillStyle='#f59e0b'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.textAlign='left'; ctx.fillText('E₂',gx(e2x)+7,gy(e2y)-6);
+
+  } else if (type === 'money_mkt') {
+    ctx.fillText('Quantity of Money',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Interest Rate (r)',0,0); ctx.restore();
+    // MD downward
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.06),gy(.9)); ctx.lineTo(gx(.9),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('MD',gx(.88),gy(.09));
+    // MS1 vertical
+    ctx.strokeStyle='#059669'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.42),gy(0)); ctx.lineTo(gx(.42),gy(1)); ctx.stroke();
+    ctx.fillStyle='#059669'; ctx.fillText('MS₁',gx(.42)+3,gy(.95));
+    // MS2 vertical shifted right
+    ctx.strokeStyle='#10b981'; ctx.lineWidth=2; ctx.setLineDash([5,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.65),gy(0)); ctx.lineTo(gx(.65),gy(1)); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='#10b981'; ctx.fillText('MS₂',gx(.65)+3,gy(.95));
+    // Arrow
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(gx(.46),gy(.5)); ctx.lineTo(gx(.61),gy(.5)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.61),gy(.5)); ctx.lineTo(gx(.58),gy(.53)); ctx.lineTo(gx(.58),gy(.47)); ctx.fill();
+    // MD: y = 0.9 - (x-0.06) = 0.96-x
+    const e1y_m = 0.96-.42; // 0.54
+    const e2y_m = 0.96-.65; // 0.31
+    ctx.beginPath(); ctx.arc(gx(.42),gy(e1y_m),5,0,2*Math.PI); ctx.fillStyle='#374151'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(.42)-6,gy(e1y_m));
+    ctx.beginPath(); ctx.arc(gx(.65),gy(e2y_m),5,0,2*Math.PI); ctx.fillStyle='#374151'; ctx.fill();
+    ctx.textAlign='left'; ctx.fillText('E₂',gx(.65)+6,gy(e2y_m));
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(e1y_m)); ctx.lineTo(gx(.42),gy(e1y_m)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(e2y_m)); ctx.lineTo(gx(.65),gy(e2y_m)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right';
+    ctx.fillText('r₁',M.l-2,gy(e1y_m)+4); ctx.fillText('r₂',M.l-2,gy(e2y_m)+4);
+
+  } else if (type === 'kc') {
+    ctx.fillText('Output / Income (Y)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Planned AE',0,0); ctx.restore();
+    // 45° line
+    ctx.strokeStyle='#9ca3af'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+    ctx.beginPath(); ctx.moveTo(gx(0),gy(0)); ctx.lineTo(gx(.92),gy(.92)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9ca3af'; ctx.font='11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('45°',gx(.9),gy(.93));
+    // AE line: y = 0.15 + 0.65x → equilibrium: 0.15+0.65Y=Y → Y*=0.429
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(0),gy(.15)); ctx.lineTo(gx(.9),gy(.15+.65*.9)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('AE',gx(.88),gy(.735));
+    const Yeq=.15/.35;
+    ctx.beginPath(); ctx.arc(gx(Yeq),gy(Yeq),6,0,2*Math.PI);
+    ctx.fillStyle='#c8960c'; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='#111'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('E*',gx(Yeq)+10,gy(Yeq)-8);
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(Yeq),gy(Yeq)); ctx.lineTo(gx(Yeq),gy(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(Yeq),gy(Yeq)); ctx.lineTo(gx(0),gy(Yeq)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue';
+    ctx.textAlign='center'; ctx.fillText('Y*',gx(Yeq),gy(0)+13);
+    ctx.textAlign='right'; ctx.fillText('Y*',M.l-2,gy(Yeq)+4);
+
+  } else if (type === 'rec_gap') {
+    ctx.fillText('Real GDP (Y)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price Level (P)',0,0); ctx.restore();
+    // LRAS at Y*
+    ctx.strokeStyle='#374151'; ctx.lineWidth=1.8; ctx.setLineDash([6,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.67),gy(0)); ctx.lineTo(gx(.67),gy(1)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#374151'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('LRAS (Y*)',gx(.67),gy(.95));
+    // SRAS
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.08)); ctx.lineTo(gx(.95),gy(.9)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('SRAS',gx(.9),gy(.87));
+    // AD (intersects SRAS left of LRAS): y=0.87-(x-0.05)=0.92-x
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.87)); ctx.lineTo(gx(.87),gy(.05)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('AD',gx(.84),gy(.08));
+    // E1: SRAS y=0.08+(x-0.05)*0.82/0.9, AD y=0.92-x → solve
+    // 0.08+(x-.05)*0.911 = 0.92-x → 0.08+0.911x-0.046=0.92-x → 0.034+0.911x=0.92-x → 1.911x=0.886 → x=0.464
+    const e1x=.464, e1y=0.92-.464;
+    ctx.beginPath(); ctx.arc(gx(e1x),gy(e1y),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(e1x)-7,gy(e1y));
+    // Gap annotation
+    ctx.strokeStyle='#f59e0b'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(e1x),gy(.24)); ctx.lineTo(gx(.67),gy(.24)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#f59e0b'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('← Gap →',gx((e1x+.67)/2),gy(.16));
+  }
+}
+
+// ── SUBMIT ─────────────────────────────────────────────────────────────────
+function submit() {
+  const q = S.qs[S.cur];
+  if (S.answered) return;
+  S.answered = true;
+
+  const fb = document.getElementById('q-fb');
+  const ma = document.getElementById('q-model-ans') || document.getElementById('q-ma');
+  const maBody = document.getElementById('q-ma-body');
+  let correct = false;
+
+  if (q.t === 'mc' || q.t === 'graph') {
+    const sel = document.querySelector('.mc-opt.selected');
+    if (!sel) { S.answered=false; alert('Please select an answer.'); return; }
+    const chosen = parseInt(sel.dataset.idx);
+    correct = chosen === q.a;
+    document.querySelectorAll('.mc-opt').forEach((o,i) => {
+      o.classList.add('disabled');
+      if (i===q.a) o.classList.add('correct');
+      else if (i===chosen&&!correct) o.classList.add('wrong');
+    });
+    fb.textContent = (correct?'✓ Correct! ':'✗ Incorrect. ') + q.ex;
+    fb.className = 'feedback show ' + (correct?'fb-ok':'fb-err');
+
+  } else if (q.t === 'tf') {
+    const sel = document.querySelector('.tf-btn.selected');
+    if (!sel) { S.answered=false; alert('Please select True or False.'); return; }
+    const chosen = sel.dataset.v==='True';
+    correct = chosen===q.a;
+    document.querySelectorAll('.tf-btn').forEach(b => {
+      b.classList.add('disabled');
+      if ((b.dataset.v==='True')===q.a) b.classList.add('correct');
+      else if ((b.dataset.v==='True')===chosen&&!correct) b.classList.add('wrong');
+    });
+    fb.textContent = (correct?'✓ Correct! ':'✗ Incorrect. Correct answer: '+(q.a?'True':'False')+'. ') + q.ex;
+    fb.className = 'feedback show ' + (correct?'fb-ok':'fb-err');
+
+  } else if (q.t === 'num') {
+    const inp = document.getElementById('num-in');
+    if (!inp||!inp.value) { S.answered=false; alert('Please enter a number.'); return; }
+    const val = parseFloat(inp.value);
+    correct = Math.abs(val-q.a)<=q.tol;
+    inp.classList.add(correct?'correct':'wrong');
+    fb.textContent = (correct?'✓ Correct! ':'✗ Incorrect. Answer: '+q.a+(q.unit?' '+q.unit:'')+'. ') + q.ex;
+    fb.className = 'feedback show ' + (correct?'fb-ok':'fb-err');
+
+  } else if (q.t === 'sa') {
+    const inp = document.getElementById('sa-in');
+    if (!inp||!inp.value.trim()) { S.answered=false; alert('Please write an answer.'); return; }
+    const txt = inp.value.toLowerCase();
+    const matched = q.kw.filter(k=>txt.includes(k.toLowerCase())).length;
+    correct = matched >= Math.ceil(q.kw.length*0.35);
+    fb.textContent = `You included ${matched} of ${q.kw.length} key concepts. See model answer below.`;
+    fb.className = 'feedback show fb-info';
+    maBody.innerHTML = q.ma.replace(/\n/g,'<br>');
+    document.getElementById('q-ma').className = 'model-ans show';
+
+  } else if (q.t === 'an') {
+    const inp = document.getElementById('an-in');
+    if (!inp||!inp.value.trim()) { S.answered=false; alert('Please write your analysis.'); return; }
+    correct = true;
+    fb.textContent = 'Compare your response with the model answer below and self-assess.';
+    fb.className = 'feedback show fb-info';
+    maBody.innerHTML = q.ma.replace(/\n/g,'<br>');
+    document.getElementById('q-ma').className = 'model-ans show';
+  }
+
+  if (correct) S.score++;
+  if (!S.res[q.t]) S.res[q.t]={c:0,n:0};
+  S.res[q.t].n++;
+  if (correct) S.res[q.t].c++;
+
+  document.getElementById('score-live').textContent = `Score: ${S.score}`;
+  document.getElementById('btn-sub').style.display = 'none';
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+// ── NEXT / RESULTS ─────────────────────────────────────────────────────────
+function nextQ() {
+  S.cur++;
+  if (S.cur >= S.qs.length) showResults();
+  else renderQ();
+}
+
+function showResults() {
+  showScreen('s-results');
+  const total = S.qs.length;
+  const pct = Math.round(S.score/total*100);
+  document.getElementById('r-pct').textContent = pct+'%';
+  let grade, msg;
+  if (pct>=90){grade='A+';msg='Excellent! Strong command of macroeconomics.'}
+  else if(pct>=80){grade='A';msg='Very good. Review questions you missed.'}
+  else if(pct>=70){grade='B';msg='Good. Focus on the weak topics below.'}
+  else if(pct>=60){grade='C';msg='Passing. Revisit your textbook for the topics below.'}
+  else{grade='D/F';msg='Keep studying. Review the chapter readings and try again.'}
+  document.getElementById('r-grade').textContent = `Grade: ${grade}`;
+  document.getElementById('r-msg').textContent = `${S.score} / ${total} correct. ${msg}`;
+  const tbody = document.getElementById('r-tbody');
+  tbody.innerHTML='';
+  Object.entries(S.res).forEach(([type,d])=>{
+    const p=d.n>0?Math.round(d.c/d.n*100):0;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${TYPE_LABELS[type]}</td><td>${d.c}</td><td>${d.n}</td><td>${p}%</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+document.getElementById('stat-n').textContent = QB.length;
+</script>
+</body>
+</html>
