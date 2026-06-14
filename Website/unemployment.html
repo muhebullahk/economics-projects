@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unemployment — ECON 101</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px; font-size: 9px;
+    color: rgba(255,255,255,.18); letter-spacing: .07em; text-transform: uppercase;
+    pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--rust); margin-bottom: 18px; }
+  #s0 .rule  { width: 56px; height: 3px; background: var(--rust); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 64px; line-height: 1.05; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--rust); }
+  #s0 .sub  { margin-top: 20px; font-size: 16px; color: #8898a0; font-weight: 300; max-width: 450px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(192,68,42,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .icon-wrap { position: absolute; right: 52px; top: 50%; transform: translateY(-50%); width: 220px; height: 220px; }
+
+  /* ── Slide 1 – Measuring Unemployment ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--rust); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--ink); line-height: 1.15; margin-bottom: 26px; }
+  .cards { display: flex; gap: 18px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 22px 18px; border-top: 4px solid var(--rust); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.gold-t { border-color: var(--gold); }
+  .card.teal-t { border-color: var(--teal); }
+  .card .icon { font-size: 26px; margin-bottom: 10px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .card p { font-size: 12.5px; color: #444; line-height: 1.6; font-weight: 300; }
+  .formula { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: var(--rust); margin-top: 8px; font-weight: 700; }
+
+  /* ── Slides 2, 3, 5 – horizontal ── */
+  .h-slide { flex-direction: row; align-items: center; gap: 34px; padding: 42px 50px; }
+  .h-slide .sl { flex: 1; min-width: 0; }
+  #s2 { background: #0f1117; }
+  #s3 { background: var(--paper); }
+  #s5 { background: var(--paper); }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--paper); margin-bottom: 7px; }
+  #s3 h2, #s5 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); margin-bottom: 7px; }
+  #s2 .intro { font-size: 12.5px; color: #bbc; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  #s3 .intro, #s5 .intro { font-size: 12.5px; color: #555; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  .side-facts { display: flex; flex-direction: column; gap: 9px; }
+  .side-fact { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; line-height: 1.5; }
+  .sbadge { flex-shrink: 0; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .04em; margin-top: 1px; background: rgba(192,68,42,.18); color: var(--rust); }
+  #s2 .side-fact { color: #bbc; }
+  #s3 .side-fact { color: #444; }
+  #s3 .side-fact strong { color: var(--ink); }
+  #s5 .side-fact { color: #444; }
+
+  /* ── Slide 4 – Costs ── */
+  #s4 { background: #0a0f14; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 6px; }
+  #s4 .intro { font-size: 12.5px; color: #8899aa; font-weight: 300; margin-bottom: 20px; line-height: 1.55; }
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .cost-card { border-radius: 8px; padding: 20px 18px; opacity: 0; transition: opacity .6s ease; }
+  .cost-card.show { opacity: 1; }
+  .cost-card.econ   { background: rgba(192,68,42,.09);  border: 1px solid rgba(192,68,42,.3); }
+  .cost-card.social { background: rgba(200,168,75,.09); border: 1px solid rgba(200,168,75,.3); }
+  .cost-card .cost-label { font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 5px; }
+  .cost-card.econ   .cost-label { color: var(--rust); }
+  .cost-card.social .cost-label { color: var(--gold); }
+  .cost-card h4 { font-size: 16px; font-family: 'Playfair Display', serif; font-weight: 700; margin-bottom: 8px; }
+  .cost-card.econ   h4 { color: var(--rust); }
+  .cost-card.social h4 { color: var(--gold); }
+  .cost-card p  { font-size: 12px; color: #8899aa; line-height: 1.6; font-weight: 300; margin-bottom: 6px; }
+  .cost-ex { font-size: 11px; color: #667; font-weight: 300; font-style: italic; }
+  .cost-note { margin-top: 16px; padding: 10px 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; font-size: 12px; color: #ccd; line-height: 1.55; font-weight: 300; opacity: 0; transition: opacity .6s ease; }
+  .cost-note.show { opacity: 1; }
+  .cost-note strong { color: var(--rust); }
+
+  /* ── Slide 5 – Policies ── */
+  .pol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .pol-col { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 3px 12px rgba(0,0,0,.07); opacity: 0; transition: opacity .6s ease; }
+  .pol-col.show { opacity: 1; }
+  .pol-col h3 { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+  .pol-col.demand h3 { color: var(--rust); }
+  .pol-col.supply h3 { color: var(--teal); }
+  .pol-item { display: flex; gap: 8px; margin-bottom: 7px; font-size: 12px; color: #444; line-height: 1.45; font-weight: 300; }
+  .pol-item .p-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .pol-col.demand .p-dot { background: var(--rust); }
+  .pol-col.supply .p-dot { background: var(--teal); }
+  .pol-note { margin-top: 14px; padding: 9px 14px; background: rgba(192,68,42,.07); border-left: 3px solid var(--rust); font-size: 12px; color: #333; line-height: 1.55; opacity: 0; transition: opacity .6s ease; }
+  .pol-note.show { opacity: 1; }
+  .pol-note strong { color: var(--rust); }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: #1a0808; }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(192,68,42,.2); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 25px; line-height: 1.5; color: white; max-width: 640px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--rust); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag  { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.3); }
+
+  /* ── Controls ── */
+  #controls { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--rust); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--rust); width: 0%; }
+  #loading-overlay { position: absolute; inset: 0; background: rgba(10,12,18,.88); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 10; }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(192,68,42,.2); border-top-color: var(--rust); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* ── Teaching animations ── */
+  .anim-path { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .65s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 101 · Macroeconomics</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Un-<br><em>employment</em></h1>
+    <p class="sub fade-in">When workers who want jobs cannot find them — one of the most visible and costly failures of a market economy.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="icon-wrap fade-in">
+      <svg viewBox="0 0 220 220" fill="none">
+        <circle cx="110" cy="110" r="105" stroke="rgba(192,68,42,.15)" stroke-width="1.5"/>
+        <!-- Axes -->
+        <line x1="30" y1="185" x2="192" y2="185" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <line x1="30" y1="185" x2="30"  y2="30"  stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <!-- NRU dashed baseline -->
+        <line id="title-nru" class="anim-path" x1="30" y1="132" x2="192" y2="132"
+              stroke="rgba(200,168,75,.5)" stroke-width="1.4" stroke-dasharray="5 4"/>
+        <!-- Unemployment rate wavy line (rust) -->
+        <path id="title-wave" class="anim-path"
+              d="M 30,132 C 50,128 58,98 78,92 S 98,130 112,142 S 138,108 158,88 S 178,100 192,118"
+              fill="none" stroke="#c0442a" stroke-width="2.4" stroke-linecap="round"/>
+        <!-- Labels -->
+        <text x="111" y="202" fill="rgba(255,255,255,.28)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" letter-spacing=".07em">TIME →</text>
+        <text x="22"  y="108" fill="rgba(255,255,255,.28)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 108)">U RATE</text>
+        <text class="ppf-pt" id="title-nrulbl" x="196" y="135" fill="rgba(200,168,75,.7)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600">NRU</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: Measuring Unemployment ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">Measuring the Labour Market</div>
+    <h2 class="fade-in">Who counts as unemployed?</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">👷</div>
+        <h3>The Labour Force</h3>
+        <p>Everyone aged 15+ who is either <em>employed</em> or <em>actively searching for work</em>. Excludes retirees, full-time students, and discouraged workers who have stopped looking.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">📐</div>
+        <h3>Unemployment Rate</h3>
+        <p>The share of the labour force that is jobless and actively searching for work.</p>
+        <p class="formula">u = (Unemployed ÷ Labour Force) × 100</p>
+      </div>
+      <div class="card teal-t fade-in">
+        <div class="icon">⚠️</div>
+        <h3>Hidden Unemployment</h3>
+        <p><em>Discouraged workers</em> (gave up searching) and <em>underemployed workers</em> (part-time who want full-time) are excluded from the official rate — causing it to understate true joblessness.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: Types of Unemployment (dark, horizontal) ── -->
+  <div class="slide h-slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Three Types of Unemployment</h2>
+      <p class="intro fade-in">Not all unemployment has the same cause — and that matters for policy. The right remedy depends on the type.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(26,122,110,.2);color:#1a9a8e">Frictional</span>
+          <span>Workers are <em>between jobs</em> — searching, relocating, or transitioning. Normal and healthy: it reflects workers finding better matches. Duration is usually short.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge">Structural</span>
+          <span>A <em>skills mismatch</em> — available jobs don't match the skills of unemployed workers. Caused by technological change or industry decline. Longer-lasting and harder to address.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(200,168,75,.18);color:var(--gold)">Cyclical</span>
+          <span>Caused by a <em>downturn in aggregate demand</em> — firms hire less when spending falls. Rises sharply in recessions. The primary target of fiscal and monetary stabilisation policy.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Stacked bar diagram (dark background) -->
+    <svg viewBox="0 0 290 270" width="290" height="270" class="fade-in" style="flex-shrink:0;">
+      <rect x="95" y="28" width="64" height="212" rx="4" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+      <!-- Frictional (teal, bottom) -->
+      <rect x="95" y="170" width="64" height="70" rx="0 0 4 4" fill="#1a9a8e" opacity=".85"/>
+      <!-- Structural (rust, middle) -->
+      <rect x="95" y="99"  width="64" height="71" fill="#c0442a" opacity=".85"/>
+      <!-- Cyclical (gold, top) -->
+      <rect x="95" y="28"  width="64" height="71" rx="4 4 0 0" fill="#c8a84b" opacity=".85"/>
+      <!-- Labels -->
+      <text x="168" y="211" fill="#1a9a8e" font-size="11.5" font-family="Space Grotesk,sans-serif" font-weight="700">Frictional</text>
+      <text x="168" y="224" fill="#1a9a8e" font-size="9.5"  font-family="Space Grotesk,sans-serif" font-weight="300">short-term · normal</text>
+      <text x="168" y="140" fill="#c0442a" font-size="11.5" font-family="Space Grotesk,sans-serif" font-weight="700">Structural</text>
+      <text x="168" y="153" fill="#c0442a" font-size="9.5"  font-family="Space Grotesk,sans-serif" font-weight="300">skills mismatch</text>
+      <text x="168" y="64"  fill="#c8a84b" font-size="11.5" font-family="Space Grotesk,sans-serif" font-weight="700">Cyclical</text>
+      <text x="168" y="77"  fill="#c8a84b" font-size="9.5"  font-family="Space Grotesk,sans-serif" font-weight="300">recession-driven</text>
+      <!-- Natural Rate brace -->
+      <line x1="82" y1="99"  x2="82" y2="240" stroke="rgba(255,255,255,.32)" stroke-width="1.2"/>
+      <line x1="77" y1="99"  x2="82" y2="99"  stroke="rgba(255,255,255,.32)" stroke-width="1.2"/>
+      <line x1="77" y1="240" x2="82" y2="240" stroke="rgba(255,255,255,.32)" stroke-width="1.2"/>
+      <text x="66" y="172" fill="rgba(255,255,255,.42)" font-size="8.5" font-family="Space Grotesk,sans-serif"
+            text-anchor="middle" transform="rotate(-90 66 172)">Natural Rate</text>
+      <text x="127" y="262" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Total unemployment</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Natural Rate of Unemployment (light, horizontal) ── -->
+  <div class="slide h-slide" id="s3">
+    <div class="sl">
+      <h2 class="fade-in">The Natural Rate of Unemployment</h2>
+      <p class="intro fade-in">Even at "full employment," some unemployment always exists. The <em>natural rate</em> (NRU) is unemployment when the economy produces its potential output — cyclical unemployment is zero.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(26,122,110,.15);color:#1a7a6e">NRU</span>
+          <span><strong>NRU = Frictional + Structural.</strong> In Canada, economists estimate the NRU at roughly 5–6%. It shifts over time as demographics, technology, and institutions change.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge">Full Empl.</span>
+          <span>"Full employment" means <em>zero cyclical unemployment</em>, not zero unemployment. At full employment, actual output equals potential GDP and the output gap is zero.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(192,68,42,.15);color:var(--rust)">Okun's Law</span>
+          <span>Each 1% of excess unemployment above the NRU costs approximately <strong>2% of potential GDP</strong> — a powerful reminder of how costly recessions really are.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Output gap SVG (light background) -->
+    <svg viewBox="0 0 290 252" width="290" height="252" class="fade-in" style="flex-shrink:0;">
+      <line x1="40" y1="215" x2="268" y2="215" stroke="#bbb" stroke-width="1.3"/>
+      <line x1="40" y1="215" x2="40"  y2="20"  stroke="#bbb" stroke-width="1.3"/>
+      <polygon points="40,15 35,25 45,25" fill="#bbb"/>
+      <polygon points="273,215 263,210 263,220" fill="#bbb"/>
+      <!-- Potential GDP (dark dashed) -->
+      <line id="nru-pot" class="anim-path" x1="40" y1="88" x2="268" y2="88"
+            stroke="#333" stroke-width="1.5" stroke-dasharray="6 4"/>
+      <text class="ppf-pt" id="nru-potlbl" x="271" y="92" fill="#333" font-size="9"
+            font-family="Space Grotesk,sans-serif" font-weight="700">Y*</text>
+      <!-- Actual output (rust, dips during recession) -->
+      <path id="nru-actual" class="anim-path"
+            d="M 40,88 C 78,86 98,86 118,116 S 155,148 175,116 S 212,86 268,84"
+            fill="none" stroke="#c0442a" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="nru-actuallbl" x="271" y="82" fill="#c0442a" font-size="9"
+            font-family="Space Grotesk,sans-serif" font-weight="700">Y</text>
+      <!-- Recessionary gap shading -->
+      <path class="ppf-pt" id="nru-gap"
+            d="M 98,86 C 108,86 114,100 118,116 S 140,148 158,140 S 168,118 175,116 S 200,100 206,86 Z"
+            fill="rgba(192,68,42,.13)" stroke="none"/>
+      <g class="ppf-pt" id="nru-gaplbl">
+        <text x="153" y="122" fill="#c0442a" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Output</text>
+        <text x="153" y="133" fill="#c0442a" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Gap</text>
+      </g>
+      <g class="ppf-pt" id="nru-felbl">
+        <text x="43" y="82" fill="#555" font-size="8.5" font-family="Space Grotesk,sans-serif">Full</text>
+        <text x="43" y="93" fill="#555" font-size="8.5" font-family="Space Grotesk,sans-serif">empl.</text>
+      </g>
+      <text x="154" y="232" fill="#777" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Time →</text>
+      <text x="22"  y="118" fill="#777" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 118)">Real Output →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 4: Costs of Unemployment (dark) ── -->
+  <div class="slide" id="s4">
+    <h2 class="fade-in">The Costs of Unemployment</h2>
+    <p class="intro fade-in">Unemployment imposes both economic costs on the nation and profound social costs on individuals and families.</p>
+    <div class="cost-grid">
+      <div class="cost-card econ" id="cost-econ">
+        <div class="cost-label">Economic Costs</div>
+        <h4>📉 Lost Output &amp; Revenue</h4>
+        <p>Unemployed workers produce nothing. Lost output is permanent — goods not made, services not rendered. Tax revenues fall while government spending on benefits rises.</p>
+        <p class="cost-ex">Okun's Law: 1% excess unemployment ≈ 2% of potential GDP lost.</p>
+      </div>
+      <div class="cost-card social" id="cost-social">
+        <div class="cost-label">Social &amp; Personal Costs</div>
+        <h4>🧠 Human Costs</h4>
+        <p>Long-term unemployment is linked to declining mental and physical health, family breakdown, and loss of skills. Communities with persistent joblessness see higher crime and social disorder.</p>
+        <p class="cost-ex">Costs fall disproportionately on younger workers and minority groups.</p>
+      </div>
+    </div>
+    <div class="cost-note" id="cost-note">
+      <strong>Policy implication:</strong> Cyclical unemployment — caused by insufficient aggregate demand — is the primary target of stabilisation policy. Fiscal and monetary tools both work by restoring demand and returning employment toward the natural rate.
+    </div>
+  </div>
+
+  <!-- ── Slide 5: Policies (light, horizontal) ── -->
+  <div class="slide h-slide" id="s5">
+    <div class="sl">
+      <div class="eyebrow fade-in">The Policy Toolkit</div>
+      <h2 class="fade-in">Addressing Unemployment</h2>
+      <p class="intro fade-in">Different types of unemployment call for different policies. No single tool addresses all three — matching the remedy to the type is essential.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge">Demand-side</span>
+          <span>Fiscal and monetary policy address <em>cyclical</em> unemployment — stimulus spending, tax cuts, or lower interest rates all raise aggregate demand and boost employment.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(26,122,110,.15);color:#1a7a6e">Supply-side</span>
+          <span>Job training, education investment, and apprenticeship programmes reduce <em>structural</em> unemployment by closing the skills gap between workers and available jobs.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(200,168,75,.18);color:var(--gold)">EI</span>
+          <span>Employment Insurance supports workers through <em>frictional</em> spells — providing income during job search and acting as an <strong style="color:#333">automatic stabiliser</strong> during downturns.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Policy comparison grid (light background) -->
+    <div style="flex-shrink:0; width:310px; display:flex; flex-direction:column; gap:14px;">
+      <div class="pol-grid">
+        <div class="pol-col demand" id="pol-demand">
+          <h3>Demand-Side</h3>
+          <div class="pol-item"><div class="p-dot"></div><span><strong>Fiscal policy</strong> — government spending ↑ or taxes ↓ to raise AE</span></div>
+          <div class="pol-item"><div class="p-dot"></div><span><strong>Monetary policy</strong> — lower interest rates to stimulate investment</span></div>
+          <div class="pol-item"><div class="p-dot"></div><span>Targets <strong>cyclical</strong> unemployment</span></div>
+        </div>
+        <div class="pol-col supply" id="pol-supply">
+          <h3>Supply-Side</h3>
+          <div class="pol-item"><div class="p-dot"></div><span><strong>Job training</strong> to retrain displaced workers</span></div>
+          <div class="pol-item"><div class="p-dot"></div><span><strong>Education</strong> investment to raise human capital</span></div>
+          <div class="pol-item"><div class="p-dot"></div><span>Targets <strong>structural</strong> unemployment</span></div>
+        </div>
+      </div>
+      <div class="pol-note" id="pol-note">
+        <strong>Key insight:</strong> Fiscal and monetary policy are powerful against cyclical unemployment — but cannot fix structural unemployment, which requires long-run investment in education and skills.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 6: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Behind every unemployment statistic is a person — with skills, ambitions, and a family to support. Understanding the <em>causes</em> of unemployment is the first step toward addressing them with the right tools.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 101 · UNBC</div>
+    <div class="tag">Unemployment · Labour Force · NRU · Okun's Law · Cyclical · Structural · Policy</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Welcome. In this topic we turn to unemployment — one of the most visible and costly failures of a market economy. When workers who want jobs cannot find them, the loss falls not just on those individuals but on families, communities, and the economy as a whole. Understanding unemployment means understanding its causes, its costs, and the policy tools available to address it.",
+  "Before we can analyse unemployment, we need to measure it precisely. Statistics Canada divides the working-age population into three groups. The employed — those who worked at least one hour in the reference week. The unemployed — those without a job who are actively searching for one. And those not in the labour force — retirees, full-time students, and people who have stopped looking. The labour force is the sum of the employed and unemployed. The unemployment rate is the number of unemployed divided by the total labour force, multiplied by one hundred. One important caveat: the official unemployment rate understates the true picture. Discouraged workers — those who gave up searching because they believe no jobs are available — are classified as out of the labour force, not unemployed. And underemployed workers — those working part-time who want full-time work — are counted as employed. These hidden forms of unemployment can be significant, especially during recessions.",
+  "Economists distinguish three types of unemployment, each with a different cause — and each requiring a different policy response. Frictional unemployment arises when workers are between jobs: searching for the right match, relocating, or transitioning from school to work. It is a normal, healthy feature of a dynamic labour market, and every economy will always have some of it. Structural unemployment is more serious. It arises from a skills mismatch — the jobs that exist don't match the skills of unemployed workers. This can be caused by technological change, the decline of entire industries, or geographic shifts in economic activity. A factory worker replaced by automation, or a coal miner in a region where mines have closed, faces structural unemployment. It tends to last much longer than frictional unemployment. Cyclical unemployment is the type associated with recessions. When aggregate demand falls, firms sell less and hire fewer workers — or lay them off. Cyclical unemployment rises sharply during downturns and falls during expansions. It is the main target of macroeconomic stabilisation policy.",
+  "Even in a healthy economy operating at full capacity, some unemployment always exists. This is called the natural rate of unemployment — the level that prevails when the economy is producing its potential GDP, with zero cyclical unemployment. The natural rate equals frictional plus structural unemployment. In Canada, economists estimate the natural rate at roughly five to six percent, though it shifts over time as demographics, technology, and labour market institutions evolve. Full employment, in macroeconomic terms, does not mean zero unemployment — it means zero cyclical unemployment. When the economy is at full employment, actual output equals potential GDP and the output gap is zero. When cyclical unemployment is positive — when the actual unemployment rate exceeds the natural rate — actual output falls below potential, creating a recessionary gap. Okun's Law provides a simple but powerful relationship: for every one percentage point that unemployment exceeds the natural rate, output falls by approximately two percentage points below potential. This rule underscores how costly even moderate cyclical unemployment can be.",
+  "Why do economists and policymakers care so deeply about unemployment? Because its costs are enormous — both to the economy as a whole and to individual workers and families. The economic costs are direct: unemployed workers produce nothing. Every month of unemployment is output permanently lost — goods not made, services not rendered. Tax revenues fall as incomes decline, while government spending on Employment Insurance and social assistance rises. Okun's Law reminds us that a one-percent rise in cyclical unemployment translates to roughly two percent of lost GDP. But the social and personal costs are equally severe, and they fall disproportionately on the most vulnerable. Long-term unemployment is strongly associated with deteriorating mental health — anxiety, depression, and loss of purpose and identity. Physical health also suffers. Family relationships come under strain. Skills atrophy with disuse. Communities with persistent unemployment see higher rates of crime, addiction, and social disorder. And these costs are not evenly distributed — younger workers, recent immigrants, and minority groups typically experience higher unemployment rates and bear a disproportionate share of the burden.",
+  "The right policy response to unemployment depends critically on its type. Cyclical unemployment is the primary target of demand-side policy. When aggregate demand falls and unemployment rises above the natural rate, both fiscal and monetary policy can help. Governments can increase spending or cut taxes to raise aggregate expenditure and close the recessionary gap. Central banks can lower interest rates to stimulate investment and consumption. Both tools work by boosting demand — creating jobs until unemployment returns to its natural rate. Structural unemployment calls for a very different approach. Demand-side tools cannot fix a skills mismatch. Instead, governments invest in job training programmes, retraining schemes for displaced workers, and long-run education initiatives that close the gap between the skills workers have and the skills employers need. These are supply-side policies — they operate on labour supply and productivity, not on aggregate demand. Frictional unemployment is partly inevitable and partly addressed by Employment Insurance, which provides income support during job search — and acts as an automatic stabiliser by sustaining consumer spending during downturns.",
+  "Unemployment is not just a statistic. Behind every percentage point of the unemployment rate are real people — with skills, ambitions, and families to support — who cannot find work. Understanding the sources of unemployment is essential for designing effective policy. Cyclical unemployment calls for fiscal and monetary stimulus. Structural unemployment requires long-run investment in skills and education. Frictional unemployment is partly inevitable and partly softened by income support that allows better job matching. No single tool addresses all three, but a well-designed combination of policies can keep unemployment close to its natural rate, minimise the output gap, and reduce the enormous human costs that unemployment imposes on individuals and communities."
+];
+
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+let muted = false, currentAudio = null, currentSpeech = null, speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initPaths();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio)  { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer); stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('🎙 AI narration');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else { speakWithBrowser(idx); }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx], rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('🔊 Browser narration');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel') || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter); currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted; muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0, timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer(); timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+// ── Animation system ─────────────────────────────────────────────────
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    const len = el.getTotalLength ? el.getTotalLength() : 600;
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawPath(id, durMs, delayMs) {
+  sch(delayMs || 0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs || 1800}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function resetPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    el.style.transition = 'none';
+    el.style.strokeDasharray = el.dataset.origLen || 9999;
+    el.style.strokeDashoffset = el.dataset.origLen || 9999;
+  });
+}
+
+function show(id) { document.getElementById(id)?.classList.add('ppf-show'); }
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.cost-card, .cost-note, .pol-col, .pol-note').forEach(el => el.classList.remove('show'));
+  resetPaths();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0: // Title: NRU baseline first, then wavy unemployment rate curve
+      drawPath('title-nru',  900, 400);
+      sch(1100, () => show('title-nrulbl'));
+      drawPath('title-wave', 2400, 1200);
+      break;
+
+    case 3: // NRU slide: potential output, actual output, then gap and labels
+      drawPath('nru-pot', 1200, 300);
+      sch(800,  () => show('nru-potlbl'));
+      sch(1000, () => show('nru-felbl'));
+      drawPath('nru-actual', 2400, 5000);
+      sch(5400, () => show('nru-actuallbl'));
+      sch(9000, () => show('nru-gap'));
+      sch(10000, () => show('nru-gaplbl'));
+      break;
+
+    case 4: // Costs: economic first, then social, then policy note
+      sch(2000,  () => document.getElementById('cost-econ')?.classList.add('show'));
+      sch(18000, () => document.getElementById('cost-social')?.classList.add('show'));
+      sch(32000, () => document.getElementById('cost-note')?.classList.add('show'));
+      break;
+
+    case 5: // Policies: demand-side, then supply-side, then key insight
+      sch(2000,  () => document.getElementById('pol-demand')?.classList.add('show'));
+      sch(18000, () => document.getElementById('pol-supply')?.classList.add('show'));
+      sch(32000, () => document.getElementById('pol-note')?.classList.add('show'));
+      break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>
