@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="ps" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECON 101 — د ماکرواقتصاد تمرین | کریمزاده</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:#003366; --navy-l:#004a99; --gold:#c8960c; --gold-l:#e8ad14;
+      --bg:#f5f7fa; --white:#fff; --text:#1a1a2e; --muted:#6b7280;
+      --border:#dde3ec; --green:#16a34a; --red:#dc2626;
+      --shadow:0 4px 20px rgba(0,0,0,.10);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family:'Noto Nastaliq Urdu','Segoe UI',Tahoma,sans-serif;
+      background:var(--bg);color:var(--text);min-height:100vh;
+      direction:rtl;line-height:2;
+    }
+    .screen{display:none} .screen.active{display:block}
+
+    /* NAV */
+    nav{background:var(--navy);padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between}
+    .nav-brand{color:#fff;font-size:1rem;font-weight:bold;font-family:'Noto Nastaliq Urdu',serif}
+    .nav-brand span{color:var(--gold)}
+    .nav-back{color:rgba(255,255,255,.8);font-size:.85rem;font-family:'Helvetica Neue',Arial,sans-serif;text-decoration:none;transition:color .15s;direction:ltr;display:inline-block}
+    .nav-back:hover{color:var(--gold)}
+
+    /* HOME */
+    .home-hero{background:linear-gradient(135deg,var(--navy) 0%,#00509e 100%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center}
+    .home-hero .badge{display:inline-block;background:var(--gold);color:#fff;font-size:.78rem;font-family:'Noto Nastaliq Urdu',serif;letter-spacing:.04em;padding:.22rem .9rem;border-radius:20px;margin-bottom:.75rem;font-weight:700}
+    .home-hero h1{font-size:2rem;font-weight:bold;margin-bottom:.5rem;font-family:'Noto Nastaliq Urdu',serif}
+    .home-hero p{font-size:.95rem;opacity:.9;max-width:580px;margin:.6rem auto 0;font-family:'Noto Nastaliq Urdu',serif;line-height:2.2}
+    .home-body{max-width:740px;margin:0 auto;padding:2rem 1.5rem}
+    .stats-row{display:flex;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+    .stat-card{flex:1;min-width:110px;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:.9rem;text-align:center}
+    .stat-card .num{font-size:1.55rem;font-weight:bold;color:var(--navy)}
+    .stat-card .lbl{font-family:'Noto Nastaliq Urdu',serif;font-size:.8rem;color:var(--muted);margin-top:.15rem}
+    .filter-group{margin-bottom:1.75rem}
+    .filter-label{font-family:'Noto Nastaliq Urdu',serif;font-size:.82rem;font-weight:700;color:var(--muted);margin-bottom:.6rem;display:block}
+    .chip-row{display:flex;flex-wrap:wrap;gap:.4rem}
+    .chip{border:2px solid var(--border);background:var(--white);border-radius:20px;padding:.35rem .9rem;font-family:'Noto Nastaliq Urdu',serif;font-size:.82rem;cursor:pointer;transition:all .15s}
+    .chip.selected{border-color:var(--navy);background:var(--navy);color:#fff}
+    .chip:hover:not(.selected){border-color:var(--navy-l);color:var(--navy-l)}
+    .start-btn{display:block;width:100%;background:var(--gold);color:#fff;border:none;border-radius:8px;padding:.95rem;font-size:1.05rem;font-family:'Noto Nastaliq Urdu',serif;font-weight:700;cursor:pointer;transition:background .15s,transform .1s}
+    .start-btn:hover{background:var(--gold-l);transform:translateY(-1px)}
+
+    /* QUIZ */
+    .quiz-wrap{max-width:700px;margin:0 auto;padding:1.75rem 1.5rem}
+    .progress-track{background:var(--border);border-radius:4px;height:6px;margin-bottom:1.25rem;overflow:hidden}
+    .progress-fill{height:100%;background:var(--gold);border-radius:4px;transition:width .3s ease}
+    .quiz-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;font-family:'Noto Nastaliq Urdu',serif;font-size:.85rem;color:var(--muted)}
+    .type-badge{display:inline-block;padding:.2rem .65rem;border-radius:20px;font-size:.72rem;font-weight:700;letter-spacing:.04em}
+    .b-mc{background:#dbeafe;color:#1d4ed8} .b-tf{background:#fef3c7;color:#92400e}
+    .b-num{background:#dcfce7;color:#166534} .b-sa{background:#f3e8ff;color:#6b21a8}
+    .b-gr{background:#ffe4e6;color:#9f1239} .b-an{background:#e0f2fe;color:#0c4a6e}
+    .q-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:1.75rem;margin-bottom:1.25rem;box-shadow:var(--shadow)}
+    .q-topic-lbl{font-family:'Noto Nastaliq Urdu',serif;font-size:.78rem;color:var(--muted);margin-bottom:.6rem}
+    .q-text{font-size:1.02rem;line-height:2.2;margin-bottom:1.1rem;font-family:'Noto Nastaliq Urdu',serif}
+
+    /* MC */
+    .mc-opts{display:flex;flex-direction:column;gap:.5rem}
+    .mc-opt{border:2px solid var(--border);border-radius:8px;padding:.65rem .9rem;cursor:pointer;font-family:'Noto Nastaliq Urdu',serif;font-size:.9rem;transition:border-color .15s,background .15s;display:flex;align-items:center;gap:.65rem;line-height:2}
+    .mc-opt:hover:not(.disabled){border-color:var(--navy-l);background:#f0f4ff}
+    .mc-opt.selected{border-color:var(--navy);background:#e8eef7}
+    .mc-opt.correct{border-color:var(--green);background:#f0fdf4;color:var(--green)}
+    .mc-opt.wrong{border-color:var(--red);background:#fef2f2;color:var(--red)}
+    .mc-opt.disabled{cursor:default}
+    .opt-letter{width:28px;height:28px;border-radius:50%;background:var(--bg);border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;flex-shrink:0;font-family:'Helvetica Neue',Arial,sans-serif;direction:ltr}
+    .mc-opt.correct .opt-letter{background:var(--green);border-color:var(--green);color:#fff}
+    .mc-opt.wrong .opt-letter{background:var(--red);border-color:var(--red);color:#fff}
+
+    /* TF */
+    .tf-row{display:flex;gap:.75rem}
+    .tf-btn{flex:1;padding:1rem;border:2px solid var(--border);border-radius:10px;background:var(--white);font-size:1rem;font-weight:700;font-family:'Noto Nastaliq Urdu',serif;cursor:pointer;transition:all .15s}
+    .tf-btn:hover:not(.disabled){border-color:var(--navy);transform:translateY(-2px)}
+    .tf-t{color:var(--green)} .tf-f{color:var(--red)}
+    .tf-btn.selected{background:var(--navy);color:#fff;border-color:var(--navy)}
+    .tf-btn.correct{background:#dcfce7;border-color:var(--green);color:var(--green)}
+    .tf-btn.wrong{background:#fef2f2;border-color:var(--red);color:var(--red)}
+    .tf-btn.disabled{cursor:default}
+
+    /* Numerical */
+    .num-input{width:100%;border:2px solid var(--border);border-radius:8px;padding:.7rem 1rem;font-size:1.05rem;font-family:'Georgia',serif;outline:none;transition:border-color .15s;direction:ltr;text-align:center}
+    .num-input:focus{border-color:var(--navy-l)}
+    .num-input.correct{border-color:var(--green);background:#f0fdf4}
+    .num-input.wrong{border-color:var(--red);background:#fef2f2}
+    .num-hint{font-family:'Noto Nastaliq Urdu',serif;font-size:.8rem;color:var(--muted);margin-top:.45rem;direction:rtl}
+
+    /* SA / Analytical */
+    .sa-input,.an-input{width:100%;border:2px solid var(--border);border-radius:8px;padding:.7rem 1rem;font-size:.95rem;font-family:'Noto Nastaliq Urdu',serif;line-height:2.2;resize:vertical;outline:none;transition:border-color .15s;direction:rtl}
+    .sa-input{min-height:100px} .an-input{min-height:150px}
+    .sa-input:focus,.an-input:focus{border-color:var(--navy-l)}
+    .input-note{font-family:'Noto Nastaliq Urdu',serif;font-size:.82rem;color:var(--muted);margin-bottom:.45rem}
+
+    /* Graph */
+    .graph-area{text-align:center;margin-bottom:1rem}
+    canvas{max-width:100%;border:1px solid var(--border);border-radius:8px;background:#fff}
+
+    /* Feedback */
+    .feedback{border-radius:8px;padding:.85rem 1.1rem;margin-top:.9rem;font-family:'Noto Nastaliq Urdu',serif;font-size:.9rem;line-height:2.2;display:none}
+    .feedback.show{display:block}
+    .fb-ok{background:#f0fdf4;border-right:4px solid var(--green);color:#14532d}
+    .fb-err{background:#fef2f2;border-right:4px solid var(--red);color:#7f1d1d}
+    .fb-info{background:#f0f4ff;border-right:4px solid var(--navy);color:var(--navy)}
+    .model-ans{background:#f8fafc;border:1px solid var(--border);border-radius:8px;padding:.85rem 1.1rem;margin-top:.9rem;font-size:.9rem;line-height:2.2;display:none;font-family:'Noto Nastaliq Urdu',serif}
+    .model-ans.show{display:block}
+    .model-ans h4{font-family:'Noto Nastaliq Urdu',serif;font-size:.8rem;color:var(--muted);margin-bottom:.4rem}
+
+    /* Actions */
+    .action-row{display:flex;gap:.65rem;margin-top:1.25rem}
+    .btn-sub,.btn-next{flex:1;border:none;border-radius:8px;padding:.8rem;font-size:.95rem;font-weight:700;font-family:'Noto Nastaliq Urdu',serif;cursor:pointer;transition:background .15s}
+    .btn-sub{background:var(--navy);color:#fff}
+    .btn-sub:hover{background:var(--navy-l)}
+    .btn-sub:disabled{background:#9ca3af;cursor:default}
+    .btn-next{background:var(--gold);color:#fff;display:none}
+    .btn-next:hover{background:var(--gold-l)}
+    .btn-next.show{display:block}
+
+    /* RESULTS */
+    .res-wrap{max-width:620px;margin:0 auto;padding:2.5rem 1.5rem}
+    .score-ring{width:130px;height:130px;border-radius:50%;border:6px solid var(--gold);display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 1.25rem}
+    .score-pct{font-size:2rem;font-weight:bold;color:var(--navy);font-family:'Georgia',serif;direction:ltr}
+    .score-sub{font-family:'Noto Nastaliq Urdu',serif;font-size:.78rem;color:var(--muted)}
+    .grade-lbl{text-align:center;font-size:1.3rem;font-weight:bold;color:var(--navy);margin-bottom:.4rem;font-family:'Noto Nastaliq Urdu',serif}
+    .grade-msg{text-align:center;font-family:'Noto Nastaliq Urdu',serif;font-size:.9rem;color:var(--muted);margin-bottom:1.5rem;line-height:2}
+    .bk-table{width:100%;border-collapse:collapse;font-size:.88rem;margin-bottom:1.5rem}
+    .bk-table th{background:var(--navy);color:#fff;padding:.55rem 1rem;text-align:right;font-family:'Noto Nastaliq Urdu',serif;font-size:.8rem}
+    .bk-table td{padding:.5rem 1rem;border-bottom:1px solid var(--border);font-family:'Noto Nastaliq Urdu',serif}
+    .bk-table tr:last-child td{border-bottom:none}
+    .res-actions{display:flex;gap:.65rem;flex-wrap:wrap}
+    .btn-retry,.btn-hm{flex:1;min-width:120px;padding:.8rem;border-radius:8px;font-size:.95rem;font-weight:700;font-family:'Noto Nastaliq Urdu',serif;cursor:pointer;border:none;transition:background .15s}
+    .btn-retry{background:var(--gold);color:#fff} .btn-retry:hover{background:var(--gold-l)}
+    .btn-hm{background:var(--navy);color:#fff} .btn-hm:hover{background:var(--navy-l)}
+
+    @media(max-width:540px){
+      .home-hero h1{font-size:1.6rem}
+      .q-card{padding:1.1rem}
+      .tf-row{flex-direction:column}
+      .stats-row .stat-card{min-width:80px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <span class="nav-brand">ECON 101 — <span>د ماکرواقتصاد تمرین</span></span>
+  <a class="nav-back" href="teaching.html">← Teaching</a>
+</nav>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+  <div class="home-hero">
+    <div class="badge">ECON 101 · UNBC · Fall 2026</div>
+    <h1>د ماکرواقتصاد تمرین</h1>
+    <p>د اتو موضوعاتو پر اساس د شپږو ډولونو پوښتنې — د هوبارډ، اوبراین او سرلیتیس کتاب او د لومړي کال د ماکرواقتصاد نصاب پر بنسټ.</p>
+  </div>
+  <div class="home-body">
+    <div class="stats-row">
+      <div class="stat-card"><div class="num" id="stat-n">72</div><div class="lbl">پوښتنې</div></div>
+      <div class="stat-card"><div class="num">6</div><div class="lbl">ډولونه</div></div>
+      <div class="stat-card"><div class="num">8</div><div class="lbl">موضوعات</div></div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">موضوع</span>
+      <div class="chip-row" id="topic-chips">
+        <div class="chip selected" data-val="all">ټولې موضوعات</div>
+        <div class="chip" data-val="foundations">بنسټونه او PPF</div>
+        <div class="chip" data-val="national">ملي عاید</div>
+        <div class="chip" data-val="growth">ودانۍ او بیکاري</div>
+        <div class="chip" data-val="aggregate">ټولیز لګښت</div>
+        <div class="chip" data-val="fiscal">مالیه ییز پالیسي</div>
+        <div class="chip" data-val="money">پیسې او بانکداري</div>
+        <div class="chip" data-val="monetary">پولي پالیسي</div>
+        <div class="chip" data-val="open">خلاص اقتصاد</div>
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">د پوښتنې ډول</span>
+      <div class="chip-row" id="type-chips">
+        <div class="chip selected" data-val="all">ټول ډولونه</div>
+        <div class="chip" data-val="mc">ګڼه ځوابه</div>
+        <div class="chip" data-val="tf">سم / غلط</div>
+        <div class="chip" data-val="num">شمیري</div>
+        <div class="chip" data-val="sa">لنډ ځواب</div>
+        <div class="chip" data-val="graph">ګرافیکي</div>
+        <div class="chip" data-val="an">تحلیلي</div>
+      </div>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">تمرین پیل کړئ ←</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="s-quiz" class="screen">
+  <div class="quiz-wrap">
+    <div class="progress-track"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    <div class="quiz-meta">
+      <span id="q-counter">پ ۱ له — نه</span>
+      <span class="type-badge" id="type-badge"></span>
+      <span id="score-live">نمره: 0</span>
+    </div>
+    <div class="q-card">
+      <div class="q-topic-lbl" id="q-topic"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="graph-area" id="q-graph" style="display:none"></div>
+      <div id="q-ans-area"></div>
+      <div class="feedback" id="q-fb"></div>
+      <div class="model-ans" id="q-ma"><h4>د نمونې ځواب</h4><div id="q-ma-body"></div></div>
+    </div>
+    <div class="action-row">
+      <button class="btn-sub" id="btn-sub" onclick="submit()">ځواب وسپارئ</button>
+      <button class="btn-next" id="btn-next" onclick="nextQ()">بله ←</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="s-results" class="screen">
+  <div class="res-wrap">
+    <div class="score-ring">
+      <div class="score-pct" id="r-pct">—</div>
+      <div class="score-sub">نمره</div>
+    </div>
+    <div class="grade-lbl" id="r-grade"></div>
+    <div class="grade-msg" id="r-msg"></div>
+    <table class="bk-table">
+      <thead><tr><th>ډول</th><th>سم</th><th>ټول</th><th>٪</th></tr></thead>
+      <tbody id="r-tbody"></tbody>
+    </table>
+    <div class="res-actions">
+      <button class="btn-retry" onclick="startQuiz()">بیا هڅه وکړئ</button>
+      <button class="btn-hm" onclick="showHome()">کور</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── د پوښتنو ذخیره ──────────────────────────────────────────────────────────
+const QB = [
+
+// ── ګڼه ځوابه پوښتنې ────────────────────────────────────────────────────────
+{t:'mc',tp:'foundations',tl:'بنسټونه او د تولید ممکنه سرحد',
+ q:'لاندې کومه مثال د کمیابۍ مفهوم ترټولو ښه ترپوه ورکوي؟',
+ opts:['یو هیواد له خپل مصرف زیات تولید کوي','یو زده کونکي د یوه ورځ دوو ازموینو لپاره محدود وخت لري','یوه شرکت د لګښت له پاسه د پلور له لارې ګټه ترلاسه کوي','د حکومت بودجه کسر نه لري'],
+ a:1, ex:'کمیابي هله پیښیږي چې بې حده اړتیاوې محدودو سرچینو سره مخ کیږي. د دوو ازموینو لپاره محدود وخت د دغو سوداکارو ترمنځ د انتخاب کلاسیک مثال دی.'},
+
+{t:'mc',tp:'foundations',tl:'بنسټونه او د تولید ممکنه سرحد',
+ q:'د تولید ممکنه سرحد (PPF) دننه یوه نقطه ښیي چې:',
+ opts:['تولیدي موثریت — ټولې سرچینې پوره استعمالیږي','تخصیصي موثریت — اقتصاد هغه شی تولیدوي چې مصرف کونکي ترټولو ډیر ارزوي','تولیدي ناموثریت — سرچینې بیکارې یا غلط توزیع شوي دي','ناممکن تولیدي ترکیب'],
+ a:2, ex:'د PPF دننه یوه نقطه دا معنا لري چې اقتصاد خپلې سرچینې پوره یا سمه کارونه نه کوي — د بیکارۍ او ضایع کیدو ترکیب.'},
+
+{t:'mc',tp:'foundations',tl:'بنسټونه او د تولید ممکنه سرحد',
+ q:'د فرصت لګښت د زیاتوالي قانون دا توضیح کوي چې PPF ولې:',
+ opts:['د ثابت ځوایز سره مستقیم کرښه ده','له اصلي ځایه مقعر (بهر لور) ده','اصلي ځای ته محدب (دننه لور) ده','افقي کرښه ده'],
+ a:1, ex:'سرچینې د ټولو کارونو لپاره مساوي مناسبت نه لري. کله چې د یو شي ډیر تولید کیږي، نامناسبې سرچینې باید واستول شي، چې د هر اضافي واحد فرصت لګښت لوړوي — مقعره شکل رامنځته کوي.'},
+
+{t:'mc',tp:'national',tl:'د ملي عاید محاسبه',
+ q:'ناخالص کورنی تولید (GDP) د لاندې ټولیزه بازاري ارزښت اندازه کوي:',
+ opts:['د یو هیواد دننه د ټولو شیانو او خدماتو تولید، پرته له تولیدوونکي ملیت، د یو مشخص وخت کې','د یو هیواد د اتباعو لخوا ټول تولید، د موقعیت پرته','د یو هیواد دننه ټولې مالي معاملات','د خدماتو پرته ټول تولید شوي شیان'],
+ a:0, ex:'GDP د یو هیواد د جغرافیایي سرحدونو دننه د ټولو وروستیو شیانو او خدماتو تولید، د یو مشخص وخت کې شمیري. د تولیدوونکي ملیت اهمیت نه لري — هغه GNP/GNI به وي.'},
+
+{t:'mc',tp:'national',tl:'د ملي عاید محاسبه',
+ q:'لاندې کوم GDP کې نه شمیرل کیږي؟',
+ opts:['کورنیو لخوا د نوي موټر پیرودنه','د حکومت لخوا د سړک جوړول','د یوې شرکت لخوا د نوي ماشین پیرودنه','د ۱۵ کلن کور بیا پلور'],
+ a:3, ex:'GDP یوازې نوی تولید شمیري. د یو زوړ کور بیا پلور یوازې مالکیت لیږدوي خو نوی تولید نه کوي. یوازې د اجنټ کمیشن (نوی خدمت) شمیرل کیږي.'},
+
+{t:'mc',tp:'national',tl:'د ملي عاید محاسبه',
+ q:'نومینل GDP $۹۰۰ ملیارده دی او GDP deflator 150 دی. حقیقي GDP دی:',
+ opts:['$۱٬۳۵۰ ملیارده','$۶۰۰ ملیارده','$۷۵۰ ملیارده','$۹۰۰ ملیارده'],
+ a:1, ex:'حقیقي GDP = (نومینل GDP ÷ GDP Deflator) × ۱۰۰ = (۹۰۰ ÷ ۱۵۰) × ۱۰۰ = $۶۰۰ ملیارده.'},
+
+{t:'mc',tp:'growth',tl:'اقتصادي ودانۍ او بیکاري',
+ q:'د بیکارۍ طبیعي کچه کې شامله ده:',
+ opts:['یوازې اصطکاکي بیکاري','یوازې جوړښتي بیکاري','اصطکاکي او جوړښتي بیکاري یوځای','یوازې چکري بیکاري'],
+ a:2, ex:'طبیعي کچه (NAIRU) د اصطکاکي او جوړښتي بیکارۍ برابره ده. کله چې اقتصاد طبیعي کچه ته رسیږي، چکري بیکاري صفر ده.'},
+
+{t:'mc',tp:'growth',tl:'اقتصادي ودانۍ او بیکاري',
+ q:'یو د کارخانې کارګر چې د روبوټ لخوا د هغه کار ځای نیول شوی وي، له کوم ډول بیکارۍ سره مخ دی:',
+ opts:['اصطکاکي بیکاري','موسمي بیکاري','چکري بیکاري','جوړښتي بیکاري'],
+ a:3, ex:'جوړښتي بیکاري د کارګرانو د مهارتونو او د کار بازار د اړتیاوو تر مینځ د ناسازملتیا له امله پیدا کیږي، اکثراً د ټیکنالوجیکي بدلون یا صنعتي تبدیلۍ له امله.'},
+
+{t:'mc',tp:'aggregate',tl:'ټولیز لګښت',
+ q:'که MPC = 0.75 وي، د لګښت ضرب کونکی دی:',
+ opts:['0.75','1.33','3','4'],
+ a:3, ex:'ضرب کونکی = ۱ ÷ (۱ − MPC) = ۱ ÷ ۰.۲۵ = ۴. د خپلسري لګښت کې $۱ زیاتوالی د متوازن عاید $۴ لوړوي.'},
+
+{t:'mc',tp:'aggregate',tl:'ټولیز لګښت',
+ q:'د ټولیز تقاضا (AD) کرښه ولې ښکته لور ده؟ ځکه چې ټیټ بهاو کچه:',
+ opts:['حقیقي شتمني لوړوي، د سود کچه ټیطوي، او صادرات ارزانه کوي — ټول د غوښتنې مقدار زیاتوي','مزد کموي، چې د تولید لګښتونه ټیطوي','د ان پوټ ارزانه کولو له لارې تولید زیاتوي','شرکتونه هڅوي چې ډیر کارګران وساتي'],
+ a:0, ex:'درې اغیزې د ښکته کرښې لامل دي: (۱) د شتمنۍ اغیزه؛ (۲) د سود کچې اغیزه؛ (۳) د نړیوال تجارت اغیزه.'},
+
+{t:'mc',tp:'fiscal',tl:'مالیه ییز پالیسي',
+ q:'پراخه مالیه ییز پالیسي دا شامله ده:',
+ opts:['مالیه لوړول او د حکومت لګښت کمول','مالیه کمول او/یا د حکومت لګښت زیاتول','د پیسو عرضه کمول','د مرکزي بانک د پالیسي کچه لوړول'],
+ a:1, ex:'پراخه مالیه ییز پالیسي د G زیاتولو، مالیه کمولو، یا دواړو له لارې ټولیز تقاضا هڅوي — AD کرښه ښي خواته لیږدوي.'},
+
+{t:'mc',tp:'fiscal',tl:'مالیه ییز پالیسي',
+ q:'"بهر کولو" (Crowding Out) اغیزه دا معنا لري چې د حکومت پور اخیستل کولای شي:',
+ opts:['د سود کچه لوړولو له لارې خصوصي پانګه اچونه کمه کړي','مستقیماً د بهاو کچه لوړه کړي','د پیسو عرضه کمه کړي','د بدلون کچه ټیطه کړي'],
+ a:0, ex:'کله چې حکومت ډیر پور اخلي، د قرضه وړ وجوهاتو لپاره د خصوصي پور اخیستونکو سره سیالي کوي، د سود کچه لوړوي. لوړه کچه خصوصي پانګه اچونه خثه کوي.'},
+
+{t:'mc',tp:'money',tl:'پیسې او بانکداري',
+ q:'که د ذخیرې اړتیا کچه ۱۰٪ وي، د ساده پیسو ضرب کونکی دی:',
+ opts:['0.1','1','10','0.9'],
+ a:2, ex:'د پیسو ضرب کونکی = ۱ ÷ د ذخیرې کچه = ۱ ÷ ۰.۱۰ = ۱۰. د ذخیرو هر ډالر د پور ورکولو پروسې له لارې $۱۰ ډیپازیت مالتیا کولای شي.'},
+
+{t:'mc',tp:'monetary',tl:'پولي پالیسي',
+ q:'کله چې مرکزي بانک د خلاص بازار کې د حکومت اوراق اخلي، د پیسو عرضه:',
+ opts:['کمیږي او د سود کچه لوړیږي','زیاتیږي او د سود کچه ټیطیږي','زیاتیږي او د سود کچه لوړیږي','کمیږي او د سود کچه ټیطیږي'],
+ a:1, ex:'مرکزي بانک د بانکونو د ذخیرو حسابونه کریډیټ کولو له لارې د اوراقو ثمن ادا کوي، ذخیرې او د پیسو عرضه زیاتوي. ډیره عرضه د سود کچه ټیطوي.'},
+
+{t:'mc',tp:'open',tl:'خلاص اقتصاد',
+ q:'تطبیقي لوی والی (Comparative Advantage) د لاندې پر بنسټ دی:',
+ opts:['د ټولو شیانو کې مطلق تولیدي وړتیا','د تولید فرصت لګښت','د شته سرچینو ټول مقدار','ټول فکتوري تولیدي وده درجه بندي'],
+ a:1, ex:'یو هیواد هغه وخت د یو شي تولید کې تطبیقي لوی والی لري کله چې دا شی د خپلو سوداګریزو ملګرو د پرتله د ټیټ فرصت لګښت سره تولید کولای شي. دا د ګټورې سوداګرۍ بنسټ دی.'},
+
+// ── سم / غلط پوښتنې ───────────────────────────────────────────────────────
+{t:'tf',tp:'national',tl:'د ملي عاید محاسبه',
+ q:'هغه شیان چې د کال پر مهال تولید شوي خو نه پلور شوي (د موجوداتو کې اضافه شوي) له GDP نه بهر پاتې کیږي.',
+ a:false, ex:'غلط. د ناپلور موجودات د موجوداتو پانګه اچونې ته شمیرل کیږي (د GDP = C + I + G + NX کې د I برخه). دوی د هغه دورې نوی تولید ښیي.'},
+
+{t:'tf',tp:'national',tl:'د ملي عاید محاسبه',
+ q:'حقیقي GDP د واقعي تولیدي ودانۍ لپاره د نومینل GDP نه غوره اندازه ده ځکه چې د بهاو کچې بدلاوونه کنترولوي.',
+ a:true, ex:'سم. نومینل GDP د بهاو لوړوالي او تولیدي زیاتوالي سره یوځای لوړیږي. حقیقي GDP د تورم لپاره تنظیمیږي، د واقعي فزیکي تولید بدلاوونه جلا کوي.'},
+
+{t:'tf',tp:'foundations',tl:'بنسټونه او د تولید ممکنه سرحد',
+ q:'یو عقلاني اقتصادي فاعل تل هغه اختیار غوره کوي چې تر ټولو لوړ مطلق ګټه لري، پرته له لګښت پرته.',
+ a:false, ex:'غلط. عقلاني فاعلان نهایي ګټې د نهایي لګښتونو سره پرتله کوي او تر ټولو لوړ خالص ګټه انتخابوي. فرصت لګښتونه باید وزن شي.'},
+
+{t:'tf',tp:'growth',tl:'اقتصادي ودانۍ او بیکاري',
+ q:'د مصرف نهایي تمایل (MPC) او د سپمو نهایي تمایل (MPS) تل یو ته مساوي کیږي.',
+ a:true, ex:'سم. د لرغوني عاید هر اضافي ډالر یا مصرف کیږي (MPC) یا سپما کیږي (MPS). د تعریف له مخې، MPC + MPS = ۱.'},
+
+{t:'tf',tp:'aggregate',tl:'ټولیز لګښت',
+ q:'د مصرف کونکو باور زیاتوالی د ټولیز تقاضا (AD) کرښه ښي خواته لیږدوي.',
+ a:true, ex:'سم. ډیر د مصرف کونکو باور د هرې بهاو کچې پر وخت د مصرف لګښت زیاتوي، AD ښي خواته لیږدوي.'},
+
+{t:'tf',tp:'fiscal',tl:'مالیه ییز پالیسي',
+ q:'مالیه ییز پالیسي معمولاً د لږ وخت پراتولو سره کار کوي ځکه چې حکومتونه چټک بدلاوونه پلي کولای شي.',
+ a:false, ex:'غلط. مالیه ییز پالیسي د پام وړ پراتولو سره مخ ده: د پیژندنې، قانون جوړولو، او پلي کولو پراتول. اغیزې کیدای شي ۱۲–۱۸ میاشتې ودرړئ.'},
+
+{t:'tf',tp:'money',tl:'پیسې او بانکداري',
+ q:'تجارتي بانکونه د پور ورکولو له لارې پیسې جوړوي.',
+ a:true, ex:'سم. کله چې بانکونه پور ورکوي، د پور اخیستونکو ډیپازیت حسابونه کریډیټ کوي، نوي ډیپازیتونه (پیسې) جوړوي. دا د پیسو د ضرب کونکي لاندینۍ جزئي ذخیرې پروسه ده.'},
+
+{t:'tf',tp:'monetary',tl:'پولي پالیسي',
+ q:'انقباضي پولي پالیسي د رکودي ګپ لپاره سم ځواب دی.',
+ a:false, ex:'غلط. انقباضي پولي پالیسي (د کچې لوړول، د پیسو عرضه کمول) تورم سره مخنیوی کوي. رکودي ګپ پراخه پولي پالیسي ته اړتیا لري.'},
+
+{t:'tf',tp:'growth',tl:'اقتصادي ودانۍ او بیکاري',
+ q:'که د تورم کچه د نومینل مزد ودانۍ نه لوړه وي، د کارګرانو حقیقي مزد کم شوی دی.',
+ a:true, ex:'سم. د حقیقي مزد وده ≈ د نومینل مزد وده − تورم. که تورم لوړ وي، د مزدونو اخیستل وس کمیږي.'},
+
+{t:'tf',tp:'open',tl:'خلاص اقتصاد',
+ q:'د تجارت کسر تل اقتصادي کمزوري ښیي.',
+ a:false, ex:'غلط. د تجارت کسر کیدای شي د لوړ اقتصادي قوت او د مصرف کونکو لوړ اخیستل وس ښیي. ا.م.ا. د لوړ ودانۍ دورو کې لسیزو راهیسې د تجارت کسر درلود.'},
+
+{t:'tf',tp:'money',tl:'پیسې او بانکداري',
+ q:'M1 د پیسو عرضه کې سپموونکي ډیپازیتونه او موده لرونکي ډیپازیتونه شامل دي.',
+ a:false, ex:'غلط. M1 کې د چلیدو پیسې او د طلب ډیپازیتونه (چیکینګ حسابونه) شامل دي. سپموونکي او موده لرونکي ډیپازیتونه د M2 برخه ده.'},
+
+{t:'tf',tp:'aggregate',tl:'ټولیز لګښت',
+ q:'د تیلو بهاو زیاتوالی د لنډمهالې ټولیز عرضې (SRAS) کرښه کیڼ خواته لیږدوي.',
+ a:true, ex:'سم. لوړ د ان پوټ لګښتونه د شرکتونو د هرې بهاو کچې پر مهال عرضه کمولو تمایل کموي، SRAS کیڼ خواته لیږدوي — منفي د عرضې شاک.'},
+
+// ── شمیري پوښتنې ──────────────────────────────────────────────────────────
+{t:'num',tp:'national',tl:'د ملي عاید محاسبه',
+ q:'د لګښت طریقې له لارې GDP محاسبه کړئ ($ ملیارده): C = $۵۲۰B، I = $۱۳۰B، G = $۱۷۵B، صادرات (X) = $۹۵B، واردات (M) = $۷۵B.',
+ a:845, tol:1, hint:'GDP = C + I + G + (X − M)', unit:'$ ملیارده',
+ ex:'GDP = ۵۲۰ + ۱۳۰ + ۱۷۵ + (۹۵ − ۷۵) = ۵۲۰ + ۱۳۰ + ۱۷۵ + ۲۰ = $۸۴۵ ملیارده.'},
+
+{t:'num',tp:'aggregate',tl:'ټولیز لګښت',
+ q:'که MPC = 0.8 وي، د لګښت ضرب کونکی دی؟',
+ a:5, tol:.05, hint:'ضرب کونکی = ۱ ÷ (۱ − MPC)', unit:'',
+ ex:'ضرب کونکی = ۱ ÷ (۱ − ۰.۸) = ۱ ÷ ۰.۲ = ۵. د خپلسري لګښت کې $۱ لوړوالی د متوازن عاید $۵ لوړوي.'},
+
+{t:'num',tp:'growth',tl:'اقتصادي ودانۍ او بیکاري',
+ q:'پروسال CPI 110 و او اوس 121 دی. د کال یوه تورم کچه (٪) دومره ده؟ یوه لسمه حصه ته رانږدې کړئ.',
+ a:10, tol:.15, hint:'تورم کچه = ((نوی CPI − زوړ CPI) ÷ زوړ CPI) × ۱۰۰', unit:'%',
+ ex:'تورم = ((۱۲۱ − ۱۱۰) ÷ ۱۱۰) × ۱۰۰ = (۱۱ ÷ ۱۱۰) × ۱۰۰ = ۱۰٪.'},
+
+{t:'num',tp:'national',tl:'د ملي عاید محاسبه',
+ q:'نومینل GDP $۷۵۰ ملیارده دی او GDP deflator 125 دی. حقیقي GDP ($ ملیارده) محاسبه کړئ.',
+ a:600, tol:1, hint:'حقیقي GDP = (نومینل GDP ÷ GDP Deflator) × ۱۰۰', unit:'$ ملیارده',
+ ex:'حقیقي GDP = (۷۵۰ ÷ ۱۲۵) × ۱۰۰ = $۶۰۰ ملیارده.'},
+
+{t:'num',tp:'growth',tl:'اقتصادي ودانۍ او بیکاري',
+ q:'د یو هیواد د کار ځواک ۲۵ ملیونه کسان دي. له دوی نه ۲ ملیونه بیکار دي. د بیکارۍ کچه (٪) دومره ده:',
+ a:8, tol:.1, hint:'د بیکارۍ کچه = (بیکار ÷ د کار ځواک) × ۱۰۰', unit:'%',
+ ex:'د بیکارۍ کچه = (۲ ÷ ۲۵) × ۱۰۰ = ۸٪.'},
+
+{t:'num',tp:'money',tl:'پیسې او بانکداري',
+ q:'یو بانک $۴۰٬۰۰۰ نوی ډیپازیت ترلاسه کوي. د ذخیرې اړتیا کچه ۲۵٪ ده. اعظمي نوي پیسې چې ټول د بانکداري سیستم جوړولای شي ($) دومره دي:',
+ a:160000, tol:100, hint:'اعظمي نوي پیسې = ډیپازیت × (۱ ÷ د ذخیرې کچه)', unit:'$',
+ ex:'ضرب کونکی = ۱ ÷ ۰.۲۵ = ۴. اعظمي نوي پیسې = $۴۰٬۰۰۰ × ۴ = $۱۶۰٬۰۰۰.'},
+
+{t:'num',tp:'fiscal',tl:'مالیه ییز پالیسي',
+ q:'MPC = 0.75 او د حکومت لګښت $۶۰ ملیارده لوړیږي. د متوازن عاید زیاتوالی ($ ملیارده) دومره دی:',
+ a:240, tol:1, hint:'ΔY = [۱ ÷ (۱ − MPC)] × ΔG', unit:'$ ملیارده',
+ ex:'ضرب کونکی = ۱ ÷ ۰.۲۵ = ۴. ΔY = ۴ × $۶۰B = $۲۴۰ ملیارده.'},
+
+{t:'num',tp:'open',tl:'خلاص اقتصاد',
+ q:'یو هیواد $۲۸۰ ملیارده صادروي او $۳۵۰ ملیارده وارداتوي. د تجارت توازن ($ ملیارده) دومره دی؟ د کسر لپاره منفي عدد دننه کړئ.',
+ a:-70, tol:1, hint:'د تجارت توازن = صادرات − واردات', unit:'$ ملیارده',
+ ex:'د تجارت توازن = ۲۸۰ − ۳۵۰ = −$۷۰ ملیارده (د $۷۰B تجارتي کسر).'},
+
+// ── لنډ ځواب پوښتنې ───────────────────────────────────────────────────────
+{t:'sa',tp:'national',tl:'د ملي عاید محاسبه',
+ q:'د GDP او GNP (GNI) تر مینځ توپیر توضیح کړئ، او د کاناډایي GNP کې خو د کاناډایي GDP کې نه شمیرل کیدونکي یوه معاملې مثال ورکړئ.',
+ kw:['اتباع','اوسیدونکي','سرحدونه','ملیت','کورنی','ملي','موقعیت','GDP','GNP'],
+ ma:'GDP (ناخالص کورنی تولید) د یو هیواد د جغرافیایي سرحدونو دننه ټول تولید شمیري، د تولیدوونکي ملیت پرته. GNP (ناخالص ملي تولید) د یو هیواد د اتباعو لخوا تولید شمیري، د موقعیت پرته.\n\nمثال: چیلي کې یوه کاناډایي لرغوني شرکت د کاناډا GNP کې شمیرل کیږي (مالک کاناډایي دی) خو د کاناډا GDP کې نه (تولید کاناډا بهر دی). د اونټاریو کې د ټویوټا کارخانه د کاناډا GDP کې شمیرل کیږي خو GNP کې نه (ګټه جاپاني مالکینو ته اړه لري).'},
+
+{t:'sa',tp:'growth',tl:'اقتصادي ودانۍ او بیکاري',
+ q:'د اصطکاکي، جوړښتي، او چکري بیکارۍ تر مینځ توپیر وکړئ. کوم ډولونه د بیکارۍ طبیعي کچه جوړوي؟',
+ kw:['اصطکاکي','جوړښتي','چکري','طبیعي','مهارت','رکود','ناسازملتیا','frictional','structural','cyclical'],
+ ma:'اصطکاکي بیکاري: لنډمهاله بیکاري چې د کارګرانو د مناسب کار موندلو وخت له امله پیدا کیږي. دا خوښه وي او نورمال ده.\n\nجوړښتي بیکاري: د کارګرانو د مهارتونو او شته کارونو تر مینځ د ناسازملتیا له امله، اکثراً د ټیکنالوجیکي بدلون له امله.\n\nچکري بیکاري: د اقتصادي رکود له امله. کله چې ټولیز تقاضا کمیږي، شرکتونه کارګران لیري کوي.\n\nطبیعي کچه = اصطکاکي + جوړښتي بیکاري. چکري بیکاري شامله نه ده.'},
+
+{t:'sa',tp:'fiscal',tl:'مالیه ییز پالیسي',
+ q:'د بهر کولو (Crowding Out) اغیزه تشریح کړئ، او دا د پراخه مالیه ییز پالیسي اغیزمنتیا سره څنګه محدودوي؟',
+ kw:['سود','خصوصي','پور','وجوهات','اوراق','کسر','بهر','interest','investment','crowding'],
+ ma:'بهر کول هله رامنځته کیږي کله چې د حکومت د کسر لګښت د قرضه وړ وجوهاتو بازار کې د سود کچه لوړه کړي، خصوصي پانګه اچونه کمه کړي.\n\nمیکانیزم: حکومت د اوراقو د خرڅولو له لارې پور اخلي، د سود کچه لوړوي. لوړه کچه د شرکتونو لپاره پانګه اچونه ګرانه کوي. کله چې خصوصي I کمیږي، د G زیاتوالی جزئاً ملاتړ کیږي.'},
+
+{t:'sa',tp:'money',tl:'پیسې او بانکداري',
+ q:'د پیسو درې دندې تشریح کړئ او توضیح کړئ ولې د مقایسې اقتصادونه ناموثره دي.',
+ kw:['مبادله','ارزښت','حساب','مقایسه','معامله','دوه برابره','exchange','store','account','barter'],
+ ma:'د پیسو درې دندې:\n۱. د مبادلې وسیله: د ټولو معاملو کې منل کیږي، د مقایسې اړتیا له مینځه وړي.\n۲. د حساب واحد: د ارزښت مشترک اندازه، د بهاو د آسانو پرتلو وړتیا ورکوي.\n۳. د ارزښت ذخیره: اخیستل وس د وخت پر مهال ساتي.\n\nمقایسه د "دوه برابره مطابقت" غوښتنه کوي — هره اړخ باید هغه شی وغواړي چې بل اړخ وړاندې کوي. پیسې دا ستونزه له مینځه وړي او د معاملې لګښتونه کموي.'},
+
+{t:'sa',tp:'monetary',tl:'پولي پالیسي',
+ q:'د کاناډا بانک به د رکودي ګپ سره مخنیوي لپاره پولي پالیسي څنګه وکاروي؟',
+ kw:['سود','پیسو','خلاص بازار','ټولیز تقاضا','پانګه','پراخه','اوراق','ذخیره','interest','money supply'],
+ ma:'رکودي ګپ هله پیدا کیږي کله چې واقعي GDP د ممکنه GDP نه لاندې شي. د کاناډا بانک پراخه پولي پالیسي پلي کوي:\n\n۱. د خلاص بازار پیرودنه: اوراق اخلي، ذخیرې زیاتوي، د پیسو عرضه لوړوي.\n۲. ډیره عرضه د سود کچه ټیطوي.\n۳. ټیطه کچه پانګه اچونه او مصرف هڅوي.\n۴. لوړ I او C د AD ښي خواته لیږدوي.\n۵. لوړ AD حقیقي GDP د ممکنه لور ته لوړوي، بیکاري کموي.'},
+
+{t:'sa',tp:'aggregate',tl:'ټولیز لګښت',
+ q:'د AD کرښې پر مهال حرکت او د AD کرښې لیږد تر مینځ توپیر وکړئ. د هر یوه مثال ورکړئ.',
+ kw:['بهاو','لیږد','حرکت','خپلسري','باور','حکومت','شتمني','price','shift','movement'],
+ ma:'د AD کرښې پر مهال حرکت: د کورني بهاو کچې بدلون له امله. مثلاً، که بهاو کچه لوړه شي، د تولید د غوښتنې مقدار کمیږي (کرښه پورته او کیڼ خواته حرکت کوي).\n\nد AD کرښې لیږد: د بهاو کچه پرته بل شي له امله. مثلاً، که حکومت لګښت (G) زیات کړي، ټوله AD کرښه ښي خواته لیږدیږي.'},
+
+{t:'sa',tp:'open',tl:'خلاص اقتصاد',
+ q:'تطبیقي لوی والی توضیح کړئ او ولې دا د دواړو هیوادونو لپاره ګټوره سوداګري راولي حتی کله چې یو هیواد د هرڅه کې ډیر تولیدوونکی وي.',
+ kw:['فرصت','تخصص','مطلق','تطبیقي','ګټه','لګښت','opportunity','specialization','comparative','trade'],
+ ma:'تطبیقي لوی والی: یو هیواد هغه وخت د یو شي کې تطبیقي لوی والی لري کله چې دا شی د خپلو سوداګریزو ملګرو د پرتله د ټیټ فرصت لګښت سره تولید کولای شي.\n\nحتی که هیواد A د ټولو شیانو کې مطلق ډیر تولیدوونکی وي، سوداګري لا هم د دواړو لپاره ګټوره ده. هر هیواد باید هغه شي کې تخصص ولري چیرې چې د هغه ګټه تر ټولو ډیره وي. دا د ریکارډو بنسټیزه لید دی.'},
+
+// ── ګرافیکي پوښتنې ────────────────────────────────────────────────────────
+{t:'graph',tp:'foundations',tl:'بنسټونه او د تولید ممکنه سرحد',
+ q:'انځور د PPF ښیي چې ورېنه او موټر تولیدوي. نقطه A د سرحد دننه، نقطه B پر سرحد، نقطه C بهر ده. کومه نقطه تولیدي موثریت ښیي؟',
+ gfx:'ppf_pts',
+ opts:['نقطه A — د سرحد دننه','نقطه B — پر سرحد','نقطه C — د سرحد بهر','درې یو شان موثریت ښیي'],
+ a:1, ex:'نقطه B د PPF پر مهال ده — ټولې سرچینې پوره او موثره توګه استعمالیږي. نقطه A دننه ده (ناموثریت)؛ نقطه C اوس ناممکنه ده.'},
+
+{t:'graph',tp:'foundations',tl:'بنسټونه او د تولید ممکنه سرحد',
+ q:'PPF د PPF₁ نه PPF₂ ته بهر لیږدیدلی دی. لاندې کوم دا لیږد ترټولو ښه توضیح کوي؟',
+ gfx:'ppf_shift',
+ opts:['د چکري بیکارۍ زیاتوالی','د یو شي لپاره د مصرف کونکو خوښو کمیدل','ټیکنالوجیکي پرمختګ یا د تولیدي سرچینو زیاتوالی','د نړیوال تجارت کمیدل'],
+ a:2, ex:'د PPF بهر لیږد اقتصادي ودانۍ ښیي. دا د ټیکنالوجیکي پرمختګ، د کار ځواک ودانۍ، پانګه اچونې، یا د سرچینو د کیفیت د ښه والي له امله دی.'},
+
+{t:'graph',tp:'aggregate',tl:'ټولیز لګښت',
+ q:'AD-AS انځور اقتصاد E₁ ته ښیي. بیا ټولیز تقاضا E₂ نوي لنډمهالې متوازن ته لوړیږي. د بهاو کچې او حقیقي GDP د لنډمهالې اغیزه دومره ده:',
+ gfx:'adas',
+ opts:['لوړه بهاو کچه او لوړ حقیقي GDP','ټیطه بهاو کچه او ټیط حقیقي GDP','لوړه بهاو کچه او ټیط حقیقي GDP','هیڅ بدلون نه'],
+ a:0, ex:'د AD ښي خواته لیږد اقتصاد د SRAS پر مهال پورته او ښي خواته لیږدوي. لنډمهاله کې، د بهاو کچه او حقیقي GDP دواړه لوړیږي.'},
+
+{t:'graph',tp:'monetary',tl:'پولي پالیسي',
+ q:'د پیسو بازار انځور MS₁ نه MS₂ ته ښي خواته لیږد ښیي. د متوازن د سود کچه سره د لاندې کومه پیښیږي؟',
+ gfx:'money_mkt',
+ opts:['د سود کچه لوړیږي','د سود کچه ټیطیږي','د سود کچه بدله نه کیږي','د سود کچه لوړیږي بیا ټیطیږي'],
+ a:1, ex:'د پیسو عرضه زیاتوالی د اصلي د سود کچې پر مهال زیاتي رامنځته کوي. پور ورکوونکي د اضافي ذخیرو لپاره سیالي کوي، د سود کچه ټیطوي.'},
+
+{t:'graph',tp:'aggregate',tl:'ټولیز لګښت',
+ q:'د کینز کراس انځور ۴۵ درجه کرښه او AE کرښه ښیي. ماکرواقتصادي متوازن چیرې دی؟',
+ gfx:'kc',
+ opts:['چیرې چې AE کرښه افقي محور له لطع کوي','چیرې چې AE کرښه د ۴۵ درجه کرښه له لطع کوي','د AE کرښې ترټولو غټ ځای','چیرې چې AE کرښه د ۴۵ درجه کرښې سره موازي وي'],
+ a:1, ex:'د کینز ماډل کې متوازن هغه ځای دی چیرې چې پلان شوی لګښت واقعي تولید سره برابر وي — د AE کرښې او ۴۵ درجه کرښې لطع ځای.'},
+
+{t:'graph',tp:'fiscal',tl:'مالیه ییز پالیسي',
+ q:'AD-AS انځور رکودي ګپ ښیي — E₁ د LRAS نه کیڼ خواته دی. کوم پالیسي ځواب AD ښي خواته لیږدوي ترڅو ګپ بند کړي؟',
+ gfx:'rec_gap',
+ opts:['مالیه لوړول او د حکومت لګښت کمول','د حکومت لګښت زیاتول یا مالیه کمول','د مرکزي بانک د پالیسي کچه لوړول','د پیسو عرضه کمول'],
+ a:1, ex:'رکودي ګپ دا معنا لري چې تولید د ممکنه نه لاندې دی. پراخه مالیه ییز پالیسي — لوړ G یا ټیطه مالیه — AD ښي خواته لیږدوي، ګپ بندوي.'},
+
+// ── تحلیلي پوښتنې ─────────────────────────────────────────────────────────
+{t:'an',tp:'fiscal',tl:'مالیه ییز پالیسي',
+ q:'اقتصاد رکود کې دی. د AD-AS ماډل او د کینز ضرب کونکي له کارولو سره، کله چې MPC = 0.8 وي د $۵۰ ملیارده د حکومت لګښت لوړوالي د لنډمهالې او اوږدمهالې اغیزې تحلیل کړئ. یوه محدودیت پیژندل کړئ.',
+ ma:'لنډمهاله تحلیل:\nضرب کونکی = ۱ ÷ (۱ − ۰.۸) = ۵. د G کې $۵۰B زیاتوالی AD د ضرب کونکي د دورو له لارې تر $۲۵۰B ټولیز اغیزه سره ښي خواته لیږدوي. د بهاو کچه او حقیقي GDP لوړیږي. که اقتصاد رکودي ګپ کې وو، تولید د ممکنه لور ته حرکت کوي.\n\nاوږدمهاله تحلیل:\nکه هڅول د ممکنه نه پر ده ووزي، د تورم فشار جوړیږي. مزد او د ان پوټ بهاوونه لوړیږي، SRAS کیڼ خواته لیږدیږي تر هغه چې حقیقي GDP بیرته راستانه شي — خو د ثابت لوړ تورم سره.\n\nمحدودیت:\n• بهر کول: د حکومت پور اخیستل د سود کچه لوړوي، خصوصي پانګه اچونه کموي.\n• د پلي کولو پراتول: پالیسي شاید د رکود د پای نه وروسته راشي.\n• د پور دوام وړتیا: تکراري کسرونه عامه پور بار لوړوي.'},
+
+{t:'an',tp:'monetary',tl:'پولي پالیسي',
+ q:'د پولي پالیسي د لیږد میکانیزم توضیح کړئ. د مرکزي بانک د پالیسي د سود کچه ټیطوالی پریکړه به پایانه د تورم او تولید اغیزه کوي؟ لږترلږه درې چینلونه وپیژنئ.',
+ ma:'د پولي پالیسي لیږد میکانیزم دا توضیح کوي چې د پالیسي کچې بدلاوونه اقتصاد ته د پروپاګنډا ترڅنګه لري:\n\n۱. د پانګه اچونې چینل: ټیطه کچه د شرکتونو د پور اخیستلو لګښت کموي. ډیرې پروژې ګټورې کیږي، I لوړوي، AD ښي خواته لیږدیږي.\n\n۲. د مصرف چینل: ټیطه د رهن او د مصرف د پور کچه د کور او پایدار توکو مصرف هڅوي، C لوړیږي.\n\n۳. د بدلون کچې چینل: ټیطه کورني کچه اسعار ارزانه کوي، صادرات ارزانه کوي، NX لوړیږي.\n\n۴. د شتمنۍ چینل: ټیطه کچه د ملکیتونو ارزښت لوړوي، کورني شتمني زیاتوي، مصرف لوړوي.\n\nخالصه اغیزه: پراخه پولي پالیسي AD ښي خواته لیږدوي، تولید لوړوي او بیکاري کموي.'},
+
+{t:'an',tp:'growth',tl:'اقتصادي ودانۍ او بیکاري',
+ q:'د فیلیپس منحني له لارې د تورم او بیکارۍ تر مینځ لنډمهاله سوداکاري تحلیل کړئ. بیا توضیح کړئ ولې اقتصاددانان استدلال کوي چې دا سوداکاري اوږدمهاله کې ورکیږي.',
+ ma:'لنډمهاله فیلیپس منحني (SRPC):\nلنډمهاله کې تورم او بیکاري تر مینځ معکوس اړیکه شته. کله چې AD لوړیږي، بیکاري د طبیعي کچې نه لاندې شي، خو قوي غوښتنه تورم لوړوي. پالیسي کولای شي د لوړ تورم د بهاو سره ټیط بیکاري "واخلي".\n\nد SRPC لیږد:\nکله چې د تورم توقعات لوړیږي SRPC پورته لیږدیږي. کارګران او شرکتونه توقع شوی تورم د مزد غوښتنو او بهاو تنظیم کې ننویستل.\n\nاوږدمهاله فیلیپس منحني (LRPC) — عمودي:\nاوږدمهاله کې بیکاري طبیعي کچې ته راستانه کیږي، پرته له د تورم کچې. دوامداره سوداکاري نشته — LRPC د بیکارۍ طبیعي کچې پر عمودي کرښه ده (د فریدمن-فیلیپس لید).'},
+
+{t:'an',tp:'open',tl:'خلاص اقتصاد',
+ q:'کاناډا د وارداتي انګور پر مالیه لګوي. اغیزې تحلیل کړئ: (a) کورني مصرف کونکو، (b) کورني تولیدوونکو، (c) د حکومت عاید، او (d) ټولیز ملي رفاه.',
+ ma:'مالیه د نړیوال بهاو نه پورته کورني بهاو لوړوي.\n\n(a) کورني مصرف کونکي: لوړ بهاو ادا کوي، لږ مصرفوي، د مصرف مازاد له لاسه ورکوي. دا د رفاه زیان دی.\n\n(b) کورني تولیدوونکي: د لوړ بهاو نه ګټه پورته کوي. تولید پراخوي. د تولیدوونکو مازاد لوړیږي.\n\n(c) د حکومت عاید: د مالیه عاید راټولوي — واحد مالیه × د وارداتو مقدار.\n\n(d) ملي رفاه:\n• ګټه: د تولیدوونکو مازاد + مالیه عاید\n• زیان: د مصرف کونکو مازاد\n• د مصرف کونکو زیان د ترکیبي ګټو نه د دوو "مړ وزن زیان" مثلثونو سره زیات دی.\n\nپایله: مالیه خالص مړ وزن زیان رامنځته کوي — ټولیز ملي رفاه کمیږي.'},
+];
+
+// ── د اپلیکیشن حالت ────────────────────────────────────────────────────────
+const S = { qs:[], cur:0, score:0, answered:false, topicF:'all', typeF:'all', res:{} };
+
+const TYPE_LABELS = {
+  mc:'ګڼه ځوابه', tf:'سم / غلط', num:'شمیري',
+  sa:'لنډ ځواب', graph:'ګرافیکي', an:'تحلیلي'
+};
+const TYPE_CLS = {mc:'b-mc',tf:'b-tf',num:'b-num',sa:'b-sa',graph:'b-gr',an:'b-an'};
+
+// ── د چپ انتخاب ────────────────────────────────────────────────────────────
+document.querySelectorAll('#topic-chips .chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('#topic-chips .chip').forEach(x => x.classList.remove('selected'));
+  c.classList.add('selected'); S.topicF = c.dataset.val;
+}));
+document.querySelectorAll('#type-chips .chip').forEach(c => c.addEventListener('click', () => {
+  document.querySelectorAll('#type-chips .chip').forEach(x => x.classList.remove('selected'));
+  c.classList.add('selected'); S.typeF = c.dataset.val;
+}));
+
+// ── ناوبري ─────────────────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function showHome() { showScreen('s-home'); }
+
+// ── پیل ─────────────────────────────────────────────────────────────────────
+function startQuiz() {
+  let pool = QB.filter(q =>
+    (S.topicF === 'all' || q.tp === S.topicF) &&
+    (S.typeF  === 'all' || q.t  === S.typeF)
+  );
+  if (!pool.length) { alert('هیڅ پوښتنه مناسبه نده. بل فلتر وکاروئ.'); return; }
+  S.qs = pool.sort(() => Math.random() - .5);
+  S.cur = 0; S.score = 0; S.res = {};
+  showScreen('s-quiz');
+  renderQ();
+}
+
+// ── د پوښتنې ښودل ──────────────────────────────────────────────────────────
+function renderQ() {
+  const q = S.qs[S.cur];
+  S.answered = false;
+  const total = S.qs.length;
+
+  document.getElementById('prog').style.width = (S.cur / total * 100) + '%';
+  document.getElementById('q-counter').textContent = `پ ${S.cur+1} له ${total} نه`;
+  document.getElementById('score-live').textContent = `نمره: ${S.score}`;
+  const badge = document.getElementById('type-badge');
+  badge.textContent = TYPE_LABELS[q.t];
+  badge.className = 'type-badge ' + TYPE_CLS[q.t];
+  document.getElementById('q-topic').textContent = q.tl;
+  document.getElementById('q-text').textContent = q.q;
+
+  const ga = document.getElementById('q-graph');
+  ga.style.display = 'none'; ga.innerHTML = '';
+  const aa = document.getElementById('q-ans-area');
+  aa.innerHTML = '';
+  const fb = document.getElementById('q-fb');
+  fb.className = 'feedback'; fb.textContent = '';
+  const ma = document.getElementById('q-ma');
+  ma.className = 'model-ans';
+  document.getElementById('q-ma-body').innerHTML = '';
+
+  document.getElementById('btn-sub').style.display = 'block';
+  document.getElementById('btn-sub').disabled = false;
+  document.getElementById('btn-next').style.display = 'none';
+
+  if (q.t === 'mc' || q.t === 'graph') {
+    if (q.t === 'graph') {
+      ga.style.display = 'block';
+      const cv = document.createElement('canvas');
+      cv.width = 420; cv.height = 280;
+      ga.appendChild(cv);
+      drawGraph(cv, q.gfx);
+    }
+    const wrap = document.createElement('div');
+    wrap.className = 'mc-opts';
+    const lets = ['A','B','C','D'];
+    (q.opts||[]).forEach((opt, i) => {
+      const d = document.createElement('div');
+      d.className = 'mc-opt';
+      d.dataset.idx = i;
+      d.innerHTML = `<span class="opt-letter">${lets[i]}</span>${opt}`;
+      d.addEventListener('click', () => {
+        if (S.answered) return;
+        document.querySelectorAll('.mc-opt').forEach(x => x.classList.remove('selected'));
+        d.classList.add('selected');
+      });
+      wrap.appendChild(d);
+    });
+    aa.appendChild(wrap);
+
+  } else if (q.t === 'tf') {
+    const row = document.createElement('div');
+    row.className = 'tf-row';
+    [{v:'True',lbl:'سم'},{v:'False',lbl:'غلط'}].forEach(({v,lbl}) => {
+      const b = document.createElement('button');
+      b.className = 'tf-btn ' + (v==='True'?'tf-t':'tf-f');
+      b.textContent = lbl; b.dataset.v = v;
+      b.addEventListener('click', () => {
+        if (S.answered) return;
+        document.querySelectorAll('.tf-btn').forEach(x => x.classList.remove('selected'));
+        b.classList.add('selected');
+      });
+      row.appendChild(b);
+    });
+    aa.appendChild(row);
+
+  } else if (q.t === 'num') {
+    const inp = document.createElement('input');
+    inp.type = 'number'; inp.step = 'any'; inp.className = 'num-input'; inp.id = 'num-in';
+    inp.placeholder = 'خپل ځواب دننه کړئ' + (q.unit ? ` (${q.unit})` : '');
+    aa.appendChild(inp);
+    if (q.hint) {
+      const h = document.createElement('div');
+      h.className = 'num-hint'; h.textContent = 'سرنخ: ' + q.hint;
+      aa.appendChild(h);
+    }
+
+  } else if (q.t === 'sa') {
+    const n = document.createElement('div');
+    n.className = 'input-note'; n.textContent = '۲–۴ جملې ولیکئ. د وسپارلو وروسته د نمونې ځواب ښکاره کیږي.';
+    aa.appendChild(n);
+    const ta = document.createElement('textarea');
+    ta.className = 'sa-input'; ta.id = 'sa-in'; ta.placeholder = 'خپل ځواب دلته ولیکئ…';
+    aa.appendChild(ta);
+
+  } else if (q.t === 'an') {
+    const n = document.createElement('div');
+    n.className = 'input-note'; n.textContent = 'یو مفصل تحلیلي ځواب ولیکئ. خپل ځواب د نمونې ځواب سره پرتله کړئ.';
+    aa.appendChild(n);
+    const ta = document.createElement('textarea');
+    ta.className = 'an-input'; ta.id = 'an-in'; ta.placeholder = 'خپل تحلیل دلته ولیکئ…';
+    aa.appendChild(ta);
+  }
+}
+
+// ── د انځورونو رسم ─────────────────────────────────────────────────────────
+function drawGraph(cv, type) {
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const M = {l:58,r:28,t:28,b:44};
+  const gW = W - M.l - M.r, gH = H - M.t - M.b;
+  ctx.clearRect(0,0,W,H);
+  const gx = x => M.l + x*gW;
+  const gy = y => M.t + (1-y)*gH;
+
+  ctx.strokeStyle='#374151'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(M.l,M.t); ctx.lineTo(M.l,M.t+gH); ctx.lineTo(M.l+gW,M.t+gH); ctx.stroke();
+  ctx.fillStyle='#374151'; ctx.font='12px Helvetica Neue,Arial,sans-serif'; ctx.textAlign='center';
+
+  if (type === 'ppf_pts') {
+    ctx.fillText('Cars',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Wheat',0,0); ctx.restore();
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath();
+    for(let i=0;i<=100;i++){
+      const t=i/100, x=Math.sin(t*Math.PI/2)*0.87, y=Math.cos(t*Math.PI/2)*0.87;
+      i===0?ctx.moveTo(gx(x),gy(y)):ctx.lineTo(gx(x),gy(y));
+    }
+    ctx.stroke();
+    [{x:.33,y:.33,l:'A',c:'#d97706'},{x:.616,y:.616,l:'B',c:'#059669'},{x:.8,y:.8,l:'C',c:'#dc2626'}].forEach(p=>{
+      ctx.beginPath(); ctx.arc(gx(p.x),gy(p.y),7,0,2*Math.PI);
+      ctx.fillStyle=p.c; ctx.fill();
+      ctx.fillStyle='#111'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left';
+      ctx.fillText(p.l,gx(p.x)+11,gy(p.y)-5);
+    });
+
+  } else if (type === 'ppf_shift') {
+    ctx.fillText('Good Y',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Good X',0,0); ctx.restore();
+    const drawPPF=(sc,col,lbl)=>{
+      ctx.strokeStyle=col; ctx.lineWidth=2.5;
+      ctx.beginPath();
+      for(let i=0;i<=100;i++){const t=i/100;const x=Math.sin(t*Math.PI/2)*sc,y=Math.cos(t*Math.PI/2)*sc;i===0?ctx.moveTo(gx(x),gy(y)):ctx.lineTo(gx(x),gy(y));}
+      ctx.stroke();
+      ctx.fillStyle=col; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left';
+      ctx.fillText(lbl,gx(sc*0.72),gy(sc*0.04)-4);
+    };
+    drawPPF(0.62,'#9ca3af','PPF₁'); drawPPF(0.85,'#003366','PPF₂');
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=2; ctx.setLineDash([5,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.42),gy(.42)); ctx.lineTo(gx(.58),gy(.58)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#c8960c'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('Growth →',gx(.47),gy(.53));
+
+  } else if (type === 'adas') {
+    ctx.fillText('Real GDP',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price Level (P)',0,0); ctx.restore();
+    ctx.strokeStyle='#374151'; ctx.lineWidth=1.8; ctx.setLineDash([6,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.6),gy(0)); ctx.lineTo(gx(.6),gy(1)); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='#374151'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('LRAS',gx(.6),gy(.96));
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.08),gy(.08)); ctx.lineTo(gx(.95),gy(.9)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('SRAS',gx(.9),gy(.87));
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.08),gy(.88)); ctx.lineTo(gx(.9),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.fillText('AD₁',gx(.88),gy(.1));
+    ctx.strokeStyle='#2563eb'; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.26),gy(.88)); ctx.lineTo(gx(.99),gy(.13)); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='#2563eb'; ctx.fillText('AD₂',gx(.94),gy(.22));
+    const e1x=.412,e1y=.468;
+    ctx.beginPath(); ctx.arc(gx(e1x),gy(e1y),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(e1x)-7,gy(e1y)-6);
+    const e2x=.546,e2y=.594;
+    ctx.beginPath(); ctx.arc(gx(e2x),gy(e2y),5,0,2*Math.PI); ctx.fillStyle='#f59e0b'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.textAlign='left'; ctx.fillText('E₂',gx(e2x)+7,gy(e2y)-6);
+
+  } else if (type === 'money_mkt') {
+    ctx.fillText('Quantity of Money',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Interest Rate (r)',0,0); ctx.restore();
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.06),gy(.9)); ctx.lineTo(gx(.9),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('MD',gx(.88),gy(.09));
+    ctx.strokeStyle='#059669'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.42),gy(0)); ctx.lineTo(gx(.42),gy(1)); ctx.stroke();
+    ctx.fillStyle='#059669'; ctx.fillText('MS₁',gx(.42)+3,gy(.95));
+    ctx.strokeStyle='#10b981'; ctx.lineWidth=2; ctx.setLineDash([5,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.65),gy(0)); ctx.lineTo(gx(.65),gy(1)); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='#10b981'; ctx.fillText('MS₂',gx(.65)+3,gy(.95));
+    const e1y_m=0.54, e2y_m=0.31;
+    ctx.beginPath(); ctx.arc(gx(.42),gy(e1y_m),5,0,2*Math.PI); ctx.fillStyle='#374151'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(.42)-6,gy(e1y_m));
+    ctx.beginPath(); ctx.arc(gx(.65),gy(e2y_m),5,0,2*Math.PI); ctx.fillStyle='#374151'; ctx.fill();
+    ctx.textAlign='left'; ctx.fillText('E₂',gx(.65)+6,gy(e2y_m));
+
+  } else if (type === 'kc') {
+    ctx.fillText('Output / Income (Y)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Planned AE',0,0); ctx.restore();
+    ctx.strokeStyle='#9ca3af'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+    ctx.beginPath(); ctx.moveTo(gx(0),gy(0)); ctx.lineTo(gx(.92),gy(.92)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9ca3af'; ctx.font='11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('45°',gx(.9),gy(.93));
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(0),gy(.15)); ctx.lineTo(gx(.9),gy(.15+.65*.9)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('AE',gx(.88),gy(.735));
+    const Yeq=.15/.35;
+    ctx.beginPath(); ctx.arc(gx(Yeq),gy(Yeq),6,0,2*Math.PI);
+    ctx.fillStyle='#c8960c'; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='#111'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('E*',gx(Yeq)+10,gy(Yeq)-8);
+
+  } else if (type === 'rec_gap') {
+    ctx.fillText('Real GDP (Y)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price Level (P)',0,0); ctx.restore();
+    ctx.strokeStyle='#374151'; ctx.lineWidth=1.8; ctx.setLineDash([6,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.67),gy(0)); ctx.lineTo(gx(.67),gy(1)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#374151'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('LRAS (Y*)',gx(.67),gy(.95));
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.08)); ctx.lineTo(gx(.95),gy(.9)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('SRAS',gx(.9),gy(.87));
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.87)); ctx.lineTo(gx(.87),gy(.05)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('AD',gx(.84),gy(.08));
+    const e1x=.464, e1y=0.92-.464;
+    ctx.beginPath(); ctx.arc(gx(e1x),gy(e1y),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(e1x)-7,gy(e1y));
+    ctx.strokeStyle='#f59e0b'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(e1x),gy(.24)); ctx.lineTo(gx(.67),gy(.24)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#f59e0b'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('← Gap →',gx((e1x+.67)/2),gy(.16));
+  }
+}
+
+// ── وسپارل ─────────────────────────────────────────────────────────────────
+function submit() {
+  const q = S.qs[S.cur];
+  if (S.answered) return;
+  S.answered = true;
+
+  const fb = document.getElementById('q-fb');
+  const ma = document.getElementById('q-ma');
+  const maBody = document.getElementById('q-ma-body');
+  let correct = false;
+
+  if (q.t === 'mc' || q.t === 'graph') {
+    const sel = document.querySelector('.mc-opt.selected');
+    if (!sel) { S.answered=false; alert('مهرباني وکړئ یو ځواب انتخاب کړئ.'); return; }
+    const chosen = parseInt(sel.dataset.idx);
+    correct = chosen === q.a;
+    document.querySelectorAll('.mc-opt').forEach((o,i) => {
+      o.classList.add('disabled');
+      if (i===q.a) o.classList.add('correct');
+      else if (i===chosen&&!correct) o.classList.add('wrong');
+    });
+    fb.textContent = (correct?'✓ سم! ':'✗ غلط. ') + q.ex;
+    fb.className = 'feedback show ' + (correct?'fb-ok':'fb-err');
+
+  } else if (q.t === 'tf') {
+    const sel = document.querySelector('.tf-btn.selected');
+    if (!sel) { S.answered=false; alert('مهرباني وکړئ سم یا غلط انتخاب کړئ.'); return; }
+    const chosen = sel.dataset.v==='True';
+    correct = chosen===q.a;
+    document.querySelectorAll('.tf-btn').forEach(b => {
+      b.classList.add('disabled');
+      if ((b.dataset.v==='True')===q.a) b.classList.add('correct');
+      else if ((b.dataset.v==='True')===chosen&&!correct) b.classList.add('wrong');
+    });
+    fb.textContent = (correct?'✓ سم! ':'✗ غلط. سم ځواب: '+(q.a?'سم':'غلط')+'. ') + q.ex;
+    fb.className = 'feedback show ' + (correct?'fb-ok':'fb-err');
+
+  } else if (q.t === 'num') {
+    const inp = document.getElementById('num-in');
+    if (!inp||!inp.value) { S.answered=false; alert('مهرباني وکړئ یو عدد دننه کړئ.'); return; }
+    const val = parseFloat(inp.value);
+    correct = Math.abs(val-q.a)<=q.tol;
+    inp.classList.add(correct?'correct':'wrong');
+    fb.textContent = (correct?'✓ سم! ':'✗ غلط. سم ځواب: '+q.a+(q.unit?' '+q.unit:'')+'. ') + q.ex;
+    fb.className = 'feedback show ' + (correct?'fb-ok':'fb-err');
+
+  } else if (q.t === 'sa') {
+    const inp = document.getElementById('sa-in');
+    if (!inp||!inp.value.trim()) { S.answered=false; alert('مهرباني وکړئ یو ځواب ولیکئ.'); return; }
+    const txt = inp.value.toLowerCase();
+    const matched = q.kw.filter(k=>txt.includes(k.toLowerCase())).length;
+    correct = matched >= Math.ceil(q.kw.length*0.30);
+    fb.textContent = `تاسو د ${q.kw.length} نه ${matched} اصلي مفاهیم شامل کړل. لاندې د نمونې ځواب وکتئ.`;
+    fb.className = 'feedback show fb-info';
+    maBody.innerHTML = q.ma.replace(/\n/g,'<br>');
+    ma.className = 'model-ans show';
+
+  } else if (q.t === 'an') {
+    const inp = document.getElementById('an-in');
+    if (!inp||!inp.value.trim()) { S.answered=false; alert('مهرباني وکړئ خپل تحلیل ولیکئ.'); return; }
+    correct = true;
+    fb.textContent = 'خپل ځواب د لاندې د نمونې ځواب سره پرتله کړئ او ځان ارزیابي وکړئ.';
+    fb.className = 'feedback show fb-info';
+    maBody.innerHTML = q.ma.replace(/\n/g,'<br>');
+    ma.className = 'model-ans show';
+  }
+
+  if (correct) S.score++;
+  if (!S.res[q.t]) S.res[q.t]={c:0,n:0};
+  S.res[q.t].n++;
+  if (correct) S.res[q.t].c++;
+
+  document.getElementById('score-live').textContent = `نمره: ${S.score}`;
+  document.getElementById('btn-sub').style.display = 'none';
+  document.getElementById('btn-next').style.display = 'block';
+}
+
+// ── بله / پایلې ────────────────────────────────────────────────────────────
+function nextQ() {
+  S.cur++;
+  if (S.cur >= S.qs.length) showResults();
+  else renderQ();
+}
+
+function showResults() {
+  showScreen('s-results');
+  const total = S.qs.length;
+  const pct = Math.round(S.score/total*100);
+  document.getElementById('r-pct').textContent = pct+'%';
+  let grade, msg;
+  if (pct>=90){grade='A+';msg='ممتاز! د ماکرواقتصاد پر مفاهیمو ستاسو ښه ونیوه.'}
+  else if(pct>=80){grade='A';msg='ډیره ښه. هغه پوښتنې وکتئ چې غلطي مو وکړه.'}
+  else if(pct>=70){grade='B';msg='ښه. لاندې کمزوري موضوعاتو ته پام وکړئ.'}
+  else if(pct>=60){grade='C';msg='قبوله. د لاندې موضوعاتو لپاره خپل کتاب بیا وکتئ.'}
+  else{grade='D/F';msg='مطالعه دوام ورکړئ. د فصلونو لوستنې وکتئ او بیا هڅه وکړئ.'}
+  document.getElementById('r-grade').textContent = `درجه: ${grade}`;
+  document.getElementById('r-msg').textContent = `${S.score} / ${total} سم. ${msg}`;
+  const tbody = document.getElementById('r-tbody');
+  tbody.innerHTML='';
+  Object.entries(S.res).forEach(([type,d])=>{
+    const p=d.n>0?Math.round(d.c/d.n*100):0;
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${TYPE_LABELS[type]}</td><td>${d.c}</td><td>${d.n}</td><td>${p}%</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+document.getElementById('stat-n').textContent = QB.length;
+</script>
+</body>
+</html>
