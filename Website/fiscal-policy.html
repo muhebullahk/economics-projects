@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscal Policy — ECON 101</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px;
+    font-size: 9px; color: rgba(255,255,255,.18); letter-spacing: .07em;
+    text-transform: uppercase; pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 .rule { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 64px; line-height: 1.05; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub { margin-top: 20px; font-size: 16px; color: #8898a0; font-weight: 300; max-width: 460px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(200,168,75,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .icon-wrap { position: absolute; right: 56px; top: 50%; transform: translateY(-50%); width: 210px; height: 210px; }
+
+  /* ── Slide 1 – Goals & Tools ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--ink); line-height: 1.15; margin-bottom: 26px; }
+  .cards { display: flex; gap: 18px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 22px 18px; border-top: 4px solid var(--teal); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.gold-t { border-color: var(--gold); }
+  .card.rust-t { border-color: var(--rust); }
+  .card .icon { font-size: 26px; margin-bottom: 10px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; letter-spacing: .04em; }
+  .card p { font-size: 12.5px; color: #444; line-height: 1.6; font-weight: 300; }
+
+  /* ── Slide 2 – Multiplier (horizontal) ── */
+  #s2 { background: #0f1117; flex-direction: row; align-items: center; gap: 36px; padding: 44px 52px; }
+  #s2 .sl { flex: 1; min-width: 0; }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 8px; }
+  #s2 .intro { font-size: 13px; color: #8899aa; font-weight: 300; line-height: 1.6; margin-bottom: 18px; }
+  .mult-facts { display: flex; flex-direction: column; gap: 10px; }
+  .mult-fact { display: flex; gap: 10px; font-size: 12.5px; font-weight: 300; color: #bbc; line-height: 1.5; align-items: flex-start; }
+  .mult-badge { flex-shrink: 0; padding: 2px 9px; border-radius: 20px; font-size: 10.5px; font-weight: 700; letter-spacing: .04em; margin-top: 1px; background: rgba(200,168,75,.2); color: var(--gold); }
+
+  /* bar transform animation */
+  .mult-bar {
+    transform-box: fill-box; transform-origin: left center;
+    transform: scaleX(0); transition: transform 0.9s ease;
+  }
+  .mult-bar.show { transform: scaleX(1); }
+  .mult-lbl { opacity: 0; transition: opacity 0.5s ease 0.6s; }
+  .mult-lbl.show { opacity: 1; }
+  .mult-total { opacity: 0; transition: opacity 0.7s ease; }
+  .mult-total.show { opacity: 1; }
+
+  /* ── Slide 3 – Expansionary vs Contractionary ── */
+  #s3 { background: var(--paper); }
+  #s3 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--rust); margin-bottom: 12px; }
+  #s3 h2 { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--ink); margin-bottom: 22px; }
+  .dir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+  .dir-card { border-radius: 8px; padding: 22px; }
+  .dir-card.expand   { background: rgba(26,122,110,.07);  border: 2px solid rgba(26,122,110,.3); }
+  .dir-card.contract { background: rgba(192,68,42,.07);   border: 2px solid rgba(192,68,42,.3); }
+  .dir-card .dir-label { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 6px; }
+  .dir-card.expand   .dir-label { color: var(--teal); }
+  .dir-card.contract .dir-label { color: var(--rust); }
+  .dir-card .dir-rate { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; line-height: 1.3; margin-bottom: 12px; }
+  .dir-card.expand   .dir-rate { color: var(--teal); }
+  .dir-card.contract .dir-rate { color: var(--rust); }
+  .dir-card .dir-when { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #888; margin-bottom: 10px; }
+  .dir-item { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 300; color: #333; margin-bottom: 6px; line-height: 1.4; }
+  .dir-item .arr { font-size: 14px; flex-shrink: 0; }
+  .dir-item .arr.up { color: var(--teal); }
+  .dir-item .arr.dn { color: var(--rust); }
+  .dir-card { transition: box-shadow .4s ease, transform .3s ease; }
+  .dir-card.teach-on { transform: translateY(-2px); }
+  .dir-card.expand.teach-on   { box-shadow: 0 0 0 2px var(--teal); }
+  .dir-card.contract.teach-on { box-shadow: 0 0 0 2px var(--rust); }
+
+  /* ── Slide 4 – Automatic Stabilisers ── */
+  #s4 { background: #0a0f14; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--paper); margin-bottom: 6px; }
+  #s4 .intro { font-size: 13px; color: #8899aa; font-weight: 300; margin-bottom: 22px; line-height: 1.55; }
+  .stab-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 18px; align-items: start; }
+  .stab-col { border-radius: 8px; padding: 18px 16px; }
+  .stab-col.recession { background: rgba(192,68,42,.08); border: 1px solid rgba(192,68,42,.25); }
+  .stab-col.expansion { background: rgba(26,122,110,.08); border: 1px solid rgba(26,122,110,.25); }
+  .stab-col h3 { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+  .stab-col.recession h3 { color: var(--rust); }
+  .stab-col.expansion h3 { color: #1a9a8e; }
+  .stab-item { display: flex; gap: 8px; font-size: 12px; font-weight: 300; color: #ccd; margin-bottom: 8px; line-height: 1.45; align-items: flex-start; }
+  .stab-item:last-child { margin-bottom: 0; }
+  .stab-item .s-arr { flex-shrink: 0; font-size: 13px; }
+  .stab-item .s-arr.dn { color: var(--rust); }
+  .stab-item .s-arr.up { color: #1a9a8e; }
+  .stab-item span { color: #bbc; }
+  .stab-item strong { color: var(--paper); font-weight: 600; }
+  .stab-col.recession .stab-item { color: rgba(255,255,255,.65); }
+  .stab-col.expansion .stab-item { color: rgba(255,255,255,.65); }
+  .stab-centre { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding: 10px 0; }
+  .stab-centre .sc-label { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); text-align: center; }
+  .stab-centre .sc-icon { font-size: 28px; }
+  .stab-note {
+    margin-top: 18px; padding: 10px 16px;
+    background: rgba(200,168,75,.1); border: 1px solid rgba(200,168,75,.3);
+    border-radius: 6px; font-size: 12px; color: var(--paper); line-height: 1.55; font-weight: 300;
+  }
+  .stab-note strong { color: var(--gold); }
+
+  /* ── Slide 5 – Budget & Debt (horizontal) ── */
+  #s5 { background: var(--paper); flex-direction: row; align-items: center; gap: 36px; padding: 44px 52px; }
+  #s5 .sl { flex: 1; min-width: 0; }
+  #s5 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 12px; }
+  #s5 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--ink); margin-bottom: 10px; }
+  #s5 .intro { font-size: 13px; color: #555; font-weight: 300; line-height: 1.6; margin-bottom: 16px; }
+  .bd-facts { display: flex; flex-direction: column; gap: 10px; }
+  .bd-fact { display: flex; align-items: flex-start; gap: 10px; }
+  .bd-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .bd-fact p { font-size: 12.5px; color: #444; line-height: 1.5; font-weight: 300; }
+  .bd-fact strong { color: var(--ink); }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: var(--teal); }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.15); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 25px; line-height: 1.5; color: white; max-width: 640px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+  /* ── Controls ── */
+  #controls { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+  #loading-overlay { position: absolute; inset: 0; background: rgba(10,12,18,.88); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 10; }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(200,168,75,.2); border-top-color: var(--gold); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* ── Teaching animations ── */
+  .ppf-pt { opacity: 0; transition: opacity .6s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+  .ppf-ripple { transform-box: fill-box; transform-origin: center; }
+  .ppf-pt.ppf-show .ppf-ripple { animation: ripple-out 1.8s ease-out .1s forwards; }
+  @keyframes ripple-out { 0%{opacity:.7;transform:scale(1)} 100%{opacity:0;transform:scale(5)} }
+  .val-lit-cls { transition: opacity .5s ease; }
+
+  /* Stab cols */
+  .stab-col, .stab-note { opacity: 0; transition: opacity .6s ease; }
+  .stab-col.show, .stab-note.show { opacity: 1; }
+
+  /* Budget SVG bars */
+  .bgt-bar { transform-box: fill-box; }
+  .bgt-bar.deficit { transform-origin: top center; }
+  .bgt-bar.surplus { transform-origin: bottom center; }
+  .bgt-bar { transform: scaleY(0); transition: transform 0.7s ease; }
+  .bgt-bar.show { transform: scaleY(1); }
+  #debt-line { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 101 · Macroeconomics</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Fiscal<br><em>Policy</em></h1>
+    <p class="sub fade-in">How governments use spending and taxation to stabilise the economy, fight recessions, and control inflation.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="icon-wrap fade-in">
+      <svg viewBox="0 0 210 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="105" cy="105" r="100" stroke="rgba(200,168,75,.15)" stroke-width="1.5"/>
+        <!-- Government building -->
+        <rect x="55" y="128" width="100" height="36" fill="rgba(200,168,75,.18)" rx="2"/>
+        <rect x="64"  y="93"  width="12" height="35" fill="rgba(200,168,75,.28)"/>
+        <rect x="83"  y="93"  width="12" height="35" fill="rgba(200,168,75,.28)"/>
+        <rect x="102" y="93"  width="12" height="35" fill="rgba(200,168,75,.28)"/>
+        <rect x="121" y="93"  width="12" height="35" fill="rgba(200,168,75,.28)"/>
+        <polygon points="50,93 105,60 160,93" fill="rgba(200,168,75,.22)"/>
+        <!-- G label (teal, animated) -->
+        <text id="t-g" x="68"  y="52" fill="rgba(26,154,142,0)"  font-size="16" font-family="Playfair Display,serif" font-weight="700" text-anchor="middle">G↑</text>
+        <!-- T label (rust, animated) -->
+        <text id="t-t" x="142" y="52" fill="rgba(192,68,42,0)"   font-size="16" font-family="Playfair Display,serif" font-weight="700" text-anchor="middle">T↓</text>
+        <text x="105" y="185" fill="rgba(255,255,255,.2)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="600" letter-spacing=".12em" text-anchor="middle">FISCAL POLICY</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: Goals & Tools ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Framework</div>
+    <h2 class="fade-in">Government spending and taxation<br>as macroeconomic tools.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">🏗️</div>
+        <h3>Government Spending (G)</h3>
+        <p>Public spending on goods, services, infrastructure, and transfers (employment insurance, social assistance) directly injects money into the economy and boosts aggregate demand.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">💸</div>
+        <h3>Taxation (T)</h3>
+        <p>Taxes withdraw income from households and firms. Tax cuts leave more money in private hands; tax increases reduce disposable income and dampen spending across the economy.</p>
+      </div>
+      <div class="card rust-t fade-in">
+        <div class="icon">🎯</div>
+        <h3>The Goal</h3>
+        <p>Fiscal policy aims to stabilise the business cycle — stimulating demand during recessions, cooling it during booms — while supporting long-run growth and employment.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: The Spending Multiplier ── -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">The Spending Multiplier</h2>
+      <p class="intro fade-in">$1 of government spending creates more than $1 of GDP. Each round of spending becomes someone else's income.</p>
+      <div class="mult-facts fade-in">
+        <div class="mult-fact" id="mf1">
+          <span class="mult-badge">Round 1</span>
+          <span>Govt spends $1B on a highway. Construction workers earn $1B in income.</span>
+        </div>
+        <div class="mult-fact" id="mf2">
+          <span class="mult-badge">Round 2</span>
+          <span>Workers spend $0.80B at local stores (MPC = 0.8). Store owners earn $0.80B.</span>
+        </div>
+        <div class="mult-fact" id="mf3">
+          <span class="mult-badge">Round 3</span>
+          <span>Store owners spend $0.64B. And so on, each round smaller than the last.</span>
+        </div>
+        <div class="mult-fact" id="mf4">
+          <span class="mult-badge">Multiplier</span>
+          <span><strong style="color:var(--gold)">1 ÷ (1 − MPC) = 1 ÷ 0.2 = 5.</strong> One dollar of spending creates five dollars of GDP.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Multiplier bar chart SVG -->
+    <svg class="fade-in" viewBox="0 0 290 250" width="290" height="250" style="flex-shrink:0;">
+      <!-- Y-axis -->
+      <line x1="65" y1="10" x2="65" y2="218" stroke="rgba(255,255,255,.3)" stroke-width="1.2"/>
+      <!-- Row labels -->
+      <text x="60" y="37"  fill="rgba(255,255,255,.45)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="end">Govt</text>
+      <text x="60" y="75"  fill="rgba(255,255,255,.45)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="end">R2</text>
+      <text x="60" y="113" fill="rgba(255,255,255,.45)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="end">R3</text>
+      <text x="60" y="151" fill="rgba(255,255,255,.45)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="end">R4</text>
+      <text x="60" y="189" fill="rgba(255,255,255,.45)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="end">R5+</text>
+      <!-- Bars (full width shown, scaled to 0 initially) -->
+      <rect id="bar1" class="mult-bar" x="68" y="22" width="210" height="24" rx="3" fill="rgba(200,168,75,.7)"/>
+      <rect id="bar2" class="mult-bar" x="68" y="60" width="168" height="24" rx="3" fill="rgba(200,168,75,.55)"/>
+      <rect id="bar3" class="mult-bar" x="68" y="98" width="134" height="24" rx="3" fill="rgba(200,168,75,.42)"/>
+      <rect id="bar4" class="mult-bar" x="68" y="136" width="107" height="24" rx="3" fill="rgba(200,168,75,.32)"/>
+      <rect id="bar5" class="mult-bar" x="68" y="174" width="86"  height="24" rx="3" fill="rgba(200,168,75,.22)"/>
+      <!-- Bar labels -->
+      <text id="bl1" class="mult-lbl" x="283" y="38"  fill="var(--gold)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="700">$1.00B</text>
+      <text id="bl2" class="mult-lbl" x="241" y="76"  fill="rgba(200,168,75,.8)" font-size="10" font-family="Space Grotesk,sans-serif">$0.80B</text>
+      <text id="bl3" class="mult-lbl" x="207" y="114" fill="rgba(200,168,75,.65)" font-size="10" font-family="Space Grotesk,sans-serif">$0.64B</text>
+      <text id="bl4" class="mult-lbl" x="180" y="152" fill="rgba(200,168,75,.55)" font-size="10" font-family="Space Grotesk,sans-serif">$0.51B</text>
+      <text id="bl5" class="mult-lbl" x="159" y="190" fill="rgba(200,168,75,.45)" font-size="10" font-family="Space Grotesk,sans-serif">…</text>
+      <!-- Total -->
+      <g id="mult-total" class="mult-total">
+        <line x1="65" y1="218" x2="280" y2="218" stroke="rgba(200,168,75,.5)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="68"  y="235" fill="rgba(200,168,75,.6)" font-size="10" font-family="Space Grotesk,sans-serif">Total GDP impact:</text>
+        <text x="200" y="235" fill="var(--gold)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="700">= $5.00B ✓</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Expansionary vs Contractionary ── -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">Two Directions</div>
+    <h2 class="fade-in">Expansionary vs. Contractionary Fiscal Policy</h2>
+    <div class="dir-grid">
+      <div class="dir-card expand fade-in" id="dir-exp">
+        <div class="dir-label">Expansionary (Loose)</div>
+        <div class="dir-rate">G ↑ &nbsp;or&nbsp; T ↓</div>
+        <div class="dir-when">Used when: recession · high unemployment · slow growth</div>
+        <div class="dir-item"><span class="arr up">↑</span><span>Government spending rises — public works, transfers</span></div>
+        <div class="dir-item"><span class="arr up">↑</span><span>Tax cuts leave more in households' pockets</span></div>
+        <div class="dir-item"><span class="arr up">↑</span><span>Aggregate demand and GDP rise</span></div>
+        <div class="dir-item"><span class="arr up">↑</span><span>Employment recovers</span></div>
+      </div>
+      <div class="dir-card contract fade-in" id="dir-con">
+        <div class="dir-label">Contractionary (Tight)</div>
+        <div class="dir-rate">G ↓ &nbsp;or&nbsp; T ↑</div>
+        <div class="dir-when">Used when: high inflation · overheating economy</div>
+        <div class="dir-item"><span class="arr dn">↓</span><span>Government spending is cut or held flat</span></div>
+        <div class="dir-item"><span class="arr dn">↓</span><span>Tax increases reduce disposable income</span></div>
+        <div class="dir-item"><span class="arr dn">↓</span><span>Aggregate demand cools</span></div>
+        <div class="dir-item"><span class="arr dn">↓</span><span>Inflation pressures ease</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 4: Automatic Stabilisers ── -->
+  <div class="slide" id="s4">
+    <h2 class="fade-in">Automatic Stabilisers</h2>
+    <p class="intro fade-in">Some fiscal tools respond automatically to the economy — no legislation needed. They cushion downturns and cool booms without a single new vote.</p>
+    <div class="stab-grid">
+      <div class="stab-col recession" id="stab-rec">
+        <h3>📉 Recession</h3>
+        <div class="stab-item"><span class="s-arr dn">↓</span><span>GDP and employment fall</span></div>
+        <div class="stab-item"><span class="s-arr dn">↓</span><span>Tax revenues fall <strong>(less income to tax)</strong></span></div>
+        <div class="stab-item"><span class="s-arr up">↑</span><span>EI and social assistance <strong>rise automatically</strong></span></div>
+        <div class="stab-item"><span class="s-arr up">↑</span><span>Net: government injects spending, cushioning the fall</span></div>
+      </div>
+      <div class="stab-centre">
+        <div class="sc-icon">⚖️</div>
+        <div class="sc-label">Auto-<br>matic</div>
+      </div>
+      <div class="stab-col expansion" id="stab-exp">
+        <h3>📈 Expansion</h3>
+        <div class="stab-item"><span class="s-arr up">↑</span><span>GDP and employment rise</span></div>
+        <div class="stab-item"><span class="s-arr up">↑</span><span>Tax revenues rise <strong>(more income to tax)</strong></span></div>
+        <div class="stab-item"><span class="s-arr dn">↓</span><span>EI and transfer payments <strong>fall automatically</strong></span></div>
+        <div class="stab-item"><span class="s-arr dn">↓</span><span>Net: government withdraws stimulus, cooling the boom</span></div>
+      </div>
+    </div>
+    <div class="stab-note fade-in" id="stab-note">
+      <strong>Key advantage:</strong> Automatic stabilisers act <strong>immediately</strong> — no implementation lag, no political debate. They soften the business cycle in both directions.
+    </div>
+  </div>
+
+  <!-- ── Slide 5: Budget & Debt ── -->
+  <div class="slide" id="s5">
+    <div class="sl">
+      <div class="eyebrow fade-in">The Fiscal Balance</div>
+      <h2 class="fade-in">Budget, Deficit &amp; National Debt</h2>
+      <p class="intro fade-in">When spending exceeds revenue, governments run deficits. Deficits accumulate into national debt.</p>
+      <div class="bd-facts fade-in">
+        <div class="bd-fact">
+          <div class="bd-dot" style="background:var(--teal)"></div>
+          <p><strong>Budget surplus:</strong> Revenue &gt; Spending. The government is paying down debt or saving. Typically achieved in strong economic periods.</p>
+        </div>
+        <div class="bd-fact">
+          <div class="bd-dot" style="background:var(--rust)"></div>
+          <p><strong>Budget deficit:</strong> Spending &gt; Revenue. The government borrows by issuing bonds, adding to the national debt. Common during recessions.</p>
+        </div>
+        <div class="bd-fact">
+          <div class="bd-dot" style="background:var(--gold)"></div>
+          <p><strong>National debt concern:</strong> Persistent deficits cause debt to grow faster than GDP — potentially crowding out private investment and limiting future fiscal room.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Budget balance SVG -->
+    <svg class="fade-in" viewBox="0 0 310 270" width="310" height="270" style="flex-shrink:0;">
+      <!-- Zero line -->
+      <line x1="42" y1="138" x2="298" y2="138" stroke="rgba(255,255,255,.3)" stroke-width="1.2"/>
+      <!-- Axis -->
+      <line x1="42" y1="20"  x2="42"  y2="240" stroke="#aaa" stroke-width="1.2"/>
+      <!-- Axis labels -->
+      <text x="170" y="258" fill="#888" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">Years →</text>
+      <text x="30"  y="142" fill="#888" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 30 142)">Budget Balance</text>
+      <text x="36"  y="73"  fill="rgba(26,154,142,.6)" font-size="9"  font-family="Space Grotesk,sans-serif" text-anchor="end">surplus</text>
+      <text x="36"  y="200" fill="rgba(192,68,42,.6)"  font-size="9"  font-family="Space Grotesk,sans-serif" text-anchor="end">deficit</text>
+
+      <!-- Budget balance bars (schematic years, mix of deficit/surplus) -->
+      <!-- Surplus bars (above zero line, grow upward) -->
+      <rect id="bb1" class="bgt-bar surplus" x="50"  y="98"  width="18" height="40" rx="2" fill="rgba(26,122,110,.7)"/>
+      <rect id="bb6" class="bgt-bar surplus" x="152" y="108" width="18" height="30" rx="2" fill="rgba(26,122,110,.6)"/>
+      <!-- Deficit bars (below zero line, grow downward) -->
+      <rect id="bb2" class="bgt-bar deficit" x="76"  y="138" width="18" height="45" rx="2" fill="rgba(192,68,42,.7)"/>
+      <rect id="bb3" class="bgt-bar deficit" x="102" y="138" width="18" height="70" rx="2" fill="rgba(192,68,42,.8)"/>
+      <rect id="bb4" class="bgt-bar deficit" x="128" y="138" width="18" height="55" rx="2" fill="rgba(192,68,42,.75)"/>
+      <rect id="bb5" class="bgt-bar deficit" x="178" y="138" width="18" height="35" rx="2" fill="rgba(192,68,42,.6)"/>
+      <rect id="bb7" class="bgt-bar deficit" x="204" y="138" width="18" height="50" rx="2" fill="rgba(192,68,42,.65)"/>
+      <rect id="bb8" class="bgt-bar deficit" x="230" y="138" width="18" height="60" rx="2" fill="rgba(192,68,42,.7)"/>
+      <rect id="bb9" class="bgt-bar deficit" x="256" y="138" width="18" height="40" rx="2" fill="rgba(192,68,42,.55)"/>
+
+      <!-- National debt line (dashed, rising) -->
+      <path id="debt-line" d="M 50,220 C 90,218 130,205 160,195 S 200,185 230,175 S 260,165 285,155"
+        fill="none" stroke="var(--gold)" stroke-width="1.8" stroke-dasharray="5 3"/>
+      <text id="debt-lbl" class="ppf-pt" x="288" y="152" fill="var(--gold)" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700">Debt ↑</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 6: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Fiscal policy is blunt, slow, and political — but when monetary policy has run out of room, it is the only tool left that can prevent a recession from becoming a <em>depression</em>.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 101 · UNBC</div>
+    <div class="tag">Fiscal Policy · Multiplier · Automatic Stabilisers · National Debt</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Welcome. Today we're covering fiscal policy — the use of government spending and taxation to influence the macroeconomy. Fiscal policy is one of the two main tools governments have to manage economic fluctuations, alongside monetary policy. It operates through the government's budget and can have powerful effects on aggregate demand, employment, and long-run growth.",
+  "Fiscal policy works through two main channels. The first is government spending — on public services, infrastructure, and transfers like employment insurance and social assistance. The second is taxation — how much the government takes from households and firms. Together these tools allow the government to influence aggregate demand. More spending or lower taxes boost demand; less spending or higher taxes reduce it. The goal is to stabilise the business cycle — injecting stimulus during downturns and withdrawing it during booms.",
+  "One of the most important concepts in fiscal policy is the spending multiplier. When the government injects money into the economy, the effect on GDP is larger than the initial amount — here's why. Say the government spends one billion dollars on infrastructure. Construction workers earn one billion in wages. They spend eighty cents of every dollar — the marginal propensity to consume — at local businesses. Those businesses pay their employees, who spend eighty cents of every dollar they earn. Each round is smaller than the last, but they all add up. If the MPC is eighty percent, the multiplier equals one divided by one minus point eight, which equals five. One dollar of government spending ultimately generates five dollars of GDP.",
+  "Like monetary policy, fiscal policy can move in two directions. Expansionary fiscal policy — used during recessions — involves increasing government spending, cutting taxes, or both. This boosts aggregate demand, supports employment, and lifts growth. Contractionary fiscal policy — used when the economy is overheating — involves cutting spending, raising taxes, or both, to cool demand and ease inflation. A key difference from monetary policy is that fiscal policy requires legislation — new spending or tax changes must pass through parliament. This creates implementation lags. By the time the policy actually takes effect, the economic situation may have already changed.",
+  "Not all fiscal policy requires new legislation. Some tools respond automatically to the state of the economy — we call these automatic stabilisers. When GDP falls and unemployment rises, tax revenues fall automatically because people earn less. At the same time, spending on employment insurance and social assistance rises automatically. These changes cushion the economic fall without any new vote. When GDP rises and employment is high, tax revenues rise and transfer payments fall — automatically withdrawing stimulus and cooling the boom. The key advantage: automatic stabilisers act immediately, with no implementation lag. They are built into the system and soften the business cycle in both directions.",
+  "When government spending exceeds tax revenue in a given year, the result is a budget deficit. When revenue exceeds spending, the government runs a surplus. Deficits must be financed by borrowing — the government issues bonds, adding to the national debt. During recessions, running deficits is often appropriate: the automatic stabilisers push the budget into deficit and deliberate spending can speed recovery. The concern arises when deficits persist even during good economic times, causing debt to grow faster than the economy. High and rising debt can crowd out private investment, push up interest rates, and reduce the government's capacity to respond to future crises.",
+  "Fiscal policy is blunt, slow, and politically constrained — but it remains essential. Implementation lags, uncertain multiplier effects, and the difficulty of reversing stimulus once enacted all limit its precision. But when monetary policy has run out of room — when interest rates are already near zero — fiscal policy is often the only tool left that can prevent a bad recession from becoming something far worse. The timing, size, and composition of fiscal interventions matter as much as the decision to act at all."
+];
+
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+let muted = false, currentAudio = null, currentSpeech = null, speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed — browser TTS:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer); stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('🎙 AI narration');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else { speakWithBrowser(idx); }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx], rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('🔊 Browser narration');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel') || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter); currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted; muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0, timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer(); timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+// ── Teaching animation system ─────────────────────────────────────────
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function showBar(id, lblId, delayMs) {
+  sch(delayMs, () => {
+    document.getElementById(id)?.classList.add('show');
+    document.getElementById(lblId)?.classList.add('show');
+  });
+}
+
+function showBgtBar(id, delayMs) {
+  sch(delayMs, () => document.getElementById(id)?.classList.add('show'));
+}
+
+function drawDebtLine(delayMs) {
+  sch(delayMs, () => {
+    const el = document.getElementById('debt-line');
+    if (!el) return;
+    const len = el.getTotalLength ? el.getTotalLength() : 300;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+    requestAnimationFrame(() => {
+      el.style.transition = 'stroke-dashoffset 2s ease-in-out';
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.mult-bar').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.mult-lbl, .mult-total').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.teach-on').forEach(el => el.classList.remove('teach-on'));
+  document.querySelectorAll('.stab-col, .stab-note').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.bgt-bar').forEach(el => el.classList.remove('show'));
+  const dl = document.getElementById('debt-line');
+  if (dl) { dl.style.transition = 'none'; dl.style.strokeDashoffset = dl.dataset.len || 9999; }
+  // Reset title icon
+  ['t-g','t-t'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute('fill', el.getAttribute('fill').replace(/[\d.]+\)$/, '0)'));
+  });
+}
+
+function fadeInTitle(id, color, delayMs) {
+  sch(delayMs, () => {
+    const el = document.getElementById(id);
+    if (el) el.setAttribute('fill', color);
+  });
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0: // Title: G then T label appear
+      fadeInTitle('t-g', 'rgba(26,154,142,.75)', 900);
+      fadeInTitle('t-t', 'rgba(192,68,42,.75)',  2000);
+      break;
+
+    case 2: // Multiplier bars appear one by one
+      showBar('bar1', 'bl1', 4000);
+      showBar('bar2', 'bl2', 12000);
+      showBar('bar3', 'bl3', 19000);
+      showBar('bar4', 'bl4', 24000);
+      showBar('bar5', 'bl5', 28000);
+      sch(33000, () => document.getElementById('mult-total')?.classList.add('show'));
+      break;
+
+    case 3: // Expansionary highlights, then contractionary
+      sch(3000,  () => document.getElementById('dir-exp')?.classList.add('teach-on'));
+      sch(20000, () => {
+        document.getElementById('dir-exp')?.classList.remove('teach-on');
+        document.getElementById('dir-con')?.classList.add('teach-on');
+      });
+      break;
+
+    case 4: // Automatic stabilisers: recession col, then expansion col, then note
+      sch(3000,  () => document.getElementById('stab-rec')?.classList.add('show'));
+      sch(18000, () => document.getElementById('stab-exp')?.classList.add('show'));
+      sch(30000, () => document.getElementById('stab-note')?.classList.add('show'));
+      break;
+
+    case 5: // Budget bars appear, then debt line draws
+      showBgtBar('bb1', 1000);
+      showBgtBar('bb2', 3000);
+      showBgtBar('bb3', 5000);
+      showBgtBar('bb4', 7000);
+      showBgtBar('bb5', 9000);
+      showBgtBar('bb6', 11000);
+      showBgtBar('bb7', 13000);
+      showBgtBar('bb8', 15000);
+      showBgtBar('bb9', 17000);
+      drawDebtLine(20000);
+      sch(22500, () => document.getElementById('debt-lbl')?.classList.add('ppf-show'));
+      break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>
