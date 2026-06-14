@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comparative Advantage</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Space Grotesk', sans-serif;
+    gap: 18px;
+  }
+
+  /* API key setup panel */
+  #setup {
+    background: rgba(255,255,255,.05);
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 10px;
+    padding: 22px 28px;
+    width: 860px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  #setup label { font-size: 13px; color: #aab; white-space: nowrap; }
+  #setup input {
+    flex: 1;
+    background: rgba(255,255,255,.07);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 6px;
+    padding: 9px 14px;
+    color: white;
+    font-family: monospace;
+    font-size: 13px;
+    outline: none;
+  }
+  #setup input:focus { border-color: var(--gold); }
+  #setup button {
+    background: var(--gold);
+    border: none;
+    border-radius: 6px;
+    padding: 9px 20px;
+    color: #111;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #setup button:hover { background: #d9b85a; }
+  #setup-note { font-size: 11.5px; color: #667; margin-top: 6px; }
+
+  /* Status bar */
+  #status-bar {
+    width: 860px;
+    font-size: 12px;
+    color: #556;
+    text-align: right;
+    min-height: 16px;
+  }
+  #status-bar.loading { color: var(--gold); }
+  #status-bar.error   { color: var(--rust); }
+  #status-bar.ready   { color: #4a9; }
+
+  /* Stage */
+  #stage {
+    width: 860px;
+    height: 540px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  /* Slides */
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .55s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 56px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* Slide 0 – Title */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 68px; line-height: 1.05; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub { margin-top: 22px; font-size: 17px; color: #8898a0; font-weight: 300; max-width: 480px; line-height: 1.55; }
+  #s0 .rule { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 .globe {
+    position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+    width: 220px; height: 220px; border-radius: 50%;
+    border: 2px solid rgba(200,168,75,.25);
+    box-shadow: inset 0 0 60px rgba(200,168,75,.08), 0 0 60px rgba(200,168,75,.12);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 88px; animation: spin 20s linear infinite;
+  }
+  @keyframes spin { to { transform: translateY(-50%) rotate(360deg); } }
+
+  /* Slide 1 – Core Idea */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 40px; color: var(--ink); line-height: 1.15; margin-bottom: 28px; }
+  #s1 .cards { display: flex; gap: 20px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 24px 22px; border-top: 4px solid var(--teal); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.rust { border-color: var(--rust); }
+  .card .icon { font-size: 30px; margin-bottom: 12px; }
+  .card h3 { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 8px; letter-spacing: .04em; }
+  .card p { font-size: 13.5px; color: #444; line-height: 1.6; font-weight: 300; }
+
+  /* Slide 2 – Example Setup */
+  #s2 { background: #0f1a19; }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--paper); margin-bottom: 8px; }
+  #s2 .intro { font-size: 14px; color: #8fa; margin-bottom: 28px; font-weight: 300; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  thead th { padding: 12px 18px; text-align: left; font-weight: 600; font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); border-bottom: 1px solid rgba(200,168,75,.3); }
+  tbody td { padding: 14px 18px; color: var(--paper); border-bottom: 1px solid rgba(255,255,255,.06); font-weight: 300; }
+  tbody tr:last-child td { border-bottom: none; }
+  .flag { font-size: 20px; margin-right: 8px; }
+  .highlight-cell { background: rgba(200,168,75,.15); border-radius: 4px; font-weight: 600; color: var(--gold) !important; }
+
+  /* Slide 3 – Opportunity Cost */
+  #s3 { background: var(--paper); }
+  #s3 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--rust); margin-bottom: 14px; }
+  #s3 h2 { font-family: 'Playfair Display', serif; font-size: 38px; color: var(--ink); margin-bottom: 26px; }
+  .oc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .oc-card { background: white; border-radius: 6px; padding: 22px; box-shadow: 0 3px 16px rgba(0,0,0,.08); }
+  .oc-card .country { font-size: 22px; margin-bottom: 6px; }
+  .oc-card h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 12px; letter-spacing: .05em; }
+  .oc-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; }
+  .oc-item .good { color: #333; font-weight: 400; }
+  .oc-item .cost { background: var(--mist); padding: 3px 10px; border-radius: 20px; font-size: 12px; color: var(--teal); font-weight: 600; }
+  .oc-item .cost.low  { background: #e8f5e9; color: #2e7d32; }
+  .oc-item .cost.high { background: #fdecea; color: var(--rust); }
+  .oc-winner { margin-top: 14px; padding: 10px 14px; background: linear-gradient(135deg, var(--teal), #0e5a50); border-radius: 5px; font-size: 12.5px; color: white; font-weight: 600; letter-spacing: .03em; }
+
+  /* Slide 4 – Gains from Trade */
+  #s4 { background: #0f1117; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--paper); margin-bottom: 6px; }
+  #s4 .intro { font-size: 14px; color: #8899aa; margin-bottom: 28px; font-weight: 300; }
+  .flow { display: flex; align-items: center; justify-content: center; margin-top: 10px; }
+  .flow-box { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 22px 18px; text-align: center; width: 180px; }
+  .flow-box .emoji { font-size: 32px; margin-bottom: 8px; }
+  .flow-box .name { font-size: 12px; font-weight: 700; color: var(--gold); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 6px; }
+  .flow-box .spec { font-size: 12.5px; color: #ccd; line-height: 1.5; font-weight: 300; }
+  .flow-arrow { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100px; }
+  .arrow-line { width: 80px; height: 2px; position: relative; }
+  .arrow-line.teal { background: var(--teal); }
+  .arrow-line.rust { background: var(--rust); }
+  .arrow-line::after { content: ''; position: absolute; right: -1px; top: -4px; border: 5px solid transparent; }
+  .arrow-line.teal::after { border-left-color: var(--teal); }
+  .arrow-line.rust::after { border-left-color: var(--rust); }
+  .arrow-line.rust { transform: scaleX(-1); }
+  .arrow-label { font-size: 10.5px; color: #7899a0; text-align: center; }
+  .gain-banner { margin-top: 28px; background: linear-gradient(135deg, rgba(200,168,75,.18), rgba(200,168,75,.06)); border: 1px solid rgba(200,168,75,.3); border-radius: 6px; padding: 16px 24px; display: flex; align-items: center; gap: 16px; }
+  .gain-banner .icon { font-size: 28px; }
+  .gain-banner p { font-size: 14px; color: var(--paper); line-height: 1.55; font-weight: 300; }
+  .gain-banner strong { color: var(--gold); font-weight: 700; }
+
+  /* Slide 5 – Why It Matters */
+  #s5 { background: var(--paper); }
+  #s5 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+  #s5 h2 { font-family: 'Playfair Display', serif; font-size: 38px; color: var(--ink); margin-bottom: 26px; }
+  .points { display: flex; flex-direction: column; gap: 16px; }
+  .point { display: flex; align-items: flex-start; gap: 18px; background: white; border-radius: 6px; padding: 18px 22px; box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+  .point .num { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--gold); line-height: 1; min-width: 32px; }
+  .point h4 { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+  .point p { font-size: 13px; color: #555; line-height: 1.55; font-weight: 300; }
+
+  /* Slide 6 – Takeaway */
+  #s6 { background: var(--teal); }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.15); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 28px; line-height: 1.45; color: white; max-width: 600px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+  /* Controls */
+  #controls {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    color: white; width: 34px; height: 34px; border-radius: 50%;
+    cursor: pointer; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+
+  /* Timer bar */
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+
+  /* Loading overlay */
+  #loading-overlay {
+    position: absolute; inset: 0; background: rgba(10,12,18,.85);
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px; z-index: 10;
+  }
+  #loading-overlay.show { display: flex; }
+  .spinner {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 3px solid rgba(200,168,75,.2);
+    border-top-color: var(--gold);
+    animation: spin2 .8s linear infinite;
+  }
+  @keyframes spin2 { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* fade-in animations */
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+</style>
+</head>
+<body>
+
+
+
+<div id="stage">
+
+  <!-- Slide 0: Title -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">Macroeconomics · International Trade</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Comparative<br><em>Advantage</em></h1>
+    <p class="sub fade-in">Why nations trade — even when one country is better at making everything.</p>
+    <div class="globe">🌐</div>
+  </div>
+
+  <!-- Slide 1: Core Idea -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Core Idea</div>
+    <h2 class="fade-in">Focus on what you give up,<br>not just what you produce.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">🏆</div>
+        <h3>Absolute Advantage</h3>
+        <p>A country has an absolute advantage when it can produce more of a good using the same resources as another country. But this alone doesn't determine trade.</p>
+      </div>
+      <div class="card rust fade-in">
+        <div class="icon">⚖️</div>
+        <h3>Comparative Advantage</h3>
+        <p>A country has a comparative advantage when it produces a good at a <strong>lower opportunity cost</strong> than another — even if it's less efficient in absolute terms.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="icon">🤝</div>
+        <h3>The Insight</h3>
+        <p>Both countries gain by specialising in what they do at the lowest relative cost, then trading. Total output rises for everyone.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2: Example Numbers -->
+  <div class="slide" id="s2">
+    <h2 class="fade-in">A Simple Example</h2>
+    <p class="intro fade-in">Two countries, two goods. Workers needed to produce one unit:</p>
+    <div class="table-wrap fade-in">
+      <table>
+        <thead>
+          <tr>
+            <th>Country</th>
+            <th>🌾 Wheat (workers/unit)</th>
+            <th>🚗 Cars (workers/unit)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="flag">🇺🇸</span> United States</td>
+            <td class="highlight-cell">1 worker</td>
+            <td>2 workers</td>
+          </tr>
+          <tr>
+            <td><span class="flag">🇧🇷</span> Brazil</td>
+            <td>3 workers</td>
+            <td class="highlight-cell">4 workers</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="fade-in" style="margin-top:22px;font-size:13.5px;color:#8fa;font-weight:300;line-height:1.6;">
+      The US is more efficient at <em>both</em> goods — it has absolute advantage in both. Does Brazil have any reason to trade? Yes. Look at opportunity costs →
+    </p>
+  </div>
+
+  <!-- Slide 3: Opportunity Cost -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">The Key Calculation</div>
+    <h2 class="fade-in">Opportunity Cost Reveals<br>Who Should Specialise</h2>
+    <div class="oc-grid">
+      <div class="oc-card fade-in">
+        <div class="country">🇺🇸 United States</div>
+        <h4>OPPORTUNITY COST OF…</h4>
+        <div class="oc-item"><span class="good">🌾 1 unit of Wheat</span><span class="cost low">½ car</span></div>
+        <div class="oc-item"><span class="good">🚗 1 car</span><span class="cost high">2 units wheat</span></div>
+        <div class="oc-winner">✓ Comparative advantage: WHEAT</div>
+      </div>
+      <div class="oc-card fade-in">
+        <div class="country">🇧🇷 Brazil</div>
+        <h4>OPPORTUNITY COST OF…</h4>
+        <div class="oc-item"><span class="good">🌾 1 unit of Wheat</span><span class="cost high">¾ car</span></div>
+        <div class="oc-item"><span class="good">🚗 1 car</span><span class="cost low">1⅓ units wheat</span></div>
+        <div class="oc-winner">✓ Comparative advantage: CARS</div>
+      </div>
+    </div>
+    <p class="fade-in" style="margin-top:18px;font-size:13px;color:#555;line-height:1.6;">
+      Brazil gives up fewer wheat units per car produced — so producing cars is <em>relatively</em> cheaper for Brazil, even though the US is faster overall.
+    </p>
+  </div>
+
+  <!-- Slide 4: Gains from Trade -->
+  <div class="slide" id="s4">
+    <h2 class="fade-in">Specialise &amp; Trade</h2>
+    <p class="intro fade-in">Each country focuses on its comparative advantage, then exchanges with the other.</p>
+    <div class="flow fade-in">
+      <div class="flow-box">
+        <div class="emoji">🇺🇸</div>
+        <div class="name">USA</div>
+        <div class="spec">Specialises in<br>🌾 Wheat</div>
+      </div>
+      <div class="flow-arrow">
+        <div class="arrow-line teal"></div>
+        <div class="arrow-label">exports wheat</div>
+        <div class="arrow-line rust"></div>
+        <div class="arrow-label">imports cars</div>
+      </div>
+      <div class="flow-box">
+        <div class="emoji">🇧🇷</div>
+        <div class="name">Brazil</div>
+        <div class="spec">Specialises in<br>🚗 Cars</div>
+      </div>
+    </div>
+    <div class="gain-banner fade-in">
+      <div class="icon">📈</div>
+      <p>When both countries specialise and trade, <strong>total world output increases</strong>. Each nation consumes beyond what it could produce alone — a win-win created purely by comparative advantage.</p>
+    </div>
+  </div>
+
+  <!-- Slide 5: Real-World Relevance -->
+  <div class="slide" id="s5">
+    <div class="eyebrow fade-in">Why It Matters</div>
+    <h2 class="fade-in">Shapes the Global Economy</h2>
+    <div class="points">
+      <div class="point fade-in">
+        <div class="num">1</div>
+        <div>
+          <h4>Foundation of Free Trade</h4>
+          <p>Comparative advantage is the economic rationale behind free trade agreements like NAFTA/USMCA and the WTO — nations liberalise trade because everyone can benefit.</p>
+        </div>
+      </div>
+      <div class="point fade-in">
+        <div class="num">2</div>
+        <div>
+          <h4>Drives Global Supply Chains</h4>
+          <p>Why does Germany dominate precision engineering while Bangladesh leads in textiles? Each has a different comparative advantage based on labour, capital, and skills.</p>
+        </div>
+      </div>
+      <div class="point fade-in">
+        <div class="num">3</div>
+        <div>
+          <h4>Limits of the Theory</h4>
+          <p>It assumes no transport costs, fixed resources, and perfect competition. In reality, strategic industries, inequality, and environmental costs complicate the picture.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 6: Takeaway -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      It is not by producing the most, but by producing at the <em>lowest relative cost</em>, that a nation finds its place in the world economy.
+    </blockquote>
+    <div class="attr fade-in">— David Ricardo, On the Principles of Political Economy and Taxation, 1817</div>
+    <div class="tag">Comparative Advantage · Macroeconomics</div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p id="loading-text">Generating voice narration…</p>
+  </div>
+
+  <!-- Timer bar -->
+  <div id="timer-bar"></div>
+
+  <!-- Controls -->
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+
+</div>
+
+<script>
+// ── Narration scripts ────────────────────────────────────────────────
+const narrations = [
+  "Welcome. Today we're exploring one of the most powerful — and honestly counterintuitive — ideas in all of economics: comparative advantage. It answers a question that trips up a lot of people: why do countries trade with each other, even when one of them is better at producing absolutely everything?",
+  "To get there, let's start with a simpler concept: absolute advantage. That just means one country can produce more output than another with the same resources. Pretty straightforward. But comparative advantage asks a different question — not who's faster, but who gives up the least by choosing one thing over another. That's about opportunity cost. And that distinction? It changes everything.",
+  "Here's a concrete example. Take the United States and Brazil. They both produce wheat and cars. In the US, one worker can produce a unit of wheat, and two workers can make a car. In Brazil, it takes three workers for wheat and four for a car. So the US is faster at both. On the surface, it looks like Brazil has nothing to offer. But that's where most people stop thinking too soon.",
+  "Let's dig into the opportunity costs. When the US makes a unit of wheat, it gives up half a car — that's low. But when the US makes a car, it gives up two units of wheat — that's actually quite high. Now look at Brazil. Making a unit of wheat costs Brazil three-quarters of a car — higher than the US. But making a car only costs Brazil one and a third units of wheat, which is lower than the US. So even though Brazil is slower overall, it gives up less wheat for every car it makes. That's a comparative advantage in cars.",
+  "So here's what happens when both countries lean into this. The US focuses on wheat — where its relative cost is lowest. Brazil focuses on cars. Then they trade. And here's the beautiful part: both countries end up consuming more than they ever could have produced working alone. Total world output actually goes up. Not because anyone got magically more efficient, but because each country stopped doing the thing it was relatively bad at.",
+  "This isn't just a textbook thought experiment — it's the foundation of the entire global trading system. It's why the US and other nations pushed for agreements like NAFTA and the WTO. It's why Germany specialises in precision engineering and Bangladesh in textiles — each country found what they could produce at the lowest relative cost and ran with it. Now, the model has real limits: it assumes away transport costs, ignores power dynamics, and doesn't account for what happens to workers who lose jobs in the transition. Real trade policy has to wrestle with all of that.",
+  "David Ricardo worked all of this out back in 1817, and the core insight has held up ever since. The lesson isn't 'be the best at everything.' It's 'figure out where your relative cost is lowest — and do that.' Specialise, trade, and both sides come out ahead. That's comparative advantage."
+];
+
+// ── ElevenLabs TTS ───────────────────────────────────────────────────
+// Voice: "Adam" — deep, natural, conversational American male
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+
+let audioBuffers = new Array(narrations.length).fill(null); // base64 or null
+let apiKey = '';
+let muted = false;
+let currentAudio = null;
+
+const statusBar     = document.getElementById('status-bar');
+const loadingOverlay= document.getElementById('loading-overlay');
+const loadingText   = document.getElementById('loading-text');
+
+function setStatus(msg, type='') {
+  if (statusBar) { statusBar.textContent = msg; statusBar.className = type; }
+}
+
+async function generateAudio(idx) {
+  const text = narrations[idx];
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: {
+      'xi-api-key': apiKey,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      text,
+      model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true }
+    })
+  });
+  if (!resp.ok) {
+    const err = await resp.text();
+    throw new Error(`ElevenLabs error (${resp.status}): ${err}`);
+  }
+  const blob = await resp.blob();
+  return URL.createObjectURL(blob);
+}
+
+// Embedded API key — auto-generate on load
+apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating slide ${i + 1} of ${narrations.length}…`;
+    try {
+      audioBuffers[i] = await generateAudio(i);
+    } catch(e) {
+      loadingOverlay.classList.remove('show');
+      console.error('Audio generation error:', e.message);
+      return;
+    }
+  }
+
+  loadingOverlay.classList.remove('show');
+  // Auto-start slide 0
+  playSlideAudio(0);
+}
+
+// ── Audio playback ───────────────────────────────────────────────────
+function stopAudio() {
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.src = '';
+    currentAudio = null;
+  }
+  stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted || !audioBuffers[idx]) {
+    // fallback: just show slide for 12s
+    startTimer(12000, () => goTo(idx + 1));
+    return;
+  }
+  const audio = new Audio(audioBuffers[idx]);
+  currentAudio = audio;
+
+  // Sync progress bar to audio duration
+  audio.addEventListener('loadedmetadata', () => {
+    startTimer(audio.duration * 1000, null);
+  });
+
+  audio.addEventListener('ended', () => {
+    currentAudio = null;
+    goTo(idx + 1);
+  });
+
+  audio.play().catch(err => {
+    console.warn('Audio play failed:', err);
+    startTimer(12000, () => goTo(idx + 1));
+  });
+}
+
+// ── Mute ─────────────────────────────────────────────────────────────
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted;
+  muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) {
+    if (currentAudio) { currentAudio.pause(); }
+    startTimer(12000, () => goTo(current + 1));
+  } else {
+    playSlideAudio(current);
+  }
+});
+
+// ── Slides ───────────────────────────────────────────────────────────
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0;
+let timerTimeout = null;
+let rafId = null;
+let timerStart = null;
+let timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0; // loop
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  // Play audio (or fallback timer) if audio is loaded
+  if (audioBuffers.some(b => b !== null)) {
+    playSlideAudio(current);
+  }
+}
+
+function stopTimer() {
+  clearTimeout(timerTimeout);
+  cancelAnimationFrame(rafId);
+  timerBar.style.width = '0%';
+}
+
+function startTimer(durationMs, cb) {
+  stopTimer();
+  timerDuration = durationMs;
+  timerStart = performance.now();
+  function tick(ts) {
+    const elapsed = ts - timerStart;
+    const pct = Math.min(elapsed / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+// Auto-run on page load
+generateAll();
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+</script>
+</body>
+</html>

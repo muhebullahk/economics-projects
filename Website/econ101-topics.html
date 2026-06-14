@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECON 101 Topics — Macroeconomics | Karimzada</title>
+  <meta name="description" content="Interactive topic pages for ECON 101 Macroeconomics at UNBC." />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Hero ── */
+    .course-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #00509e 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .course-hero .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .72rem;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: .25rem .85rem;
+      border-radius: 20px;
+      margin-bottom: .75rem;
+    }
+    .course-hero h1 {
+      font-size: 2rem;
+      margin-bottom: .4rem;
+    }
+    .course-hero p {
+      font-size: .93rem;
+      opacity: .88;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* ── Topic grid ── */
+    .topics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 2rem;
+    }
+
+    .topic-card {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition);
+      text-decoration: none;
+      color: var(--text);
+    }
+    .topic-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.13);
+      color: var(--text);
+    }
+
+    .topic-card-accent {
+      height: 5px;
+      background: var(--primary);
+    }
+    .topic-card-accent.gold  { background: var(--accent); }
+    .topic-card-accent.teal  { background: #1a7a6e; }
+    .topic-card-accent.rust  { background: #c0442a; }
+
+    .topic-card-body {
+      padding: 1.25rem 1.25rem 1rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .topic-card-icon {
+      font-size: 1.75rem;
+      margin-bottom: .6rem;
+      line-height: 1;
+    }
+    .topic-card-title {
+      font-size: 1rem;
+      font-weight: bold;
+      margin-bottom: .35rem;
+      line-height: 1.3;
+    }
+    .topic-card-desc {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .8rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      flex: 1;
+    }
+    .topic-card-footer {
+      padding: .7rem 1.25rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-alt);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .76rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .topic-card:hover .topic-card-footer {
+      color: var(--accent);
+    }
+
+    /* ── Section label ── */
+    .topics-section-label {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 2.5rem;
+      margin-bottom: .25rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Back link ── */
+    .back-link {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .82rem;
+      color: rgba(255,255,255,.75);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .back-link:hover { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">M. <span>Karimzada</span></a>
+    <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="teaching.html">Teaching</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="course-hero">
+  <p class="breadcrumb" style="margin-bottom:.75rem;">
+    <a href="index.html" style="color:rgba(255,255,255,.65)">Home</a>
+    <span style="color:rgba(255,255,255,.4);margin:0 .4rem">/</span>
+    <a href="teaching.html" style="color:rgba(255,255,255,.65)">Teaching</a>
+    <span style="color:rgba(255,255,255,.4);margin:0 .4rem">/</span>
+    <span style="color:rgba(255,255,255,.9)">ECON 101</span>
+  </p>
+  <div class="badge">ECON 101 &mdash; Macroeconomics</div>
+  <h1>Topic Pages</h1>
+  <p>Interactive explainers and tools for key topics in introductory macroeconomics.</p>
+</header>
+
+<main class="page">
+  <section class="section">
+    <div class="container">
+
+      <p class="topics-section-label">International Trade &amp; Open Economy</p>
+
+      <div class="topics-grid">
+
+        <!-- Comparative Advantage -->
+        <a href="comparative-advantage.html" class="topic-card">
+          <div class="topic-card-accent gold"></div>
+          <div class="topic-card-body">
+            <div class="topic-card-icon">&#x2696;&#xFE0F;</div>
+            <div class="topic-card-title">Comparative Advantage</div>
+            <p class="topic-card-desc">
+              Opportunity cost, specialisation, and the gains from trade — with interactive
+              production possibility diagrams and worked examples.
+            </p>
+          </div>
+          <div class="topic-card-footer">Open interactive &rarr;</div>
+        </a>
+
+        <!-- Placeholder cards — uncomment and fill in as topics are added -->
+        <!--
+        <a href="#" class="topic-card">
+          <div class="topic-card-accent teal"></div>
+          <div class="topic-card-body">
+            <div class="topic-card-icon">🌐</div>
+            <div class="topic-card-title">Exchange Rates</div>
+            <p class="topic-card-desc">Coming soon.</p>
+          </div>
+          <div class="topic-card-footer">Open interactive &rarr;</div>
+        </a>
+        -->
+
+      </div>
+
+      <p class="topics-section-label" style="margin-top:2.5rem;">Practice &amp; Review</p>
+
+      <div class="topics-grid">
+
+        <a href="econ101-practice.html" class="topic-card">
+          <div class="topic-card-accent"></div>
+          <div class="topic-card-body">
+            <div class="topic-card-icon">&#x1F4DD;</div>
+            <div class="topic-card-title">Practice Questions</div>
+            <p class="topic-card-desc">
+              Multiple-choice, true/false, and short-answer questions covering all ECON 101
+              topics — filterable by chapter and difficulty.
+            </p>
+          </div>
+          <div class="topic-card-footer">Start practice &rarr;</div>
+        </a>
+
+        <a href="econ101-pashto.html" class="topic-card">
+          <div class="topic-card-accent"></div>
+          <div class="topic-card-body">
+            <div class="topic-card-icon">&#x1F4DA;</div>
+            <div class="topic-card-title">پښتو تمرین</div>
+            <p class="topic-card-desc">
+              Macroeconomics practice questions in Pashto for students who prefer to review
+              key concepts in their first language.
+            </p>
+          </div>
+          <div class="topic-card-footer">پرانیستل &rarr;</div>
+        </a>
+
+      </div>
+
+      <div class="notice mt-4">
+        More topic pages will be added throughout the term. Course syllabi and materials
+        are available through the UNBC course management system. Contact me at
+        <a href="mailto:muhebullah.karimzada@unbc.ca">muhebullah.karimzada@unbc.ca</a>
+        with any questions.
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <strong style="color:#fff;">Muhebullah Karimzada</strong><br />
+      Assistant Professor of Economics &mdash; UNBC
+    </div>
+    <div class="footer-right">
+      University of Northern British Columbia<br />
+      Prince George, BC, Canada &bull;
+      <a href="mailto:muhebullah.karimzada@unbc.ca">muhebullah.karimzada@unbc.ca</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
