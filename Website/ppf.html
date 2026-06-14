@@ -536,9 +536,13 @@ let audioBuffers = new Array(narrations.length).fill(null);
 const apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
 let muted = false;
 let currentAudio = null;
+let currentSpeech = null;
+let speechEndTimer = null;
 
 const loadingOverlay = document.getElementById('loading-overlay');
 const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
 
 async function generateAudio(idx) {
   const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
@@ -554,7 +558,7 @@ async function generateAudio(idx) {
   return URL.createObjectURL(await resp.blob());
 }
 
-// ── Audio fix: never abort — mark failures as null and continue ───────
+// Try ElevenLabs first; on any failure mark null and continue
 async function generateAll() {
   loadingOverlay.classList.add('show');
   for (let i = 0; i < narrations.length; i++) {
@@ -562,7 +566,7 @@ async function generateAll() {
     try {
       audioBuffers[i] = await generateAudio(i);
     } catch(e) {
-      console.warn(`Slide ${i} audio unavailable — will use timer fallback:`, e.message);
+      console.warn(`Slide ${i} ElevenLabs failed — browser TTS will be used:`, e.message);
       audioBuffers[i] = null;
     }
   }
@@ -575,20 +579,77 @@ async function generateAll() {
 // ── Audio playback ────────────────────────────────────────────────────
 function stopAudio() {
   if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer);
   stopTimer();
 }
 
 function playSlideAudio(idx) {
   stopAudio();
-  if (muted || !audioBuffers[idx]) {
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+
+  if (audioBuffers[idx]) {
+    // ── ElevenLabs audio ──
+    setStatus('🎙 AI narration');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else {
+    // ── Browser TTS fallback ──
+    speakWithBrowser(idx);
+  }
+}
+
+// ── Browser Speech Synthesis fallback ────────────────────────────────
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) {
     startTimer(20000, () => goTo(idx + 1));
     return;
   }
-  const audio = new Audio(audioBuffers[idx]);
-  currentAudio = audio;
-  audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
-  audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
-  audio.play().catch(() => startTimer(20000, () => goTo(idx + 1)));
+  speechSynthesis.cancel();
+
+  const text = narrations[idx];
+  const words = text.trim().split(/\s+/).length;
+  const rate  = 0.92;
+  const estimatedMs = Math.round((words / 145) * 60000 / rate) + 2000;
+
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate   = rate;
+  utter.pitch  = 0.95;
+  utter.volume = 1;
+
+  const doSpeak = () => {
+    setStatus('🔊 Browser narration');
+    const voices = speechSynthesis.getVoices();
+    const voice  = voices.find(v => v.name === 'Daniel')
+                || voices.find(v => v.name === 'Alex')
+                || voices.find(v => /Google US English/i.test(v.name))
+                || voices.find(v => v.lang === 'en-US' && !v.localService)
+                || voices.find(v => v.lang === 'en-US')
+                || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+
+    startTimer(estimatedMs, null);
+
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+
+    // Safety net in case onend never fires
+    speechEndTimer = setTimeout(() => {
+      speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1);
+    }, estimatedMs + 6000);
+
+    speechSynthesis.speak(utter);
+    currentSpeech = utter;
+  };
+
+  if (speechSynthesis.getVoices().length > 0) {
+    doSpeak();
+  } else {
+    speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+  }
 }
 
 // ── Mute ──────────────────────────────────────────────────────────────
@@ -597,7 +658,8 @@ muteBtn.addEventListener('click', () => {
   muted = !muted;
   muteBtn.textContent = muted ? '🔇' : '🔊';
   if (muted) {
-    if (currentAudio) currentAudio.pause();
+    stopAudio();
+    setStatus('');
     startTimer(20000, () => goTo(current + 1));
   } else {
     playSlideAudio(current);
