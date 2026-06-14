@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supply & Demand — ECON 101</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --blue:  #1a4a8a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  /* ── Author watermark ── */
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px;
+    font-size: 9px; color: rgba(255,255,255,.18); letter-spacing: .07em;
+    text-transform: uppercase; pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 .rule { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 64px; line-height: 1.05; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub { margin-top: 20px; font-size: 16px; color: #8898a0; font-weight: 300; max-width: 460px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(200,168,75,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .diagram {
+    position: absolute; right: 58px; top: 50%; transform: translateY(-50%);
+    width: 210px; height: 210px;
+  }
+
+  /* ── Slide 1 – The Market ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 38px; color: var(--ink); line-height: 1.15; margin-bottom: 28px; }
+  .cards { display: flex; gap: 20px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 24px 20px; border-top: 4px solid var(--teal); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.gold-t { border-color: var(--gold); }
+  .card.blue-t { border-color: var(--blue); }
+  .card .icon { font-size: 28px; margin-bottom: 10px; }
+  .card h3 { font-size: 13.5px; font-weight: 700; color: var(--ink); margin-bottom: 7px; letter-spacing: .04em; }
+  .card p { font-size: 13px; color: #444; line-height: 1.6; font-weight: 300; }
+
+  /* ── Slides 2 & 3 – Curve slides (horizontal) ── */
+  #s2 { background: #0f1a19; flex-direction: row; align-items: center; gap: 36px; padding: 44px 56px; }
+  #s3 { background: var(--paper); flex-direction: row; align-items: center; gap: 36px; padding: 44px 56px; }
+  #s2 .sl, #s3 .sl { flex: 1; min-width: 0; }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 8px; }
+  #s3 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--ink); margin-bottom: 8px; }
+  #s2 .intro { font-size: 13px; color: #8fa; font-weight: 300; line-height: 1.6; margin-bottom: 18px; }
+  #s3 .intro { font-size: 13px; color: #555; font-weight: 300; line-height: 1.6; margin-bottom: 18px; }
+  .curve-fact { display: flex; flex-direction: column; gap: 10px; }
+  .fact-row { display: flex; align-items: flex-start; gap: 12px; font-size: 12.5px; font-weight: 300; line-height: 1.5; }
+  .fact-row .badge {
+    flex-shrink: 0; padding: 2px 10px; border-radius: 20px; font-size: 11px;
+    font-weight: 700; letter-spacing: .04em; margin-top: 1px;
+  }
+  .badge-demand { background: rgba(200,168,75,.2); color: var(--gold); }
+  .badge-supply { background: rgba(26,122,110,.2); color: #1a9a8e; }
+  #s2 .fact-row { color: #bbc; }
+  #s3 .fact-row { color: #444; }
+
+  /* ── Slide 4 – Equilibrium (horizontal) ── */
+  #s4 { background: #0f1117; flex-direction: row; align-items: center; gap: 36px; padding: 44px 52px; }
+  #s4 .sl { flex: 1; min-width: 0; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 8px; }
+  #s4 .intro { font-size: 12.5px; color: #8899aa; font-weight: 300; line-height: 1.6; margin-bottom: 16px; }
+  .eq-facts { display: flex; flex-direction: column; gap: 10px; }
+  .eq-fact { display: flex; align-items: flex-start; gap: 10px; }
+  .eq-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .eq-fact p { font-size: 12px; color: #99aaaa; line-height: 1.5; font-weight: 300; }
+  .eq-fact strong { color: var(--paper); font-weight: 600; }
+
+  /* ── Slide 5 – Shifts ── */
+  #s5 { background: var(--paper); padding: 40px 64px; }
+  #s5 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--rust); margin-bottom: 10px; }
+  #s5 h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--ink); margin-bottom: 20px; }
+  .shift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .shift-panel { background: white; border-radius: 8px; padding: 18px; box-shadow: 0 3px 14px rgba(0,0,0,.07); }
+  .shift-panel h3 { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; }
+  .shift-panel h3.d-head { color: var(--gold); }
+  .shift-panel h3.s-head { color: var(--teal); }
+  .shift-item { display: flex; gap: 10px; margin-bottom: 9px; font-size: 12.5px; font-weight: 300; color: #333; line-height: 1.45; }
+  .shift-item:last-child { margin-bottom: 0; }
+  .shift-item .arrow { flex-shrink: 0; font-size: 13px; }
+  .shift-note {
+    margin-top: 16px; padding: 10px 16px; background: rgba(192,68,42,.07);
+    border-left: 3px solid var(--rust); border-radius: 0 5px 5px 0;
+    font-size: 12px; color: #333; line-height: 1.55;
+  }
+  .shift-note strong { color: var(--rust); }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: var(--teal); }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.15); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 26px; line-height: 1.5; color: white; max-width: 640px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+  /* ── Controls ── */
+  #controls {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    color: white; width: 34px; height: 34px; border-radius: 50%;
+    cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+  #loading-overlay {
+    position: absolute; inset: 0; background: rgba(10,12,18,.88);
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px; z-index: 10;
+  }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(200,168,75,.2); border-top-color: var(--gold); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* ── Teaching animations ── */
+  .anim-curve { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .7s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+  .ppf-ripple { transform-box: fill-box; transform-origin: center; }
+  .ppf-pt.ppf-show .ppf-ripple { animation: ripple-out 1.8s ease-out .1s forwards; }
+  @keyframes ripple-out { 0% { opacity: .7; transform: scale(1); } 100% { opacity: 0; transform: scale(5); } }
+  .val-axis { opacity: .25; transition: opacity .5s ease; }
+  .val-axis.val-lit { opacity: 1; }
+  .teach-on-d { border-color: rgba(200,168,75,.75) !important; background: rgba(200,168,75,.08) !important; transition: border-color .4s, background .4s; }
+  .teach-on-s { border-color: rgba(26,122,110,.75) !important; background: rgba(26,122,110,.08) !important; transition: border-color .4s, background .4s; }
+  .fact-row { transition: opacity .4s ease; }
+  .fact-row.dim { opacity: .3; }
+  .shift-panel { transition: box-shadow .4s ease; }
+  .shift-panel.teach-on { box-shadow: 0 0 0 2px var(--gold), 0 3px 14px rgba(0,0,0,.07); }
+  .shift-panel.teach-on-s { box-shadow: 0 0 0 2px var(--teal), 0 3px 14px rgba(0,0,0,.07) !important; }
+  #eq-pstar, #eq-qstar, #eq-pstar-lbl, #eq-qstar-lbl { opacity: 0; transition: opacity .6s ease; }
+  #eq-surplus-lbl, #eq-shortage-lbl { opacity: 0; transition: opacity .6s ease; }
+  #eq-pstar.val-lit, #eq-qstar.val-lit, #eq-pstar-lbl.val-lit, #eq-qstar-lbl.val-lit { opacity: 1; }
+  #eq-surplus-lbl.val-lit, #eq-shortage-lbl.val-lit { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 101 · Markets</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Supply &amp;<br><em>Demand</em></h1>
+    <p class="sub fade-in">How prices are determined, why markets clear, and how millions of decisions are coordinated without a central plan.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <!-- Mini S&D diagram -->
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 210 210" width="210" height="210" fill="none">
+        <circle cx="105" cy="105" r="100" stroke="rgba(200,168,75,.15)" stroke-width="1.5"/>
+        <!-- Axes -->
+        <line x1="28" y1="182" x2="182" y2="182" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <line x1="28" y1="182" x2="28" y2="28" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <!-- Demand (gold, downward) -->
+        <line id="title-d" class="anim-curve" x1="38" y1="38" x2="172" y2="172" stroke="#c8a84b" stroke-width="2.2"/>
+        <!-- Supply (teal, upward) -->
+        <line id="title-s" class="anim-curve" x1="38" y1="172" x2="172" y2="38" stroke="#1a9a8e" stroke-width="2.2"/>
+        <!-- Equilibrium dot -->
+        <g id="title-eq" class="ppf-pt">
+          <circle class="ppf-ripple" cx="105" cy="105" r="8" fill="white"/>
+          <circle cx="105" cy="105" r="5" fill="white"/>
+        </g>
+        <!-- Labels -->
+        <text x="176" y="178" fill="rgba(200,168,75,.75)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">D</text>
+        <text x="176" y="42"  fill="rgba(26,154,142,.75)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">S</text>
+        <text x="112" y="100" fill="rgba(255,255,255,.7)"  font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">E</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: The Market ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Big Picture</div>
+    <h2 class="fade-in">Markets coordinate millions<br>of decisions through prices.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">🛒</div>
+        <h3>Buyers & Demand</h3>
+        <p>Buyers want goods at the lowest possible price. Their collective willingness and ability to pay determines the demand side of every market.</p>
+      </div>
+      <div class="card blue-t fade-in">
+        <div class="icon">🏭</div>
+        <h3>Sellers & Supply</h3>
+        <p>Sellers want to receive the highest possible price. Their willingness and ability to produce determines the supply side of every market.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">💰</div>
+        <h3>Price as Signal</h3>
+        <p>Prices encode information about scarcity and value. They coordinate buyers and sellers without any central authority directing either side.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: Demand Curve ── -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">The Demand Curve</h2>
+      <p class="intro fade-in">How much consumers are willing and able to buy at each price — all else equal.</p>
+      <div class="curve-fact fade-in">
+        <div class="fact-row" id="df1">
+          <span class="badge badge-demand">Law</span>
+          <span>When price rises, quantity demanded falls. The demand curve always slopes <em style="color:var(--gold)">downward</em>.</span>
+        </div>
+        <div class="fact-row" id="df2">
+          <span class="badge badge-demand">Why</span>
+          <span><strong style="color:#ccd">Substitution effect:</strong> higher price makes this good relatively expensive vs. alternatives.</span>
+        </div>
+        <div class="fact-row" id="df3">
+          <span class="badge badge-demand">Why</span>
+          <span><strong style="color:#ccd">Income effect:</strong> higher price reduces purchasing power, so less is bought.</span>
+        </div>
+        <div class="fact-row" id="df4">
+          <span class="badge badge-demand">Key</span>
+          <span>Moving <em>along</em> the curve = price change. A <em>shift</em> of the curve = something else changed.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Demand SVG -->
+    <svg class="fade-in" viewBox="0 0 340 300" width="340" height="300" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="50" y1="262" x2="318" y2="262" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <line x1="50" y1="262" x2="50" y2="20"  stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <polygon points="50,15 45,25 55,25" fill="rgba(255,255,255,.35)"/>
+      <polygon points="323,262 313,257 313,267" fill="rgba(255,255,255,.35)"/>
+      <!-- Demand line -->
+      <line id="d-curve" class="anim-curve" x1="68" y1="30" x2="305" y2="250" stroke="#c8a84b" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- D label -->
+      <text id="d-label" class="val-axis" x="310" y="258" fill="#c8a84b" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="700">D</text>
+      <!-- Point on curve (highlight when discussing movement) -->
+      <g id="d-point" class="ppf-pt">
+        <circle class="ppf-ripple" cx="185" cy="140" r="9" fill="#c8a84b"/>
+        <circle cx="185" cy="140" r="5" fill="#c8a84b"/>
+        <line x1="185" y1="140" x2="185" y2="262" stroke="rgba(200,168,75,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="50"  y1="140" x2="185" y2="140" stroke="rgba(200,168,75,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="188" y="136" fill="rgba(200,168,75,.9)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">A</text>
+      </g>
+      <!-- Axis labels -->
+      <text x="185" y="285" fill="rgba(255,255,255,.5)" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">Quantity →</text>
+      <text x="28"  y="142" fill="rgba(255,255,255,.5)" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 28 142)">Price →</text>
+      <!-- Downward arrow annotation -->
+      <g id="d-arrow" class="ppf-pt">
+        <line x1="268" y1="80"  x2="268" y2="205" stroke="rgba(200,168,75,.4)" stroke-width="1" stroke-dasharray="3 3"/>
+        <polygon points="268,212 263,200 273,200" fill="rgba(200,168,75,.4)"/>
+        <text x="278" y="150" fill="rgba(200,168,75,.55)" font-size="10" font-family="Space Grotesk,sans-serif" transform="rotate(90 278 150)">P↑ → Q↓</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Supply Curve ── -->
+  <div class="slide" id="s3">
+    <div class="sl">
+      <h2 class="fade-in">The Supply Curve</h2>
+      <p class="intro fade-in">How much producers are willing and able to sell at each price — all else equal.</p>
+      <div class="curve-fact fade-in">
+        <div class="fact-row" id="sf1">
+          <span class="badge badge-supply">Law</span>
+          <span>When price rises, quantity supplied rises. The supply curve always slopes <em style="color:#1a9a8e">upward</em>.</span>
+        </div>
+        <div class="fact-row" id="sf2">
+          <span class="badge badge-supply">Why</span>
+          <span><strong style="color:#333">Higher prices → higher profit</strong> for each unit sold, attracting more producers and more production.</span>
+        </div>
+        <div class="fact-row" id="sf3">
+          <span class="badge badge-supply">Why</span>
+          <span><strong style="color:#333">Lower prices → lower margins.</strong> Some producers exit; others cut output. Quantity falls.</span>
+        </div>
+        <div class="fact-row" id="sf4">
+          <span class="badge badge-supply">Key</span>
+          <span>Moving <em>along</em> the curve = price change. A <em>shift</em> = production costs, technology, or number of firms changed.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Supply SVG -->
+    <svg class="fade-in" viewBox="0 0 340 300" width="340" height="300" style="flex-shrink:0;">
+      <line x1="50" y1="262" x2="318" y2="262" stroke="#aaa" stroke-width="1.5"/>
+      <line x1="50" y1="262" x2="50" y2="20"  stroke="#aaa" stroke-width="1.5"/>
+      <polygon points="50,15 45,25 55,25" fill="#aaa"/>
+      <polygon points="323,262 313,257 313,267" fill="#aaa"/>
+      <!-- Supply line -->
+      <line id="s-curve" class="anim-curve" x1="68" y1="250" x2="305" y2="30" stroke="#1a9a8e" stroke-width="2.5" stroke-linecap="round"/>
+      <!-- S label -->
+      <text id="s-label" class="val-axis" x="310" y="34" fill="#1a9a8e" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="700">S</text>
+      <!-- Point on curve -->
+      <g id="s-point" class="ppf-pt">
+        <circle class="ppf-ripple" cx="185" cy="140" r="9" fill="#1a9a8e"/>
+        <circle cx="185" cy="140" r="5" fill="#1a9a8e"/>
+        <line x1="185" y1="140" x2="185" y2="262" stroke="rgba(26,154,142,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="50"  y1="140" x2="185" y2="140" stroke="rgba(26,154,142,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="188" y="136" fill="rgba(26,154,142,.9)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">B</text>
+      </g>
+      <text x="185" y="285" fill="#777" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">Quantity →</text>
+      <text x="28"  y="142" fill="#777" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 28 142)">Price →</text>
+      <!-- Upward arrow annotation -->
+      <g id="s-arrow" class="ppf-pt">
+        <line x1="268" y1="205" x2="268" y2="80"  stroke="rgba(26,154,142,.4)" stroke-width="1" stroke-dasharray="3 3"/>
+        <polygon points="268,73 263,85 273,85" fill="rgba(26,154,142,.4)"/>
+        <text x="278" y="150" fill="rgba(26,154,142,.55)" font-size="10" font-family="Space Grotesk,sans-serif" transform="rotate(90 278 150)">P↑ → Q↑</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 4: Market Equilibrium ── -->
+  <div class="slide" id="s4">
+    <div class="sl">
+      <h2 class="fade-in">Market Equilibrium</h2>
+      <p class="intro fade-in">The price at which quantity demanded equals quantity supplied — where the two curves cross.</p>
+      <div class="eq-facts fade-in">
+        <div class="eq-fact">
+          <div class="eq-dot" style="background:var(--gold)"></div>
+          <p><strong>Surplus (above P*):</strong> producers made more than buyers want — prices fall until market clears.</p>
+        </div>
+        <div class="eq-fact">
+          <div class="eq-dot" style="background:var(--rust)"></div>
+          <p><strong>Shortage (below P*):</strong> buyers want more than producers made — prices rise until market clears.</p>
+        </div>
+        <div class="eq-fact">
+          <div class="eq-dot" style="background:white;border:1px solid #555"></div>
+          <p><strong>At P*:</strong> no pressure on price to move. The market self-corrects to this point.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Equilibrium SVG -->
+    <svg class="fade-in" viewBox="0 0 380 320" width="380" height="320" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="52" y1="280" x2="358" y2="280" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <line x1="52" y1="280" x2="52" y2="20"  stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <polygon points="52,15 47,25 57,25" fill="rgba(255,255,255,.35)"/>
+      <polygon points="363,280 353,275 353,285" fill="rgba(255,255,255,.35)"/>
+
+      <!-- Surplus region (above P*) -->
+      <text id="eq-surplus-lbl" x="268" y="100" fill="rgba(200,168,75,.65)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600" letter-spacing=".04em" text-anchor="middle">SURPLUS ↓</text>
+
+      <!-- Shortage region (below P*) -->
+      <text id="eq-shortage-lbl" x="155" y="232" fill="rgba(192,68,42,.65)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600" letter-spacing=".04em" text-anchor="middle">SHORTAGE ↑</text>
+
+      <!-- Demand line -->
+      <line id="eq-d-curve" class="anim-curve" x1="70" y1="32" x2="342" y2="268" stroke="#c8a84b" stroke-width="2.2" stroke-linecap="round"/>
+      <!-- Supply line -->
+      <line id="eq-s-curve" class="anim-curve" x1="70" y1="268" x2="342" y2="32" stroke="#1a9a8e" stroke-width="2.2" stroke-linecap="round"/>
+
+      <!-- D / S labels -->
+      <text id="eq-d-lbl" class="val-axis" x="346" y="275" fill="#c8a84b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">D</text>
+      <text id="eq-s-lbl" class="val-axis" x="346" y="40"  fill="#1a9a8e" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">S</text>
+
+      <!-- P* dashed line (hidden until lit) -->
+      <line id="eq-pstar" x1="52" y1="150" x2="206" y2="150" stroke="rgba(255,255,255,.45)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text id="eq-pstar-lbl" x="44" y="154" fill="rgba(255,255,255,.75)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="end">P*</text>
+
+      <!-- Q* dashed line (hidden until lit) -->
+      <line id="eq-qstar" x1="206" y1="150" x2="206" y2="280" stroke="rgba(255,255,255,.45)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text id="eq-qstar-lbl" x="206" y="296" fill="rgba(255,255,255,.75)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">Q*</text>
+
+      <!-- Equilibrium point E -->
+      <g id="eq-point" class="ppf-pt">
+        <circle class="ppf-ripple" cx="206" cy="150" r="9" fill="white"/>
+        <circle cx="206" cy="150" r="5.5" fill="white"/>
+        <text x="214" y="145" fill="white" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">E</text>
+      </g>
+
+      <!-- Axis labels -->
+      <text x="205" y="300" fill="rgba(255,255,255,.5)" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">Quantity →</text>
+      <text x="28"  y="152" fill="rgba(255,255,255,.5)" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 28 152)">Price →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 5: Shifts ── -->
+  <div class="slide" id="s5">
+    <div class="eyebrow fade-in">Movements vs. Shifts</div>
+    <h2 class="fade-in">What Moves the Curves?</h2>
+    <div class="shift-grid">
+      <div class="shift-panel fade-in" id="shift-d">
+        <h3 class="d-head">↙ Demand Shifts</h3>
+        <div class="shift-item"><span class="arrow">💵</span><span><strong>Income:</strong> rise in income increases demand for normal goods; decreases it for inferior goods.</span></div>
+        <div class="shift-item"><span class="arrow">🔄</span><span><strong>Related goods:</strong> substitute prices rise → demand rises; complement prices rise → demand falls.</span></div>
+        <div class="shift-item"><span class="arrow">📣</span><span><strong>Preferences &amp; expectations:</strong> tastes shift, or expectations of future prices change buying behaviour today.</span></div>
+      </div>
+      <div class="shift-panel fade-in" id="shift-s">
+        <h3 class="s-head">↗ Supply Shifts</h3>
+        <div class="shift-item"><span class="arrow">⚙️</span><span><strong>Input costs:</strong> cheaper labour or materials shift supply right; costlier inputs shift it left.</span></div>
+        <div class="shift-item"><span class="arrow">🤖</span><span><strong>Technology:</strong> improvements let producers make more with the same inputs — supply shifts right.</span></div>
+        <div class="shift-item"><span class="arrow">🏢</span><span><strong>Number of firms:</strong> more producers → more supply; firms leaving → less supply.</span></div>
+      </div>
+    </div>
+    <div class="shift-note fade-in" id="shift-note">
+      <strong>Critical distinction:</strong> A price change causes movement <em>along</em> a curve. Everything else causes the curve itself to <em>shift</em>.
+    </div>
+  </div>
+
+  <!-- ── Slide 6: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Every price you pay, every shortage you encounter, every surplus on a sale rack — that is supply and demand at work, <em>coordinating</em> without a conductor.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 101 · UNBC</div>
+    <div class="tag">Supply · Demand · Equilibrium · Markets</div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p id="loading-text">Generating voice narration…</p>
+  </div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Welcome. Today we're covering one of the most fundamental frameworks in all of economics — supply and demand. These two forces explain how prices are determined, why goods sometimes run short, and how markets coordinate the decisions of millions of buyers and sellers — without anyone being in charge.",
+  "Before we get to the curves, let's think about what a market actually is. A market is any arrangement that brings buyers and sellers together to exchange goods and services. There's no central planner telling producers how much to make or consumers what to buy. Instead, prices do the coordinating. When a good is scarce, its price rises — signalling producers to make more and buyers to cut back. When there's a surplus, prices fall. The entire system runs on information encoded in prices.",
+  "Let's start with demand. The demand curve shows how much of a good consumers are willing and able to buy at each possible price — holding everything else constant. Notice it slopes downward. That's the law of demand: when the price of a good rises, the quantity demanded falls. Two forces drive this. First, the substitution effect — a higher price makes this good relatively more expensive than its alternatives, so people switch. Second, the income effect — a higher price erodes your purchasing power, so you buy less. Every point on the demand curve is a different price-quantity combination, all else equal.",
+  "Now let's look at supply. The supply curve shows how much producers are willing and able to sell at each possible price. It slopes upward — that's the law of supply. When prices rise, producing becomes more profitable, which attracts more firms into the market and motivates existing ones to expand output. When prices fall, margins shrink. Some producers exit; others cut back. So quantity supplied rises with price and falls with price. And notice — when price changes, we move along the supply curve. That's different from the curve itself shifting, which happens when something other than price changes.",
+  "Now let's put both curves on the same diagram. The market equilibrium is the price at which quantity demanded exactly equals quantity supplied — point E, where the two curves cross. The equilibrium price is P-star; the equilibrium quantity is Q-star. Here's what makes this powerful: markets tend to move toward equilibrium on their own. If the price is above P-star, there's a surplus — producers supplied more than buyers want, so prices fall. If the price is below P-star, there's a shortage — buyers want more than producers supplied, so prices rise. The market self-corrects without any outside intervention.",
+  "We've been moving along fixed curves — changing price and watching quantity respond. But the curves themselves can shift. A shift in demand means consumers want more or less at every price. What causes this? Changes in income, preferences, prices of related goods, or expectations. A shift in supply means producers offer more or less at every price. What causes this? Changes in input costs, technology, or the number of firms in the market. Here's the critical distinction to keep in your head: a price change causes movement along a curve. Everything else — income, technology, input costs — causes the curve itself to shift. Mixing these two up is one of the most common mistakes in economics.",
+  "Supply and demand is not just a model — it's a lens through which economists see the world. Every price you pay, every shortage you encounter, every surplus on a sale rack — that is supply and demand at work, coordinating millions of decisions without a conductor. Master this framework and you hold the key to understanding markets from the corner store to the global economy."
+];
+
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+let muted = false;
+let currentAudio = null;
+let currentSpeech = null;
+let speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed — browser TTS:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initCurves();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer);
+  stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('🎙 AI narration');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else {
+    speakWithBrowser(idx);
+  }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx];
+  const rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('🔊 Browser narration');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel')
+               || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US')
+               || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter);
+    currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted;
+  muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0;
+let timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer();
+  timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+// ── Teaching animation system ────────────────────────────────────────
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initCurves() {
+  document.querySelectorAll('.anim-curve').forEach(el => {
+    const tag = el.tagName.toLowerCase();
+    let len;
+    if (tag === 'line') {
+      const x1 = +el.getAttribute('x1'), y1 = +el.getAttribute('y1');
+      const x2 = +el.getAttribute('x2'), y2 = +el.getAttribute('y2');
+      len = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+    } else {
+      len = el.getTotalLength ? el.getTotalLength() : 600;
+    }
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function resetCurves() {
+  document.querySelectorAll('.anim-curve').forEach(el => {
+    el.style.transition = 'none';
+    const len = el.dataset.origLen || 9999;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawCurve(id, durMs, delayMs) {
+  sch(delayMs || 0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs || 1800}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function showPt(id) { sch(0, () => document.getElementById(id)?.classList.add('ppf-show')); }
+function litEl(sel) { document.querySelectorAll(sel).forEach(el => el.classList.add('val-lit')); }
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.val-lit').forEach(el => el.classList.remove('val-lit'));
+  document.querySelectorAll('.teach-on, .teach-on-s').forEach(el => { el.classList.remove('teach-on'); el.classList.remove('teach-on-s'); });
+  resetCurves();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0: // Title: D line draws, then S, then equilibrium dot
+      drawCurve('title-d', 1400, 700);
+      drawCurve('title-s', 1400, 1400);
+      sch(2600, () => document.getElementById('title-eq')?.classList.add('ppf-show'));
+      break;
+
+    case 2: // Demand slide
+      drawCurve('d-curve', 1800, 400);
+      sch(600,  () => litEl('#d-label'));
+      sch(10000, () => document.getElementById('d-point')?.classList.add('ppf-show'));
+      sch(20000, () => document.getElementById('d-arrow')?.classList.add('ppf-show'));
+      break;
+
+    case 3: // Supply slide
+      drawCurve('s-curve', 1800, 400);
+      sch(600,  () => litEl('#s-label'));
+      sch(10000, () => document.getElementById('s-point')?.classList.add('ppf-show'));
+      sch(20000, () => document.getElementById('s-arrow')?.classList.add('ppf-show'));
+      break;
+
+    case 4: // Equilibrium
+      drawCurve('eq-d-curve', 1800, 400);
+      sch(700,  () => litEl('#eq-d-lbl'));
+      drawCurve('eq-s-curve', 1800, 3000);
+      sch(3300, () => litEl('#eq-s-lbl'));
+      sch(7000, () => document.getElementById('eq-point')?.classList.add('ppf-show'));
+      sch(9000, () => { litEl('#eq-pstar'); litEl('#eq-pstar-lbl'); litEl('#eq-qstar'); litEl('#eq-qstar-lbl'); });
+      sch(22000, () => litEl('#eq-surplus-lbl'));
+      sch(27000, () => litEl('#eq-shortage-lbl'));
+      break;
+
+    case 5: // Shifts
+      sch(3000,  () => document.getElementById('shift-d')?.classList.add('teach-on'));
+      sch(18000, () => {
+        document.getElementById('shift-d')?.classList.remove('teach-on');
+        document.getElementById('shift-s')?.classList.add('teach-on-s');
+      });
+      sch(33000, () => document.getElementById('shift-note')?.classList.add('teach-on'));
+      break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>
