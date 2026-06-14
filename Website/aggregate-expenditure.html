@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aggregate Expenditure Model — ECON 101</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px; font-size: 9px;
+    color: rgba(255,255,255,.18); letter-spacing: .07em; text-transform: uppercase;
+    pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 .rule  { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 54px; line-height: 1.08; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub  { margin-top: 20px; font-size: 15.5px; color: #8898a0; font-weight: 300; max-width: 440px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(200,168,75,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .icon-wrap { position: absolute; right: 52px; top: 50%; transform: translateY(-50%); width: 220px; height: 220px; }
+
+  /* ── Slide 1 – Components ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--ink); line-height: 1.15; margin-bottom: 10px; }
+  .ae-formula {
+    display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;
+    font-size: 22px; font-family: 'Playfair Display', serif; font-weight: 700; color: var(--ink);
+  }
+  .ae-formula .eq { color: var(--teal); }
+  .ae-formula .c-comp { color: #1a6aaa; }
+  .ae-formula .i-comp { color: var(--teal); }
+  .ae-formula .g-comp { color: var(--gold); }
+  .ae-formula .nx-comp { color: var(--rust); }
+  .comp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 12px; }
+  .comp-card { background: white; border-radius: 6px; padding: 14px 12px; box-shadow: 0 3px 12px rgba(0,0,0,.07); border-top: 3px solid transparent; transition: box-shadow .4s; }
+  .comp-card.teach-on { box-shadow: 0 0 0 2px currentColor; }
+  .comp-card.c-card { border-color: #1a6aaa; }
+  .comp-card.i-card { border-color: var(--teal); }
+  .comp-card.g-card { border-color: var(--gold); }
+  .comp-card.nx-card { border-color: var(--rust); }
+  .comp-card .comp-letter { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; line-height: 1; margin-bottom: 5px; }
+  .comp-card.c-card  .comp-letter { color: #1a6aaa; }
+  .comp-card.i-card  .comp-letter { color: var(--teal); }
+  .comp-card.g-card  .comp-letter { color: var(--gold); }
+  .comp-card.nx-card .comp-letter { color: var(--rust); }
+  .comp-card h4 { font-size: 11px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: #333; margin-bottom: 5px; }
+  .comp-card p  { font-size: 11.5px; color: #555; line-height: 1.5; font-weight: 300; }
+  .ae-note { margin-top: 14px; padding: 9px 14px; background: rgba(26,122,110,.07); border-left: 3px solid var(--teal); font-size: 12.5px; color: #333; line-height: 1.5; }
+  .ae-note strong { color: var(--teal); }
+
+  /* ── Slides 2, 3, 5 – horizontal ── */
+  .h-slide { flex-direction: row; align-items: center; gap: 34px; padding: 42px 50px; }
+  .h-slide .sl { flex: 1; min-width: 0; }
+  #s2 { background: #0f1a19; }
+  #s3 { background: var(--paper); }
+  #s5 { background: var(--paper); }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--paper); margin-bottom: 7px; }
+  #s3 h2, #s5 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); margin-bottom: 7px; }
+  #s2 .intro { font-size: 12.5px; color: #8fa; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  #s3 .intro, #s5 .intro { font-size: 12.5px; color: #555; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  .side-facts { display: flex; flex-direction: column; gap: 9px; }
+  .side-fact { display: flex; gap: 9px; font-size: 12px; font-weight: 300; line-height: 1.5; align-items: flex-start; }
+  .sbadge { flex-shrink: 0; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .04em; margin-top: 1px; background: rgba(200,168,75,.18); color: var(--gold); }
+  #s2 .side-fact { color: #bbc; }
+  #s3 .side-fact, #s5 .side-fact { color: #444; }
+
+  /* ── Slide 4 – Gaps ── */
+  #s4 { background: #0d0f16; padding: 40px 56px; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 6px; }
+  #s4 .intro { font-size: 12.5px; color: #8899aa; font-weight: 300; margin-bottom: 18px; line-height: 1.55; }
+  .gap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .gap-panel { border-radius: 8px; padding: 16px; }
+  .gap-panel.rec  { background: rgba(192,68,42,.07);  border: 1px solid rgba(192,68,42,.3); }
+  .gap-panel.inf  { background: rgba(200,168,75,.07); border: 1px solid rgba(200,168,75,.3); }
+  .gap-panel h3 { font-size: 11.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 10px; }
+  .gap-panel.rec h3 { color: var(--rust); }
+  .gap-panel.inf h3 { color: var(--gold); }
+  .gap-panel p { font-size: 12px; color: #99aaaa; line-height: 1.55; font-weight: 300; margin-bottom: 8px; }
+  .gap-panel p strong { color: var(--paper); font-weight: 600; }
+  .gap-panel .fix { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: #667; margin-top: 8px; }
+  .gap-panel.rec .fix { color: rgba(26,154,142,.7); }
+  .gap-panel.inf .fix { color: rgba(200,168,75,.7); }
+  .gap-note { margin-top: 16px; padding: 10px 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); border-radius: 6px; font-size: 12px; color: #ccd; line-height: 1.55; font-weight: 300; }
+  .gap-note strong { color: var(--gold); }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: var(--teal); }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.15); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 24px; line-height: 1.5; color: white; max-width: 650px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag  { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+  /* ── Controls ── */
+  #controls { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+  #loading-overlay { position: absolute; inset: 0; background: rgba(10,12,18,.88); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 10; }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(200,168,75,.2); border-top-color: var(--gold); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* ── Teaching animations ── */
+  .anim-line { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .65s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+  .ppf-ripple { transform-box: fill-box; transform-origin: center; }
+  .ppf-pt.ppf-show .ppf-ripple { animation: ripple-out 1.8s ease-out .1s forwards; }
+  @keyframes ripple-out { 0%{opacity:.7;transform:scale(1)} 100%{opacity:0;transform:scale(5)} }
+  .comp-card { opacity: 0; transition: opacity .55s ease; }
+  .comp-card.show { opacity: 1; }
+  .gap-panel { opacity: 0; transition: opacity .6s ease; }
+  .gap-panel.show { opacity: 1; }
+  .gap-note { opacity: 0; transition: opacity .6s ease; }
+  .gap-note.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 101 · Macroeconomics</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Aggregate<br>Expenditure<br><em>Model</em></h1>
+    <p class="sub fade-in">How total planned spending determines equilibrium output — and why the economy can get stuck below full employment.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="icon-wrap fade-in">
+      <svg viewBox="0 0 220 220" fill="none">
+        <circle cx="110" cy="110" r="105" stroke="rgba(200,168,75,.15)" stroke-width="1.5"/>
+        <!-- Axes -->
+        <line x1="32" y1="188" x2="192" y2="188" stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+        <line x1="32" y1="188" x2="32"  y2="28"  stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+        <!-- 45° line -->
+        <line id="title-45" class="anim-line" x1="32" y1="188" x2="188" y2="32" stroke="rgba(255,255,255,.3)" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <!-- AE line -->
+        <line id="title-ae" class="anim-line" x1="32" y1="150" x2="192" y2="50" stroke="#c8a84b" stroke-width="2.2"/>
+        <!-- Equilibrium dot -->
+        <g id="title-eq" class="ppf-pt">
+          <circle class="ppf-ripple" cx="122" cy="98" r="8" fill="white"/>
+          <circle cx="122" cy="98" r="4.5" fill="white"/>
+        </g>
+        <!-- Axis labels -->
+        <text x="112" y="205" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" letter-spacing=".04em">Y (Output)</text>
+        <text x="20"  y="108" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 20 108)">AE</text>
+        <text x="196" y="46"  fill="rgba(200,168,75,.7)"  font-size="11" font-family="Space Grotesk,sans-serif" font-weight="700">AE</text>
+        <text x="192" y="28"  fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif">45°</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: Components of AE ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Building Blocks</div>
+    <h2 class="fade-in">AE = C + I + G + NX</h2>
+    <div class="ae-formula fade-in">
+      <span>AE</span><span class="eq">=</span>
+      <span class="c-comp">C</span><span>+</span>
+      <span class="i-comp">I</span><span>+</span>
+      <span class="g-comp">G</span><span>+</span>
+      <span class="nx-comp">NX</span>
+    </div>
+    <div class="comp-grid">
+      <div class="comp-card c-card" id="cc-c">
+        <div class="comp-letter">C</div>
+        <h4>Consumption</h4>
+        <p>Household spending on goods &amp; services. Largest component (~60% of GDP). Driven by income, wealth, and expectations.</p>
+      </div>
+      <div class="comp-card i-card" id="cc-i">
+        <div class="comp-letter">I</div>
+        <h4>Investment</h4>
+        <p>Business spending on capital and housing investment. Most volatile component — sensitive to interest rates &amp; expectations.</p>
+      </div>
+      <div class="comp-card g-card" id="cc-g">
+        <div class="comp-letter">G</div>
+        <h4>Gov't Spending</h4>
+        <p>Government purchases of goods &amp; services. Does not include transfers (EI, pensions) — those affect C indirectly.</p>
+      </div>
+      <div class="comp-card nx-card" id="cc-nx">
+        <div class="comp-letter">NX</div>
+        <h4>Net Exports</h4>
+        <p>Exports minus imports (X − M). Positive when Canada sells more abroad than it buys. Affected by exchange rates &amp; foreign income.</p>
+      </div>
+    </div>
+    <div class="ae-note fade-in"><strong>Equilibrium condition:</strong> The economy is in equilibrium when actual output Y equals planned aggregate expenditure AE. When AE &gt; Y, output expands; when AE &lt; Y, output contracts.</div>
+  </div>
+
+  <!-- ── Slide 2: Consumption Function ── -->
+  <div class="slide h-slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">The Consumption Function</h2>
+      <p class="intro fade-in">C = <em style="color:var(--gold)">a</em> + <em style="color:#1a9a8e">b</em>Y — the relationship between household income and spending.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact" id="cf1">
+          <span class="sbadge">a</span>
+          <span><strong style="color:var(--gold)">Autonomous consumption</strong> — spending that occurs even at zero income, financed by savings or borrowing. The y-intercept of the C line.</span>
+        </div>
+        <div class="side-fact" id="cf2">
+          <span class="sbadge">b</span>
+          <span><strong style="color:#1a9a8e">Marginal propensity to consume (MPC)</strong> — the fraction of each extra dollar of income spent on consumption. The slope of the C line.</span>
+        </div>
+        <div class="side-fact" id="cf3">
+          <span class="sbadge">MPC</span>
+          <span>If MPC = 0.75: each extra $1 of income → $0.75 more consumption. Remaining $0.25 is saved (MPS = 1 − MPC = 0.25).</span>
+        </div>
+        <div class="side-fact" id="cf4">
+          <span class="sbadge">Key</span>
+          <span>The C function slopes upward but less steeply than the 45° line — households never spend 100% of income (MPC &lt; 1).</span>
+        </div>
+      </div>
+    </div>
+    <!-- Consumption function SVG -->
+    <svg class="fade-in" viewBox="0 0 310 265" width="310" height="265" style="flex-shrink:0;">
+      <line x1="48" y1="238" x2="298" y2="238" stroke="rgba(255,255,255,.3)" stroke-width="1.4"/>
+      <line x1="48" y1="238" x2="48"  y2="18"  stroke="rgba(255,255,255,.3)" stroke-width="1.4"/>
+      <polygon points="48,13 43,23 53,23" fill="rgba(255,255,255,.3)"/>
+      <polygon points="303,238 293,233 293,243" fill="rgba(255,255,255,.3)"/>
+      <!-- 45° reference (faint) -->
+      <line id="cf-45" class="anim-line" x1="48" y1="238" x2="238" y2="48"
+            stroke="rgba(255,255,255,.18)" stroke-width="1.2" stroke-dasharray="5 4"/>
+      <!-- Consumption function line: C = 35 + 0.75Y -->
+      <!-- Y=0: C=35 → svg y = 238 - 35*1.05 = 201.25 ≈ 201 -->
+      <!-- Y=190: C=177.5 → svg y = 238 - 177.5*1.05 = 51.6 ≈ 52 -->
+      <line id="cf-line" class="anim-line" x1="48" y1="201" x2="292" y2="27"
+            stroke="#c8a84b" stroke-width="2.4" stroke-linecap="round"/>
+      <!-- 'a' intercept marker -->
+      <g id="cf-a" class="ppf-pt">
+        <line x1="42" y1="201" x2="58" y2="201" stroke="rgba(200,168,75,.6)" stroke-width="1.2"/>
+        <text x="38" y="205" fill="var(--gold)" font-size="11" font-family="Playfair Display,serif" font-style="italic" text-anchor="end" font-weight="700">a</text>
+        <circle cx="48" cy="201" r="4" fill="var(--gold)"/>
+      </g>
+      <!-- MPC slope triangle -->
+      <g id="cf-mpc" class="ppf-pt">
+        <line x1="145" y1="140" x2="225" y2="140" stroke="rgba(26,154,142,.5)" stroke-width="1" stroke-dasharray="3 2"/>
+        <line x1="225" y1="140" x2="225" y2="80"  stroke="rgba(26,154,142,.5)" stroke-width="1" stroke-dasharray="3 2"/>
+        <text x="183" y="155" fill="rgba(26,154,142,.7)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">ΔY</text>
+        <text x="237" y="113" fill="rgba(26,154,142,.7)" font-size="10" font-family="Space Grotesk,sans-serif">ΔC</text>
+        <text x="170" y="112" fill="#1a9a8e" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="700">MPC = ΔC/ΔY</text>
+      </g>
+      <!-- C label -->
+      <text class="ppf-pt" id="cf-lbl" x="295" y="24" fill="var(--gold)" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">C</text>
+      <!-- Axis labels -->
+      <text x="170" y="255" fill="rgba(255,255,255,.45)" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">Income (Y) →</text>
+      <text x="26"  y="128" fill="rgba(255,255,255,.45)" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 26 128)">Consumption (C) →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: The Keynesian Cross ── -->
+  <div class="slide h-slide" id="s3">
+    <div class="sl">
+      <h2 class="fade-in">The Keynesian Cross</h2>
+      <p class="intro fade-in">Equilibrium output is where planned spending AE equals actual output Y — where the AE line crosses the 45° line.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact" id="kc1">
+          <span class="sbadge">45° line</span>
+          <span>Every point on this line satisfies AE = Y. It represents all possible equilibria — the economy must end up somewhere on it.</span>
+        </div>
+        <div class="side-fact" id="kc2">
+          <span class="sbadge">AE line</span>
+          <span>Slope = MPC. Starts above zero (autonomous spending). Less steep than 45° because MPC &lt; 1.</span>
+        </div>
+        <div class="side-fact" id="kc3">
+          <span class="sbadge">Y*</span>
+          <span>Equilibrium output — where AE = Y. If Y &lt; Y*, planned spending exceeds output → firms expand. If Y &gt; Y*, output exceeds spending → firms cut back.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Keynesian Cross SVG -->
+    <svg class="fade-in" viewBox="0 0 330 285" width="330" height="285" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="46" y1="260" x2="314" y2="260" stroke="#aaa" stroke-width="1.4"/>
+      <line x1="46" y1="260" x2="46"  y2="18"  stroke="#aaa" stroke-width="1.4"/>
+      <polygon points="46,13 41,23 51,23" fill="#aaa"/>
+      <polygon points="319,260 309,255 309,265" fill="#aaa"/>
+      <!-- 45° line: AE = Y -->
+      <!-- Scale: 1px per unit. At Y=214: svg_x=260, svg_y=46 -->
+      <line id="kc-45" class="anim-line" x1="46" y1="260" x2="260" y2="46"
+            stroke="rgba(100,120,150,.6)" stroke-width="1.8" stroke-dasharray="6 4"/>
+      <text class="ppf-pt" id="kc-45lbl" x="264" y="42" fill="rgba(120,140,160,.8)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600">45°</text>
+      <!-- AE line: AE = 56 + 0.6Y -->
+      <!-- At Y=0:   AE=56  → svg (46, 204) -->
+      <!-- At Y=268: AE=217 → svg (314, 43) -->
+      <line id="kc-ae" class="anim-line" x1="46" y1="204" x2="314" y2="43"
+            stroke="#c8a84b" stroke-width="2.4" stroke-linecap="round"/>
+      <text class="ppf-pt" id="kc-aelbl" x="316" y="40" fill="var(--gold)" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">AE</text>
+      <!-- Equilibrium: Y* = 140, AE = 140 → svg (186, 120) -->
+      <g id="kc-eq" class="ppf-pt">
+        <circle class="ppf-ripple" cx="186" cy="120" r="9" fill="white"/>
+        <circle cx="186" cy="120" r="5" fill="white"/>
+        <text x="194" y="115" fill="white" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">E</text>
+        <!-- Dashed lines to axes -->
+        <line x1="186" y1="120" x2="186" y2="260" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="46"  y1="120" x2="186" y2="120" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="186" y="274" fill="rgba(255,255,255,.7)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Y*</text>
+        <text x="39"  y="124" fill="rgba(255,255,255,.7)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="end">AE*</text>
+      </g>
+      <!-- Axis labels -->
+      <text x="180" y="278" fill="#777" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">Output Y →</text>
+      <text x="24"  y="138" fill="#777" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 24 138)">Expenditure AE →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 4: Recessionary & Inflationary Gaps ── -->
+  <div class="slide" id="s4">
+    <h2 class="fade-in">Recessionary &amp; Inflationary Gaps</h2>
+    <p class="intro fade-in">Equilibrium Y* need not equal potential output Y<sub>f</sub>. When they differ, the economy faces a gap that policy must close.</p>
+    <div class="gap-grid">
+      <div class="gap-panel rec" id="gap-rec">
+        <h3>📉 Recessionary Gap</h3>
+        <p><strong>Y* &lt; Y<sub>f</sub></strong> — the AE line crosses the 45° line to the <strong>left</strong> of potential output.</p>
+        <p>Consequence: unemployment above the natural rate. Firms are producing less than the economy is capable of. Wages and prices may fall slowly, but not quickly enough.</p>
+        <p>Fix: shift AE upward — via government spending ↑, taxes ↓, or interest rates ↓ — until Y* rises to Y<sub>f</sub>.</p>
+        <div class="fix">→ Expansionary fiscal or monetary policy</div>
+      </div>
+      <div class="gap-panel inf" id="gap-inf">
+        <h3>📈 Inflationary Gap</h3>
+        <p><strong>Y* &gt; Y<sub>f</sub></strong> — the AE line crosses the 45° line to the <strong>right</strong> of potential output.</p>
+        <p>Consequence: the economy is overheating. Demand exceeds productive capacity. Firms cannot expand output, so prices rise — inflation accelerates.</p>
+        <p>Fix: shift AE downward — via government spending ↓, taxes ↑, or interest rates ↑ — until Y* falls back to Y<sub>f</sub>.</p>
+        <div class="fix">→ Contractionary fiscal or monetary policy</div>
+      </div>
+    </div>
+    <div class="gap-note fade-in" id="gap-note">
+      <strong>Key Keynesian insight:</strong> The economy does not automatically return to Y<sub>f</sub>. Without policy intervention, it can remain stuck in a recessionary gap indefinitely — this is the core argument for active macroeconomic policy.
+    </div>
+  </div>
+
+  <!-- ── Slide 5: The Multiplier in the AE Model ── -->
+  <div class="slide h-slide" id="s5">
+    <div class="sl">
+      <h2 class="fade-in">The Multiplier Effect</h2>
+      <p class="intro fade-in">A shift in autonomous spending raises the AE line — and the new equilibrium rises by <em>more</em> than the initial injection.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact" id="mp1">
+          <span class="sbadge">Shift</span>
+          <span>Government increases spending by ΔG = 20. The entire AE line shifts up by 20 — AE₁ starts 20 above AE₀ at every income level.</span>
+        </div>
+        <div class="side-fact" id="mp2">
+          <span class="sbadge">New Y*</span>
+          <span>The new equilibrium Y₁* is higher than Y₀*. But the increase ΔY = Y₁* − Y₀* is larger than ΔG = 20.</span>
+        </div>
+        <div class="side-fact" id="mp3">
+          <span class="sbadge">Formula</span>
+          <span><strong style="color:var(--gold)">Multiplier = 1 ÷ (1 − MPC)</strong>. If MPC = 0.6: multiplier = 2.5. So ΔG = 20 → ΔY = 50.</span>
+        </div>
+        <div class="side-fact" id="mp4">
+          <span class="sbadge">Why</span>
+          <span>Each round of spending becomes someone else's income. They spend a fraction (MPC), creating another round — and so on until the series converges.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Multiplier shift SVG -->
+    <svg class="fade-in" viewBox="0 0 330 285" width="330" height="285" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="46" y1="260" x2="314" y2="260" stroke="#aaa" stroke-width="1.4"/>
+      <line x1="46" y1="260" x2="46"  y2="18"  stroke="#aaa" stroke-width="1.4"/>
+      <polygon points="46,13 41,23 51,23" fill="#aaa"/>
+      <polygon points="319,260 309,255 309,265" fill="#aaa"/>
+      <!-- 45° line -->
+      <line x1="46" y1="260" x2="260" y2="46" stroke="rgba(100,120,150,.5)" stroke-width="1.6" stroke-dasharray="5 4"/>
+      <!-- AE₀ line (dashed) -->
+      <line id="mp-ae0" class="anim-line" x1="46" y1="204" x2="314" y2="43"
+            stroke="rgba(200,168,75,.45)" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="6 4"/>
+      <text class="ppf-pt" id="mp-ae0lbl" x="316" y="40" fill="rgba(200,168,75,.5)" font-size="11" font-family="Space Grotesk,sans-serif">AE₀</text>
+      <!-- AE₁ line (solid, shifted up by 20) -->
+      <line id="mp-ae1" class="anim-line" x1="46" y1="184" x2="314" y2="23"
+            stroke="#c8a84b" stroke-width="2.4" stroke-linecap="round"/>
+      <text class="ppf-pt" id="mp-ae1lbl" x="316" y="20" fill="var(--gold)" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">AE₁</text>
+      <!-- Original equilibrium Y₀* = 140 → svg x=186, y=120 -->
+      <g id="mp-eq0" class="ppf-pt">
+        <circle cx="186" cy="120" r="4.5" fill="rgba(200,168,75,.5)"/>
+        <line x1="186" y1="120" x2="186" y2="260" stroke="rgba(200,168,75,.25)" stroke-width="1" stroke-dasharray="3 3"/>
+        <text x="186" y="272" fill="rgba(200,168,75,.6)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Y₀*</text>
+      </g>
+      <!-- New equilibrium Y₁* = 190 → svg x=236, y=70 -->
+      <g id="mp-eq1" class="ppf-pt">
+        <circle class="ppf-ripple" cx="236" cy="70" r="9" fill="white"/>
+        <circle cx="236" cy="70" r="5" fill="white"/>
+        <line x1="236" y1="70" x2="236" y2="260" stroke="rgba(255,255,255,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="236" y="272" fill="white" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Y₁*</text>
+      </g>
+      <!-- ΔG arrow on Y-axis -->
+      <g id="mp-dg" class="ppf-pt">
+        <line x1="38" y1="204" x2="38" y2="184" stroke="var(--teal)" stroke-width="2"/>
+        <polygon points="38,179 34,191 42,191" fill="var(--teal)"/>
+        <text x="34" y="196" fill="var(--teal)" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="end">ΔG=20</text>
+      </g>
+      <!-- ΔY arrow on X-axis -->
+      <g id="mp-dy" class="ppf-pt">
+        <line x1="186" y1="252" x2="236" y2="252" stroke="white" stroke-width="2"/>
+        <polygon points="241,252 229,248 229,256" fill="white"/>
+        <text x="211" y="247" fill="white" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">ΔY = 50</text>
+        <text x="211" y="238" fill="rgba(255,255,255,.55)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Multiplier = 2.5</text>
+      </g>
+      <!-- Axis labels -->
+      <text x="180" y="278" fill="#777" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">Output Y →</text>
+      <text x="24"  y="138" fill="#777" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 24 138)">Expenditure AE →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 6: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Total planned spending determines output. When spending falls short of potential, the economy stays below full employment — and <em>won't fix itself</em> without a push.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 101 · UNBC</div>
+    <div class="tag">AE Model · Keynesian Cross · Multiplier · Output Gaps</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Welcome. Today we're building the Aggregate Expenditure Model — one of the central frameworks in introductory macroeconomics. It explains how total planned spending determines equilibrium output, and why the economy can get stuck below full employment. Developed by John Maynard Keynes during the Great Depression, this model remains essential for understanding how fiscal and monetary policy work.",
+  "Aggregate expenditure is the total planned spending in the economy, and it has four components. Consumption — household spending on goods and services — is the largest, making up roughly sixty percent of GDP. Investment — firm spending on capital equipment plus housing — is the most volatile. Government spending on goods and services is the third component. And net exports, exports minus imports, captures the contribution of the foreign sector. Together: AE equals C plus I plus G plus net exports. The economy is in equilibrium when actual output equals this planned aggregate expenditure.",
+  "The consumption function is the foundation of the model. It says consumption C equals a plus b times Y. The term a is autonomous consumption — spending that happens regardless of income, financed by savings or borrowing. It's the y-intercept: even at zero income, people consume. The slope b is the marginal propensity to consume, or MPC — the fraction of each additional dollar of income that households spend on consumption. If MPC equals 0.75, then each extra dollar of income generates seventy-five cents more consumption and twenty-five cents more saving. The consumption line slopes upward, but less steeply than the forty-five degree line, because households save part of every dollar.",
+  "The Keynesian Cross diagram brings the model together. The horizontal axis is output Y, the vertical is aggregate expenditure AE. We draw two lines. The first is the forty-five degree line — every point on it satisfies AE equals Y, the equilibrium condition. The second is the AE line itself, which has slope equal to MPC and starts above zero because of autonomous spending. Equilibrium is where these two cross — point E, at output level Y-star. If the economy is at a higher Y, planned spending falls short of output, so firms cut production. If it's at a lower Y, planned spending exceeds output, so firms expand. Both forces push toward Y-star.",
+  "The critical insight is that equilibrium Y-star does not automatically equal potential output Y-f — the level consistent with full employment. If the AE line crosses the forty-five degree line to the left of Y-f, the economy has a recessionary gap: output and employment are below potential. Wages and prices may fall eventually, but not fast enough to matter in the short run. The fix is to shift AE upward — through fiscal or monetary stimulus — until Y-star rises to Y-f. If the AE line crosses to the right, the economy has an inflationary gap: demand exceeds capacity, driving up prices. The fix is to shift AE downward to cool demand.",
+  "The AE model also gives us a precise view of the multiplier. Suppose autonomous spending rises by twenty billion — a government spending increase, say. The entire AE line shifts up by twenty. But the new equilibrium Y-one-star is not just twenty above the old Y-zero-star. Because of the multiplier, the increase in output is larger. Each round of new spending becomes someone's income; they spend the MPC fraction of it, generating another round of spending. The multiplier equals one divided by one minus MPC. With MPC of 0.6, the multiplier is 2.5 — a twenty-billion spending increase raises equilibrium output by fifty billion.",
+  "The Aggregate Expenditure Model gives us a clear message: total planned spending determines where the economy settles. If that spending falls short of what's needed for full employment, the economy stays below potential — and won't self-correct quickly. That insight, developed during the worst economic crisis of the twentieth century, changed macroeconomic policy forever."
+];
+
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+let muted = false, currentAudio = null, currentSpeech = null, speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initLines();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio)  { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer); stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('🎙 AI narration');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else { speakWithBrowser(idx); }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx], rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('🔊 Browser narration');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel') || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter); currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted; muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0, timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer(); timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+// ── Animation system ─────────────────────────────────────────────────
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initLines() {
+  document.querySelectorAll('.anim-line').forEach(el => {
+    const x1=+el.getAttribute('x1'),y1=+el.getAttribute('y1'),
+          x2=+el.getAttribute('x2'),y2=+el.getAttribute('y2');
+    const len = Math.sqrt((x2-x1)**2+(y2-y1)**2);
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawLine(id, durMs, delayMs) {
+  sch(delayMs||0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs||1600}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function resetLines() {
+  document.querySelectorAll('.anim-line').forEach(el => {
+    el.style.transition = 'none';
+    el.style.strokeDasharray = el.dataset.origLen || 9999;
+    el.style.strokeDashoffset = el.dataset.origLen || 9999;
+  });
+}
+
+function show(id)  { document.getElementById(id)?.classList.add('ppf-show'); }
+function showEl(sel) { document.querySelectorAll(sel).forEach(el => el.classList.add('ppf-show')); }
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.comp-card').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.gap-panel, .gap-note').forEach(el => el.classList.remove('show'));
+  document.querySelectorAll('.teach-on').forEach(el => el.classList.remove('teach-on'));
+  resetLines();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0: // Title: 45° then AE then equilibrium dot
+      drawLine('title-45', 1400, 700);
+      drawLine('title-ae', 1400, 1600);
+      sch(2800, () => show('title-eq'));
+      break;
+
+    case 1: // Components: cards appear one by one
+      sch(2000,  () => document.getElementById('cc-c')?.classList.add('show'));
+      sch(10000, () => document.getElementById('cc-i')?.classList.add('show'));
+      sch(18000, () => document.getElementById('cc-g')?.classList.add('show'));
+      sch(26000, () => document.getElementById('cc-nx')?.classList.add('show'));
+      break;
+
+    case 2: // Consumption function: 45° ref → C line → 'a' marker → MPC triangle
+      drawLine('cf-45',  1200, 500);
+      drawLine('cf-line', 1800, 1500);
+      sch(2000,  () => { show('cf-lbl'); });
+      sch(10000, () => show('cf-a'));
+      sch(22000, () => show('cf-mpc'));
+      break;
+
+    case 3: // Keynesian Cross: 45° → AE → equilibrium
+      drawLine('kc-45', 1600, 400);
+      sch(800,  () => show('kc-45lbl'));
+      drawLine('kc-ae', 1600, 3000);
+      sch(3500, () => show('kc-aelbl'));
+      sch(8000, () => show('kc-eq'));
+      break;
+
+    case 4: // Gaps: recession first, then inflationary
+      sch(2000,  () => document.getElementById('gap-rec')?.classList.add('show'));
+      sch(20000, () => document.getElementById('gap-inf')?.classList.add('show'));
+      sch(34000, () => document.getElementById('gap-note')?.classList.add('show'));
+      break;
+
+    case 5: // Multiplier: AE₀ → eq0 → AE₁ → eq1 → annotations
+      drawLine('mp-ae0', 1400, 400);
+      sch(700,  () => { show('mp-ae0lbl'); show('mp-eq0'); });
+      drawLine('mp-ae1', 1400, 7000);
+      sch(7500, () => show('mp-ae1lbl'));
+      sch(12000, () => show('mp-eq1'));
+      sch(16000, () => show('mp-dg'));
+      sch(19000, () => show('mp-dy'));
+      break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>
