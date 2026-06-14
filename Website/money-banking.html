@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Money and Banking — ECON 101</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px; font-size: 9px;
+    color: rgba(255,255,255,.18); letter-spacing: .07em; text-transform: uppercase;
+    pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--teal); margin-bottom: 18px; }
+  #s0 .rule  { width: 56px; height: 3px; background: var(--teal); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 56px; line-height: 1.05; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: #1a9a8e; }
+  #s0 .sub  { margin-top: 20px; font-size: 16px; color: #8898a0; font-weight: 300; max-width: 450px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(26,122,110,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .icon-wrap { position: absolute; right: 52px; top: 50%; transform: translateY(-50%); width: 220px; height: 220px; }
+
+  /* ── Slide 1 – What is Money ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--ink); line-height: 1.15; margin-bottom: 26px; }
+  .cards { display: flex; gap: 18px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 22px 18px; border-top: 4px solid var(--teal); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.gold-t { border-color: var(--gold); }
+  .card.rust-t { border-color: var(--rust); }
+  .card .icon { font-size: 26px; margin-bottom: 10px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .card p { font-size: 12.5px; color: #444; line-height: 1.6; font-weight: 300; }
+
+  /* ── Slides 2, 3, 5 – horizontal ── */
+  .h-slide { flex-direction: row; align-items: center; gap: 34px; padding: 42px 50px; }
+  .h-slide .sl { flex: 1; min-width: 0; }
+  #s2 { background: #0d1412; }
+  #s3 { background: var(--paper); }
+  #s5 { background: var(--paper); }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--paper); margin-bottom: 7px; }
+  #s3 h2, #s5 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); margin-bottom: 7px; }
+  #s2 .intro { font-size: 12.5px; color: #9bc; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  #s3 .intro, #s5 .intro { font-size: 12.5px; color: #555; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  .side-facts { display: flex; flex-direction: column; gap: 9px; }
+  .side-fact { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; line-height: 1.5; }
+  .sbadge { flex-shrink: 0; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .04em; margin-top: 1px; background: rgba(26,122,110,.2); color: #1a9a8e; }
+  #s2 .side-fact { color: #9bc; }
+  #s3 .side-fact { color: #444; }
+  #s3 .side-fact strong { color: var(--ink); }
+  #s5 .side-fact { color: #444; }
+
+  /* ── Slide 4 – Bank of Canada ── */
+  #s4 { background: #080f0e; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 6px; }
+  #s4 .intro { font-size: 12.5px; color: #8899aa; font-weight: 300; margin-bottom: 20px; line-height: 1.55; }
+  .boc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .boc-card { border-radius: 8px; padding: 20px 18px; opacity: 0; transition: opacity .6s ease; }
+  .boc-card.show { opacity: 1; }
+  .boc-card.policy   { background: rgba(26,122,110,.09); border: 1px solid rgba(26,122,110,.3); }
+  .boc-card.stability{ background: rgba(200,168,75,.09); border: 1px solid rgba(200,168,75,.3); }
+  .boc-card .boc-label { font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 5px; }
+  .boc-card.policy    .boc-label { color: #1a9a8e; }
+  .boc-card.stability .boc-label { color: var(--gold); }
+  .boc-card h4 { font-size: 16px; font-family: 'Playfair Display', serif; font-weight: 700; margin-bottom: 8px; }
+  .boc-card.policy    h4 { color: #1a9a8e; }
+  .boc-card.stability h4 { color: var(--gold); }
+  .boc-card p  { font-size: 12px; color: #8899aa; line-height: 1.6; font-weight: 300; margin-bottom: 6px; }
+  .boc-ex { font-size: 11px; color: #667; font-weight: 300; font-style: italic; }
+  .boc-note { margin-top: 16px; padding: 10px 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; font-size: 12px; color: #ccd; line-height: 1.55; font-weight: 300; opacity: 0; transition: opacity .6s ease; }
+  .boc-note.show { opacity: 1; }
+  .boc-note strong { color: #1a9a8e; }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: #060e0d; }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(26,122,110,.2); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 25px; line-height: 1.5; color: white; max-width: 640px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: #1a9a8e; }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag  { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.3); }
+
+  /* ── Controls ── */
+  #controls { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: #1a9a8e; transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: #1a9a8e; width: 0%; }
+  #loading-overlay { position: absolute; inset: 0; background: rgba(10,12,18,.88); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 10; }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(26,122,110,.2); border-top-color: #1a9a8e; animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* ── Teaching animations ── */
+  .anim-path { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .65s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 101 · Macroeconomics</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Money &amp;<br><em>Banking</em></h1>
+    <p class="sub fade-in">The institutional foundations of every modern economy — how money is created, how banks multiply it, and how the central bank keeps it under control.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="icon-wrap fade-in">
+      <svg viewBox="0 0 220 220" fill="none">
+        <circle cx="110" cy="110" r="105" stroke="rgba(26,122,110,.15)" stroke-width="1.5"/>
+        <!-- Axes -->
+        <line x1="30" y1="185" x2="192" y2="185" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <line x1="30" y1="185" x2="30"  y2="30"  stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <!-- Money Demand (downward sloping, gold) -->
+        <path id="title-md" class="anim-path"
+              d="M 35,45 C 65,70 130,140 188,178"
+              fill="none" stroke="rgba(200,168,75,.6)" stroke-width="2" stroke-linecap="round"/>
+        <!-- Money Supply MS₀ (vertical, teal) -->
+        <line id="title-ms0" class="anim-path" x1="110" y1="185" x2="110" y2="38"
+              stroke="#1a9a8e" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- Equilibrium dot -->
+        <circle class="ppf-pt" id="title-eq" cx="110" cy="114" r="5" fill="white" opacity=".75"/>
+        <!-- i* dashed line -->
+        <line class="ppf-pt" id="title-istar" x1="30" y1="114" x2="110" y2="114"
+              stroke="rgba(255,255,255,.25)" stroke-width="1" stroke-dasharray="4 3"/>
+        <!-- Labels -->
+        <text x="111" y="202" fill="rgba(255,255,255,.28)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" letter-spacing=".05em">MONEY (M) →</text>
+        <text x="22"  y="108" fill="rgba(255,255,255,.28)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 108)">INTEREST RATE (i)</text>
+        <text class="ppf-pt" id="title-mslbl"  x="114" y="35"  fill="#1a9a8e" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700">MS</text>
+        <text class="ppf-pt" id="title-mdlbl"  x="192" y="180" fill="rgba(200,168,75,.8)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700">MD</text>
+        <text class="ppf-pt" id="title-istarlbl" x="24" y="117" fill="rgba(255,255,255,.45)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="end">i*</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: What is Money ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Functions of Money</div>
+    <h2 class="fade-in">Money is defined by what it does,<br>not what it is made of.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">🔄</div>
+        <h3>Three Functions</h3>
+        <p><em>Medium of exchange</em> — accepted in payment, eliminating the need for barter. <em>Store of value</em> — transfers purchasing power through time. <em>Unit of account</em> — prices expressed in a common unit for easy comparison.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">🏦</div>
+        <h3>M1 and M2</h3>
+        <p><strong>M1</strong> (narrow money): currency in circulation + chequable deposits — the most liquid measure. <strong>M2</strong> (broad money): M1 + savings deposits + other near-money assets. The Bank of Canada monitors both.</p>
+      </div>
+      <div class="card rust-t fade-in">
+        <div class="icon">📜</div>
+        <h3>Fiat Money</h3>
+        <p>Modern money has <em>no intrinsic value</em> — it is valuable because the government declares it legal tender and people trust it will be accepted. The alternative — commodity money like gold — is impractical for modern economies.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: Fractional Reserve Banking (dark, horizontal) ── -->
+  <div class="slide h-slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Banks Create Money</h2>
+      <p class="intro fade-in">When you deposit $1,000, the bank keeps a fraction as a reserve and lends the rest. That loan becomes someone else's deposit — and the process repeats. One deposit multiplies into far more money.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge">Reserve</span>
+          <span>Banks are required to hold a <em>reserve ratio</em> — a fraction of deposits — as liquid funds. The rest can be lent out. With r = 10%, a $1,000 deposit supports $100 in reserves and $900 in new loans.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(200,168,75,.18);color:var(--gold)">Cascade</span>
+          <span>Each loan is spent and re-deposited, allowing another bank to lend 90% again. The cascade continues until the initial $1,000 has supported <strong style="color:var(--gold)">$10,000 in total deposits</strong> across the system.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(192,68,42,.18);color:var(--rust)">Risk</span>
+          <span>Fractional reserve banking is efficient — but it means no bank holds enough cash to meet all depositors at once. A <em>bank run</em>, where everyone withdraws simultaneously, can collapse even a solvent institution.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Deposit cascade SVG (dark background) -->
+    <svg viewBox="0 0 290 268" width="290" height="268" class="fade-in" style="flex-shrink:0;">
+      <!-- Header labels -->
+      <text x="155" y="14" fill="rgba(255,255,255,.35)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" letter-spacing=".04em">RESERVE (10%)</text>
+      <text x="218" y="14" fill="#1a9a8e" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" letter-spacing=".04em">NEW LOAN (90%)</text>
+
+      <!-- Row 1: $1,000 deposit -->
+      <g id="dc-r1" class="ppf-pt">
+        <rect x="50" y="20" width="225" height="22" rx="3" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+        <rect x="50" y="20" width="22"  height="22" rx="3 0 0 3" fill="rgba(200,168,75,.55)"/>
+        <rect x="72" y="20" width="203" height="22" rx="0 3 3 0" fill="rgba(26,154,142,.5)"/>
+        <text x="44" y="35" fill="rgba(255,255,255,.65)" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="end" font-weight="600">$1,000</text>
+      </g>
+
+      <!-- Row 2: $900 -->
+      <g id="dc-r2" class="ppf-pt">
+        <rect x="50" y="48" width="203" height="20" rx="3" fill="rgba(255,255,255,.03)" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+        <rect x="50" y="48" width="20"  height="20" rx="3 0 0 3" fill="rgba(200,168,75,.45)"/>
+        <rect x="70" y="48" width="183" height="20" rx="0 3 3 0" fill="rgba(26,154,142,.42)"/>
+        <text x="44" y="62" fill="rgba(255,255,255,.55)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="end">$900</text>
+      </g>
+
+      <!-- Row 3: $810 -->
+      <g id="dc-r3" class="ppf-pt">
+        <rect x="50" y="74" width="183" height="19" rx="3" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+        <rect x="50" y="74" width="18"  height="19" rx="3 0 0 3" fill="rgba(200,168,75,.38)"/>
+        <rect x="68" y="74" width="165" height="19" rx="0 3 3 0" fill="rgba(26,154,142,.35)"/>
+        <text x="44" y="87" fill="rgba(255,255,255,.48)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="end">$810</text>
+      </g>
+
+      <!-- Row 4: $729 -->
+      <g id="dc-r4" class="ppf-pt">
+        <rect x="50" y="99" width="165" height="18" rx="3" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <rect x="50" y="99" width="16"  height="18" rx="3 0 0 3" fill="rgba(200,168,75,.3)"/>
+        <rect x="66" y="99" width="149" height="18" rx="0 3 3 0" fill="rgba(26,154,142,.28)"/>
+        <text x="44" y="112" fill="rgba(255,255,255,.4)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="end">$729</text>
+      </g>
+
+      <!-- Row 5: $656 -->
+      <g id="dc-r5" class="ppf-pt">
+        <rect x="50" y="123" width="149" height="17" rx="3" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+        <rect x="50" y="123" width="15"  height="17" rx="3 0 0 3" fill="rgba(200,168,75,.24)"/>
+        <rect x="65" y="123" width="134" height="17" rx="0 3 3 0" fill="rgba(26,154,142,.22)"/>
+        <text x="44" y="135" fill="rgba(255,255,255,.33)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="end">$656</text>
+      </g>
+
+      <!-- etc. -->
+      <text class="ppf-pt" id="dc-etc" x="50" y="156" fill="rgba(255,255,255,.22)" font-size="10" font-family="Space Grotesk,sans-serif">⋮  and so on…</text>
+
+      <!-- Total line -->
+      <g class="ppf-pt" id="dc-total">
+        <line x1="50" y1="167" x2="275" y2="167" stroke="rgba(26,154,142,.4)" stroke-width="1"/>
+        <rect x="50" y="172" width="225" height="26" rx="4" fill="rgba(26,154,142,.1)" stroke="rgba(26,154,142,.35)" stroke-width="1"/>
+        <text x="162" y="189" fill="#1a9a8e" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">Total deposits: $10,000</text>
+      </g>
+
+      <!-- Multiplier note -->
+      <g class="ppf-pt" id="dc-mult">
+        <text x="162" y="218" fill="rgba(255,255,255,.38)" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Money Multiplier = 1 ÷ 0.10 = 10×</text>
+        <text x="162" y="232" fill="rgba(255,255,255,.24)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">$1,000 initial reserve → $10,000 money supply</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Money Multiplier (light, horizontal) ── -->
+  <div class="slide h-slide" id="s3">
+    <div class="sl">
+      <h2 class="fade-in">The Money Multiplier</h2>
+      <p class="intro fade-in">The <em>money multiplier</em> = 1 ÷ reserve ratio. A lower reserve requirement allows banks to lend more from each deposit — creating more money from the same initial base.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(26,122,110,.15);color:var(--teal)">Formula</span>
+          <span><strong>MM = 1 / r</strong>, where r is the reserve ratio. With r = 10%: MM = 10. With r = 20%: MM = 5. With r = 5%: MM = 20. A tiny change in the reserve ratio has an enormous effect on money creation.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge">Reality</span>
+          <span>In practice, the actual multiplier is <em>smaller</em> than the theoretical maximum. Cash leakage (people holding bills rather than depositing) and excess reserves held by cautious banks both reduce the true multiplier.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(192,68,42,.15);color:var(--rust)">Crisis</span>
+          <span>In recessions, banks hold excess reserves and tighten lending standards — the multiplier contracts, amplifying the downturn. This is why the Bank of Canada's emergency liquidity operations matter: they prevent the multiplier from collapsing.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Money multiplier comparison bars (light background) -->
+    <svg viewBox="0 0 290 258" width="290" height="258" class="fade-in" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="44" y1="218" x2="44"  y2="18"  stroke="#bbb" stroke-width="1.3"/>
+      <line x1="44" y1="218" x2="270" y2="218" stroke="#bbb" stroke-width="1.3"/>
+      <polygon points="44,13 39,23 49,23" fill="#bbb"/>
+
+      <!-- Y-axis labels -->
+      <text x="38" y="22"  fill="#888" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="end">$10k</text>
+      <text x="38" y="120" fill="#888" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="end">$5k</text>
+      <text x="38" y="218" fill="#888" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="end">$0</text>
+
+      <!-- $5k reference line (dashed) -->
+      <line x1="44" y1="118" x2="250" y2="118" stroke="rgba(0,0,0,.1)" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <!-- Bar 1: r=10%, MM=10, total=$10,000 — full height 196px -->
+      <g class="ppf-pt" id="mm-b1">
+        <rect x="65"  y="22"  width="65" height="177" rx="4 4 0 0" fill="rgba(26,122,110,.7)"/>
+        <rect x="65"  y="199" width="65" height="19"  rx="0 0 4 4" fill="rgba(200,168,75,.75)"/>
+        <text x="97" y="14" fill="#1a7a6e" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">$10,000</text>
+        <text x="97" y="238" fill="#444" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">r = 10%</text>
+        <text x="97" y="250" fill="#666" font-size="9"   font-family="Space Grotesk,sans-serif" text-anchor="middle">MM = 10</text>
+      </g>
+
+      <!-- Bar 2: r=20%, MM=5, total=$5,000 — half height 98px -->
+      <g class="ppf-pt" id="mm-b2">
+        <rect x="175" y="120" width="65" height="79"  rx="4 4 0 0" fill="rgba(26,122,110,.48)"/>
+        <rect x="175" y="199" width="65" height="19"  rx="0 0 4 4" fill="rgba(200,168,75,.6)"/>
+        <text x="207" y="112" fill="#1a7a6e" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">$5,000</text>
+        <text x="207" y="238" fill="#444" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">r = 20%</text>
+        <text x="207" y="250" fill="#666" font-size="9"   font-family="Space Grotesk,sans-serif" text-anchor="middle">MM = 5</text>
+      </g>
+
+      <!-- Legend -->
+      <g class="ppf-pt" id="mm-legend">
+        <rect x="44" y="226" width="9" height="8" rx="1" fill="rgba(200,168,75,.75)"/>
+        <text x="56" y="234" fill="#666" font-size="8.5" font-family="Space Grotesk,sans-serif">Initial deposit ($1,000)</text>
+        <rect x="155" y="226" width="9" height="8" rx="1" fill="rgba(26,122,110,.65)"/>
+        <text x="167" y="234" fill="#666" font-size="8.5" font-family="Space Grotesk,sans-serif">Money created by banks</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 4: Bank of Canada (dark) ── -->
+  <div class="slide" id="s4">
+    <h2 class="fade-in">The Bank of Canada</h2>
+    <p class="intro fade-in">Canada's central bank is not a commercial bank — it does not lend to households or businesses. It operates at the apex of the banking system, controlling the conditions under which all other banks lend.</p>
+    <div class="boc-grid">
+      <div class="boc-card policy" id="boc-policy">
+        <div class="boc-label">Monetary Policy</div>
+        <h4>🎯 Managing Inflation &amp; Growth</h4>
+        <p>The Bank sets the <em>overnight rate</em> — the interest rate at which banks lend to each other overnight. Raising the rate cools borrowing and inflation; lowering it stimulates spending and growth.</p>
+        <p class="boc-ex">Target: 2% inflation (1–3% control range), in place since 1991.</p>
+      </div>
+      <div class="boc-card stability" id="boc-stability">
+        <div class="boc-label">Financial Stability</div>
+        <h4>🏛️ Lender of Last Resort</h4>
+        <p>If a solvent bank faces a liquidity crisis — more withdrawals than it can immediately meet — the Bank of Canada can provide emergency loans, preventing a bank run from cascading into a system-wide collapse.</p>
+        <p class="boc-ex">Also issues Canadian bank notes and oversees payment system safety.</p>
+      </div>
+    </div>
+    <div class="boc-note" id="boc-note">
+      <strong>Key distinction:</strong> The Bank of Canada controls the <em>monetary base</em> (currency + bank reserves). Commercial banks then multiply this base through lending. Together, the central bank and commercial banks jointly determine the total money supply.
+    </div>
+  </div>
+
+  <!-- ── Slide 5: The Money Market (light, horizontal) ── -->
+  <div class="slide h-slide" id="s5">
+    <div class="sl">
+      <div class="eyebrow fade-in">Interest Rates &amp; Equilibrium</div>
+      <h2 class="fade-in">The Money Market</h2>
+      <p class="intro fade-in">The interaction of money supply and money demand determines the equilibrium interest rate — the price of holding money rather than interest-bearing assets.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge">MS</span>
+          <span>The <em>money supply</em> is set by the Bank of Canada — represented as a vertical line. The Bank can fix it at any quantity regardless of the interest rate.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(200,168,75,.18);color:#9a6800">MD</span>
+          <span>The <em>money demand</em> curve slopes downward: at higher interest rates, the opportunity cost of holding cash rises, so households and firms prefer bonds and deposits over money.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(192,68,42,.15);color:var(--rust)">↑ MS</span>
+          <span>When the Bank increases the money supply, the MS line shifts right — the equilibrium interest rate <strong style="color:#333">falls</strong>. Lower rates stimulate investment and spending, boosting aggregate demand.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Money market diagram (light background) -->
+    <svg viewBox="0 0 290 252" width="290" height="252" class="fade-in" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="40" y1="215" x2="268" y2="215" stroke="#bbb" stroke-width="1.3"/>
+      <line x1="40" y1="215" x2="40"  y2="20"  stroke="#bbb" stroke-width="1.3"/>
+      <polygon points="40,15 35,25 45,25" fill="#bbb"/>
+      <polygon points="273,215 263,210 263,220" fill="#bbb"/>
+
+      <!-- Money Demand (dark, downward sloping) -->
+      <path id="mm-md" class="anim-path"
+            d="M 40,42 C 80,72 190,162 268,205"
+            fill="none" stroke="#444" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="mm-mdlbl" x="270" y="205" fill="#555" font-size="10.5"
+            font-family="Space Grotesk,sans-serif" font-weight="700">MD</text>
+
+      <!-- MS₀ (teal vertical) -->
+      <line id="mm-ms0" class="anim-path" x1="148" y1="215" x2="148" y2="35"
+            stroke="#1a7a6e" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="mm-ms0lbl" x="148" y="28" fill="#1a7a6e" font-size="10"
+            font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">MS₀</text>
+
+      <!-- E₀ equilibrium -->
+      <g class="ppf-pt" id="mm-e0">
+        <!-- MS₀ at x=148; MD at x=148: t=(148-40)/(268-40)=108/228=0.474; y=42+0.474*(205-42)=42+77=119 -->
+        <circle cx="148" cy="119" r="4" fill="#1a7a6e"/>
+        <line x1="40"  y1="119" x2="148" y2="119" stroke="#1a7a6e" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+        <text x="33" y="123" fill="#1a7a6e" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="end" font-weight="700">i₀</text>
+      </g>
+
+      <!-- MS₁ (gold dashed, shifted right) -->
+      <line id="mm-ms1" class="anim-path" x1="196" y1="215" x2="196" y2="35"
+            stroke="#c8a84b" stroke-width="2" stroke-linecap="round" stroke-dasharray="6 3"/>
+      <text class="ppf-pt" id="mm-ms1lbl" x="196" y="28" fill="#9a6800" font-size="10"
+            font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">MS₁</text>
+
+      <!-- Shift arrow -->
+      <g class="ppf-pt" id="mm-arrow">
+        <line x1="153" y1="46" x2="191" y2="46" stroke="rgba(200,168,75,.7)" stroke-width="1.5"/>
+        <polygon points="196,46 186,41 186,51" fill="rgba(200,168,75,.7)"/>
+      </g>
+
+      <!-- E₁ equilibrium (lower i) -->
+      <g class="ppf-pt" id="mm-e1">
+        <!-- MS₁ at x=196; MD at x=196: t=(196-40)/228=156/228=0.684; y=42+0.684*163=42+111.5=154 -->
+        <circle cx="196" cy="154" r="4" fill="var(--gold)"/>
+        <line x1="40"  y1="154" x2="196" y2="154" stroke="rgba(200,168,75,.5)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="33" y="158" fill="#9a6800" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="end" font-weight="700">i₁</text>
+      </g>
+
+      <!-- i falls arrow -->
+      <g class="ppf-pt" id="mm-ifall">
+        <line x1="31" y1="122" x2="31" y2="151" stroke="#9a6800" stroke-width="1.5"/>
+        <polygon points="31,156 26,146 36,146" fill="#9a6800"/>
+        <text x="19" y="140" fill="#9a6800" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">i↓</text>
+      </g>
+
+      <!-- Axis labels -->
+      <text x="154" y="232" fill="#777" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Money Quantity (M) →</text>
+      <text x="20"  y="118" fill="#777" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 20 118)">Interest Rate (i) →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 6: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Money is more than coins and notes — it is a social institution built on <em>trust</em>. Banks multiply that trust into the credit that funds investment and growth. The central bank's most valuable asset is not its balance sheet — it is its credibility.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 101 · UNBC</div>
+    <div class="tag">Money · Fractional Reserve · Money Multiplier · Bank of Canada · Money Market</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Welcome. In this topic we examine money and banking — the institutional foundations of every modern market economy. Understanding what money is, how banks create it, and how the central bank manages the money supply is essential for understanding how monetary policy works and why interest rates affect everything from your mortgage to the exchange rate.",
+  "What is money? Economists define money not by what it is made of, but by what it does. Money performs three functions. First, it is a medium of exchange — we accept it in payment because we know others will too, eliminating the inefficiency of barter. Second, it is a store of value — money can be saved and used in the future, transferring purchasing power through time. Third, it is a unit of account — prices are expressed in dollars, making it easy to compare the value of very different goods and services. Modern economies use fiat money — currency that has value by government decree, not because of any intrinsic worth. Statistics Canada measures the money supply in two main aggregates. M1 includes currency in circulation plus chequable deposits — the narrowest and most liquid measure. M2 adds savings deposits and other near-money assets, providing a broader measure of all money in the economy.",
+  "Banks don't just store money — they create it. This is one of the most surprising and important insights in macroeconomics. The process is called fractional reserve banking. When you deposit one thousand dollars, the bank keeps only a fraction — say ten percent, or one hundred dollars — as a reserve, and lends out the remaining nine hundred. The borrower spends those nine hundred dollars, which are deposited in another bank, which keeps ninety dollars in reserve and lends out eight hundred and ten. Each round of lending creates new deposits and new purchasing power. Notice what happened: a single one thousand dollar deposit eventually supports ten thousand dollars in total deposits across the banking system. Banks have literally created money through the act of lending. But this multiplier works in both directions — in a recession, when banks tighten lending and fear bank runs, the multiplier can collapse, shrinking the money supply and amplifying the downturn.",
+  "The money multiplier formula captures how much new money is created from an initial deposit. The multiplier equals one divided by the reserve ratio. With a ten percent reserve requirement, the multiplier is ten — meaning one thousand dollars of reserves can support up to ten thousand dollars in deposits across the system. With a twenty percent requirement, the multiplier falls to five. This is shown in the chart: the left bar — with a ten percent reserve ratio — is twice as tall as the right bar, representing twice as much money creation from the same initial deposit. In practice, the actual multiplier is smaller than the theoretical maximum, for two reasons. Some people hold cash rather than depositing it, breaking the deposit chain. And banks often hold excess reserves beyond the legal minimum — especially during times of economic uncertainty. But the insight remains: commercial banks, not just the central bank, play an active and crucial role in determining the total money supply.",
+  "The Bank of Canada is Canada's central bank — a special institution at the apex of the banking system. It serves two core functions. First, monetary policy: the Bank sets the overnight rate — the interest rate at which banks lend reserves to each other overnight. Raising this rate makes all borrowing more expensive throughout the economy, cooling inflation. Lowering it stimulates borrowing, investment, and spending. The Bank targets two percent inflation, within a one-to-three percent control range, a framework in place since nineteen ninety-one. Second, financial stability: if a solvent bank faces a sudden liquidity crisis — more withdrawals than it can immediately meet — the Bank of Canada can provide emergency lending, preventing a bank run from cascading through the entire financial system. This lender of last resort function is one of the most important safeguards in modern banking. The Bank also issues Canadian bank notes and oversees the safety of the payments system.",
+  "The money market brings together money supply and money demand to determine the equilibrium interest rate. The money supply is controlled by the Bank of Canada — it is drawn as a vertical line because the Bank sets it at a chosen quantity regardless of the interest rate. Money demand slopes downward: at higher interest rates, the opportunity cost of holding cash is greater, so households and firms prefer to hold less money and more interest-bearing assets like bonds and savings accounts. The intersection of money supply and money demand gives the equilibrium interest rate, i-star. When the Bank of Canada increases the money supply — shifting the MS line to the right — the interest rate falls from i-zero to i-one. Lower interest rates make borrowing cheaper, stimulating investment, consumption, and aggregate demand throughout the economy. This is the core transmission mechanism of monetary policy: the Bank adjusts the money supply, which moves interest rates, which affects spending, which affects output and inflation.",
+  "Money is more than coins and notes — it is a social institution built on trust. Every time you accept a dollar in payment, you are trusting that someone else will accept it too, and that its purchasing power will be reasonably stable. Banks multiply that trust into the credit that funds home purchases, business investment, and economic growth. But that same multiplier can amplify crises when confidence breaks down. The Bank of Canada's most valuable asset is not its balance sheet — it is its credibility: the belief that it will keep inflation low and the financial system stable, so that money continues to do its essential work."
+];
+
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+let muted = false, currentAudio = null, currentSpeech = null, speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initPaths();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio)  { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer); stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('🎙 AI narration');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else { speakWithBrowser(idx); }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx], rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('🔊 Browser narration');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel') || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter); currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted; muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0, timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer(); timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+// ── Animation system ─────────────────────────────────────────────────
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    const len = el.getTotalLength ? el.getTotalLength() : 600;
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawPath(id, durMs, delayMs) {
+  sch(delayMs || 0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs || 1800}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function resetPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    el.style.transition = 'none';
+    el.style.strokeDasharray = el.dataset.origLen || 9999;
+    el.style.strokeDashoffset = el.dataset.origLen || 9999;
+  });
+}
+
+function show(id) { document.getElementById(id)?.classList.add('ppf-show'); }
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.boc-card, .boc-note').forEach(el => el.classList.remove('show'));
+  resetPaths();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0: // Title: MD curve, then vertical MS, then equilibrium
+      drawPath('title-md',  1800, 400);
+      sch(1000, () => show('title-mdlbl'));
+      drawPath('title-ms0', 1200, 3000);
+      sch(3200, () => show('title-mslbl'));
+      sch(4500, () => { show('title-eq'); show('title-istar'); show('title-istarlbl'); });
+      break;
+
+    case 2: // Fractional reserve cascade: rows appear one by one
+      sch(1500,  () => show('dc-r1'));
+      sch(7000,  () => show('dc-r2'));
+      sch(13000, () => show('dc-r3'));
+      sch(19000, () => show('dc-r4'));
+      sch(25000, () => show('dc-r5'));
+      sch(28000, () => show('dc-etc'));
+      sch(31000, () => show('dc-total'));
+      sch(34000, () => show('dc-mult'));
+      break;
+
+    case 3: // Money multiplier bars
+      sch(2000,  () => show('mm-b1'));
+      sch(16000, () => show('mm-b2'));
+      sch(28000, () => show('mm-legend'));
+      break;
+
+    case 4: // Bank of Canada: policy card, then stability, then note
+      sch(2000,  () => document.getElementById('boc-policy')?.classList.add('show'));
+      sch(18000, () => document.getElementById('boc-stability')?.classList.add('show'));
+      sch(32000, () => document.getElementById('boc-note')?.classList.add('show'));
+      break;
+
+    case 5: // Money market: MD curve, MS₀, E₀, then MS₁ shift, E₁, i falls
+      drawPath('mm-md',  2000, 300);
+      sch(800,  () => show('mm-mdlbl'));
+      drawPath('mm-ms0', 1200, 5000);
+      sch(5400, () => show('mm-ms0lbl'));
+      sch(6500, () => show('mm-e0'));
+      drawPath('mm-ms1', 1200, 13000);
+      sch(13200, () => { show('mm-ms1lbl'); show('mm-arrow'); });
+      sch(14500, () => show('mm-e1'));
+      sch(15500, () => show('mm-ifall'));
+      break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>
