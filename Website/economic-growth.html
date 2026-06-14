@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Economic Growth — ECON 101</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px; font-size: 9px;
+    color: rgba(255,255,255,.18); letter-spacing: .07em; text-transform: uppercase;
+    pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 .rule  { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 64px; line-height: 1.05; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub  { margin-top: 20px; font-size: 16px; color: #8898a0; font-weight: 300; max-width: 450px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(200,168,75,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .icon-wrap { position: absolute; right: 52px; top: 50%; transform: translateY(-50%); width: 220px; height: 220px; }
+
+  /* ── Slide 1 – What is Growth ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--ink); line-height: 1.15; margin-bottom: 26px; }
+  .cards { display: flex; gap: 18px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 22px 18px; border-top: 4px solid var(--teal); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.gold-t { border-color: var(--gold); }
+  .card.rust-t { border-color: var(--rust); }
+  .card .icon { font-size: 26px; margin-bottom: 10px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .card p { font-size: 12.5px; color: #444; line-height: 1.6; font-weight: 300; }
+
+  /* ── Slides 2, 3, 5 – horizontal ── */
+  .h-slide { flex-direction: row; align-items: center; gap: 34px; padding: 42px 50px; }
+  .h-slide .sl { flex: 1; min-width: 0; }
+  #s2 { background: #0f1a19; }
+  #s3 { background: var(--paper); }
+  #s5 { background: var(--paper); }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--paper); margin-bottom: 7px; }
+  #s3 h2, #s5 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); margin-bottom: 7px; }
+  #s2 .intro { font-size: 12.5px; color: #8fa; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  #s3 .intro, #s5 .intro { font-size: 12.5px; color: #555; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  .side-facts { display: flex; flex-direction: column; gap: 9px; }
+  .side-fact { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; line-height: 1.5; }
+  .sbadge { flex-shrink: 0; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .04em; margin-top: 1px; background: rgba(200,168,75,.18); color: var(--gold); }
+  #s2 .side-fact { color: #bbc; }
+  #s3 .side-fact { color: #444; }
+  #s3 .side-fact strong { color: var(--ink); }
+
+  /* ── Slide 4 – Capital Types ── */
+  #s4 { background: #0a0f14; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 6px; }
+  #s4 .intro { font-size: 12.5px; color: #8899aa; font-weight: 300; margin-bottom: 20px; line-height: 1.55; }
+  .cap-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .cap-card { border-radius: 8px; padding: 20px 18px; }
+  .cap-card.phys { background: rgba(26,122,110,.09); border: 1px solid rgba(26,122,110,.3); }
+  .cap-card.hum  { background: rgba(200,168,75,.09); border: 1px solid rgba(200,168,75,.3); }
+  .cap-card .cap-label { font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 5px; }
+  .cap-card.phys .cap-label { color: #1a9a8e; }
+  .cap-card.hum  .cap-label { color: var(--gold); }
+  .cap-card h4 { font-size: 18px; font-family: 'Playfair Display', serif; font-weight: 700; margin-bottom: 10px; }
+  .cap-card.phys h4 { color: #1a9a8e; }
+  .cap-card.hum  h4 { color: var(--gold); }
+  .cap-card p  { font-size: 12px; color: #8899aa; line-height: 1.6; font-weight: 300; margin-bottom: 8px; }
+  .cap-ex { font-size: 11px; color: #667; font-weight: 300; font-style: italic; }
+  .cap-note { margin-top: 16px; padding: 10px 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; font-size: 12px; color: #ccd; line-height: 1.55; font-weight: 300; }
+  .cap-note strong { color: var(--gold); }
+  .cap-card { opacity: 0; transition: opacity .6s ease; }
+  .cap-card.show { opacity: 1; }
+
+  /* ── Slide 5 – Institutions ── */
+  .inst-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .inst-col { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 3px 12px rgba(0,0,0,.07); }
+  .inst-col h3 { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+  .inst-col.helps h3 { color: var(--teal); }
+  .inst-col.hurts h3 { color: var(--rust); }
+  .inst-item { display: flex; gap: 8px; margin-bottom: 7px; font-size: 12px; color: #444; line-height: 1.45; font-weight: 300; }
+  .inst-item .i-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .inst-col.helps .i-dot { background: var(--teal); }
+  .inst-col.hurts .i-dot { background: var(--rust); }
+  .inst-col { opacity: 0; transition: opacity .6s ease; }
+  .inst-col.show { opacity: 1; }
+  .inst-note { margin-top: 14px; padding: 9px 14px; background: rgba(26,122,110,.07); border-left: 3px solid var(--teal); font-size: 12px; color: #333; line-height: 1.55; }
+  .inst-note strong { color: var(--teal); }
+  .inst-note { opacity: 0; transition: opacity .6s ease; }
+  .inst-note.show { opacity: 1; }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: var(--teal); }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.15); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 25px; line-height: 1.5; color: white; max-width: 640px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag  { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+  /* ── Controls ── */
+  #controls { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+  #loading-overlay { position: absolute; inset: 0; background: rgba(10,12,18,.88); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 10; }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(200,168,75,.2); border-top-color: var(--gold); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* ── Teaching animations ── */
+  .anim-path { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .65s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+  .ppf-ripple { transform-box: fill-box; transform-origin: center; }
+  .ppf-pt.ppf-show .ppf-ripple { animation: ripple-out 1.8s ease-out .1s forwards; }
+  @keyframes ripple-out { 0%{opacity:.7;transform:scale(1)} 100%{opacity:0;transform:scale(5)} }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 101 · Macroeconomics</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Economic<br><em>Growth</em></h1>
+    <p class="sub fade-in">The single most powerful force for raising living standards — and one of the most important questions in all of macroeconomics.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="icon-wrap fade-in">
+      <svg viewBox="0 0 220 220" fill="none">
+        <circle cx="110" cy="110" r="105" stroke="rgba(200,168,75,.15)" stroke-width="1.5"/>
+        <!-- Axes -->
+        <line x1="30" y1="185" x2="192" y2="185" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <line x1="30" y1="185" x2="30"  y2="30"  stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <!-- Exponential growth curve (gold) -->
+        <path id="title-curve" class="anim-path"
+              d="M 30,182 C 70,178 110,155 145,120 S 178,60 192,32"
+              fill="none" stroke="#c8a84b" stroke-width="2.4" stroke-linecap="round"/>
+        <!-- Trend line (faint dashed) -->
+        <line id="title-trend" class="anim-path" x1="30" y1="182" x2="192" y2="38"
+              stroke="rgba(255,255,255,.2)" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <!-- Labels -->
+        <text x="111" y="202" fill="rgba(255,255,255,.28)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" letter-spacing=".07em">TIME →</text>
+        <text x="22"  y="108" fill="rgba(255,255,255,.28)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 108)">GDP/CAPITA</text>
+        <text x="196" y="30"  fill="rgba(200,168,75,.7)"  font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700">↑</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: What is Economic Growth ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Long View</div>
+    <h2 class="fade-in">A sustained, long-run increase<br>in real GDP per capita.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">👤</div>
+        <h3>GDP Per Capita</h3>
+        <p>We measure growth in output <em>per person</em>, adjusted for inflation. Total GDP can rise while the average citizen gets poorer if population grows faster than output.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">📅</div>
+        <h3>The Long Run</h3>
+        <p>Growth is measured over decades, not quarters. At 2% per year, living standards double every 35 years. Over a century, 2% growth multiplies income 7-fold — the difference between 1924 and today.</p>
+      </div>
+      <div class="card rust-t fade-in">
+        <div class="icon">🌍</div>
+        <h3>Why It Matters</h3>
+        <p>Growth funds better healthcare, education, and infrastructure. The gap between rich and poor countries is almost entirely explained by decades of different growth rates — not one-time windfalls.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: Sources of Growth (dark, horizontal) ── -->
+  <div class="slide h-slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Sources of Long-Run Growth</h2>
+      <p class="intro fade-in">Output Y = A · F(K, L) — three inputs drive growth: labour, capital, and technology.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact" id="sf-l">
+          <span class="sbadge">L — Labour</span>
+          <span>More workers expand the labour force. But <em>quality</em> matters most — the skills, education, and health of workers raise output per person. A key input but subject to diminishing returns.</span>
+        </div>
+        <div class="side-fact" id="sf-k">
+          <span class="sbadge">K — Capital</span>
+          <span>Physical capital — machinery, equipment, infrastructure — raises labour productivity. More capital per worker = more output per worker. Also subject to diminishing returns.</span>
+        </div>
+        <div class="side-fact" id="sf-a">
+          <span class="sbadge">A — Technology</span>
+          <span><strong style="color:var(--gold)">Total Factor Productivity (TFP)</strong> — the efficiency with which K and L are combined. Technology, management, and institutions all raise A. The only source of growth without diminishing returns.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Production function SVG (dark background) -->
+    <svg class="fade-in" viewBox="0 0 320 268" width="320" height="268" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="45" y1="240" x2="305" y2="240" stroke="rgba(255,255,255,.3)" stroke-width="1.3"/>
+      <line x1="45" y1="240" x2="45"  y2="18"  stroke="rgba(255,255,255,.3)" stroke-width="1.3"/>
+      <polygon points="45,13 40,23 50,23" fill="rgba(255,255,255,.3)"/>
+      <polygon points="310,240 300,235 300,245" fill="rgba(255,255,255,.3)"/>
+
+      <!-- Y = A₀·√K (lower TFP, teal) -->
+      <path id="pf-a0" class="anim-path"
+            d="M 45,240 C 80,215 145,148 305,80"
+            fill="none" stroke="#1a9a8e" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="pf-a0lbl" x="308" y="78" fill="#1a9a8e" font-size="11"
+            font-family="Space Grotesk,sans-serif" font-weight="700">Y₀</text>
+
+      <!-- Y = A₁·√K (higher TFP, gold) -->
+      <path id="pf-a1" class="anim-path"
+            d="M 45,240 C 72,200 120,118 200,32"
+            fill="none" stroke="#c8a84b" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="pf-a1lbl" x="204" y="28" fill="var(--gold)" font-size="11"
+            font-family="Space Grotesk,sans-serif" font-weight="700">Y₁</text>
+
+      <!-- Technology improvement arrow -->
+      <g id="pf-arrow" class="ppf-pt">
+        <line x1="152" y1="128" x2="125" y2="96" stroke="rgba(200,168,75,.7)" stroke-width="1.5"/>
+        <polygon points="120,91 130,99 122,107" fill="rgba(200,168,75,.7)"/>
+        <text x="158" y="122" fill="rgba(200,168,75,.75)" font-size="9.5"
+              font-family="Space Grotesk,sans-serif" font-weight="600">A ↑</text>
+        <text x="158" y="134" fill="rgba(200,168,75,.55)" font-size="9"
+              font-family="Space Grotesk,sans-serif">Technology</text>
+        <text x="158" y="145" fill="rgba(200,168,75,.55)" font-size="9"
+              font-family="Space Grotesk,sans-serif">improves</text>
+      </g>
+
+      <!-- Diminishing returns annotation -->
+      <g id="pf-dr" class="ppf-pt">
+        <text x="256" y="115" fill="rgba(26,154,142,.6)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Diminishing</text>
+        <text x="256" y="126" fill="rgba(26,154,142,.6)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">returns ↗</text>
+      </g>
+
+      <!-- Axis labels -->
+      <text x="175" y="256" fill="rgba(255,255,255,.4)" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Capital (K) →</text>
+      <text x="24"  y="128" fill="rgba(255,255,255,.4)" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 24 128)">Output (Y) →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Rule of 70 / Compound Growth (light, horizontal) ── -->
+  <div class="slide h-slide" id="s3">
+    <div class="sl">
+      <h2 class="fade-in">The Rule of 70</h2>
+      <p class="intro fade-in">Divide 70 by the annual growth rate to find how many years income takes to double. Small differences compound into enormous gaps over generations.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(26,122,110,.15);color:#1a7a6e">1% / yr</span>
+          <span>Doubles in <strong>70 years</strong>. At year 70 income is ×2. Slow but steady — most of the world's poorest nations.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge">2% / yr</span>
+          <span>Doubles in <strong>35 years</strong>. At year 70 income is ×4. Typical of advanced economies like Canada.</span>
+        </div>
+        <div class="side-fact" style="color:#c0442a">
+          <span class="sbadge" style="background:rgba(192,68,42,.15);color:var(--rust)">3% / yr</span>
+          <span>Doubles in <strong>23 years</strong>. At year 70 income is ×8. East Asian miracle economies averaged this for decades.</span>
+        </div>
+        <div class="side-fact" id="r70-key">
+          <span class="sbadge" style="background:rgba(15,17,23,.08);color:#333">Key</span>
+          <span><strong>1% vs 3% is not a small difference — it is the difference between ×2 and ×8 over a lifetime.</strong> This is why economists obsess over growth rates.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Compound growth SVG — dark colors only (light background) -->
+    <svg class="fade-in" viewBox="0 0 305 258" width="305" height="258" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="44" y1="226" x2="292" y2="226" stroke="#bbb" stroke-width="1.3"/>
+      <line x1="44" y1="226" x2="44"  y2="18"  stroke="#bbb" stroke-width="1.3"/>
+      <polygon points="44,13 39,23 49,23" fill="#bbb"/>
+      <polygon points="297,226 287,221 287,231" fill="#bbb"/>
+
+      <!-- Doubling reference line at ×2 -->
+      <line id="r70-dbl" class="anim-path" x1="44" y1="179" x2="292" y2="179"
+            stroke="rgba(100,100,100,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text class="ppf-pt" id="r70-dbllbl" x="37" y="183" fill="#777" font-size="9"
+            font-family="Space Grotesk,sans-serif" text-anchor="end" font-weight="600">×2</text>
+
+      <!-- ×4 reference line -->
+      <text class="ppf-pt" id="r70-x4lbl" x="37" y="133" fill="#777" font-size="9"
+            font-family="Space Grotesk,sans-serif" text-anchor="end" font-weight="600">×4</text>
+
+      <!-- ×8 reference line -->
+      <text class="ppf-pt" id="r70-x8lbl" x="37" y="42" fill="#777" font-size="9"
+            font-family="Space Grotesk,sans-serif" text-anchor="end" font-weight="600">×8</text>
+
+      <!-- 1% growth curve (dark teal, dashed) -->
+      <!-- Start (44,202), end at year70 (292,179) — nearly linear -->
+      <path id="r70-1pct" class="anim-path"
+            d="M 44,202 C 130,199 215,190 292,179"
+            fill="none" stroke="#1a7a6e" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="6 3"/>
+      <text class="ppf-pt" id="r70-1lbl" x="294" y="177" fill="#1a7a6e" font-size="9.5"
+            font-family="Space Grotesk,sans-serif" font-weight="700">1%</text>
+
+      <!-- 2% growth curve (gold/amber) -->
+      <!-- Start (44,202), at year35 (168,179), end year70 (292,131) -->
+      <path id="r70-2pct" class="anim-path"
+            d="M 44,202 C 118,196 200,165 292,131"
+            fill="none" stroke="#9a6800" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="r70-2lbl" x="294" y="129" fill="#9a6800" font-size="9.5"
+            font-family="Space Grotesk,sans-serif" font-weight="700">2%</text>
+
+      <!-- 3% growth curve (rust/dark) -->
+      <!-- Start (44,202), at year23 (122,179), at year46 (200,131), end year70 (292,41) -->
+      <path id="r70-3pct" class="anim-path"
+            d="M 44,202 C 100,190 170,138 292,41"
+            fill="none" stroke="#c0442a" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="r70-3lbl" x="294" y="39" fill="#c0442a" font-size="9.5"
+            font-family="Space Grotesk,sans-serif" font-weight="700">3%</text>
+
+      <!-- Doubling time markers (vertical dashes) -->
+      <g class="ppf-pt" id="r70-marks">
+        <!-- 3% doubles at year 23 → x=44+23*3.54=126 -->
+        <line x1="126" y1="179" x2="126" y2="226" stroke="#c0442a" stroke-width="1" stroke-dasharray="3 2" opacity=".5"/>
+        <text x="126" y="238" fill="#c0442a" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">23 yr</text>
+        <!-- 2% doubles at year 35 → x=44+35*3.54=168 -->
+        <line x1="168" y1="179" x2="168" y2="226" stroke="#9a6800" stroke-width="1" stroke-dasharray="3 2" opacity=".5"/>
+        <text x="168" y="238" fill="#9a6800" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">35 yr</text>
+        <!-- 1% doubles at year 70 → x=292 -->
+        <text x="292" y="238" fill="#1a7a6e" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">70 yr</text>
+      </g>
+
+      <!-- Axis labels -->
+      <text x="168" y="250" fill="#777" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Years →</text>
+      <text x="22"  y="122" fill="#777" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 122)">Income (relative to year 0)</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 4: Physical vs. Human Capital (dark) ── -->
+  <div class="slide" id="s4">
+    <h2 class="fade-in">Physical Capital vs. Human Capital</h2>
+    <p class="intro fade-in">Both types of capital drive growth, but through different channels — and both are subject to diminishing returns without ongoing technology improvements.</p>
+    <div class="cap-grid">
+      <div class="cap-card phys" id="cap-phys">
+        <div class="cap-label">Physical Capital (K)</div>
+        <h4>🏗️ Machines, Equipment &amp; Infrastructure</h4>
+        <p>Tools, factories, roads, bridges, ports, and digital infrastructure that workers use to produce output. Investment in physical capital directly raises labour productivity.</p>
+        <p class="cap-ex">Examples: a new factory, a highway, a server farm, a fleet of trucks.</p>
+      </div>
+      <div class="cap-card hum" id="cap-hum">
+        <div class="cap-label">Human Capital (H)</div>
+        <h4>🎓 Skills, Education &amp; Health</h4>
+        <p>The knowledge, skills, and capabilities embedded in workers. Education raises productivity; better health reduces absenteeism and extends productive careers.</p>
+        <p class="cap-ex">Examples: a university degree, on-the-job training, a vaccination programme.</p>
+      </div>
+    </div>
+    <div class="cap-note fade-in" id="cap-note">
+      <strong>Key limit:</strong> Both physical and human capital exhibit diminishing returns — each additional unit adds less to output than the last. Sustained long-run growth therefore requires not just more capital, but <strong>ongoing improvements in technology and institutions (A)</strong>.
+    </div>
+  </div>
+
+  <!-- ── Slide 5: Productivity & Institutions (light, horizontal) ── -->
+  <div class="slide h-slide" id="s5">
+    <div class="sl">
+      <div class="eyebrow fade-in">The Ultimate Driver</div>
+      <h2 class="fade-in">Productivity &amp; Institutions</h2>
+      <p class="intro fade-in">Countries with similar labour and capital stocks can have vastly different incomes. The difference is <strong>Total Factor Productivity</strong> — how efficiently those inputs are combined.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge">TFP</span>
+          <span>Total Factor Productivity captures everything that raises output beyond what K and L alone explain — technology, management practices, and the quality of institutions.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge">Key</span>
+          <span>The rich world's prosperity rests not just on having more capital — it rests on <strong style="color:#333">using that capital more productively</strong> within institutions that reward innovation.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Institutions comparison (light background — dark colors only) -->
+    <div style="flex-shrink:0; width:310px; display:flex; flex-direction:column; gap:14px;">
+      <div class="inst-grid">
+        <div class="inst-col helps" id="inst-helps">
+          <h3>✓ What Drives TFP</h3>
+          <div class="inst-item"><div class="i-dot"></div><span><strong>Secure property rights</strong> and rule of law — entrepreneurs capture gains from innovation</span></div>
+          <div class="inst-item"><div class="i-dot"></div><span><strong>Quality education</strong> and research &amp; development spending</span></div>
+          <div class="inst-item"><div class="i-dot"></div><span><strong>Open trade</strong> — expands markets, accelerates technology transfer</span></div>
+          <div class="inst-item"><div class="i-dot"></div><span><strong>Low corruption</strong> and effective government</span></div>
+        </div>
+        <div class="inst-col hurts" id="inst-hurts">
+          <h3>✗ What Undermines TFP</h3>
+          <div class="inst-item"><div class="i-dot"></div><span>Corruption and weak contract enforcement — reduces investment incentives</span></div>
+          <div class="inst-item"><div class="i-dot"></div><span>Poor education access — limits human capital accumulation</span></div>
+          <div class="inst-item"><div class="i-dot"></div><span>Trade barriers and monopolies — reduce competitive pressure to innovate</span></div>
+          <div class="inst-item"><div class="i-dot"></div><span>Political instability — raises uncertainty, deters long-run investment</span></div>
+        </div>
+      </div>
+      <div class="inst-note fade-in" id="inst-note">
+        <strong>Bottom line:</strong> Differences in TFP explain most of the income gap between rich and poor countries. Getting institutions right is the hardest — and most important — growth policy.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 6: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Economic growth is not just about GDP — it is about what GDP <em>enables</em>: longer lives, better health, more education, and more choices. Getting growth right is the central challenge of economic policy in every generation.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 101 · UNBC</div>
+    <div class="tag">Economic Growth · Rule of 70 · Capital · TFP · Institutions</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Welcome. Today we're turning from the short-run fluctuations of business cycles to something far more consequential over a lifetime: economic growth. Long-run economic growth is the single most powerful force for raising living standards, and understanding its sources and limits is one of the most important questions in all of macroeconomics.",
+  "Economic growth refers to a sustained, long-run increase in real GDP per capita — output per person, adjusted for inflation. We focus on per capita rather than total GDP because it more closely tracks living standards. A country can have rising total GDP while its average citizen gets poorer if the population grows faster than output. Growth is a long-run phenomenon measured over decades, not quarters. At two percent per year, living standards double roughly every thirty-five years. Over a century, two percent growth multiplies income seven-fold — the difference between the living standards of nineteen twenty-four and today.",
+  "What drives long-run growth? Economists identify three sources. The first is labour — both the quantity and quality of workers. The second is physical capital — machines, equipment, and infrastructure that raise the productivity of each worker. The third, and most important, is technology — specifically, Total Factor Productivity, or TFP. TFP captures the efficiency with which labour and capital are combined. Notice from the diagram: when technology improves from A-zero to A-one, the entire production function shifts upward — more output is produced from the same inputs. Also notice the curve flattens as capital rises — that's diminishing returns. More capital always helps, but each additional unit helps less than the last.",
+  "The Rule of Seventy is a simple but powerful tool. Divide seventy by a country's annual growth rate and you get the approximate number of years for income to double. At one percent growth, income doubles in seventy years. At two percent, it doubles in thirty-five years. At three percent, it doubles in just twenty-three years. Look at the curves on the right. At year seventy, the one-percent country has doubled its income. The two-percent country has quadrupled it. The three-percent country has multiplied it eight-fold. The difference between one and three percent might sound trivial — but over seventy years it is the difference between doubling income and multiplying it eight times. This is the power of compounding: small, consistent differences in growth rates accumulate into enormous differences in living standards over generations.",
+  "Two types of capital drive economic growth. Physical capital — machines, equipment, factories, and infrastructure — gives workers the tools they need to produce more. Human capital — the skills, education, knowledge, and health embodied in workers — is equally important, and increasingly so in modern knowledge economies. Education raises productivity; better health reduces absenteeism and extends productive careers. Both types of capital are subject to diminishing returns. Sustained long-run growth therefore requires more than accumulating capital alone. It requires ongoing improvements in technology, management, and the institutions that encourage innovation.",
+  "The ultimate driver of long-run growth differences between countries is productivity — Total Factor Productivity. Countries with similar stocks of labour and capital can have vastly different income levels if their TFP differs. What determines TFP? Institutions. Countries with secure property rights, rule of law, low corruption, and effective governments allow entrepreneurs and investors to capture the gains from innovation — creating powerful incentives to grow. Open trade expands markets and accelerates technology transfer. Quality education and research and development spending raise TFP directly. The rich world's prosperity rests not just on having more capital — it rests on using that capital more productively, within institutions that reward effort and protect the gains from innovation.",
+  "Economic growth is not just about GDP — it is about what GDP enables: longer lives, better health, more education, and more choices. But growth is not automatic. It requires the right institutions, the right incentives, and the right investments in both physical and human capital. Getting growth right is not just an economic question — it is the central challenge of economic policy in every generation."
+];
+
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+let muted = false, currentAudio = null, currentSpeech = null, speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initPaths();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio)  { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer); stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('🎙 AI narration');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else { speakWithBrowser(idx); }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx], rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('🔊 Browser narration');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel') || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter); currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted; muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0, timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer(); timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+// ── Animation system ─────────────────────────────────────────────────
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    const len = el.getTotalLength ? el.getTotalLength() : 600;
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawPath(id, durMs, delayMs) {
+  sch(delayMs || 0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs || 1800}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function resetPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    el.style.transition = 'none';
+    el.style.strokeDasharray = el.dataset.origLen || 9999;
+    el.style.strokeDashoffset = el.dataset.origLen || 9999;
+  });
+}
+
+function show(id) { document.getElementById(id)?.classList.add('ppf-show'); }
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.cap-card, .inst-col, .inst-note, .cause-note').forEach(el => el.classList.remove('show'));
+  resetPaths();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0: // Title: exponential curve draws in
+      drawPath('title-trend', 1200, 500);
+      drawPath('title-curve', 2000, 800);
+      break;
+
+    case 2: // Production function: low-TFP curve, then high-TFP curve, then annotations
+      drawPath('pf-a0', 1800, 400);
+      sch(800,  () => show('pf-a0lbl'));
+      drawPath('pf-a1', 1800, 6000);
+      sch(6500, () => show('pf-a1lbl'));
+      sch(9000, () => show('pf-arrow'));
+      sch(22000, () => show('pf-dr'));
+      break;
+
+    case 3: // Rule of 70: doubling line, then curves in order
+      drawPath('r70-dbl',  900, 300);
+      sch(500,  () => { show('r70-dbllbl'); show('r70-x4lbl'); show('r70-x8lbl'); });
+      drawPath('r70-1pct', 2000, 1500);
+      sch(1800, () => show('r70-1lbl'));
+      drawPath('r70-2pct', 2000, 6000);
+      sch(6300, () => show('r70-2lbl'));
+      drawPath('r70-3pct', 2000, 12000);
+      sch(12300, () => show('r70-3lbl'));
+      sch(16000, () => show('r70-marks'));
+      break;
+
+    case 4: // Capital: physical first, then human, then note
+      sch(2000,  () => document.getElementById('cap-phys')?.classList.add('show'));
+      sch(18000, () => document.getElementById('cap-hum')?.classList.add('show'));
+      sch(32000, () => document.getElementById('cap-note')?.classList.add('show'));
+      break;
+
+    case 5: // Institutions: helps first, hurts, then note
+      sch(2000,  () => document.getElementById('inst-helps')?.classList.add('show'));
+      sch(18000, () => document.getElementById('inst-hurts')?.classList.add('show'));
+      sch(32000, () => document.getElementById('inst-note')?.classList.add('show'));
+      break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>
