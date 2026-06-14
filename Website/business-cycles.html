@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Cycles — ECON 101</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px; font-size: 9px;
+    color: rgba(255,255,255,.18); letter-spacing: .07em; text-transform: uppercase;
+    pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 .rule  { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 62px; line-height: 1.08; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub  { margin-top: 20px; font-size: 16px; color: #8898a0; font-weight: 300; max-width: 450px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(200,168,75,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .icon-wrap { position: absolute; right: 52px; top: 50%; transform: translateY(-50%); width: 220px; height: 220px; }
+
+  /* ── Slide 1 – What is a Business Cycle ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--ink); line-height: 1.15; margin-bottom: 26px; }
+  .cards { display: flex; gap: 18px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 22px 18px; border-top: 4px solid var(--teal); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.gold-t { border-color: var(--gold); }
+  .card.rust-t { border-color: var(--rust); }
+  .card .icon { font-size: 26px; margin-bottom: 10px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; letter-spacing: .04em; }
+  .card p { font-size: 12.5px; color: #444; line-height: 1.6; font-weight: 300; }
+
+  /* ── Slide 2 – Phases (horizontal, dark) ── */
+  #s2 { background: #0f1a19; flex-direction: row; align-items: center; gap: 32px; padding: 42px 48px; }
+  #s2 .sl { flex: 1; min-width: 0; }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--paper); margin-bottom: 8px; }
+  #s2 .intro { font-size: 12.5px; color: #8fa; font-weight: 300; line-height: 1.6; margin-bottom: 16px; }
+  .phase-facts { display: flex; flex-direction: column; gap: 9px; }
+  .phase-fact { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; color: #bbc; line-height: 1.45; }
+  .pbadge { flex-shrink: 0; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .04em; margin-top: 1px; }
+  .pb-peak     { background: rgba(26,154,142,.2);  color: #1a9a8e; }
+  .pb-contrac  { background: rgba(192,68,42,.18);  color: var(--rust); }
+  .pb-trough   { background: rgba(192,68,42,.25);  color: #e0552e; }
+  .pb-expand   { background: rgba(200,168,75,.18); color: var(--gold); }
+
+  /* ── Slide 3 – Indicators ── */
+  #s3 { background: var(--paper); padding: 44px 60px; }
+  #s3 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  #s3 h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--ink); margin-bottom: 18px; }
+  .ind-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+  .ind-panel { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 3px 12px rgba(0,0,0,.07); }
+  .ind-panel h3 { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+  .ind-panel.pro  h3 { color: var(--teal); }
+  .ind-panel.counter h3 { color: var(--rust); }
+  .ind-item { display: flex; gap: 8px; margin-bottom: 6px; font-size: 12px; color: #444; line-height: 1.4; font-weight: 300; }
+  .ind-item:last-child { margin-bottom: 0; }
+  .ind-item .i-dot { flex-shrink: 0; width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; }
+  .ind-panel.pro .i-dot     { background: var(--teal); }
+  .ind-panel.counter .i-dot { background: var(--rust); }
+  .lead-lag-row { display: flex; gap: 14px; }
+  .ll-box { flex: 1; background: white; border-radius: 7px; padding: 12px 14px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  .ll-box h4 { font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
+  .ll-box p  { font-size: 11.5px; color: #444; line-height: 1.5; font-weight: 300; }
+
+  /* ── Slide 4 – Causes ── */
+  #s4 { background: #0d0f16; padding: 42px 58px; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--paper); margin-bottom: 6px; }
+  #s4 .intro { font-size: 12.5px; color: #8899aa; font-weight: 300; margin-bottom: 20px; line-height: 1.55; }
+  .cause-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .cause-card { border-radius: 8px; padding: 16px 15px; }
+  .cause-card.d-pos { background: rgba(26,122,110,.1);  border: 1px solid rgba(26,122,110,.3); }
+  .cause-card.d-neg { background: rgba(192,68,42,.1);   border: 1px solid rgba(192,68,42,.3); }
+  .cause-card.s-pos { background: rgba(200,168,75,.09); border: 1px solid rgba(200,168,75,.3); }
+  .cause-card.s-neg { background: rgba(120,60,160,.09); border: 1px solid rgba(120,60,160,.3); }
+  .cause-card .cause-tag { font-size: 9.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 5px; }
+  .cause-card.d-pos .cause-tag { color: #1a9a8e; }
+  .cause-card.d-neg .cause-tag { color: var(--rust); }
+  .cause-card.s-pos .cause-tag { color: var(--gold); }
+  .cause-card.s-neg .cause-tag { color: #a06bcc; }
+  .cause-card h4 { font-size: 13px; font-weight: 700; color: var(--paper); margin-bottom: 6px; }
+  .cause-card p  { font-size: 11.5px; color: #8899aa; line-height: 1.5; font-weight: 300; }
+  .cause-note { margin-top: 16px; padding: 10px 16px; background: rgba(200,168,75,.09); border: 1px solid rgba(200,168,75,.28); border-radius: 6px; font-size: 12px; color: var(--paper); line-height: 1.55; font-weight: 300; }
+  .cause-note strong { color: var(--gold); }
+  .cause-card { opacity: 0; transition: opacity .6s ease; }
+  .cause-card.show { opacity: 1; }
+
+  /* ── Slide 5 – Output Gap (horizontal, light) ── */
+  #s5 { background: var(--paper); flex-direction: row; align-items: center; gap: 34px; padding: 44px 50px; }
+  #s5 .sl { flex: 1; min-width: 0; }
+  #s5 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--rust); margin-bottom: 12px; }
+  #s5 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); margin-bottom: 10px; }
+  #s5 .intro { font-size: 12.5px; color: #555; font-weight: 300; line-height: 1.6; margin-bottom: 16px; }
+  .og-facts { display: flex; flex-direction: column; gap: 11px; }
+  .og-fact { display: flex; align-items: flex-start; gap: 10px; }
+  .og-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+  .og-fact p { font-size: 12.5px; color: #444; line-height: 1.5; font-weight: 300; }
+  .og-fact strong { color: var(--ink); }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: var(--teal); }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.15); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 25px; line-height: 1.5; color: white; max-width: 650px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag  { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+  /* ── Controls ── */
+  #controls { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+  #loading-overlay { position: absolute; inset: 0; background: rgba(10,12,18,.88); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 10; }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(200,168,75,.2); border-top-color: var(--gold); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* ── Teaching animations ── */
+  .anim-path { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .65s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+  .ppf-ripple { transform-box: fill-box; transform-origin: center; }
+  .ppf-pt.ppf-show .ppf-ripple { animation: ripple-out 1.8s ease-out .1s forwards; }
+  @keyframes ripple-out { 0%{opacity:.7;transform:scale(1)} 100%{opacity:0;transform:scale(5)} }
+  .ind-panel, .ll-box { opacity: 0; transition: opacity .6s ease; }
+  .ind-panel.show, .ll-box.show { opacity: 1; }
+  .cause-note { opacity: 0; transition: opacity .6s ease; }
+  .cause-note.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 101 · Macroeconomics</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Business<br><em>Cycles</em></h1>
+    <p class="sub fade-in">The recurring expansions and contractions that all market economies experience — and the policy tools used to smooth them.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="icon-wrap fade-in">
+      <svg viewBox="0 0 220 220" fill="none">
+        <circle cx="110" cy="110" r="105" stroke="rgba(200,168,75,.15)" stroke-width="1.5"/>
+        <!-- Axes -->
+        <line x1="30" y1="178" x2="192" y2="178" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <line x1="30" y1="178" x2="30"  y2="30"  stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <!-- Potential GDP line (gold dashed) -->
+        <line id="title-pot" class="anim-path" x1="30" y1="110" x2="192" y2="110"
+              stroke="rgba(200,168,75,.55)" stroke-width="1.4" stroke-dasharray="6 4"/>
+        <!-- Business cycle wave (teal) -->
+        <path id="title-wave" class="anim-path"
+              d="M 35,114 C 48,135 62,158 80,158 S 108,58 128,58 S 162,158 180,150"
+              fill="none" stroke="#1a9a8e" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- Labels -->
+        <text x="111" y="196" fill="rgba(255,255,255,.28)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" letter-spacing=".07em">TIME →</text>
+        <text x="196" y="108" fill="rgba(200,168,75,.6)" font-size="8.5" font-family="Space Grotesk,sans-serif">Potential</text>
+        <text x="128" y="46" fill="rgba(26,154,142,.65)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Peak</text>
+        <text x="80" y="172" fill="rgba(192,68,42,.6)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Trough</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: What is a Business Cycle ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Big Picture</div>
+    <h2 class="fade-in">Recurring fluctuations in real GDP<br>around its long-run potential.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">📈</div>
+        <h3>Expansion</h3>
+        <p>Real GDP is rising, unemployment is falling, and business confidence is high. The economy is operating closer to — or above — its full-employment potential. Also called a recovery or boom.</p>
+      </div>
+      <div class="card rust-t fade-in">
+        <div class="icon">📉</div>
+        <h3>Recession</h3>
+        <p>Real GDP falls for at least two consecutive quarters. Unemployment rises, investment collapses, and consumer spending contracts. Also called a contraction or downturn.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">📏</div>
+        <h3>Potential GDP</h3>
+        <p>The level of output an economy can sustainably produce at full employment — without generating inflation. Business cycles are fluctuations around this trend, not permanent departures from it.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: Phases of the Cycle (dark, horizontal) ── -->
+  <div class="slide" id="s2" style="flex-direction:row;align-items:center;gap:32px;padding:42px 48px;">
+    <div class="sl">
+      <h2 class="fade-in">Four Phases of the Business Cycle</h2>
+      <p class="intro fade-in">Every cycle follows the same recognisable pattern — though the length and severity of each phase varies enormously.</p>
+      <div class="phase-facts fade-in">
+        <div class="phase-fact" id="pf-peak">
+          <span class="pbadge pb-peak">Peak</span>
+          <span>The high point. Real GDP is at its maximum before the economy begins to turn down. Unemployment is at its lowest; inflation risks are highest.</span>
+        </div>
+        <div class="phase-fact" id="pf-con">
+          <span class="pbadge pb-contrac">Contraction</span>
+          <span>GDP falls, unemployment rises, investment collapses. If it lasts two or more quarters, it is officially called a recession.</span>
+        </div>
+        <div class="phase-fact" id="pf-trough">
+          <span class="pbadge pb-trough">Trough</span>
+          <span>The low point. GDP stops falling. Unemployment peaks. This is the turning point where contraction ends and recovery begins.</span>
+        </div>
+        <div class="phase-fact" id="pf-exp">
+          <span class="pbadge pb-expand">Expansion</span>
+          <span>GDP rises, jobs return, confidence rebuilds. The economy climbs back toward — and sometimes beyond — potential output.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Business Cycle Diagram SVG -->
+    <svg class="fade-in" viewBox="0 0 370 268" width="370" height="268" style="flex-shrink:0;">
+      <!-- Recession shading bands -->
+      <rect id="bc-shade1" class="ppf-pt" x="47" y="22" width="114" height="210" rx="2" fill="rgba(192,68,42,.07)"/>
+      <rect id="bc-shade2" class="ppf-pt" x="238" y="22" width="86"  height="210" rx="2" fill="rgba(192,68,42,.07)"/>
+
+      <!-- Axes -->
+      <line x1="45" y1="232" x2="355" y2="232" stroke="rgba(255,255,255,.3)" stroke-width="1.3"/>
+      <line x1="45" y1="232" x2="45"  y2="18"  stroke="rgba(255,255,255,.3)" stroke-width="1.3"/>
+      <polygon points="45,13 40,23 50,23" fill="rgba(255,255,255,.3)"/>
+      <polygon points="360,232 350,227 350,237" fill="rgba(255,255,255,.3)"/>
+
+      <!-- Potential GDP line (gold dashed) -->
+      <line id="bc-pot" class="anim-path" x1="45" y1="130" x2="355" y2="130"
+            stroke="rgba(200,168,75,.6)" stroke-width="1.6" stroke-dasharray="7 5"/>
+      <text class="ppf-pt" id="bc-potlbl" x="358" y="128" fill="rgba(200,168,75,.75)"
+            font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="600">Potential</text>
+
+      <!-- Business cycle wave -->
+      <path id="bc-wave" class="anim-path"
+            d="M 47,135 C 58,165 78,200 110,200 S 158,58 205,58 S 258,200 295,198 S 330,80 352,88"
+            fill="none" stroke="#1a9a8e" stroke-width="2.4" stroke-linecap="round"/>
+
+      <!-- Trough 1 label -->
+      <g id="bc-t1" class="ppf-pt">
+        <circle class="ppf-ripple" cx="110" cy="200" r="8" fill="var(--rust)"/>
+        <circle cx="110" cy="200" r="4.5" fill="var(--rust)"/>
+        <text x="110" y="220" fill="var(--rust)" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Trough</text>
+      </g>
+
+      <!-- Expansion label (rising to peak) -->
+      <g id="bc-exp1" class="ppf-pt">
+        <text x="158" y="40" fill="#1a9a8e" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">↗ Expansion</text>
+      </g>
+
+      <!-- Peak label -->
+      <g id="bc-peak" class="ppf-pt">
+        <circle class="ppf-ripple" cx="205" cy="58" r="8" fill="#1a9a8e"/>
+        <circle cx="205" cy="58" r="4.5" fill="#1a9a8e"/>
+        <text x="205" y="45" fill="#1a9a8e" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Peak</text>
+      </g>
+
+      <!-- Contraction label (falling to trough 2) -->
+      <g id="bc-con" class="ppf-pt">
+        <text x="252" y="40" fill="var(--rust)" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">↘ Contraction</text>
+      </g>
+
+      <!-- Trough 2 label -->
+      <g id="bc-t2" class="ppf-pt">
+        <circle class="ppf-ripple" cx="295" cy="198" r="8" fill="var(--rust)"/>
+        <circle cx="295" cy="198" r="4.5" fill="var(--rust)"/>
+        <text x="295" y="218" fill="var(--rust)" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Trough</text>
+      </g>
+
+      <!-- Recovery label (final rise) -->
+      <g id="bc-exp2" class="ppf-pt">
+        <text x="338" y="75" fill="#1a9a8e" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">↗ Recovery</text>
+      </g>
+
+      <!-- Recession labels inside shaded bands -->
+      <text class="ppf-pt" id="bc-reclbl1" x="104" y="32" fill="rgba(192,68,42,.55)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle" letter-spacing=".04em">RECESSION</text>
+      <text class="ppf-pt" id="bc-reclbl2" x="281" y="32" fill="rgba(192,68,42,.55)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle" letter-spacing=".04em">RECESSION</text>
+
+      <!-- Axis labels -->
+      <text x="200" y="248" fill="rgba(255,255,255,.4)" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Time →</text>
+      <text x="24"  y="128" fill="rgba(255,255,255,.4)" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 24 128)">Real GDP →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Cyclical Indicators ── -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">Reading the Cycle</div>
+    <h2 class="fade-in">Cyclical Indicators</h2>
+    <div class="ind-grid">
+      <div class="ind-panel pro" id="ind-pro">
+        <h3>📈 Procyclical — Move with GDP</h3>
+        <div class="ind-item"><div class="i-dot"></div><span><strong>Consumer spending</strong> — rises in expansions, falls in recessions</span></div>
+        <div class="ind-item"><div class="i-dot"></div><span><strong>Business investment</strong> — most volatile procyclical variable</span></div>
+        <div class="ind-item"><div class="i-dot"></div><span><strong>Corporate profits & tax revenues</strong> — both swell when GDP grows</span></div>
+        <div class="ind-item"><div class="i-dot"></div><span><strong>Industrial production & retail sales</strong> — rise and fall with the cycle</span></div>
+      </div>
+      <div class="ind-panel counter" id="ind-cnt">
+        <h3>📉 Countercyclical — Move against GDP</h3>
+        <div class="ind-item"><div class="i-dot"></div><span><strong>Unemployment rate</strong> — rises in recessions, falls in expansions</span></div>
+        <div class="ind-item"><div class="i-dot"></div><span><strong>Government transfers</strong> — EI and social assistance spike in downturns</span></div>
+        <div class="ind-item"><div class="i-dot"></div><span><strong>Budget deficit</strong> — widens in recessions (automatic stabilisers)</span></div>
+        <div class="ind-item"><div class="i-dot"></div><span><strong>Bankruptcy filings</strong> — surge when GDP contracts</span></div>
+      </div>
+    </div>
+    <div class="lead-lag-row">
+      <div class="ll-box" id="ind-lead">
+        <h4>⏩ Leading Indicators</h4>
+        <p>Change <em>before</em> the cycle turns. Examples: housing starts, stock prices, new orders for capital goods, consumer confidence index. Used to forecast turning points.</p>
+      </div>
+      <div class="ll-box" id="ind-lag">
+        <h4>⏪ Lagging Indicators</h4>
+        <p>Change <em>after</em> the cycle turns. The unemployment rate is the classic example — it keeps rising even after GDP has started to recover.</p>
+      </div>
+      <div class="ll-box" id="ind-coin">
+        <h4>↔ Coincident Indicators</h4>
+        <p>Change <em>at the same time</em> as the cycle. Real GDP, employment, and personal income are coincident — they confirm what the economy is doing right now.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 4: Causes ── -->
+  <div class="slide" id="s4">
+    <h2 class="fade-in">What Causes Business Cycles?</h2>
+    <p class="intro fade-in">Unexpected shocks to either aggregate demand or aggregate supply disrupt the economy's equilibrium and trigger a cycle.</p>
+    <div class="cause-grid">
+      <div class="cause-card d-pos" id="cc-dp">
+        <div class="cause-tag">Positive Demand Shock</div>
+        <h4>↑ Spending surge</h4>
+        <p>Consumer confidence boom, large fiscal stimulus, export surge. GDP rises above potential → inflationary pressure builds.</p>
+      </div>
+      <div class="cause-card d-neg" id="cc-dn">
+        <div class="cause-tag">Negative Demand Shock</div>
+        <h4>↓ Spending collapse</h4>
+        <p>Financial crisis, housing market crash, pandemic shock. Consumer and investor confidence collapses, triggering recession.</p>
+      </div>
+      <div class="cause-card s-pos" id="cc-sp">
+        <div class="cause-tag">Positive Supply Shock</div>
+        <h4>↑ Productivity gain</h4>
+        <p>Major technological advance, falling commodity prices. Output rises and prices fall simultaneously — a welcome combination.</p>
+      </div>
+      <div class="cause-card s-neg" id="cc-sn">
+        <div class="cause-tag">Negative Supply Shock</div>
+        <h4>↓ Cost spike</h4>
+        <p>Oil price surge, supply chain disruption, natural disaster. Output falls while prices rise — stagflation, the worst of both worlds.</p>
+      </div>
+    </div>
+    <div class="cause-note fade-in" id="cause-note">
+      <strong>Real business cycles:</strong> Some economists argue cycles reflect rational responses to technology shocks, not market failures. Most mainstream analysis, however, emphasises demand-side shocks and sticky wages as primary drivers.
+    </div>
+  </div>
+
+  <!-- ── Slide 5: The Output Gap (light, horizontal) ── -->
+  <div class="slide" id="s5" style="flex-direction:row;align-items:center;gap:34px;padding:44px 50px;">
+    <div class="sl">
+      <div class="eyebrow fade-in">The Policy Diagnostic</div>
+      <h2 class="fade-in">The Output Gap</h2>
+      <p class="intro fade-in">Output gap = (Actual GDP − Potential GDP) ÷ Potential GDP × 100%. It tells policymakers not just whether the economy is growing, but whether it is growing at a sustainable pace.</p>
+      <div class="og-facts fade-in">
+        <div class="og-fact">
+          <div class="og-dot" style="background:var(--rust)"></div>
+          <p><strong>Negative output gap (actual &lt; potential):</strong> Unemployment above its natural rate. Unused capacity. Inflation below target. Calls for expansionary fiscal or monetary policy.</p>
+        </div>
+        <div class="og-fact">
+          <div class="og-dot" style="background:var(--gold)"></div>
+          <p><strong>Positive output gap (actual &gt; potential):</strong> Economy overheating. Labour markets tight. Inflation above target. Calls for contractionary policy to cool demand.</p>
+        </div>
+        <div class="og-fact">
+          <div class="og-dot" style="background:var(--teal)"></div>
+          <p><strong>Zero output gap:</strong> Actual GDP at potential. Full employment without inflation pressure. The goal of macroeconomic stabilisation policy.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Output Gap SVG (light background — use dark colors only) -->
+    <svg class="fade-in" viewBox="0 0 320 265" width="320" height="265" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="44" y1="228" x2="306" y2="228" stroke="#bbb" stroke-width="1.3"/>
+      <line x1="44" y1="228" x2="44"  y2="18"  stroke="#bbb" stroke-width="1.3"/>
+      <polygon points="44,13 39,23 49,23" fill="#bbb"/>
+      <polygon points="311,228 301,223 301,233" fill="#bbb"/>
+
+      <!-- Positive gap shading (above potential) — gold -->
+      <g id="og-pos-shade" class="ppf-pt">
+        <path d="M 130,130 C 148,100 164,75 190,72 L 190,130 Z" fill="rgba(200,168,75,.18)"/>
+      </g>
+      <!-- Negative gap shading (below potential) — rust -->
+      <g id="og-neg-shade" class="ppf-pt">
+        <path d="M 44,130 C 60,145 80,165 110,170 L 110,130 Z" fill="rgba(192,68,42,.13)"/>
+        <path d="M 220,130 C 240,145 260,168 280,170 L 280,130 Z" fill="rgba(192,68,42,.13)"/>
+      </g>
+
+      <!-- Potential GDP (gold dashed) -->
+      <line id="og-pot" class="anim-path" x1="44" y1="130" x2="306" y2="130"
+            stroke="#1a7a6e" stroke-width="1.8" stroke-dasharray="7 5"/>
+      <text class="ppf-pt" id="og-potlbl" x="310" y="128" fill="#1a7a6e" font-size="9.5"
+            font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="start">Potential</text>
+
+      <!-- Actual GDP line -->
+      <path id="og-actual" class="anim-path"
+            d="M 44,135 C 58,148 78,172 110,172 S 148,75 190,72 S 228,165 270,170 S 290,130 306,120"
+            fill="none" stroke="#c0442a" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="og-actuallbl" x="310" y="118" fill="#c0442a" font-size="9.5"
+            font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="start">Actual</text>
+
+      <!-- Gap annotations -->
+      <g id="og-neg-lbl" class="ppf-pt">
+        <text x="78" y="105" fill="var(--rust)" font-size="9" font-family="Space Grotesk,sans-serif"
+              font-weight="700" text-anchor="middle">Negative</text>
+        <text x="78" y="116" fill="var(--rust)" font-size="9" font-family="Space Grotesk,sans-serif"
+              font-weight="700" text-anchor="middle">Gap</text>
+        <line x1="78" y1="120" x2="78" y2="148" stroke="var(--rust)" stroke-width="1" stroke-dasharray="3 2"/>
+      </g>
+      <g id="og-pos-lbl" class="ppf-pt">
+        <text x="175" y="58" fill="#9a6800" font-size="9" font-family="Space Grotesk,sans-serif"
+              font-weight="700" text-anchor="middle">Positive</text>
+        <text x="175" y="69" fill="#9a6800" font-size="9" font-family="Space Grotesk,sans-serif"
+              font-weight="700" text-anchor="middle">Gap</text>
+        <line x1="175" y1="73" x2="175" y2="100" stroke="#9a6800" stroke-width="1" stroke-dasharray="3 2"/>
+      </g>
+
+      <!-- Axis labels -->
+      <text x="175" y="246" fill="#777" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Time →</text>
+      <text x="22"  y="124" fill="#777" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 124)">Real GDP →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 6: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Business cycles are not aberrations — they are the normal condition of market economies. The role of policy is not to eliminate them, but to moderate their extremes: <em>smoothing the peaks, shortening the troughs</em>, and protecting the most vulnerable along the way.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 101 · UNBC</div>
+    <div class="tag">Business Cycles · Output Gap · Cyclical Indicators · Economic Shocks</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Welcome. Today we're studying business cycles — the recurring fluctuations in economic activity that all market economies experience. Business cycles explain why GDP grows quickly in some periods and contracts in others, why unemployment rises and falls, and why understanding these patterns is central to macroeconomic policy.",
+  "A business cycle is a sequence of expansions and contractions in real GDP around its long-run potential. During an expansion — also called a recovery or boom — real GDP is rising, unemployment is falling, and the economy is operating closer to its potential. During a contraction, or recession, real GDP is falling for at least two consecutive quarters, unemployment is rising, and the economy is operating below potential. The key reference point throughout is potential GDP — the level of output the economy can sustainably produce at full employment without generating inflation. Business cycles are fluctuations around this trend.",
+  "Every business cycle has four recognisable phases. The peak is the high point — where real GDP is at its maximum before turning down. Unemployment is at its lowest and inflation risks are highest. A contraction follows: GDP falls, unemployment rises, and investment collapses. If this contraction lasts two or more consecutive quarters, it is officially called a recession. The trough is the cycle's low point — where the decline stops and recovery begins. Then comes the expansion: GDP rises, jobs return, and confidence rebuilds. Note the potential GDP line running through the middle. When actual GDP is above it, the economy is overheating. When it's below, resources are idle and the economy is losing output it could have produced.",
+  "Different economic variables move very differently over the business cycle. Procyclical variables rise in expansions and fall in recessions — they move in the same direction as GDP. Consumer spending, business investment, corporate profits, and government tax revenues are all procyclical. Countercyclical variables move in the opposite direction — they rise when GDP falls. Unemployment and government transfers are the clearest examples. Beyond pro- and countercyclical, we distinguish leading indicators, which change before the cycle turns, from lagging indicators, which change after. Housing starts and stock prices tend to lead. The unemployment rate is a classic lagging indicator — it keeps rising for months after the economy has already started recovering. Coincident indicators like real GDP and employment change at the same time as the cycle itself.",
+  "What actually causes business cycles? Two main types of shocks disturb the economy's equilibrium. Demand shocks are unexpected changes in aggregate demand — total spending. A positive demand shock, like a surge in consumer confidence or a large fiscal stimulus, pushes GDP above potential and builds inflationary pressure. A negative demand shock — a financial crisis, a housing crash, a pandemic — collapses spending and tips the economy into recession. Supply shocks are unexpected changes in production costs or productive capacity. A positive supply shock, like a major technology advance or falling oil prices, raises output while reducing inflation. A negative supply shock — an oil price spike, a supply chain disruption — reduces output while pushing inflation up. This painful combination of falling output and rising prices is called stagflation.",
+  "The output gap is the central diagnostic tool in macroeconomic policy. It measures the difference between actual GDP and potential GDP as a percentage of potential. A negative output gap means actual output is below potential — unemployment is above its natural rate, productive capacity is idle, and inflation is typically below target. This calls for expansionary policy. A positive output gap means the economy is overheating — labour markets are tight, firms are operating above sustainable capacity, and inflation is rising. This calls for contractionary policy. The goal of stabilisation policy is not simply to achieve growth — it is to bring actual GDP as close to potential as possible, maintaining full employment without generating inflation.",
+  "Business cycles are not aberrations — they are the normal condition of market economies. Every expansion carries the seeds of the next contraction; every recession contains the conditions for the next recovery. The role of macroeconomic policy is not to eliminate cycles, but to moderate their extremes — smoothing the peaks, shortening the troughs, and protecting the most vulnerable along the way."
+];
+
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+let muted = false, currentAudio = null, currentSpeech = null, speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initPaths();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio)  { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer); stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('🎙 AI narration');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else { speakWithBrowser(idx); }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx], rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('🔊 Browser narration');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel') || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter); currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted; muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0, timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer(); timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+// ── Animation system ─────────────────────────────────────────────────
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    const len = el.getTotalLength ? el.getTotalLength() : 600;
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawPath(id, durMs, delayMs) {
+  sch(delayMs || 0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs || 1800}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function resetPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    el.style.transition = 'none';
+    el.style.strokeDasharray = el.dataset.origLen || 9999;
+    el.style.strokeDashoffset = el.dataset.origLen || 9999;
+  });
+}
+
+function show(id) { document.getElementById(id)?.classList.add('ppf-show'); }
+function showSel(sel) { document.querySelectorAll(sel).forEach(el => el.classList.add('ppf-show')); }
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.ind-panel, .ll-box, .cause-card, .cause-note').forEach(el => el.classList.remove('show'));
+  resetPaths();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0: // Title: potential line → wave
+      drawPath('title-pot',  1200, 700);
+      drawPath('title-wave', 2000, 1600);
+      break;
+
+    case 2: // Main BC diagram
+      drawPath('bc-pot',  1200, 300);
+      sch(800,  () => show('bc-potlbl'));
+      drawPath('bc-wave', 3500, 1500);
+      // Phase labels timed to narration (~45s total)
+      sch(9000,  () => { show('bc-shade1'); show('bc-reclbl1'); show('bc-t1'); });
+      sch(16000, () => show('bc-exp1'));
+      sch(22000, () => show('bc-peak'));
+      sch(28000, () => show('bc-con'));
+      sch(34000, () => { show('bc-shade2'); show('bc-reclbl2'); show('bc-t2'); });
+      sch(40000, () => show('bc-exp2'));
+      break;
+
+    case 3: // Indicators
+      sch(2000,  () => document.getElementById('ind-pro')?.classList.add('show'));
+      sch(18000, () => document.getElementById('ind-cnt')?.classList.add('show'));
+      sch(30000, () => { document.getElementById('ind-lead')?.classList.add('show'); });
+      sch(35000, () => { document.getElementById('ind-lag')?.classList.add('show'); });
+      sch(40000, () => { document.getElementById('ind-coin')?.classList.add('show'); });
+      break;
+
+    case 4: // Causes: 4 cards in sequence
+      sch(2000,  () => document.getElementById('cc-dp')?.classList.add('show'));
+      sch(10000, () => document.getElementById('cc-dn')?.classList.add('show'));
+      sch(22000, () => document.getElementById('cc-sp')?.classList.add('show'));
+      sch(30000, () => document.getElementById('cc-sn')?.classList.add('show'));
+      sch(38000, () => document.getElementById('cause-note')?.classList.add('show'));
+      break;
+
+    case 5: // Output gap
+      drawPath('og-pot',    1200, 400);
+      sch(800,  () => show('og-potlbl'));
+      drawPath('og-actual', 2500, 2000);
+      sch(2500, () => show('og-actuallbl'));
+      sch(6000, () => { show('og-neg-shade'); show('og-neg-lbl'); });
+      sch(14000, () => { show('og-pos-shade'); show('og-pos-lbl'); });
+      break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>
