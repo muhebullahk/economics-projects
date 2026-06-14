@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Production Possibility Frontier — ECON 101</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Space Grotesk', sans-serif;
+    gap: 18px;
+  }
+
+  /* Status bar */
+  #status-bar {
+    width: 860px;
+    font-size: 12px;
+    color: #556;
+    text-align: right;
+    min-height: 16px;
+  }
+  #status-bar.loading { color: var(--gold); }
+  #status-bar.error   { color: var(--rust); }
+  #status-bar.ready   { color: #4a9; }
+
+  /* Stage */
+  #stage {
+    width: 860px;
+    height: 540px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  /* Slides */
+  .slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .55s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 56px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  /* fade-in animations */
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 54px; line-height: 1.1; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub { margin-top: 22px; font-size: 17px; color: #8898a0; font-weight: 300; max-width: 480px; line-height: 1.55; }
+  #s0 .rule { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 .orbit {
+    position: absolute; right: 60px; top: 50%; transform: translateY(-50%);
+    width: 220px; height: 220px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  #s0 .orbit svg { width: 220px; height: 220px; }
+
+  /* ── Slide 1 – Core Idea ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 38px; color: var(--ink); line-height: 1.15; margin-bottom: 28px; }
+  .cards { display: flex; gap: 20px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 24px 22px; border-top: 4px solid var(--teal); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.rust { border-color: var(--rust); }
+  .card.gold-t { border-color: var(--gold); }
+  .card .icon { font-size: 30px; margin-bottom: 12px; }
+  .card h3 { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 8px; letter-spacing: .04em; }
+  .card p { font-size: 13.5px; color: #444; line-height: 1.6; font-weight: 300; }
+
+  /* ── Slide 2 – The Diagram ── */
+  #s2 { background: #0f1a19; flex-direction: row; align-items: center; gap: 40px; padding: 40px 56px; }
+  #s2 .s2-left { flex: 1; min-width: 0; }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--paper); margin-bottom: 8px; }
+  #s2 .intro { font-size: 13.5px; color: #8fa; margin-bottom: 20px; font-weight: 300; line-height: 1.6; }
+  #s2 .legend { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  #s2 .leg-item { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 300; }
+  #s2 .leg-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  #s2 .leg-dot.gold  { background: var(--gold); }
+  #s2 .leg-dot.teal  { background: var(--teal); }
+  #s2 .leg-dot.rust  { background: var(--rust); }
+  #s2 .leg-label { color: #ccd; }
+
+  /* ── Slide 3 – Opportunity Cost ── */
+  #s3 { background: var(--paper); }
+  #s3 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--rust); margin-bottom: 14px; }
+  #s3 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--ink); margin-bottom: 24px; }
+  .oc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .oc-card { background: white; border-radius: 6px; padding: 22px; box-shadow: 0 3px 16px rgba(0,0,0,.08); }
+  .oc-card .oc-title { font-size: 12px; font-weight: 700; color: var(--ink); margin-bottom: 12px; letter-spacing: .07em; text-transform: uppercase; }
+  .oc-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 13px; }
+  .oc-item .good { color: #333; font-weight: 400; }
+  .oc-item .cost { background: var(--mist); padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .oc-item .cost.low  { background: #e8f5e9; color: #2e7d32; }
+  .oc-item .cost.high { background: #fdecea; color: var(--rust); }
+  #s3 .slope-box {
+    margin-top: 16px; background: white; border-left: 4px solid var(--rust);
+    border-radius: 0 6px 6px 0; padding: 14px 20px;
+    font-size: 13.5px; color: #333; line-height: 1.6;
+  }
+  #s3 .slope-box strong { color: var(--rust); }
+
+  /* ── Slide 4 – Bowing Out ── */
+  #s4 { background: #0f1117; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--paper); margin-bottom: 6px; }
+  #s4 .intro { font-size: 14px; color: #8899aa; margin-bottom: 24px; font-weight: 300; }
+  .why-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .why-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 8px; padding: 20px 18px; }
+  .why-card .icon { font-size: 26px; margin-bottom: 10px; }
+  .why-card h4 { font-size: 13.5px; font-weight: 700; color: var(--gold); margin-bottom: 6px; }
+  .why-card p { font-size: 12.5px; color: #99aaaa; line-height: 1.6; font-weight: 300; }
+  .bow-note {
+    margin-top: 16px; background: rgba(200,168,75,.1); border: 1px solid rgba(200,168,75,.3);
+    border-radius: 6px; padding: 14px 20px; font-size: 13px; color: var(--paper); line-height: 1.6; font-weight: 300;
+  }
+  .bow-note strong { color: var(--gold); }
+
+  /* ── Slide 5 – Economic Growth ── */
+  #s5 { background: var(--paper); flex-direction: row; align-items: center; gap: 44px; padding: 40px 56px; }
+  #s5 .s5-left { flex: 1; min-width: 0; }
+  #s5 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+  #s5 h2 { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--ink); margin-bottom: 20px; }
+  .growth-items { display: flex; flex-direction: column; gap: 14px; }
+  .g-item { display: flex; align-items: flex-start; gap: 16px; background: white; border-radius: 6px; padding: 14px 18px; box-shadow: 0 2px 10px rgba(0,0,0,.06); }
+  .g-item .num { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--teal); line-height: 1; min-width: 28px; }
+  .g-item h4 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+  .g-item p { font-size: 12.5px; color: #555; line-height: 1.55; font-weight: 300; }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: var(--teal); }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.15); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 26px; line-height: 1.5; color: white; max-width: 620px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+  /* ── Controls ── */
+  #controls {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    color: white; width: 34px; height: 34px; border-radius: 50%;
+    cursor: pointer; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+
+  /* Timer bar */
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+
+  /* Loading overlay */
+  #loading-overlay {
+    position: absolute; inset: 0; background: rgba(10,12,18,.85);
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px; z-index: 10;
+  }
+  #loading-overlay.show { display: flex; }
+  .spinner {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 3px solid rgba(200,168,75,.2);
+    border-top-color: var(--gold);
+    animation: spin .8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* Back link */
+  #back-bar {
+    width: 860px;
+    font-size: 12px;
+    color: #445;
+  }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+
+  <!-- Slide 0: Title -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 101 · Scarcity &amp; Choice</div>
+    <div class="rule fade-in" style="width:56px;height:3px;background:var(--gold);margin-bottom:28px;"></div>
+    <h1 class="fade-in">Production<br>Possibility<br><em>Frontier</em></h1>
+    <p class="sub fade-in">How scarcity forces trade-offs — and what the shape of a curve reveals about the cost of every choice.</p>
+    <div class="orbit fade-in">
+      <svg viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Outer ring -->
+        <circle cx="110" cy="110" r="105" stroke="rgba(200,168,75,.18)" stroke-width="1.5"/>
+        <!-- PPF curve inside -->
+        <path d="M 28 30 Q 192 30 192 192" stroke="rgba(200,168,75,.55)" stroke-width="2.5" fill="none"/>
+        <!-- Axes -->
+        <line x1="28" y1="192" x2="192" y2="192" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+        <line x1="28" y1="192" x2="28" y2="30" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+        <!-- Glow dot on curve -->
+        <circle cx="135" cy="72" r="5" fill="var(--gold)" opacity=".9"/>
+        <circle cx="135" cy="72" r="10" fill="var(--gold)" opacity=".15"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Slide 1: Core Idea -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Core Idea</div>
+    <h2 class="fade-in">All possible combinations<br>with your current resources.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">🔒</div>
+        <h3>Fixed Resources</h3>
+        <p>An economy has a finite amount of land, labour, and capital at any moment. The PPF shows every combination of two goods it can produce using <strong>all</strong> of those resources efficiently.</p>
+      </div>
+      <div class="card rust fade-in">
+        <div class="icon">↔️</div>
+        <h3>The Boundary</h3>
+        <p>Points <em>on</em> the curve are fully efficient. Points <em>inside</em> the curve are inefficient — resources are wasted or idle. Points <em>outside</em> are currently unattainable.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">💡</div>
+        <h3>Why It Matters</h3>
+        <p>The PPF makes scarcity visible. Every move along the frontier comes at a cost — producing more of one good always means producing less of another.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 2: The Diagram -->
+  <div class="slide" id="s2">
+    <div class="s2-left">
+      <h2 class="fade-in">Reading the Frontier</h2>
+      <p class="intro fade-in">
+        Two goods: Food and Clothing. The curve traces every fully efficient combination.
+        Its shape, and every point around it, carries meaning.
+      </p>
+      <div class="legend fade-in">
+        <div class="leg-item">
+          <div class="leg-dot gold"></div>
+          <span class="leg-label"><strong style="color:var(--gold)">A — Efficient.</strong> On the frontier. All resources in use, nothing wasted.</span>
+        </div>
+        <div class="leg-item">
+          <div class="leg-dot teal"></div>
+          <span class="leg-label"><strong style="color:#1a9a8e">B — Inefficient.</strong> Inside the curve. Idle workers, unused capacity.</span>
+        </div>
+        <div class="leg-item">
+          <div class="leg-dot rust"></div>
+          <span class="leg-label"><strong style="color:var(--rust)">C — Unattainable.</strong> Outside the curve. Impossible with current resources.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SVG diagram -->
+    <svg class="fade-in" viewBox="0 0 380 310" width="380" height="310" style="flex-shrink:0;">
+      <!-- Subtle unattainable region -->
+      <path d="M 55,28 Q 358,28 358,272 L 358,28 Z" fill="rgba(192,68,42,.08)"/>
+      <!-- Efficient region under curve -->
+      <path d="M 55,28 Q 358,28 358,272 L 55,272 Z" fill="rgba(26,122,110,.08)"/>
+
+      <!-- Y axis -->
+      <line x1="55" y1="272" x2="55" y2="22" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <!-- X axis -->
+      <line x1="55" y1="272" x2="362" y2="272" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <!-- Arrow tips -->
+      <polygon points="55,17 50,27 60,27" fill="rgba(255,255,255,.35)"/>
+      <polygon points="367,272 357,267 357,277" fill="rgba(255,255,255,.35)"/>
+
+      <!-- PPF curve -->
+      <path d="M 55,28 Q 358,28 358,272" fill="none" stroke="#c8a84b" stroke-width="2.5" stroke-linecap="round"/>
+
+      <!-- Region labels -->
+      <text x="130" y="90" fill="rgba(192,68,42,.55)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600" letter-spacing=".05em">UNATTAINABLE</text>
+      <text x="72" y="235" fill="rgba(26,122,110,.6)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600" letter-spacing=".05em">INEFFICIENT</text>
+
+      <!-- Point A — on curve (t≈0.43, x≈266, y≈74) -->
+      <circle cx="266" cy="74" r="6" fill="#c8a84b"/>
+      <circle cx="266" cy="74" r="11" fill="#c8a84b" opacity=".2"/>
+      <text x="278" y="70" fill="#c8a84b" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="700">A</text>
+      <!-- Dashed lines to axes -->
+      <line x1="266" y1="74" x2="266" y2="272" stroke="rgba(200,168,75,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+      <line x1="55" y1="74" x2="266" y2="74" stroke="rgba(200,168,75,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+
+      <!-- Point B — inside curve -->
+      <circle cx="175" cy="185" r="6" fill="#1a9a8e"/>
+      <circle cx="175" cy="185" r="11" fill="#1a9a8e" opacity=".2"/>
+      <text x="187" y="181" fill="#1a9a8e" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="700">B</text>
+
+      <!-- Point C — outside curve -->
+      <circle cx="308" cy="52" r="6" fill="#c0442a"/>
+      <circle cx="308" cy="52" r="11" fill="#c0442a" opacity=".2"/>
+      <text x="320" y="48" fill="#c0442a" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="700">C</text>
+
+      <!-- Axis labels -->
+      <text x="210" y="298" fill="rgba(255,255,255,.5)" font-size="13" font-family="Space Grotesk,sans-serif" text-anchor="middle">Food →</text>
+      <text x="22" y="152" fill="rgba(255,255,255,.5)" font-size="13" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 152)">Clothing →</text>
+
+      <!-- Endpoint ticks + labels -->
+      <line x1="50" y1="28" x2="60" y2="28" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+      <text x="44" y="32" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="end">60</text>
+      <line x1="358" y1="267" x2="358" y2="277" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+      <text x="358" y="290" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">100</text>
+    </svg>
+  </div>
+
+  <!-- Slide 3: Opportunity Cost & The Slope -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">The Key Insight</div>
+    <h2 class="fade-in">The Slope Is the Opportunity Cost</h2>
+    <div class="oc-grid">
+      <div class="oc-card fade-in">
+        <div class="oc-title">Moving Along the Frontier</div>
+        <div class="oc-item">
+          <span class="good">⬆ +10 units of Food</span>
+          <span class="cost high">−6 Clothing</span>
+        </div>
+        <div class="oc-item">
+          <span class="good">⬆ +10 units of Clothing</span>
+          <span class="cost high">−10 Food</span>
+        </div>
+        <p style="font-size:12.5px;color:#555;line-height:1.55;font-weight:300;margin-top:10px;">
+          Every move along the frontier requires giving something up. There is no free lunch — only trade-offs.
+        </p>
+      </div>
+      <div class="oc-card fade-in">
+        <div class="oc-title">Reading Opportunity Cost</div>
+        <div class="oc-item">
+          <span class="good">1 unit of Food costs…</span>
+          <span class="cost low">0.6 Clothing</span>
+        </div>
+        <div class="oc-item">
+          <span class="good">1 unit of Clothing costs…</span>
+          <span class="cost low">1⅔ Food</span>
+        </div>
+        <p style="font-size:12.5px;color:#555;line-height:1.55;font-weight:300;margin-top:10px;">
+          Opportunity cost = units of the forgone good ÷ units of the gained good. The PPF makes this ratio visible.
+        </p>
+      </div>
+    </div>
+    <div class="slope-box fade-in">
+      <strong>Key rule:</strong> The slope of the PPF at any point equals the opportunity cost of producing one more unit of the good on the horizontal axis — measured in units of the vertical-axis good foregone.
+    </div>
+  </div>
+
+  <!-- Slide 4: Increasing Opportunity Cost (Bowed-Out Shape) -->
+  <div class="slide" id="s4">
+    <h2 class="fade-in">Why the Curve Bows <em style="color:var(--gold)">Outward</em></h2>
+    <p class="intro fade-in">A straight-line PPF assumes constant opportunity cost. In reality, resources are not perfectly interchangeable — and that changes everything.</p>
+    <div class="why-cards">
+      <div class="why-card fade-in">
+        <div class="icon">🌾</div>
+        <h4>First Transfers Are Cheap</h4>
+        <p>Shift the first few workers from clothing to food and you pick those best suited to farming. Output of food rises a lot; you give up little clothing. Opportunity cost is low.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="icon">📈</div>
+        <h4>Later Transfers Cost More</h4>
+        <p>Keep shifting workers and you pull those who are really better at textiles. Each additional unit of food now costs more and more clothing. Opportunity cost rises.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="icon">⚙️</div>
+        <h4>Resources Are Specialised</h4>
+        <p>Land, machinery, and skills differ across sectors. Not every input is equally productive in every use — which is why the cost of specialisation increases as you push further.</p>
+      </div>
+      <div class="why-card fade-in">
+        <div class="icon">📐</div>
+        <h4>The Slope Gets Steeper</h4>
+        <p>As you move rightward along the PPF (more food, less clothing), the curve steepens — reflecting that each additional unit of food requires giving up more and more clothing.</p>
+      </div>
+    </div>
+    <div class="bow-note fade-in">
+      <strong>Result:</strong> Increasing opportunity costs give the PPF its characteristic <strong>concave (bowed-outward) shape</strong>. A straight line would imply that resources are perfectly interchangeable — rarely true in practice.
+    </div>
+  </div>
+
+  <!-- Slide 5: Economic Growth / Outward Shift -->
+  <div class="slide" id="s5">
+    <div class="s5-left">
+      <div class="eyebrow fade-in">Beyond the Frontier</div>
+      <h2 class="fade-in">Growth Shifts the<br>Entire Curve Outward</h2>
+      <div class="growth-items">
+        <div class="g-item fade-in">
+          <div class="num">1</div>
+          <div>
+            <h4>More Resources</h4>
+            <p>A larger workforce, new capital, or discovered land moves the PPF outward — the economy can now produce more of both goods simultaneously.</p>
+          </div>
+        </div>
+        <div class="g-item fade-in">
+          <div class="num">2</div>
+          <div>
+            <h4>Better Technology</h4>
+            <p>Technological progress lets you produce more output from the same inputs. If it improves only one sector, the PPF rotates — expanding on one axis but not the other.</p>
+          </div>
+        </div>
+        <div class="g-item fade-in">
+          <div class="num">3</div>
+          <div>
+            <h4>Invest Today, Grow Tomorrow</h4>
+            <p>Choosing more capital goods now (machines, education, infrastructure) sacrifices present consumption — but pushes tomorrow's PPF further out. The trade-off is present vs. future prosperity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Growth SVG -->
+    <svg class="fade-in" viewBox="0 0 260 240" width="260" height="240" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="40" y1="210" x2="240" y2="210" stroke="#ccc" stroke-width="1.5"/>
+      <line x1="40" y1="210" x2="40" y2="18" stroke="#ccc" stroke-width="1.5"/>
+      <polygon points="40,13 35,23 45,23" fill="#ccc"/>
+      <polygon points="245,210 235,205 235,215" fill="#ccc"/>
+
+      <!-- Original PPF (smaller) -->
+      <path d="M 40,60 Q 195,60 195,210" fill="none" stroke="rgba(200,168,75,.4)" stroke-width="2" stroke-dasharray="6 3"/>
+
+      <!-- New PPF (larger, shifted out) -->
+      <path d="M 40,22 Q 238,22 238,210" fill="none" stroke="#c8a84b" stroke-width="2.5"/>
+
+      <!-- Shift arrow -->
+      <defs>
+        <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="var(--teal)"/>
+        </marker>
+      </defs>
+      <line x1="155" y1="95" x2="195" y2="60" stroke="var(--teal)" stroke-width="1.5" marker-end="url(#arrowhead)"/>
+      <text x="148" y="115" fill="var(--teal)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600">Growth</text>
+
+      <!-- Labels -->
+      <text x="140" y="225" fill="#888" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">Food →</text>
+      <text x="18" y="116" fill="#888" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 18 116)">Clothing →</text>
+
+      <!-- PPF labels -->
+      <text x="205" y="145" fill="rgba(200,168,75,.5)" font-size="10" font-family="Space Grotesk,sans-serif">PPF₁</text>
+      <text x="241" y="145" fill="#c8a84b" font-size="10" font-family="Space Grotesk,sans-serif">PPF₂</text>
+    </svg>
+  </div>
+
+  <!-- Slide 6: Takeaway -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      The PPF is not just a diagram — it is a map of <em>scarcity itself</em>. Every point on it is a choice; every move along it has a cost; and everything beyond it is a goal.
+    </blockquote>
+    <div class="attr fade-in">— Production Possibility Frontier · ECON 101 · Macroeconomics</div>
+    <div class="tag">PPF · Scarcity · Opportunity Cost · Economic Growth</div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p id="loading-text">Generating voice narration…</p>
+  </div>
+
+  <!-- Timer bar -->
+  <div id="timer-bar"></div>
+
+  <!-- Controls -->
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+
+</div>
+
+<script>
+// ── Narration scripts ────────────────────────────────────────────────
+const narrations = [
+  "Welcome. Today we're building one of the most foundational tools in all of economics — the Production Possibility Frontier. You'll see this diagram in virtually every introductory economics course, and for good reason: it packs an enormous amount of insight into a single curve. It's not complicated, but it's powerful — and by the end of this, you'll be able to read one fluently.",
+  "So what is a Production Possibility Frontier? Imagine an economy with a fixed amount of resources: workers, machinery, land, time. With those resources, it can produce different combinations of two goods. The PPF is simply the set of all combinations it can produce when every single resource is being used as efficiently as possible. Think of it as a boundary. Everything on or inside the curve is achievable with current resources. Everything outside it is not — at least not yet.",
+  "Let's put a concrete example in front of us. This economy produces two things: food and clothing. If all resources went to food, it could produce one hundred units. All to clothing, sixty units. But it doesn't have to go to extremes. Point A sits right on the curve — that's a fully efficient combination, nothing wasted. Point B is inside the curve — resources are idle, workers are underemployed, the economy is leaving output on the table. And Point C? That's outside the curve entirely. More of both goods than the economy can currently produce. Unattainable today. But not necessarily forever.",
+  "Here's where the PPF really earns its place in economics. As you move along the frontier — say, shifting from clothing toward food — you give something up. Every additional unit of food comes at the cost of some clothing foregone. That is opportunity cost, and the PPF makes it visible. The slope of the curve at any point tells you exactly how much of one good you must sacrifice to get one more unit of the other. It's not abstract — it's baked right into the shape of the curve.",
+  "Now you might wonder: why is the PPF typically drawn as a bowed-out curve rather than a straight line? The answer is increasing opportunity cost. Resources — workers, machines, land — are not equally suited to every use. When you shift the first few workers from clothing to food production, you pick the ones who are naturally best at farming. Easy gains, low cost. But as you keep shifting more workers, you're pulling people who are genuinely better suited to textile work. Each extra unit of food now costs more and more clothing than the last. That's why the slope gets steeper as you move along the curve — and why it bows outward. A straight line would mean resources are perfectly interchangeable. They aren't.",
+  "So far the PPF has been fixed. But economies grow. What shifts the entire frontier outward? Two main drivers. First, more resources: a larger workforce, new capital equipment, additional land. Second, better technology, which lets you get more output from the same inputs. If technology improves in one sector only, the PPF rotates — expanding on one axis more than the other. And there's a deeper lesson here. An economy that invests heavily in capital goods today — machines, infrastructure, education — is choosing a point with less current consumption in exchange for pushing tomorrow's frontier further out. It's a trade-off between today and tomorrow, mapped onto the same diagram.",
+  "The Production Possibility Frontier isn't just a diagram — it's a visual representation of scarcity, choice, and trade-off. Every economy, every firm, every individual faces a version of it. Scarcity forces choices. Choices have costs. And operating efficiently means being on the frontier, not inside it. Understanding the PPF is understanding the very problem that economics was created to study."
+];
+
+// ── ElevenLabs TTS ───────────────────────────────────────────────────
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+
+let audioBuffers = new Array(narrations.length).fill(null);
+let apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+let muted = false;
+let currentAudio = null;
+
+const statusBar      = document.getElementById('status-bar');
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      text: narrations[idx],
+      model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true }
+    })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs error (${resp.status})`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating slide ${i + 1} of ${narrations.length}…`;
+    try {
+      audioBuffers[i] = await generateAudio(i);
+    } catch(e) {
+      loadingOverlay.classList.remove('show');
+      console.error('Audio generation error:', e.message);
+      return;
+    }
+  }
+  loadingOverlay.classList.remove('show');
+  playSlideAudio(0);
+}
+
+// ── Audio playback ───────────────────────────────────────────────────
+function stopAudio() {
+  if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted || !audioBuffers[idx]) {
+    startTimer(12000, () => goTo(idx + 1));
+    return;
+  }
+  const audio = new Audio(audioBuffers[idx]);
+  currentAudio = audio;
+  audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+  audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+  audio.play().catch(() => startTimer(12000, () => goTo(idx + 1)));
+}
+
+// ── Mute ─────────────────────────────────────────────────────────────
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted;
+  muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) {
+    if (currentAudio) currentAudio.pause();
+    startTimer(12000, () => goTo(current + 1));
+  } else {
+    playSlideAudio(current);
+  }
+});
+
+// ── Slides ───────────────────────────────────────────────────────────
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0;
+let timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  if (audioBuffers.some(b => b !== null)) playSlideAudio(current);
+}
+
+function stopTimer() {
+  clearTimeout(timerTimeout);
+  cancelAnimationFrame(rafId);
+  timerBar.style.width = '0%';
+}
+
+function startTimer(durationMs, cb) {
+  stopTimer();
+  timerDuration = durationMs;
+  timerStart = performance.now();
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+generateAll();
+</script>
+</body>
+</html>
