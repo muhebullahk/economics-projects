@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inflation — ECON 101</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --mist:  #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px; font-size: 9px;
+    color: rgba(255,255,255,.18); letter-spacing: .07em; text-transform: uppercase;
+    pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 .rule  { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 64px; line-height: 1.05; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub  { margin-top: 20px; font-size: 16px; color: #8898a0; font-weight: 300; max-width: 450px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(200,168,75,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .icon-wrap { position: absolute; right: 52px; top: 50%; transform: translateY(-50%); width: 220px; height: 220px; }
+
+  /* ── Slide 1 – What is Inflation ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--ink); line-height: 1.15; margin-bottom: 26px; }
+  .cards { display: flex; gap: 18px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 22px 18px; border-top: 4px solid var(--gold); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.rust-t { border-color: var(--rust); }
+  .card.teal-t { border-color: var(--teal); }
+  .card .icon { font-size: 26px; margin-bottom: 10px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .card p { font-size: 12.5px; color: #444; line-height: 1.6; font-weight: 300; }
+  .formula { font-family: 'Playfair Display', serif; font-style: italic; font-size: 13px; color: #9a6800; margin-top: 8px; font-weight: 700; }
+
+  /* ── Slides 2, 3, 5 – horizontal ── */
+  .h-slide { flex-direction: row; align-items: center; gap: 34px; padding: 42px 50px; }
+  .h-slide .sl { flex: 1; min-width: 0; }
+  #s2 { background: #0f1117; }
+  #s3 { background: var(--paper); }
+  #s5 { background: var(--paper); }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--paper); margin-bottom: 7px; }
+  #s3 h2, #s5 h2 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--ink); margin-bottom: 7px; }
+  #s2 .intro { font-size: 12.5px; color: #bbc; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  #s3 .intro, #s5 .intro { font-size: 12.5px; color: #555; font-weight: 300; line-height: 1.6; margin-bottom: 14px; }
+  .side-facts { display: flex; flex-direction: column; gap: 9px; }
+  .side-fact { display: flex; gap: 9px; align-items: flex-start; font-size: 12px; line-height: 1.5; }
+  .sbadge { flex-shrink: 0; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: .04em; margin-top: 1px; background: rgba(200,168,75,.18); color: var(--gold); }
+  #s2 .side-fact { color: #bbc; }
+  #s3 .side-fact { color: #444; }
+  #s3 .side-fact strong { color: var(--ink); }
+  #s5 .side-fact { color: #444; }
+
+  /* ── Slide 4 – Winners & Losers ── */
+  #s4 { background: #0a0f14; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 6px; }
+  #s4 .intro { font-size: 12.5px; color: #8899aa; font-weight: 300; margin-bottom: 20px; line-height: 1.55; }
+  .wl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .wl-card { border-radius: 8px; padding: 20px 18px; opacity: 0; transition: opacity .6s ease; }
+  .wl-card.show { opacity: 1; }
+  .wl-card.wins  { background: rgba(26,122,110,.09);  border: 1px solid rgba(26,122,110,.3); }
+  .wl-card.loses { background: rgba(192,68,42,.09);   border: 1px solid rgba(192,68,42,.3); }
+  .wl-card .wl-label { font-size: 9.5px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 5px; }
+  .wl-card.wins  .wl-label { color: #1a9a8e; }
+  .wl-card.loses .wl-label { color: var(--rust); }
+  .wl-card h4 { font-size: 16px; font-family: 'Playfair Display', serif; font-weight: 700; margin-bottom: 8px; }
+  .wl-card.wins  h4 { color: #1a9a8e; }
+  .wl-card.loses h4 { color: var(--rust); }
+  .wl-card p  { font-size: 12px; color: #8899aa; line-height: 1.6; font-weight: 300; margin-bottom: 6px; }
+  .wl-ex { font-size: 11px; color: #667; font-weight: 300; font-style: italic; }
+  .wl-note { margin-top: 16px; padding: 10px 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); border-radius: 6px; font-size: 12px; color: #ccd; line-height: 1.55; font-weight: 300; opacity: 0; transition: opacity .6s ease; }
+  .wl-note.show { opacity: 1; }
+  .wl-note strong { color: var(--gold); }
+
+  /* ── Slide 5 – Policy ── */
+  .pol-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .pol-col { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 3px 12px rgba(0,0,0,.07); opacity: 0; transition: opacity .6s ease; }
+  .pol-col.show { opacity: 1; }
+  .pol-col h3 { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 10px; }
+  .pol-col.monetary h3 { color: #9a6800; }
+  .pol-col.fiscal   h3 { color: var(--teal); }
+  .pol-item { display: flex; gap: 8px; margin-bottom: 7px; font-size: 12px; color: #444; line-height: 1.45; font-weight: 300; }
+  .pol-item .p-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .pol-col.monetary .p-dot { background: var(--gold); }
+  .pol-col.fiscal   .p-dot { background: var(--teal); }
+  .pol-note { margin-top: 14px; padding: 9px 14px; background: rgba(200,168,75,.07); border-left: 3px solid var(--gold); font-size: 12px; color: #333; line-height: 1.55; opacity: 0; transition: opacity .6s ease; }
+  .pol-note.show { opacity: 1; }
+  .pol-note strong { color: #9a6800; }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: #12100a; }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(200,168,75,.2); margin-bottom: -10px; }
+  #s6 blockquote { font-family: 'Playfair Display', serif; font-size: 25px; line-height: 1.5; color: white; max-width: 640px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag  { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.3); }
+
+  /* ── Controls ── */
+  #controls { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+  #loading-overlay { position: absolute; inset: 0; background: rgba(10,12,18,.88); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 10; }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(200,168,75,.2); border-top-color: var(--gold); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  /* ── Teaching animations ── */
+  .anim-path { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .65s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 101 · Macroeconomics</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">In-<br><em>flation</em></h1>
+    <p class="sub fade-in">A sustained rise in the general price level — and one of the central preoccupations of macroeconomic policy in every generation.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="icon-wrap fade-in">
+      <svg viewBox="0 0 220 220" fill="none">
+        <circle cx="110" cy="110" r="105" stroke="rgba(200,168,75,.15)" stroke-width="1.5"/>
+        <!-- Axes -->
+        <line x1="30" y1="185" x2="192" y2="185" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <line x1="30" y1="185" x2="30"  y2="30"  stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <!-- 2% target baseline (dim dashed) -->
+        <line id="title-target" class="anim-path" x1="30" y1="155" x2="192" y2="75"
+              stroke="rgba(200,168,75,.35)" stroke-width="1.2" stroke-dasharray="5 4"/>
+        <!-- CPI rising curve (gold) -->
+        <path id="title-cpi" class="anim-path"
+              d="M 30,182 C 65,175 95,155 125,128 S 160,85 192,55"
+              fill="none" stroke="#c8a84b" stroke-width="2.4" stroke-linecap="round"/>
+        <!-- Labels -->
+        <text x="111" y="202" fill="rgba(255,255,255,.28)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" letter-spacing=".07em">TIME →</text>
+        <text x="22"  y="108" fill="rgba(255,255,255,.28)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 108)">PRICE LEVEL</text>
+        <text class="ppf-pt" id="title-cpilbl" x="195" y="52" fill="rgba(200,168,75,.8)" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700">CPI ↑</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: What is Inflation ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">Prices &amp; Measurement</div>
+    <h2 class="fade-in">A sustained rise in the general price level.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">🛒</div>
+        <h3>Consumer Price Index</h3>
+        <p>Statistics Canada measures inflation via the <em>CPI</em> — the cost of a representative basket of goods and services (food, shelter, transport, healthcare) purchased by a typical household.</p>
+      </div>
+      <div class="card rust-t fade-in">
+        <div class="icon">📐</div>
+        <h3>Inflation Rate</h3>
+        <p>The percentage change in the CPI from one period to the next. If CPI rises from 120 to 123.6, inflation is 3%.</p>
+        <p class="formula">π = (CPI₁ − CPI₀) ÷ CPI₀ × 100</p>
+      </div>
+      <div class="card teal-t fade-in">
+        <div class="icon">⚖️</div>
+        <h3>Real vs. Nominal</h3>
+        <p>Inflation distinguishes <em>nominal</em> values (in current dollars) from <em>real</em> values (adjusted for inflation). Real GDP, real wages, and real interest rates all account for the eroding effect of rising prices.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: Causes of Inflation (dark, horizontal) ── -->
+  <div class="slide h-slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Three Causes of Inflation</h2>
+      <p class="intro fade-in">Inflation can be driven by demand, supply, or expectations — and the appropriate policy response depends on knowing which is at work.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge">Demand-Pull</span>
+          <span>"Too much money chasing too few goods." When <em>aggregate demand rises faster than supply capacity</em>, firms respond by raising prices. The AD curve shifts right, driving up the price level.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(192,68,42,.18);color:var(--rust)">Cost-Push</span>
+          <span>Rising production costs — a spike in oil prices, higher wages, or supply-chain disruptions — shift the <em>SRAS curve leftward</em>, reducing output while raising prices simultaneously.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(26,122,110,.18);color:#1a9a8e">Built-In</span>
+          <span>A <em>wage-price spiral</em>: workers demand higher wages expecting future inflation; firms pass higher costs on as higher prices; which triggers further wage demands. Self-fulfilling and hard to break.</span>
+        </div>
+      </div>
+    </div>
+    <!-- AD-AS diagram (dark background) -->
+    <svg viewBox="0 0 320 268" width="320" height="268" class="fade-in" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="45" y1="240" x2="305" y2="240" stroke="rgba(255,255,255,.3)" stroke-width="1.3"/>
+      <line x1="45" y1="240" x2="45"  y2="18"  stroke="rgba(255,255,255,.3)" stroke-width="1.3"/>
+      <polygon points="45,13 40,23 50,23" fill="rgba(255,255,255,.3)"/>
+      <polygon points="310,240 300,235 300,245" fill="rgba(255,255,255,.3)"/>
+
+      <!-- SRAS (teal, upward sloping) -->
+      <line id="as-sras" class="anim-path" x1="80" y1="225" x2="230" y2="28"
+            stroke="#1a9a8e" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="as-sraslbl" x="234" y="26" fill="#1a9a8e" font-size="10.5"
+            font-family="Space Grotesk,sans-serif" font-weight="700">SRAS</text>
+
+      <!-- AD₀ (dim, downward sloping) -->
+      <line id="as-ad0" class="anim-path" x1="45" y1="100" x2="270" y2="220"
+            stroke="rgba(255,255,255,.3)" stroke-width="2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="as-ad0lbl" x="274" y="218" fill="rgba(255,255,255,.45)" font-size="10"
+            font-family="Space Grotesk,sans-serif">AD₀</text>
+
+      <!-- AD₁ (gold, shifted right) -->
+      <line id="as-ad1" class="anim-path" x1="110" y1="88" x2="305" y2="205"
+            stroke="#c8a84b" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="as-ad1lbl" x="308" y="203" fill="var(--gold)" font-size="10"
+            font-family="Space Grotesk,sans-serif" font-weight="700">AD₁</text>
+
+      <!-- Shift arrow -->
+      <g class="ppf-pt" id="as-arrow">
+        <line x1="195" y1="162" x2="228" y2="152" stroke="rgba(200,168,75,.7)" stroke-width="1.5"/>
+        <polygon points="233,150 223,144 221,157" fill="rgba(200,168,75,.7)"/>
+      </g>
+
+      <!-- E₀: SRAS ∩ AD₀ ≈ (142, 147) -->
+      <g class="ppf-pt" id="as-e0">
+        <circle cx="142" cy="147" r="4" fill="rgba(255,255,255,.55)"/>
+        <line x1="45"  y1="147" x2="142" y2="147" stroke="rgba(255,255,255,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="142" y1="147" x2="142" y2="240" stroke="rgba(255,255,255,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="38" y="151" fill="rgba(255,255,255,.5)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="end">P₀</text>
+        <text x="142" y="252" fill="rgba(255,255,255,.4)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Y₀</text>
+      </g>
+
+      <!-- E₁: SRAS ∩ AD₁ ≈ (163, 113) -->
+      <g class="ppf-pt" id="as-e1">
+        <circle cx="163" cy="113" r="4" fill="var(--gold)"/>
+        <line x1="45"  y1="113" x2="163" y2="113" stroke="rgba(200,168,75,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="163" y1="113" x2="163" y2="240" stroke="rgba(200,168,75,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="38" y="117" fill="var(--gold)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="end">P₁</text>
+        <text x="163" y="252" fill="rgba(200,168,75,.6)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Y₁</text>
+      </g>
+
+      <!-- P rises annotation -->
+      <g class="ppf-pt" id="as-plbl">
+        <line x1="36" y1="116" x2="36" y2="144" stroke="rgba(200,168,75,.55)" stroke-width="1.5"/>
+        <polygon points="36,111 31,121 41,121" fill="rgba(200,168,75,.55)"/>
+        <text x="24" y="131" fill="rgba(200,168,75,.7)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">P↑</text>
+      </g>
+
+      <!-- Axis labels -->
+      <text x="175" y="257" fill="rgba(255,255,255,.4)" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Real Output (Y) →</text>
+      <text x="24"  y="128" fill="rgba(255,255,255,.4)" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 24 128)">Price Level (P) →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Purchasing Power Erosion (light, horizontal) ── -->
+  <div class="slide h-slide" id="s3">
+    <div class="sl">
+      <h2 class="fade-in">The Costs of Inflation</h2>
+      <p class="intro fade-in">Inflation's most visible cost is the erosion of purchasing power — the real value of every dollar held falls each year. But it also creates a web of hidden inefficiencies.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(26,122,110,.15);color:#1a7a6e">2% / yr</span>
+          <span>At Canada's 2% target, $100 today buys only <strong>$67 worth of goods in 20 years</strong>. Manageable — and predictable enough to plan around.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge">5% / yr</span>
+          <span>Purchasing power falls to <strong>$38 in 20 years</strong>. Savers and fixed-income earners suffer significant real wealth loss. Investment and long-term planning are disrupted.</span>
+        </div>
+        <div class="side-fact" style="color:#c0442a">
+          <span class="sbadge" style="background:rgba(192,68,42,.15);color:var(--rust)">10% / yr</span>
+          <span>Only <strong>$15 remains in 20 years</strong>. High, volatile inflation destroys savings, deters investment, and erodes trust in the monetary system. Menu costs and shoe-leather costs multiply.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(15,17,23,.08);color:#333">Key</span>
+          <span><strong>Unpredictability is as damaging as the level.</strong> Even moderate inflation, if volatile and unexpected, distorts economic decisions and imposes large costs on businesses and households.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Purchasing power erosion SVG (light background — dark colors) -->
+    <svg viewBox="0 0 305 258" width="305" height="258" class="fade-in" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="44" y1="222" x2="284" y2="222" stroke="#bbb" stroke-width="1.3"/>
+      <line x1="44" y1="18"  x2="44"  y2="222" stroke="#bbb" stroke-width="1.3"/>
+      <polygon points="44,13 39,23 49,23" fill="#bbb"/>
+      <polygon points="289,222 279,217 279,227" fill="#bbb"/>
+
+      <!-- $100 start reference -->
+      <line x1="44" y1="18" x2="284" y2="18" stroke="rgba(0,0,0,.08)" stroke-width="1" stroke-dasharray="3 3"/>
+      <text x="37" y="22" fill="#888" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="end">$100</text>
+
+      <!-- 2% curve → $67 after 20 yrs; y_coord for $67 = 18+(100-67)/100*204 = 18+67.3 = 85 -->
+      <path id="pp-2pct" class="anim-path"
+            d="M 44,18 C 120,26 200,55 284,85"
+            fill="none" stroke="#1a7a6e" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="7 3"/>
+      <text class="ppf-pt" id="pp-2lbl" x="286" y="83" fill="#1a7a6e" font-size="9.5"
+            font-family="Space Grotesk,sans-serif" font-weight="700">2%</text>
+      <text class="ppf-pt" id="pp-2val" x="286" y="95" fill="#1a7a6e" font-size="8.5"
+            font-family="Space Grotesk,sans-serif" font-weight="300">$67</text>
+
+      <!-- 5% curve → $38 after 20 yrs; y_coord = 18+(100-38)/100*204 = 18+126.5 = 145 -->
+      <path id="pp-5pct" class="anim-path"
+            d="M 44,18 C 100,44 185,100 284,145"
+            fill="none" stroke="#9a6800" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="pp-5lbl" x="286" y="143" fill="#9a6800" font-size="9.5"
+            font-family="Space Grotesk,sans-serif" font-weight="700">5%</text>
+      <text class="ppf-pt" id="pp-5val" x="286" y="155" fill="#9a6800" font-size="8.5"
+            font-family="Space Grotesk,sans-serif" font-weight="300">$38</text>
+
+      <!-- 10% curve → $15 after 20 yrs; y_coord = 18+(100-15)/100*204 = 18+173.4 = 191 -->
+      <path id="pp-10pct" class="anim-path"
+            d="M 44,18 C 80,64 162,148 284,191"
+            fill="none" stroke="#c0442a" stroke-width="2.2" stroke-linecap="round"/>
+      <text class="ppf-pt" id="pp-10lbl" x="286" y="189" fill="#c0442a" font-size="9.5"
+            font-family="Space Grotesk,sans-serif" font-weight="700">10%</text>
+      <text class="ppf-pt" id="pp-10val" x="286" y="201" fill="#c0442a" font-size="8.5"
+            font-family="Space Grotesk,sans-serif" font-weight="300">$15</text>
+
+      <!-- Year markers -->
+      <text x="44"  y="235" fill="#999" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">0</text>
+      <text x="284" y="235" fill="#999" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">20 yrs</text>
+      <text x="164" y="250" fill="#777" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Years →</text>
+      <text x="22"  y="120" fill="#777" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 120)">Purchasing Power ($)</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 4: Winners & Losers (dark) ── -->
+  <div class="slide" id="s4">
+    <h2 class="fade-in">Winners &amp; Losers from Inflation</h2>
+    <p class="intro fade-in">Inflation redistributes wealth — from creditors to debtors, from savers to borrowers. This arbitrary redistribution is one of the strongest arguments for keeping inflation low and stable.</p>
+    <div class="wl-grid">
+      <div class="wl-card wins" id="wl-wins">
+        <div class="wl-label">Winners</div>
+        <h4>✓ Debtors &amp; Asset Holders</h4>
+        <p>Borrowers repay loans in cheaper dollars — the real burden of debt falls as prices rise. Homeowners with fixed-rate mortgages benefit. Owners of real estate, equities, and commodities see nominal asset values rise.</p>
+        <p class="wl-ex">A $300,000 fixed-rate mortgage shrinks in real terms every year inflation runs above zero.</p>
+      </div>
+      <div class="wl-card loses" id="wl-loses">
+        <div class="wl-label">Losers</div>
+        <h4>✗ Savers &amp; Fixed-Income Earners</h4>
+        <p>The real return on savings accounts and bonds falls. Pensioners and retirees on fixed incomes see purchasing power erode steadily. Cash holders lose real wealth directly — inflation is a tax on money.</p>
+        <p class="wl-ex">Hyperinflation (Zimbabwe 2008, Venezuela 2018) can wipe out all savings within months.</p>
+      </div>
+    </div>
+    <div class="wl-note" id="wl-note">
+      <strong>Why target 2%?</strong> Low, stable inflation preserves savings, supports long-run planning, and avoids the deflation trap — where falling prices cause consumers to delay spending, deepening recessions.
+    </div>
+  </div>
+
+  <!-- ── Slide 5: Fighting Inflation (light, horizontal) ── -->
+  <div class="slide h-slide" id="s5">
+    <div class="sl">
+      <div class="eyebrow fade-in">The Policy Toolkit</div>
+      <h2 class="fade-in">Fighting Inflation</h2>
+      <p class="intro fade-in">The Bank of Canada targets <strong>2% inflation</strong> — the midpoint of a 1–3% control range. When inflation deviates from target, policy responds to bring it back.</p>
+      <div class="side-facts fade-in">
+        <div class="side-fact">
+          <span class="sbadge">Rate ↑</span>
+          <span>When inflation is <em>above</em> target, the Bank raises the overnight rate. Borrowing becomes costlier → investment and consumption fall → aggregate demand cools → prices stabilise.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(26,122,110,.15);color:#1a7a6e">Rate ↓</span>
+          <span>When inflation is <em>below</em> target (or deflation threatens), the Bank cuts rates to stimulate demand and push inflation back up toward 2%.</span>
+        </div>
+        <div class="side-fact">
+          <span class="sbadge" style="background:rgba(200,168,75,.18);color:#9a6800">Expectations</span>
+          <span>Anchoring <em>inflation expectations</em> is itself a policy tool. When households and firms believe inflation will stay near 2%, they set wages and prices accordingly — making the target self-fulfilling.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Policy grid (light background) -->
+    <div style="flex-shrink:0; width:310px; display:flex; flex-direction:column; gap:14px;">
+      <div class="pol-grid">
+        <div class="pol-col monetary" id="pol-monetary">
+          <h3>Monetary Policy</h3>
+          <div class="pol-item"><div class="p-dot"></div><span><strong>Raise overnight rate</strong> to cool demand and bring inflation down</span></div>
+          <div class="pol-item"><div class="p-dot"></div><span><strong>Lower overnight rate</strong> to stimulate demand and push inflation up</span></div>
+          <div class="pol-item"><div class="p-dot"></div><span>Primary anti-inflation tool since 1991</span></div>
+        </div>
+        <div class="pol-col fiscal" id="pol-fiscal">
+          <h3>Fiscal Policy</h3>
+          <div class="pol-item"><div class="p-dot"></div><span><strong>Cut spending</strong> or <strong>raise taxes</strong> to reduce aggregate demand</span></div>
+          <div class="pol-item"><div class="p-dot"></div><span>Addresses <strong>demand-pull</strong> inflation directly</span></div>
+          <div class="pol-item"><div class="p-dot"></div><span>Slower and politically harder than monetary policy</span></div>
+        </div>
+      </div>
+      <div class="pol-note" id="pol-note">
+        <strong>Key insight:</strong> Neither tool can fix <em>cost-push</em> inflation without creating unemployment — a painful trade-off known as stagflation, last seen in the 1970s oil shocks.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 6: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Inflation is a tax on money — silent, universal, and felt most acutely by those who can afford it least. Low, <em>stable</em> inflation is not just a technical target; it is the foundation on which savings, investment, and long-run prosperity rest.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 101 · UNBC</div>
+    <div class="tag">Inflation · CPI · Demand-Pull · Cost-Push · Purchasing Power · Bank of Canada</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Welcome. In this topic we turn to inflation — the sustained rise in the general price level over time. Inflation is one of the central preoccupations of macroeconomic policy, and for good reason: when it runs too high, it erodes purchasing power and destabilises the economy. When it runs too low or turns negative, it can trap economies in deflation. Getting inflation right is one of the most important tasks a central bank faces.",
+  "What exactly is inflation, and how do we measure it? Inflation is a sustained increase in the average price level across the economy — not just a rise in the price of one good, but a broad-based increase in the cost of living. In Canada, Statistics Canada measures inflation using the Consumer Price Index, or CPI. The CPI tracks the cost of a representative basket of goods and services purchased by a typical urban household — including food, shelter, transportation, and healthcare. The inflation rate is the percentage change in the CPI from one period to the next. If the CPI was 120 last year and is 123.6 this year, the inflation rate is three percent. It's also important to distinguish nominal values — expressed in current dollars — from real values, which are adjusted for inflation. Real GDP, real wages, and real interest rates all strip out the effect of inflation to reveal what is actually happening to living standards and purchasing power.",
+  "What causes inflation? Economists identify three main sources. The first is demand-pull inflation — sometimes described as too much money chasing too few goods. When aggregate demand increases faster than the economy's capacity to produce, firms respond by raising prices. In the AD-AS diagram, a rightward shift of aggregate demand from AD-zero to AD-one drives the price level up from P-zero to P-one. The second source is cost-push inflation. Rising production costs — a spike in oil prices, higher wages, or a supply chain disruption — shift the short-run aggregate supply curve to the left, reducing output while raising prices at the same time. This is sometimes called stagflation: the combination of high inflation and weak output. The third source is built-in inflation, or the wage-price spiral. When workers expect future inflation, they demand higher wages pre-emptively. Higher wages raise firms' costs, which firms pass on as higher prices, which in turn justify further wage demands. Once embedded, inflation expectations become self-fulfilling and can be very hard to break — as central banks learned painfully in the nineteen seventies.",
+  "One of the most insidious costs of inflation is the erosion of purchasing power — the amount of real goods and services that a dollar can buy. The chart on the right shows what happens to the real value of one hundred dollars over twenty years at three different inflation rates. At two percent — close to the Bank of Canada's target — one hundred dollars retains sixty-seven dollars of purchasing power after twenty years. Significant erosion, but gradual and predictable. At five percent, purchasing power falls to just thirty-eight dollars over the same period. At ten percent, only fifteen dollars remains. But beyond purchasing power erosion, inflation imposes several other costs. Shoe-leather costs: households and firms spend time and effort economising on cash holdings when inflation is high, diverting resources from productive uses. Menu costs: businesses must continually update prices, reprinting menus, repricing products, and renegotiating contracts. And uncertainty costs: when inflation is volatile and unpredictable, long-run investment falls because the real value of future returns becomes unclear. Unpredictability is often more damaging than the level of inflation itself.",
+  "Inflation creates winners and losers — and the redistribution it causes is one of the strongest arguments for keeping it low and stable. Borrowers benefit from inflation: the real value of their debt falls as prices rise. A homeowner with a fixed-rate mortgage, for example, repays cheaper dollars over time — the real burden of debt declines automatically. Holders of real assets — property, equities, commodities — tend to see nominal values rise, partially or fully keeping pace with inflation. On the losing side, creditors and savers are hurt when the real return on deposits and bonds falls. Those on fixed incomes — retirees and pensioners — see their purchasing power erode steadily. And anyone holding cash suffers a direct loss of real wealth each year. These distributional effects are arbitrary — they depend not on merit or productivity, but simply on who happens to hold debt versus savings. Hyperinflation, when inflation exceeds fifty percent per month, destroys all of these groups simultaneously and can collapse the monetary system entirely, as Zimbabwe experienced in two thousand and eight and Venezuela in more recent years.",
+  "How do policymakers fight inflation? The primary tool is monetary policy. In Canada, the Bank of Canada targets two percent inflation — the midpoint of a one-to-three percent control range, in place since nineteen ninety-one. When inflation rises above target, the Bank raises its policy interest rate — the overnight rate. This makes borrowing more expensive, which reduces consumer spending and business investment, cooling aggregate demand and putting downward pressure on prices. When inflation falls below target, the Bank cuts rates to stimulate demand. Fiscal policy can also help: cutting government spending or raising taxes reduces aggregate demand and can address demand-pull inflation — but these measures are slower to implement and politically more difficult than monetary policy. One of the most powerful anti-inflation tools is expectations management. When households and firms confidently expect inflation to stay near two percent, they set wages and prices accordingly — making the target largely self-fulfilling. A central bank with high credibility can thus stabilise inflation at low cost. The critical policy challenge is cost-push inflation, which cannot be addressed through demand management without creating unemployment — a painful trade-off at the heart of macroeconomic policy.",
+  "Inflation is a tax on money — silent, universal, and felt most acutely by those who can afford it least. Understanding its causes — demand-pull, cost-push, and built-in dynamics — is essential for understanding why macroeconomic policy matters. Low, stable inflation is not just a technical target: it is the foundation on which savings, investment, and long-run prosperity rest. When inflation is well-anchored, households can plan, businesses can invest, and the gains from economic growth are not silently eroded. That is why the Bank of Canada's two percent target is one of the most consequential economic commitments a government can make."
+];
+
+const VOICE_ID = 'pNInz6obpgDQGcFmaJgB';
+const MODEL_ID = 'eleven_turbo_v2_5';
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_7deda4424f6fb3c4e7be85c702f23fd86e732c4ca6a4b21e';
+let muted = false, currentAudio = null, currentSpeech = null, speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initPaths();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio)  { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer); stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('🎙 AI narration');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else { speakWithBrowser(idx); }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx], rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('🔊 Browser narration');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel') || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter); currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted; muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0, timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer(); timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+// ── Animation system ─────────────────────────────────────────────────
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    const len = el.getTotalLength ? el.getTotalLength() : 600;
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawPath(id, durMs, delayMs) {
+  sch(delayMs || 0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs || 1800}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function resetPaths() {
+  document.querySelectorAll('.anim-path').forEach(el => {
+    el.style.transition = 'none';
+    el.style.strokeDasharray = el.dataset.origLen || 9999;
+    el.style.strokeDashoffset = el.dataset.origLen || 9999;
+  });
+}
+
+function show(id) { document.getElementById(id)?.classList.add('ppf-show'); }
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.wl-card, .wl-note, .pol-col, .pol-note').forEach(el => el.classList.remove('show'));
+  resetPaths();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0: // Title: target baseline, then rising CPI curve
+      drawPath('title-target', 1000, 400);
+      drawPath('title-cpi',    2000, 900);
+      sch(2700, () => show('title-cpilbl'));
+      break;
+
+    case 2: // AD-AS: SRAS, then AD₀, then AD₁ shift with annotations
+      drawPath('as-sras', 1600, 300);
+      sch(600,  () => show('as-sraslbl'));
+      drawPath('as-ad0',  1600, 5000);
+      sch(5400, () => show('as-ad0lbl'));
+      sch(6000, () => show('as-e0'));
+      drawPath('as-ad1',  1600, 12000);
+      sch(12400, () => show('as-ad1lbl'));
+      sch(13000, () => show('as-arrow'));
+      sch(14500, () => show('as-e1'));
+      sch(16000, () => show('as-plbl'));
+      break;
+
+    case 3: // Purchasing power: 2%, then 5%, then 10%
+      drawPath('pp-2pct', 2000, 1000);
+      sch(1200, () => { show('pp-2lbl'); show('pp-2val'); });
+      drawPath('pp-5pct', 2000, 6000);
+      sch(6300, () => { show('pp-5lbl'); show('pp-5val'); });
+      drawPath('pp-10pct', 2000, 12000);
+      sch(12300, () => { show('pp-10lbl'); show('pp-10val'); });
+      break;
+
+    case 4: // Winners first, then losers, then note
+      sch(2000,  () => document.getElementById('wl-wins')?.classList.add('show'));
+      sch(18000, () => document.getElementById('wl-loses')?.classList.add('show'));
+      sch(32000, () => document.getElementById('wl-note')?.classList.add('show'));
+      break;
+
+    case 5: // Monetary first, then fiscal, then key insight
+      sch(2000,  () => document.getElementById('pol-monetary')?.classList.add('show'));
+      sch(18000, () => document.getElementById('pol-fiscal')?.classList.add('show'));
+      sch(32000, () => document.getElementById('pol-note')?.classList.add('show'));
+      break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>
