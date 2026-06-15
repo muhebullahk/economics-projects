@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="ps" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرضه او تقاضا — اقتصاد ۱۰۱</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Space+Grotesk:wght@300;400;600;700&display=swap');
+
+  :root {
+    --ink:   #0f1117;
+    --paper: #f7f4ee;
+    --gold:  #c8a84b;
+    --teal:  #1a7a6e;
+    --rust:  #c0442a;
+    --blue:  #1a4a8a;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Noto Nastaliq Urdu', serif; gap: 18px;
+    direction: rtl;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; direction: ltr; display: inline-block; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: left; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; right: 18px; font-size: 9px;
+    color: rgba(255,255,255,.18); letter-spacing: .07em; text-transform: uppercase;
+    pointer-events: none; z-index: 5; font-family: 'Space Grotesk', sans-serif;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 13px; color: var(--gold); margin-bottom: 18px; line-height: 2; }
+  #s0 .rule  { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 h1 { font-size: 54px; line-height: 1.5; color: var(--paper); font-weight: 700; }
+  #s0 h1 em { font-style: normal; color: var(--gold); }
+  #s0 .sub { margin-top: 20px; font-size: 14px; color: #8898a0; font-weight: 400; max-width: 430px; line-height: 2.2; }
+  #s0 .author-line { margin-top: 16px; font-size: 12px; color: rgba(200,168,75,.6); }
+  #s0 .diagram {
+    position: absolute; left: 58px; top: 50%; transform: translateY(-50%);
+    width: 210px; height: 210px; direction: ltr;
+  }
+
+  /* ── Slide 1 – The Market ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 12px; color: var(--teal); margin-bottom: 14px; }
+  #s1 h2 { font-size: 26px; color: var(--ink); line-height: 1.8; margin-bottom: 22px; }
+  .cards { display: flex; gap: 18px; flex-direction: row-reverse; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 20px 16px; border-top: 4px solid var(--teal); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.gold-t { border-color: var(--gold); }
+  .card.blue-t { border-color: var(--blue); }
+  .card .icon { font-size: 24px; margin-bottom: 8px; }
+  .card h3 { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+  .card p { font-size: 11.5px; color: #444; line-height: 2.1; }
+
+  /* ── Slides 2 & 3 – Curve slides ── */
+  #s2 { background: #0f1a19; flex-direction: row-reverse; align-items: center; gap: 32px; padding: 44px 52px; }
+  #s3 { background: var(--paper); flex-direction: row-reverse; align-items: center; gap: 32px; padding: 44px 52px; }
+  #s2 .sl, #s3 .sl { flex: 1; min-width: 0; }
+  #s2 h2 { font-size: 24px; color: var(--paper); margin-bottom: 8px; line-height: 1.8; }
+  #s3 h2 { font-size: 24px; color: var(--ink); margin-bottom: 8px; line-height: 1.8; }
+  #s2 .intro { font-size: 12.5px; color: #8fa; line-height: 2.1; margin-bottom: 14px; }
+  #s3 .intro { font-size: 12.5px; color: #555; line-height: 2.1; margin-bottom: 14px; }
+  .curve-fact { display: flex; flex-direction: column; gap: 9px; }
+  .fact-row { display: flex; align-items: flex-start; gap: 9px; font-size: 11.5px; line-height: 1.9; flex-direction: row-reverse; }
+  .fact-row .badge {
+    flex-shrink: 0; padding: 2px 9px; border-radius: 20px; font-size: 10px;
+    font-weight: 700; margin-top: 3px; font-family: 'Space Grotesk', sans-serif;
+  }
+  .badge-demand { background: rgba(200,168,75,.2); color: var(--gold); }
+  .badge-supply { background: rgba(26,122,110,.2); color: #1a9a8e; }
+  #s2 .fact-row { color: #bbc; }
+  #s3 .fact-row { color: #444; }
+
+  /* ── Slide 4 – Equilibrium ── */
+  #s4 { background: #0f1117; flex-direction: row-reverse; align-items: center; gap: 32px; padding: 44px 50px; }
+  #s4 .sl { flex: 1; min-width: 0; }
+  #s4 h2 { font-size: 24px; color: var(--paper); margin-bottom: 8px; line-height: 1.8; }
+  #s4 .intro { font-size: 12px; color: #8899aa; line-height: 2.1; margin-bottom: 14px; }
+  .eq-facts { display: flex; flex-direction: column; gap: 9px; }
+  .eq-fact { display: flex; align-items: flex-start; gap: 9px; flex-direction: row-reverse; }
+  .eq-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
+  .eq-fact p { font-size: 11.5px; color: #99aaaa; line-height: 1.9; }
+  .eq-fact strong { color: var(--paper); font-weight: 700; }
+
+  /* ── Slide 5 – Shifts ── */
+  #s5 { background: var(--paper); padding: 38px 60px; }
+  #s5 .eyebrow { font-size: 12px; color: var(--rust); margin-bottom: 10px; }
+  #s5 h2 { font-size: 24px; color: var(--ink); margin-bottom: 18px; line-height: 1.8; }
+  .shift-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .shift-panel { background: white; border-radius: 8px; padding: 16px; box-shadow: 0 3px 14px rgba(0,0,0,.07); transition: box-shadow .4s; }
+  .shift-panel h3 { font-size: 11.5px; font-weight: 700; margin-bottom: 10px; }
+  .shift-panel h3.d-head { color: var(--gold); }
+  .shift-panel h3.s-head { color: var(--teal); }
+  .shift-item { display: flex; gap: 8px; margin-bottom: 8px; font-size: 11.5px; color: #333; line-height: 1.9; flex-direction: row-reverse; }
+  .shift-item:last-child { margin-bottom: 0; }
+  .shift-item .arrow { flex-shrink: 0; font-size: 13px; }
+  .shift-note {
+    margin-top: 14px; padding: 9px 14px; background: rgba(192,68,42,.07);
+    border-right: 3px solid var(--rust); border-radius: 5px 0 0 5px;
+    font-size: 11.5px; color: #333; line-height: 1.9;
+  }
+  .shift-note strong { color: var(--rust); }
+  .shift-panel.teach-on   { box-shadow: 0 0 0 2px var(--gold), 0 3px 14px rgba(0,0,0,.07); }
+  .shift-panel.teach-on-s { box-shadow: 0 0 0 2px var(--teal), 0 3px 14px rgba(0,0,0,.07) !important; }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: var(--teal); }
+  #s6 .quote-mark { font-family: 'Space Grotesk', sans-serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.15); margin-bottom: -10px; }
+  #s6 blockquote { font-size: 21px; line-height: 2.2; color: white; max-width: 640px; margin-bottom: 22px; }
+  #s6 blockquote em { font-style: normal; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); line-height: 2; }
+  #s6 .tag { position: absolute; bottom: 44px; left: 60px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.35); font-family: 'Space Grotesk', sans-serif; }
+
+  /* ── Controls ── */
+  #controls {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px; direction: ltr;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    color: var(--gold); width: 34px; height: 34px; border-radius: 50%;
+    cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+  #loading-overlay {
+    position: absolute; inset: 0; background: rgba(10,12,18,.88);
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px; z-index: 10;
+  }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(200,168,75,.2); border-top-color: var(--gold); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 13px; color: #889; font-family: 'Noto Nastaliq Urdu', serif; }
+
+  /* ── Animations ── */
+  .anim-curve { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .7s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+  .ppf-ripple { transform-box: fill-box; transform-origin: center; }
+  .ppf-pt.ppf-show .ppf-ripple { animation: ripple-out 1.8s ease-out .1s forwards; }
+  @keyframes ripple-out { 0% { opacity: .7; transform: scale(1); } 100% { opacity: 0; transform: scale(5); } }
+  .val-axis { opacity: .25; transition: opacity .5s ease; }
+  .val-axis.val-lit { opacity: 1; }
+  #eq-pstar, #eq-qstar, #eq-pstar-lbl, #eq-qstar-lbl,
+  #eq-surplus-lbl, #eq-shortage-lbl { opacity: 0; transition: opacity .6s ease; }
+  #eq-pstar.val-lit, #eq-qstar.val-lit, #eq-pstar-lbl.val-lit, #eq-qstar-lbl.val-lit,
+  #eq-surplus-lbl.val-lit, #eq-shortage-lbl.val-lit { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ101-topics.html">← ECON 101 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">اقتصاد ۱۰۱ · بازارونه</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">عرضه <em>او تقاضا</em></h1>
+    <p class="sub fade-in">د قیمتونو ټاکل، د بازارونو پاکیدل، او د ملیونونو پرېکړو همغږي — د هیچا د مشرۍ پرته.</p>
+    <p class="author-line fade-in">استاد محب‌الله کریمزاده · UNBC اقتصاد</p>
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 210 210" width="210" height="210" fill="none">
+        <circle cx="105" cy="105" r="100" stroke="rgba(200,168,75,.15)" stroke-width="1.5"/>
+        <line x1="28" y1="182" x2="182" y2="182" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <line x1="28" y1="182" x2="28"  y2="28"  stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+        <line id="title-d" class="anim-curve" x1="38" y1="38" x2="172" y2="172" stroke="#c8a84b" stroke-width="2.2"/>
+        <line id="title-s" class="anim-curve" x1="38" y1="172" x2="172" y2="38"  stroke="#1a9a8e" stroke-width="2.2"/>
+        <g id="title-eq" class="ppf-pt">
+          <circle class="ppf-ripple" cx="105" cy="105" r="8" fill="white"/>
+          <circle cx="105" cy="105" r="5" fill="white"/>
+        </g>
+        <text x="176" y="178" fill="rgba(200,168,75,.75)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">D</text>
+        <text x="176" y="42"  fill="rgba(26,154,142,.75)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">S</text>
+        <text x="112" y="100" fill="rgba(255,255,255,.7)"  font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">E</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: The Market ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">لویه انځور</div>
+    <h2 class="fade-in">بازارونه د قیمتونو له لارې<br>د ملیونونو پرېکړو همغږي کوي.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">🛒</div>
+        <h3>پیرونکي او تقاضا</h3>
+        <p>پیرونکي توکي د تر ټولو ټیټ قیمت سره غواړي. د پیرلو د دوی ګډه لیوالتیا او وړتیا د هر بازار د تقاضا اړخ ټاکي.</p>
+      </div>
+      <div class="card blue-t fade-in">
+        <div class="icon">🏭</div>
+        <h3>پلورونکي او عرضه</h3>
+        <p>پلورونکي د تر ټولو لوړ قیمت ترلاسه کول غواړي. د تولید د دوی لیوالتیا او وړتیا د هر بازار د عرضې اړخ ټاکي.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">💰</div>
+        <h3>د سیګنال په توګه قیمت</h3>
+        <p>قیمتونه د کمیابۍ او ارزښت معلومات کوډ کوي. دوی پیرونکي او پلورونکي همغږي کوي بې له دې چې کوم مرکزي چارواکی مشري وکړي.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: Demand Curve ── -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">د تقاضا منحني</h2>
+      <p class="intro fade-in">مصرفکونکي د هر قیمت سره چومره توک خریدولو ته چمتو دي — نور ټول شیان ثابت.</p>
+      <div class="curve-fact fade-in">
+        <div class="fact-row" id="df1">
+          <span class="badge badge-demand">قانون</span>
+          <span>کله چې قیمت لوړ شي، د غوښتنو اندازه راکمیږي. منحني تل <em style="color:var(--gold)">ښکته</em> اړخ ته ځي.</span>
+        </div>
+        <div class="fact-row" id="df2">
+          <span class="badge badge-demand">ولې</span>
+          <span><strong style="color:#ccd">د ځایناستي اغیز:</strong> لوړ قیمت دا توک د نورو بدیلونو سره پرتله کې ګران کوي.</span>
+        </div>
+        <div class="fact-row" id="df3">
+          <span class="badge badge-demand">ولې</span>
+          <span><strong style="color:#ccd">د عاید اغیز:</strong> لوړ قیمت د پیرلو ځواک کموي، نو لږ پیرل کیږي.</span>
+        </div>
+        <div class="fact-row" id="df4">
+          <span class="badge badge-demand">مهم</span>
+          <span>د منحني اوږدو کې حرکت = د قیمت بدلون. د منحني <em>کوزیدل</em> = بله شی بدله شوه.</span>
+        </div>
+      </div>
+    </div>
+    <svg class="fade-in" viewBox="0 0 340 300" width="340" height="300" style="flex-shrink:0; direction:ltr;">
+      <line x1="50" y1="262" x2="318" y2="262" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <line x1="50" y1="262" x2="50"  y2="20"  stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <polygon points="50,15 45,25 55,25" fill="rgba(255,255,255,.35)"/>
+      <polygon points="323,262 313,257 313,267" fill="rgba(255,255,255,.35)"/>
+      <line id="d-curve" class="anim-curve" x1="68" y1="30" x2="305" y2="250" stroke="#c8a84b" stroke-width="2.5" stroke-linecap="round"/>
+      <text id="d-label" class="val-axis" x="310" y="258" fill="#c8a84b" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="700">D</text>
+      <g id="d-point" class="ppf-pt">
+        <circle class="ppf-ripple" cx="185" cy="140" r="9" fill="#c8a84b"/>
+        <circle cx="185" cy="140" r="5" fill="#c8a84b"/>
+        <line x1="185" y1="140" x2="185" y2="262" stroke="rgba(200,168,75,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="50"  y1="140" x2="185" y2="140" stroke="rgba(200,168,75,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="188" y="136" fill="rgba(200,168,75,.9)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">A</text>
+      </g>
+      <text x="185" y="285" fill="rgba(255,255,255,.5)" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">Quantity →</text>
+      <text x="28"  y="142" fill="rgba(255,255,255,.5)" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 28 142)">Price →</text>
+      <g id="d-arrow" class="ppf-pt">
+        <line x1="268" y1="80"  x2="268" y2="205" stroke="rgba(200,168,75,.4)" stroke-width="1" stroke-dasharray="3 3"/>
+        <polygon points="268,212 263,200 273,200" fill="rgba(200,168,75,.4)"/>
+        <text x="278" y="150" fill="rgba(200,168,75,.55)" font-size="10" font-family="Space Grotesk,sans-serif" transform="rotate(90 278 150)">P↑ → Q↓</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Supply Curve ── -->
+  <div class="slide" id="s3">
+    <div class="sl">
+      <h2 class="fade-in">د عرضې منحني</h2>
+      <p class="intro fade-in">تولیدکونکي د هر قیمت سره چومره توک پلورلو ته چمتو دي — نور ټول شیان ثابت.</p>
+      <div class="curve-fact fade-in">
+        <div class="fact-row" id="sf1">
+          <span class="badge badge-supply">قانون</span>
+          <span>کله چې قیمت لوړ شي، د عرضې اندازه هم لوړیږي. منحني تل <em style="color:#1a9a8e">پورته</em> اړخ ته ځي.</span>
+        </div>
+        <div class="fact-row" id="sf2">
+          <span class="badge badge-supply">ولې</span>
+          <span><strong style="color:#333">لوړ قیمت → ډیره ګټه</strong> — ډیر تولیدکونکي بازار ته راجذبیږي او موجود یې تولید زیاتوي.</span>
+        </div>
+        <div class="fact-row" id="sf3">
+          <span class="badge badge-supply">ولې</span>
+          <span><strong style="color:#333">ټیټ قیمت → کمه ګټه.</strong> ځینې تولیدکونکي بازار پریږدي؛ نور خپل تولید کموي.</span>
+        </div>
+        <div class="fact-row" id="sf4">
+          <span class="badge badge-supply">مهم</span>
+          <span>د منحني اوږدو کې حرکت = قیمت. <em>کوزیدل</em> = د تولید لګښتونه، ټیکنالوجي، یا د شرکتونو شمیر بدل شو.</span>
+        </div>
+      </div>
+    </div>
+    <svg class="fade-in" viewBox="0 0 340 300" width="340" height="300" style="flex-shrink:0; direction:ltr;">
+      <line x1="50" y1="262" x2="318" y2="262" stroke="#aaa" stroke-width="1.5"/>
+      <line x1="50" y1="262" x2="50"  y2="20"  stroke="#aaa" stroke-width="1.5"/>
+      <polygon points="50,15 45,25 55,25" fill="#aaa"/>
+      <polygon points="323,262 313,257 313,267" fill="#aaa"/>
+      <line id="s-curve" class="anim-curve" x1="68" y1="250" x2="305" y2="30" stroke="#1a9a8e" stroke-width="2.5" stroke-linecap="round"/>
+      <text id="s-label" class="val-axis" x="310" y="34" fill="#1a9a8e" font-size="14" font-family="Space Grotesk,sans-serif" font-weight="700">S</text>
+      <g id="s-point" class="ppf-pt">
+        <circle class="ppf-ripple" cx="185" cy="140" r="9" fill="#1a9a8e"/>
+        <circle cx="185" cy="140" r="5" fill="#1a9a8e"/>
+        <line x1="185" y1="140" x2="185" y2="262" stroke="rgba(26,154,142,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="50"  y1="140" x2="185" y2="140" stroke="rgba(26,154,142,.3)" stroke-width="1" stroke-dasharray="4 3"/>
+        <text x="188" y="136" fill="rgba(26,154,142,.9)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600">B</text>
+      </g>
+      <text x="185" y="285" fill="#777" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">Quantity →</text>
+      <text x="28"  y="142" fill="#777" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 28 142)">Price →</text>
+      <g id="s-arrow" class="ppf-pt">
+        <line x1="268" y1="205" x2="268" y2="80"  stroke="rgba(26,154,142,.4)" stroke-width="1" stroke-dasharray="3 3"/>
+        <polygon points="268,73 263,85 273,85" fill="rgba(26,154,142,.4)"/>
+        <text x="278" y="150" fill="rgba(26,154,142,.55)" font-size="10" font-family="Space Grotesk,sans-serif" transform="rotate(90 278 150)">P↑ → Q↑</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 4: Equilibrium ── -->
+  <div class="slide" id="s4">
+    <div class="sl">
+      <h2 class="fade-in">د بازار توازن</h2>
+      <p class="intro fade-in">هغه قیمت چیرې چې د غوښتنو اندازه د عرضې سره برابره وي — چیرې چې دوه منحني یو بل سره مخ کیږي.</p>
+      <div class="eq-facts fade-in">
+        <div class="eq-fact">
+          <div class="eq-dot" style="background:var(--gold)"></div>
+          <p><strong>زیاتوالی (د P* لوړ):</strong> تولیدکونکو له هغه ډیر تولید کړی چې پیرونکي یې غواړي — قیمتونه راکوزیږي.</p>
+        </div>
+        <div class="eq-fact">
+          <div class="eq-dot" style="background:var(--rust)"></div>
+          <p><strong>کمښت (د P* ټیټ):</strong> پیرونکي له هغه ډیر غواړي چې تولیدکونکي یې برابر کړي — قیمتونه لوړیږي.</p>
+        </div>
+        <div class="eq-fact">
+          <div class="eq-dot" style="background:white;border:1px solid #555"></div>
+          <p><strong>د P* سره:</strong> د قیمت د حرکت هیڅ فشار نشته. بازار پخپله دې نقطې ته راستون کیږي.</p>
+        </div>
+      </div>
+    </div>
+    <svg class="fade-in" viewBox="0 0 380 320" width="380" height="320" style="flex-shrink:0; direction:ltr;">
+      <line x1="52" y1="280" x2="358" y2="280" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <line x1="52" y1="280" x2="52"  y2="20"  stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <polygon points="52,15 47,25 57,25" fill="rgba(255,255,255,.35)"/>
+      <polygon points="363,280 353,275 353,285" fill="rgba(255,255,255,.35)"/>
+      <text id="eq-surplus-lbl" x="268" y="100" fill="rgba(200,168,75,.65)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600" letter-spacing=".04em" text-anchor="middle">SURPLUS ↓</text>
+      <text id="eq-shortage-lbl" x="155" y="232" fill="rgba(192,68,42,.65)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600" letter-spacing=".04em" text-anchor="middle">SHORTAGE ↑</text>
+      <line id="eq-d-curve" class="anim-curve" x1="70" y1="32" x2="342" y2="268" stroke="#c8a84b" stroke-width="2.2" stroke-linecap="round"/>
+      <line id="eq-s-curve" class="anim-curve" x1="70" y1="268" x2="342" y2="32"  stroke="#1a9a8e" stroke-width="2.2" stroke-linecap="round"/>
+      <text id="eq-d-lbl" class="val-axis" x="346" y="275" fill="#c8a84b" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">D</text>
+      <text id="eq-s-lbl" class="val-axis" x="346" y="40"  fill="#1a9a8e" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700">S</text>
+      <line id="eq-pstar"     x1="52"  y1="150" x2="206" y2="150" stroke="rgba(255,255,255,.45)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text id="eq-pstar-lbl" x="44"   y="154" fill="rgba(255,255,255,.75)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="end">P*</text>
+      <line id="eq-qstar"     x1="206" y1="150" x2="206" y2="280" stroke="rgba(255,255,255,.45)" stroke-width="1" stroke-dasharray="5 3"/>
+      <text id="eq-qstar-lbl" x="206"  y="296" fill="rgba(255,255,255,.75)" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">Q*</text>
+      <g id="eq-point" class="ppf-pt">
+        <circle class="ppf-ripple" cx="206" cy="150" r="9" fill="white"/>
+        <circle cx="206" cy="150" r="5.5" fill="white"/>
+        <text x="214" y="145" fill="white" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">E</text>
+      </g>
+      <text x="205" y="300" fill="rgba(255,255,255,.5)" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle">Quantity →</text>
+      <text x="28"  y="152" fill="rgba(255,255,255,.5)" font-size="12" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 28 152)">Price →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 5: Shifts ── -->
+  <div class="slide" id="s5">
+    <div class="eyebrow fade-in">حرکات او کوزیدل</div>
+    <h2 class="fade-in">منحني ته د بدلون لاملونه کوم دي؟</h2>
+    <div class="shift-grid">
+      <div class="shift-panel fade-in" id="shift-d">
+        <h3 class="d-head">↙ د تقاضا کوزیدل</h3>
+        <div class="shift-item"><span class="arrow">💵</span><span><strong>عاید:</strong> د عاید زیاتوالی د معمولي توکو تقاضا لوړوي؛ د ټیټ کچې توکو لپاره یې راکموي.</span></div>
+        <div class="shift-item"><span class="arrow">🔄</span><span><strong>اړوند توکي:</strong> د بدیل قیمت لوړیدل → تقاضا لوړیږي؛ د اضافه توک قیمت لوړیدل → تقاضا راکمیږي.</span></div>
+        <div class="shift-item"><span class="arrow">📣</span><span><strong>خوښونه او تمې:</strong> د خوښنو بدلون یا د راتلونکي قیمتونو تمې د اوسنۍ پیرلو چلند بدلوي.</span></div>
+      </div>
+      <div class="shift-panel fade-in" id="shift-s">
+        <h3 class="s-head">↗ د عرضې کوزیدل</h3>
+        <div class="shift-item"><span class="arrow">⚙️</span><span><strong>د ننه لګښتونه:</strong> ارزانه کار یا مواد عرضه زیاتوي؛ ګران ننوتونه یې کموي.</span></div>
+        <div class="shift-item"><span class="arrow">🤖</span><span><strong>ټیکنالوجي:</strong> پرمختګونه تولیدکونکو ته اجازه ورکوي چې له ورته ننوتونو سره ډیر تولید وکړي.</span></div>
+        <div class="shift-item"><span class="arrow">🏢</span><span><strong>د شرکتونو شمیر:</strong> ډیر تولیدکونکي → ډیره عرضه؛ د شرکتونو وتل → کمه عرضه.</span></div>
+      </div>
+    </div>
+    <div class="shift-note fade-in" id="shift-note">
+      <strong>مهم توپیر:</strong> د قیمت بدلون د منحني اوږدو کې <em>حرکت</em> لامنځته کوي. نور هر شی — عاید، ټیکنالوجي، لګښتونه — منحني پخپله <em>کوزوي</em>.
+    </div>
+  </div>
+
+  <!-- ── Slide 6: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      هر قیمت چې تاسو ورکوئ، هر کمښت چې ورسره مخ کیږئ، هر <em>وربشپړه پلورلو</em> لاریون — دا عرضه او تقاضا ده چې د هیچا د مشرۍ پرته د ملیونونو پرېکړو همغږي کوي.
+    </blockquote>
+    <div class="attr fade-in">— استاد محب‌الله کریمزاده · اقتصاد ۱۰۱ · UNBC</div>
+    <div class="tag">Supply · Demand · Equilibrium · Markets</div>
+  </div>
+
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p id="loading-text">د غږ جوړول…</p>
+  </div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="غږ بند/خلاص">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "ښه راغلاست. نن موږ د اقتصاد یوه ترټولو بنسټیز او مهم چوکاټ سره آشنا کیږو — عرضه او تقاضا. دا دوه ځواکونه تشریح کوي چې قیمتونه څنګه ټاکل کیږي، ولې توکي کله کله کم کیږي، او بازارونه د ملیونونو پیرونکو او پلورونکو پرېکړې د هیچا د مشرۍ پرته همغږي کوي.",
+  "د منحنیو له پیل کولو مخکې، راځئ چې فکر وکړو چې بازار واقعاً څه شی دی. بازار هر هغه ترتیب دی چې پیرونکي او پلورونکي سره یوځای کوي ترڅو توکي او خدمات تبادله کړي. هیڅ مرکزي پلانر نشته چې تولیدکونکو ته ووایي چومره تولید وکړي یا پیرونکو ته چه وپیري. پرځای یې، قیمتونه همغږي کوي. کله چې یو توک کمیاب وي، قیمت یې لوړیږي — دا تولیدکونکو ته سیګنال ورکوي چې ډیر تولید وکړي او پیرونکو ته چې کم پیري. کله چې وړاندیز ډیر وي، قیمت راکوزیږي. ټول سیستم د قیمتونو کې کوډ شوي معلوماتو باندې روان دی.",
+  "راځئ چې د تقاضا سره پیل وکړو. د تقاضا منحني ښیي چې مصرفکونکي د هر ممکن قیمت سره چومره توک خریدولو ته چمتو دي — پداسې حال کې چې نورې ټولې شیان ثابت وي. پام وکړئ چې منحني ښکته اړخ ته ځي. دا د تقاضا قانون دی: کله چې د یو توک قیمت لوړ شي، د غوښتنو اندازه راکمیږي. دوه ځواکونه دا پدیده لامنځته کوي. لومړی، د ځایناستي اغیز — لوړ قیمت دا توک د نورو بدیلونو سره پرتله کې ګران کوي، نو خلک بدلون ته مخ کیږي. دویم، د عاید اغیز — لوړ قیمت ستاسو د پیرلو ځواک کموي، نو لږ پیرل کیږي.",
+  "اوس راځئ چې عرضه وڅیړو. د عرضې منحني ښیي چې تولیدکونکي د هر ممکن قیمت سره چومره توک پلورلو ته چمتو دي. منحني پورته اړخ ته ځي — دا د عرضې قانون دی. کله چې قیمتونه لوړ شي، تولید ګټور کیږي، دا نوي شرکتونه بازار ته راجذب کوي او موجود شرکتونه د تولید د زیاتولو هڅه کوي. کله چې قیمتونه راکوزیږي، ګټه راکمیږي، ځینې تولیدکونکي بازار پریږدي او نور خپل تولید کموي. یادونه وکړئ — کله چې قیمت بدل شي، موږ د عرضې منحني اوږدو کې حرکت کوو. دا د منحني پخپله د کوزیدو سره توپیر لري.",
+  "اوس راځئ چې دواړه منحني یو ډیاګرام کې وګورو. د بازار توازن هغه قیمت دی چیرې چې د غوښتنو اندازه د عرضې سره برابره وي — E نقطه، چیرې چې دوه منحني یو بل سره مخ کیږي. د توازن قیمت P-ستوری دی او د توازن اندازه Q-ستوری دی. بازارونه پخپله د توازن لوري ته حرکت کوي. که قیمت د P-ستوری لوړ وي، وړاندیز ډیر دی — نو قیمتونه راکوزیږي. که قیمت د P-ستوری ټیټ وي، تقاضا ډیره ده — نو قیمتونه لوړیږي. بازار بې له بهرني مداخلې پخپله سمون موندي.",
+  "موږ د ثابت منحنيو اوږدو کې حرکت کوو — قیمت بدلیږي او د اندازې غبرګون کتو. مګر منحني پخپله هم کوزیدی شي. د تقاضا کوزیدل پدې معنی دي چې مصرفکونکي د هر قیمت سره ډیر یا لږ غواړي. دا د عاید، خوښونو، د اړونده توکو قیمتونو، یا تمو له امله کیدی شي. د عرضې کوزیدل پدې معنی دي چې تولیدکونکي د هر قیمت سره ډیر یا لږ وړاندیز کوي — د د ننه لګښتونو، ټیکنالوجۍ، یا د شرکتونو د شمیر له امله. دلته مهم توپیر دا دی: د قیمت بدلون د منحني اوږدو کې حرکت لامنځته کوي. نور هر شی منحني پخپله کوزوي. دا دوه سره ګډول د اقتصاد کې ترټولو عام غلطیو یو دی.",
+  "عرضه او تقاضا یوازې یو ماډل نه دی — دا یو لیدتوب دی چې اقتصادپوهان د هغه له لارې نړۍ وګوري. هر قیمت چې تاسو ورکوئ، هر کمښت چې ورسره مخ کیږئ، هر وربشپړه پلورلو لاریون — دا عرضه او تقاضا ده چې د هیچا د مشرۍ پرته د ملیونونو پرېکړو همغږي کوي. دا چوکاټ زده کړئ او تاسو به د ګوټ دوکانونو نه نیولې تر نړیوالې اقتصاد پورې بازارونه د پوهیدو کیلي ولرئ."
+];
+
+const VOICE_ID = 'WmFyZIEC0qrjgbkDYIMP';
+const MODEL_ID = 'eleven_multilingual_v2';
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted = false, currentAudio = null, currentSpeech = null, speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `د غږ جوړول ${i + 1} / ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initCurves();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio)  { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer); stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else { speakWithBrowser(idx); }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx], rate = 0.9;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 110) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.lang === 'ps' || v.lang === 'ps-AF')
+               || voices.find(v => v.lang === 'fa' || v.lang.startsWith('fa'))
+               || voices.find(v => v.lang.startsWith('ar'))
+               || voices.find(v => v.lang === 'en-US');
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 8000);
+    speechSynthesis.speak(utter); currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted; muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0, timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer(); timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initCurves() {
+  document.querySelectorAll('.anim-curve').forEach(el => {
+    const tag = el.tagName.toLowerCase();
+    let len;
+    if (tag === 'line') {
+      const x1 = +el.getAttribute('x1'), y1 = +el.getAttribute('y1');
+      const x2 = +el.getAttribute('x2'), y2 = +el.getAttribute('y2');
+      len = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+    } else { len = el.getTotalLength ? el.getTotalLength() : 600; }
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function resetCurves() {
+  document.querySelectorAll('.anim-curve').forEach(el => {
+    el.style.transition = 'none';
+    const len = el.dataset.origLen || 9999;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawCurve(id, durMs, delayMs) {
+  sch(delayMs || 0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs || 1800}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function litEl(sel) { document.querySelectorAll(sel).forEach(el => el.classList.add('val-lit')); }
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.val-lit').forEach(el => el.classList.remove('val-lit'));
+  document.querySelectorAll('.teach-on, .teach-on-s').forEach(el => { el.classList.remove('teach-on'); el.classList.remove('teach-on-s'); });
+  resetCurves();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0:
+      drawCurve('title-d', 1400, 700);
+      drawCurve('title-s', 1400, 1400);
+      sch(2600, () => document.getElementById('title-eq')?.classList.add('ppf-show'));
+      break;
+    case 2:
+      drawCurve('d-curve', 1800, 400);
+      sch(600,   () => litEl('#d-label'));
+      sch(10000, () => document.getElementById('d-point')?.classList.add('ppf-show'));
+      sch(20000, () => document.getElementById('d-arrow')?.classList.add('ppf-show'));
+      break;
+    case 3:
+      drawCurve('s-curve', 1800, 400);
+      sch(600,   () => litEl('#s-label'));
+      sch(10000, () => document.getElementById('s-point')?.classList.add('ppf-show'));
+      sch(20000, () => document.getElementById('s-arrow')?.classList.add('ppf-show'));
+      break;
+    case 4:
+      drawCurve('eq-d-curve', 1800, 400);
+      sch(700,   () => litEl('#eq-d-lbl'));
+      drawCurve('eq-s-curve', 1800, 3000);
+      sch(3300,  () => litEl('#eq-s-lbl'));
+      sch(7000,  () => document.getElementById('eq-point')?.classList.add('ppf-show'));
+      sch(9000,  () => { litEl('#eq-pstar'); litEl('#eq-pstar-lbl'); litEl('#eq-qstar'); litEl('#eq-qstar-lbl'); });
+      sch(22000, () => litEl('#eq-surplus-lbl'));
+      sch(27000, () => litEl('#eq-shortage-lbl'));
+      break;
+    case 5:
+      sch(3000,  () => document.getElementById('shift-d')?.classList.add('teach-on'));
+      sch(18000, () => {
+        document.getElementById('shift-d')?.classList.remove('teach-on');
+        document.getElementById('shift-s')?.classList.add('teach-on-s');
+      });
+      sch(33000, () => document.getElementById('shift-note')?.classList.add('teach-on'));
+      break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>
