@@ -150,7 +150,7 @@
   .dot.on { background: var(--gold); transform: scale(1.4); }
   #btn-prev, #btn-next, #btn-mute {
     background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
-    color: white; width: 34px; height: 34px; border-radius: 50%;
+    color: var(--gold); width: 34px; height: 34px; border-radius: 50%;
     cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center;
     transition: background .2s;
   }
@@ -590,7 +590,7 @@ function playSlideAudio(idx) {
 
   if (audioBuffers[idx]) {
     // ── ElevenLabs audio ──
-    setStatus('🎙 AI narration');
+    setStatus('');
     const audio = new Audio(audioBuffers[idx]);
     currentAudio = audio;
     audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
@@ -621,7 +621,7 @@ function speakWithBrowser(idx) {
   utter.volume = 1;
 
   const doSpeak = () => {
-    setStatus('🔊 Browser narration');
+    setStatus('');
     const voices = speechSynthesis.getVoices();
     const voice  = voices.find(v => v.name === 'Daniel')
                 || voices.find(v => v.name === 'Alex')

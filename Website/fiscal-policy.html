@@ -175,7 +175,7 @@
   #controls { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 10px; }
   .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
   .dot.on { background: var(--gold); transform: scale(1.4); }
-  #btn-prev, #btn-next, #btn-mute { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: white; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
+  #btn-prev, #btn-next, #btn-mute { background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); color: var(--gold); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center; transition: background .2s; }
   #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
   #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
   #loading-overlay { position: absolute; inset: 0; background: rgba(10,12,18,.88); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 16px; z-index: 10; }
@@ -500,7 +500,7 @@ function playSlideAudio(idx) {
   stopAudio();
   if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
   if (audioBuffers[idx]) {
-    setStatus('🎙 AI narration');
+    setStatus('');
     const audio = new Audio(audioBuffers[idx]);
     currentAudio = audio;
     audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
@@ -517,7 +517,7 @@ function speakWithBrowser(idx) {
   const utter = new SpeechSynthesisUtterance(text);
   utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
   const doSpeak = () => {
-    setStatus('🔊 Browser narration');
+    setStatus('');
     const voices = speechSynthesis.getVoices();
     const voice = voices.find(v => v.name === 'Daniel') || voices.find(v => v.name === 'Alex')
                || voices.find(v => /Google US English/i.test(v.name))
