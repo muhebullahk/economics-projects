@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prospect Theory — ECON 230</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+  :root { --ink:#0f1117; --paper:#f7f4ee; --gold:#c8a84b; --teal:#1a7a6e; --rust:#c0442a; --blue:#1a4a8a; --purple:#6b3fa0; }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#090b10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;gap:18px;}
+  #back-bar{width:860px;font-size:12px;color:#445;}
+  #back-bar a{color:#667;text-decoration:none;transition:color .2s;}
+  #back-bar a:hover{color:var(--gold);}
+  #status-bar{width:860px;font-size:12px;color:#556;text-align:right;min-height:16px;}
+  #stage{width:860px;height:540px;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 32px 80px rgba(0,0,0,.7);}
+  .slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .55s ease;display:flex;flex-direction:column;justify-content:center;padding:52px 64px;}
+  .slide.active{opacity:1;pointer-events:all;}
+  .fade-in{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+  .slide.active .fade-in{opacity:1;transform:none;}
+  .fade-in:nth-child(2){transition-delay:.15s;}.fade-in:nth-child(3){transition-delay:.3s;}.fade-in:nth-child(4){transition-delay:.45s;}.fade-in:nth-child(5){transition-delay:.6s;}.fade-in:nth-child(6){transition-delay:.75s;}
+  #author-wm{position:absolute;bottom:60px;left:18px;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.07em;text-transform:uppercase;pointer-events:none;z-index:5;}
+  /* Slide 0 */
+  #s0{background:var(--ink);}
+  #s0 .label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+  #s0 .rule{width:56px;height:3px;background:var(--gold);margin-bottom:28px;}
+  #s0 h1{font-family:'Playfair Display',serif;font-size:48px;line-height:1.1;color:var(--paper);}
+  #s0 h1 em{font-style:italic;color:var(--gold);}
+  #s0 .sub{margin-top:20px;font-size:15px;color:#8898a0;font-weight:300;max-width:400px;line-height:1.55;}
+  #s0 .author-line{margin-top:16px;font-size:11.5px;color:rgba(200,168,75,.6);letter-spacing:.1em;text-transform:uppercase;}
+  #s0 .diagram{position:absolute;right:58px;top:50%;transform:translateY(-50%);width:220px;height:220px;}
+  /* Slide 1 */
+  #s1{background:var(--paper);}
+  #s1 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--rust);margin-bottom:14px;}
+  #s1 h2{font-family:'Playfair Display',serif;font-size:34px;color:var(--ink);line-height:1.2;margin-bottom:24px;}
+  .cards{display:flex;gap:18px;}
+  .card{flex:1;background:white;border-radius:6px;padding:22px 18px;border-top:4px solid var(--blue);box-shadow:0 4px 20px rgba(0,0,0,.07);}
+  .card.gold-t{border-color:var(--gold);}.card.rust-t{border-color:var(--rust);}.card.teal-t{border-color:var(--teal);}
+  .card .icon{font-size:26px;margin-bottom:10px;}
+  .card h3{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px;letter-spacing:.04em;}
+  .card p{font-size:12.5px;color:#444;line-height:1.6;font-weight:300;}
+  /* Dark horizontal slides */
+  #s2{background:#0f1a19;flex-direction:row;align-items:center;gap:36px;padding:44px 56px;}
+  #s4{background:#0f1117;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s5{background:#140e18;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s2 .sl,#s4 .sl,#s5 .sl{flex:1;min-width:0;}
+  #s2 h2,#s4 h2,#s5 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--paper);margin-bottom:8px;}
+  .intro-d{font-size:13px;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  #s2 .intro-d{color:#8fa;}#s4 .intro-d{color:#8899bb;}#s5 .intro-d{color:#c8a0e8;}
+  .pt-facts{display:flex;flex-direction:column;gap:11px;}
+  .pt-row{display:flex;align-items:flex-start;gap:12px;font-size:12.5px;font-weight:300;line-height:1.5;}
+  .pt-badge{flex-shrink:0;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:1px;}
+  .pb-teal{background:rgba(26,122,110,.25);color:#1a9a8e;} .pb-gold{background:rgba(200,168,75,.2);color:var(--gold);}
+  .pb-rust{background:rgba(192,68,42,.2);color:#e07060;} .pb-pur{background:rgba(107,63,160,.25);color:#c0a0f0;}
+  #s2 .pt-row{color:#bbc;} #s4 .pt-row{color:#99aabb;} #s5 .pt-row{color:#ccbbee;}
+  /* Slide 3 - light horiz */
+  #s3{background:var(--paper);flex-direction:row;align-items:center;gap:36px;padding:44px 56px;}
+  #s3 .sl{flex:1;min-width:0;}
+  #s3 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--ink);margin-bottom:8px;}
+  #s3 .intro-d{color:#555;} #s3 .pt-row{color:#333;}
+  /* Slide 6 */
+  #s6{background:#1a0f0a;}
+  #s6 .quote-mark{font-family:'Playfair Display',serif;font-size:120px;line-height:.7;color:rgba(255,255,255,.1);margin-bottom:-10px;}
+  #s6 blockquote{font-family:'Playfair Display',serif;font-size:24px;line-height:1.55;color:white;max-width:660px;margin-bottom:24px;}
+  #s6 blockquote em{font-style:italic;color:var(--gold);}
+  #s6 .attr{font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.08em;}
+  #s6 .tag{position:absolute;bottom:44px;right:60px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+  /* Controls */
+  #controls{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .3s,transform .3s;}
+  .dot.on{background:var(--gold);transform:scale(1.4);}
+  #btn-prev,#btn-next,#btn-mute{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--gold);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+  #btn-prev:hover,#btn-next:hover,#btn-mute:hover{background:rgba(255,255,255,.2);}
+  #timer-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--gold);width:0%;}
+  #loading-overlay{position:absolute;inset:0;background:rgba(10,12,18,.88);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:10;}
+  #loading-overlay.show{display:flex;}
+  .spinner{width:44px;height:44px;border-radius:50%;border:3px solid rgba(200,168,75,.2);border-top-color:var(--gold);animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #loading-overlay p{font-size:14px;color:#889;}
+  .anim-curve{stroke-dasharray:9999;stroke-dashoffset:9999;}
+  .ppf-pt{opacity:0;transition:opacity .7s ease;}
+  .ppf-pt.ppf-show{opacity:1;}
+  .ppf-ripple{transform-box:fill-box;transform-origin:center;}
+  .ppf-pt.ppf-show .ppf-ripple{animation:ripple-out 1.8s ease-out .1s forwards;}
+  @keyframes ripple-out{0%{opacity:.7;transform:scale(1);}100%{opacity:0;transform:scale(5);}}
+  .val-axis{opacity:.15;transition:opacity .5s ease;}
+  .val-axis.val-lit{opacity:1;}
+  .pt-row{transition:opacity .35s ease;} .pt-row.dim{opacity:.3;}
+</style>
+</head>
+<body>
+<div id="back-bar"><a href="econ230-topics.html">← ECON 230 Topics</a></div>
+<div id="status-bar"></div>
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- S0: Title -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 230 · Risk &amp; Choice</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Prospect<br><em>Theory</em></h1>
+    <p class="sub fade-in">How people actually evaluate gains, losses, and risk — replacing expected utility with a descriptive model that fits the data.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 220 220" width="220" height="220" fill="none">
+        <circle cx="110" cy="110" r="105" stroke="rgba(192,68,42,.12)" stroke-width="1.5"/>
+        <!-- Axes -->
+        <line x1="20" y1="110" x2="200" y2="110" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+        <line x1="110" y1="20" x2="110" y2="200" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+        <!-- Gain curve (teal, concave) -->
+        <path id="t-gain" class="anim-curve" d="M110,110 C122,100 148,75 190,62" stroke="#1a9a8e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <!-- Loss curve (rust, steeper, convex) -->
+        <path id="t-loss" class="anim-curve" d="M110,110 C98,122 72,158 30,178" stroke="#c0442a" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <!-- Reference point -->
+        <g id="t-ref" class="ppf-pt">
+          <circle class="ppf-ripple" cx="110" cy="110" r="7" fill="white"/>
+          <circle cx="110" cy="110" r="4" fill="white"/>
+          <text x="118" y="107" fill="rgba(255,255,255,.7)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="600">Ref</text>
+        </g>
+        <text x="195" y="108" fill="rgba(26,154,142,.7)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700">Gains</text>
+        <text x="30" y="196" fill="rgba(192,68,42,.7)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700">Losses</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- S1: Four pillars -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">Kahneman &amp; Tversky (1979)</div>
+    <h2 class="fade-in">Prospect Theory rests on four departures from expected utility.</h2>
+    <div class="cards">
+      <div class="card rust-t fade-in">
+        <div class="icon">📍</div>
+        <h3>Reference Dependence</h3>
+        <p>Outcomes are evaluated as <em>gains or losses</em> relative to a reference point — not as final wealth levels. The same outcome can feel like a gain or a loss.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">⚖️</div>
+        <h3>Loss Aversion</h3>
+        <p>Losses loom larger than equivalent gains. The pain of losing $100 is roughly twice the pleasure of gaining $100. The value function is steeper in losses.</p>
+      </div>
+      <div class="card teal-t fade-in">
+        <div class="icon">📉</div>
+        <h3>Diminishing Sensitivity</h3>
+        <p>Marginal impact falls as outcomes move further from the reference point — in both the gain and loss domains. The value function curves away from the origin.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2: Reference dependence -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Reference Dependence</h2>
+      <p class="intro-d fade-in">People do not evaluate outcomes in terms of total wealth. They evaluate <em style="color:var(--gold)">changes</em> relative to where they currently are.</p>
+      <div class="pt-facts fade-in">
+        <div class="pt-row" id="rd1">
+          <span class="pt-badge pb-teal">Core</span>
+          <span>The reference point is typically the status quo — your current income, wealth, or health. Outcomes above it are gains; outcomes below it are losses.</span>
+        </div>
+        <div class="pt-row" id="rd2">
+          <span class="pt-badge pb-gold">Context</span>
+          <span>A $500 bonus feels like a gain if you expected nothing, but a loss if you were promised $1,000. The objective amount is the same; only the reference point differs.</span>
+        </div>
+        <div class="pt-row" id="rd3">
+          <span class="pt-badge pb-rust">Endowment</span>
+          <span><strong style="color:#ccd">Endowment effect:</strong> once you own something, giving it up is experienced as a loss — so you demand more to sell it than you would pay to buy it.</span>
+        </div>
+        <div class="pt-row" id="rd4">
+          <span class="pt-badge pb-pur">Implication</span>
+          <span>Standard welfare analysis based on final states is incomplete. How an outcome is framed — as a gain or a loss — matters independently of its objective value.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Reference point diagram -->
+    <svg class="fade-in" viewBox="0 0 300 280" width="300" height="280" style="flex-shrink:0;">
+      <line id="ref-line" class="anim-curve" x1="44" y1="140" x2="272" y2="140" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+      <polygon points="276,140 266,135 266,145" fill="rgba(255,255,255,.3)"/>
+      <!-- Ref point pin -->
+      <g id="ref-pin" class="ppf-pt">
+        <line x1="158" y1="108" x2="158" y2="140" stroke="white" stroke-width="2"/>
+        <circle cx="158" cy="140" r="5" fill="white"/>
+        <circle class="ppf-ripple" cx="158" cy="140" r="8" fill="white"/>
+        <text x="158" y="100" fill="white" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Reference Point</text>
+        <text x="158" y="113" fill="rgba(255,255,255,.6)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">(status quo)</text>
+      </g>
+      <!-- Gains region -->
+      <g id="ref-gains" class="ppf-pt">
+        <rect x="160" y="120" width="108" height="40" fill="rgba(26,154,142,.15)" rx="2"/>
+        <text x="214" y="143" fill="#1a9a8e" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">GAINS ↑</text>
+      </g>
+      <!-- Losses region -->
+      <g id="ref-losses" class="ppf-pt">
+        <rect x="44" y="120" width="112" height="40" fill="rgba(192,68,42,.15)" rx="2"/>
+        <text x="100" y="143" fill="#e07060" font-size="11" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">↓ LOSSES</text>
+      </g>
+      <!-- Example: $500 bonus -->
+      <g id="ref-ex" class="ppf-pt">
+        <line x1="210" y1="90" x2="210" y2="138" stroke="rgba(200,168,75,.6)" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <polygon points="210,84 205,94 215,94" fill="rgba(200,168,75,.6)"/>
+        <text x="210" y="80" fill="rgba(200,168,75,.8)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">+$500</text>
+        <text x="210" y="70" fill="rgba(200,168,75,.55)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">if ref = $0: GAIN</text>
+      </g>
+      <text x="160" y="270" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Outcome →</text>
+    </svg>
+  </div>
+
+  <!-- S3: Loss aversion + value function (light) -->
+  <div class="slide" id="s3">
+    <div class="sl">
+      <h2 class="fade-in">Loss Aversion &amp; the Value Function</h2>
+      <p class="intro-d fade-in" style="color:#555">The value function is the signature diagram of Prospect Theory — an S-shaped curve that is steeper in losses than in gains.</p>
+      <div class="pt-facts fade-in">
+        <div class="pt-row" id="va1" style="color:#333">
+          <span class="pt-badge pb-rust">Law</span>
+          <span>Losses loom roughly <strong>twice as large</strong> as equivalent gains. Losing $100 hurts about as much as gaining $200 feels good. Coefficient λ ≈ 2.25.</span>
+        </div>
+        <div class="pt-row" id="va2" style="color:#333">
+          <span class="pt-badge pb-teal">Shape</span>
+          <span>Concave above the reference point (risk aversion in gains). Convex below it (risk seeking in losses). Together, this produces the S-shape.</span>
+        </div>
+        <div class="pt-row" id="va3" style="color:#333">
+          <span class="pt-badge pb-gold">Evidence</span>
+          <span>People reject 50/50 gambles of losing $100 or gaining $X unless X ≈ $200. The potential gain must be roughly double the potential loss to be acceptable.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Value function SVG -->
+    <svg class="fade-in" viewBox="0 0 330 290" width="330" height="290" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="30" y1="145" x2="310" y2="145" stroke="#aaa" stroke-width="1.3"/>
+      <line x1="165" y1="20" x2="165" y2="270" stroke="#aaa" stroke-width="1.3"/>
+      <polygon points="315,145 305,140 305,150" fill="#aaa"/>
+      <polygon points="165,15 160,25 170,25" fill="#aaa"/>
+      <!-- Gain curve: concave (teal) -->
+      <path id="vf-gain" class="anim-curve" d="M165,145 C180,132 215,98 295,78" stroke="#1a7a6e" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      <!-- Loss curve: steeper, convex (rust) -->
+      <path id="vf-loss" class="anim-curve" d="M165,145 C150,158 115,202 42,238" stroke="#c0442a" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      <!-- Reference point -->
+      <g id="vf-ref" class="ppf-pt">
+        <circle class="ppf-ripple" cx="165" cy="145" r="7" fill="#333"/>
+        <circle cx="165" cy="145" r="4.5" fill="#333"/>
+      </g>
+      <!-- Steepness annotation -->
+      <g id="vf-ann" class="ppf-pt">
+        <line x1="55" y1="228" x2="55" y2="190" stroke="rgba(192,68,42,.6)" stroke-width="1.2" stroke-dasharray="3 2"/>
+        <line x1="278" y1="88" x2="278" y2="126" stroke="rgba(26,122,110,.6)" stroke-width="1.2" stroke-dasharray="3 2"/>
+        <text x="42" y="262" fill="rgba(192,68,42,.75)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Losses</text>
+        <text x="42" y="273" fill="rgba(192,68,42,.75)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">steeper</text>
+        <text x="290" y="82" fill="rgba(26,122,110,.75)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Gains</text>
+        <text x="290" y="93" fill="rgba(26,122,110,.75)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">flatter</text>
+        <text x="178" y="155" fill="#555" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="600">Ref</text>
+      </g>
+      <!-- Axis labels -->
+      <text x="318" y="149" fill="#888" font-size="10" font-family="Space Grotesk,sans-serif">Outcomes</text>
+      <text x="155" y="12" fill="#888" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Value</text>
+      <text x="240" y="132" fill="rgba(26,122,110,.65)" font-size="9" font-family="Space Grotesk,sans-serif" font-style="italic">risk averse</text>
+      <text x="80" y="188" fill="rgba(192,68,42,.65)" font-size="9" font-family="Space Grotesk,sans-serif" font-style="italic">risk seeking</text>
+    </svg>
+  </div>
+
+  <!-- S4: Probability weighting (dark) -->
+  <div class="slide" id="s4">
+    <div class="sl">
+      <h2 class="fade-in">Probability Weighting</h2>
+      <p class="intro-d fade-in">People do not use objective probabilities. They transform them through a weighting function — overweighting small probabilities and underweighting large ones.</p>
+      <div class="pt-facts fade-in">
+        <div class="pt-row" id="pw1">
+          <span class="pt-badge pb-gold">Small p</span>
+          <span>A 1% chance of winning feels more significant than it should. This drives demand for lottery tickets and disproportionate fear of rare catastrophes.</span>
+        </div>
+        <div class="pt-row" id="pw2">
+          <span class="pt-badge pb-teal">Large p</span>
+          <span>A 99% chance feels less than certain. People prefer a sure outcome over a 99% chance of something slightly better — the certainty effect.</span>
+        </div>
+        <div class="pt-row" id="pw3">
+          <span class="pt-badge pb-rust">Shape</span>
+          <span>The weighting function w(p) is an inverted-S: it rises steeply near 0 and near 1, but is relatively flat in the middle range of probabilities.</span>
+        </div>
+        <div class="pt-row" id="pw4">
+          <span class="pt-badge pb-pur">Allais</span>
+          <span>The Allais Paradox is explained by probability weighting: people overweight the certainty of one option relative to a near-certain alternative — violating EUT.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Probability weighting function -->
+    <svg class="fade-in" viewBox="0 0 300 280" width="300" height="280" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="44" y1="248" x2="272" y2="248" stroke="rgba(255,255,255,.28)" stroke-width="1.3"/>
+      <line x1="44" y1="248" x2="44" y2="20" stroke="rgba(255,255,255,.28)" stroke-width="1.3"/>
+      <polygon points="276,248 266,243 266,253" fill="rgba(255,255,255,.28)"/>
+      <polygon points="44,15 39,25 49,25" fill="rgba(255,255,255,.28)"/>
+      <!-- Diagonal w(p)=p -->
+      <line id="pw-diag" class="anim-curve" x1="44" y1="248" x2="264" y2="28" stroke="rgba(255,255,255,.22)" stroke-width="1.2" stroke-dasharray="5 3"/>
+      <text id="pw-diag-lbl" class="val-axis" x="270" y="28" fill="rgba(255,255,255,.35)" font-size="9" font-family="Space Grotesk,sans-serif">w(p)=p</text>
+      <!-- Weighting function: above diagonal near 0, below near 1 -->
+      <path id="pw-curve" class="anim-curve" d="M44,248 C62,200 100,162 130,172 C185,186 245,72 264,28" stroke="var(--gold)" stroke-width="2.3" stroke-linecap="round" fill="none"/>
+      <text id="pw-lbl" class="val-axis" x="248" y="22" fill="var(--gold)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="700">w(p)</text>
+      <!-- Overweight annotation -->
+      <g id="pw-over" class="ppf-pt">
+        <text x="95" y="145" fill="rgba(200,168,75,.75)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">Overweight</text>
+        <text x="95" y="155" fill="rgba(200,168,75,.6)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">small probs</text>
+      </g>
+      <!-- Underweight annotation -->
+      <g id="pw-under" class="ppf-pt">
+        <text x="210" y="115" fill="rgba(255,255,255,.55)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">Underweight</text>
+        <text x="210" y="125" fill="rgba(255,255,255,.4)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">large probs</text>
+      </g>
+      <!-- Axis labels -->
+      <text x="160" y="270" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Probability p →</text>
+      <text x="22" y="135" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 135)">Decision weight w(p) →</text>
+      <text x="44" y="262" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">0</text>
+      <text x="264" y="262" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">1</text>
+    </svg>
+  </div>
+
+  <!-- S5: Diminishing sensitivity (dark) -->
+  <div class="slide" id="s5">
+    <div class="sl">
+      <h2 class="fade-in">Diminishing Sensitivity</h2>
+      <p class="intro-d fade-in">The marginal impact of a change decreases as you move further from the reference point — in both the gain and the loss domain.</p>
+      <div class="pt-facts fade-in">
+        <div class="pt-row" id="ds1">
+          <span class="pt-badge pb-teal">Gains</span>
+          <span>The difference between $0 and $100 feels larger than the difference between $900 and $1,000 — even though both are exactly $100. Gains show concavity.</span>
+        </div>
+        <div class="pt-row" id="ds2">
+          <span class="pt-badge pb-rust">Losses</span>
+          <span>The difference between losing $0 and $100 feels larger than the difference between losing $900 and $1,000. Losses show convexity (risk seeking).</span>
+        </div>
+        <div class="pt-row" id="ds3">
+          <span class="pt-badge pb-gold">Combined</span>
+          <span>Together, diminishing sensitivity and loss aversion generate the S-shaped value function: curved on both sides of the reference point, steeper on the loss side.</span>
+        </div>
+        <div class="pt-row" id="ds4">
+          <span class="pt-badge pb-pur">Policy</span>
+          <span>Segregate gains (present each gain separately) but integrate losses (present them as one total). People feel better when gains are spread out and losses are bundled.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Annotated S-curve -->
+    <svg class="fade-in" viewBox="0 0 300 280" width="300" height="280" style="flex-shrink:0;">
+      <line x1="28" y1="140" x2="280" y2="140" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+      <line x1="154" y1="18" x2="154" y2="262" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+      <!-- Gain curve concave (teal) -->
+      <path id="ds-gain" class="anim-curve" d="M154,140 C167,128 198,98 268,80" stroke="#1a9a8e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <!-- Loss curve convex+steeper (rust) -->
+      <path id="ds-loss" class="anim-curve" d="M154,140 C141,152 110,195 40,232" stroke="#c0442a" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <!-- Concavity annotation (gains) -->
+      <g id="ds-conc" class="ppf-pt">
+        <line x1="185" y1="115" x2="235" y2="95" stroke="rgba(26,122,110,.5)" stroke-width="1" stroke-dasharray="3 2"/>
+        <text x="242" y="92" fill="rgba(26,154,142,.8)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600">Concave</text>
+        <text x="242" y="103" fill="rgba(26,154,142,.6)" font-size="8" font-family="Space Grotesk,sans-serif">(risk averse)</text>
+      </g>
+      <!-- Convexity annotation (losses) -->
+      <g id="ds-conv" class="ppf-pt">
+        <line x1="105" y1="195" x2="72" y2="210" stroke="rgba(192,68,42,.5)" stroke-width="1" stroke-dasharray="3 2"/>
+        <text x="38" y="228" fill="rgba(192,68,42,.8)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600">Convex</text>
+        <text x="38" y="239" fill="rgba(192,68,42,.6)" font-size="8" font-family="Space Grotesk,sans-serif">(risk seeking)</text>
+      </g>
+      <text x="165" y="137" fill="rgba(255,255,255,.55)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="600">Ref</text>
+      <text x="285" y="144" fill="rgba(255,255,255,.35)" font-size="9" font-family="Space Grotesk,sans-serif">Outcomes</text>
+      <text x="145" y="14" fill="rgba(255,255,255,.35)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="end">Value</text>
+    </svg>
+  </div>
+
+  <!-- S6: Animated example -->
+  <div class="slide" id="s-ex-p" style="background:#0a0e1a;flex-direction:row;align-items:center;gap:32px;padding:44px 52px;">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;" class="fade-in">REAL-LIFE EXAMPLE</div>
+      <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:25px;color:var(--paper);line-height:1.35;margin-bottom:14px;">Finding vs Losing $20</h2>
+      <p class="fade-in" style="font-size:12.5px;color:#8898a0;font-weight:300;line-height:1.72;max-width:345px;">
+        You <strong style="color:#1a9a8e">find $20</strong> on the street — nice surprise, small happiness. You <strong style="color:var(--rust)">lose $20</strong> from your pocket — awful feeling, ruins your day.<br><br>
+        Same amount of money, but the <strong style="color:var(--paper)">loss feels roughly twice as bad</strong> as the gain feels good. This is loss aversion — and it explains why people hold losing investments too long, hate pay cuts more than they love pay raises, and cling to the status quo.
+      </p>
+    </div>
+    <svg viewBox="0 0 290 270" width="290" height="270" fill="none" style="flex-shrink:0;">
+      <!-- Dividing line -->
+      <line x1="145" y1="15" x2="145" y2="255" stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="5 3"/>
+      <!-- LEFT: FOUND $20 (small-ish happy face) -->
+      <text x="72" y="35" fill="rgba(26,154,142,.6)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle" letter-spacing=".08em">FOUND $20</text>
+      <!-- Coin falling into hand -->
+      <g style="animation:ex-float 2s ease-in-out infinite;">
+        <circle cx="72" cy="75" r="16" fill="rgba(26,122,110,.5)" stroke="rgba(26,154,142,.8)" stroke-width="1.5"/>
+        <text x="72" y="80" fill="rgba(26,154,142,.95)" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">$20</text>
+      </g>
+      <!-- Arrow down -->
+      <path d="M72 96 L72 115" stroke="rgba(26,154,142,.5)" stroke-width="1.5" stroke-linecap="round" marker-end="url(#arr)"/>
+      <!-- Happy face (medium) -->
+      <g style="animation:ex-bob 2.5s ease-in-out infinite .3s;">
+        <circle cx="72" cy="158" r="32" fill="rgba(26,122,110,.18)" stroke="rgba(26,154,142,.7)" stroke-width="2"/>
+        <circle cx="60" cy="150" r="4" fill="rgba(26,154,142,.9)"/>
+        <circle cx="84" cy="150" r="4" fill="rgba(26,154,142,.9)"/>
+        <path d="M58 166 Q72 178 86 166" stroke="rgba(26,154,142,.9)" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+      </g>
+      <text x="72" y="210" fill="rgba(26,154,142,.6)" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">😊 Happy</text>
+      <text x="72" y="226" fill="rgba(26,154,142,.45)" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">+1x feeling</text>
+
+      <!-- RIGHT: LOST $20 (big sad face) -->
+      <text x="218" y="35" fill="rgba(192,68,42,.6)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle" letter-spacing=".08em">LOST $20</text>
+      <!-- Coin falling away -->
+      <g style="animation:ex-float 1.8s ease-in-out infinite .6s;">
+        <circle cx="218" cy="75" r="16" fill="rgba(192,68,42,.4)" stroke="rgba(192,68,42,.75)" stroke-width="1.5"/>
+        <text x="218" y="80" fill="rgba(192,68,42,.9)" font-size="13" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">$20</text>
+      </g>
+      <path d="M218 96 L218 115" stroke="rgba(192,68,42,.5)" stroke-width="1.5" stroke-linecap="round"/>
+      <!-- Sad face (LARGER — emphasises asymmetry) -->
+      <g style="animation:ex-bob 2s ease-in-out infinite .7s;">
+        <circle cx="218" cy="155" r="44" fill="rgba(192,68,42,.18)" stroke="rgba(192,68,42,.8)" stroke-width="2.5"/>
+        <circle cx="203" cy="145" r="5.5" fill="rgba(192,68,42,.95)"/>
+        <circle cx="233" cy="145" r="5.5" fill="rgba(192,68,42,.95)"/>
+        <!-- Tears -->
+        <ellipse cx="203" cy="155" rx="2" ry="4" fill="rgba(100,180,220,.6)"/>
+        <ellipse cx="233" cy="155" rx="2" ry="4" fill="rgba(100,180,220,.6)"/>
+        <!-- Sad mouth (deep frown) -->
+        <path d="M200 170 Q218 158 236 170" stroke="rgba(192,68,42,.95)" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <!-- Wavy brows (upset) -->
+        <line x1="196" y1="135" x2="210" y2="140" stroke="rgba(192,68,42,.8)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="226" y1="140" x2="240" y2="135" stroke="rgba(192,68,42,.8)" stroke-width="2" stroke-linecap="round"/>
+      </g>
+      <text x="218" y="216" fill="rgba(192,68,42,.65)" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">😢 Very Upset</text>
+      <text x="218" y="232" fill="rgba(192,68,42,.5)" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">−2x feeling</text>
+      <!-- Asymmetry label -->
+      <text x="145" y="258" fill="rgba(255,255,255,.35)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Same $20 · Different emotional weight</text>
+    </svg>
+  </div>
+
+  <!-- S7: Takeaway -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Prospect Theory is not just a better description of risk preferences — it is a <em>different framework</em> for understanding choice. Reference points, loss aversion, and probability weighting together explain patterns that expected utility cannot, from insurance demand to stock market anomalies.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 230 · UNBC</div>
+    <div class="tag">Loss Aversion · Reference Dependence · Probability Weighting</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Prospect Theory, developed by Daniel Kahneman and Amos Tversky in 1979, is arguably the most influential single paper in the history of behavioural economics. It replaces expected utility theory with a descriptive model that accurately captures how people actually evaluate risky outcomes. The theory rests on four core elements: reference dependence, loss aversion, diminishing sensitivity, and probability weighting.",
+  "Expected utility theory predicts that what matters is the final level of wealth. A person with a hundred thousand dollars should evaluate outcomes purely in terms of total wealth. But decades of experiments show this is wrong. What matters to people is not the final state, but the change from where they currently are. Prospect Theory starts from this observation: outcomes are evaluated relative to a reference point, not in absolute terms. Together, its four pillars replace expected utility in many behavioural models.",
+  "The first pillar is reference dependence. People do not evaluate outcomes in terms of total wealth — they evaluate changes relative to a reference point, which is typically the status quo. The same outcome can feel like a gain or a loss depending on what you expected. Receiving a five-hundred dollar bonus feels like a gain if you expected nothing, but a loss if you were promised a thousand. The endowment effect is a direct consequence: once you own something, giving it up feels like a loss, so you demand more to sell it than you would pay to buy it.",
+  "The second and third pillars together determine the shape of the value function — the signature diagram of Prospect Theory. Loss aversion means losses loom roughly twice as large as equivalent gains. The pain of losing a hundred dollars is roughly as intense as the pleasure of gaining two hundred. This makes the value function steeper in the loss domain than in the gain domain. Diminishing sensitivity means the marginal impact of a change decreases as you move further from the reference point. The difference between zero and a hundred feels larger than between nine hundred and a thousand. This makes the function concave in gains — producing risk aversion — and convex in losses — producing risk seeking. The result is the S-shaped value function you see here.",
+  "The fourth pillar is probability weighting. People do not weight outcomes by their objective probabilities. Instead, they apply a weighting function that overweights small probabilities and underweights large ones. A one-percent chance of winning feels more significant than it mathematically should — this drives lottery ticket demand and disproportionate fear of rare catastrophes. A ninety-nine-percent chance feels less than certain — people prefer a sure outcome to a near-certain chance of something slightly better. The weighting function is an inverted-S shape: steep near zero and near one, relatively flat in the middle. It is this feature that explains the Allais Paradox — people overweight the certainty of one option relative to a near-certain alternative, violating the independence axiom of expected utility theory.",
+  "Diminishing sensitivity has important practical implications beyond its role in the value function. The key insight is that how outcomes are presented — segregated or integrated — affects how they are experienced. Because the value function is concave in gains, presenting gains separately maximises total pleasure: two gains of fifty each feel better than one gain of one hundred. Because the function is convex in losses, combining losses into a single total minimises total pain: one loss of one hundred feels less bad than two losses of fifty each. This is sometimes called hedonic framing — and it has direct applications to how bonuses, price increases, refunds, and penalties should be structured to maximise wellbeing.",
+  "Here's the simplest real-world demonstration of loss aversion. Picture two people. Alex finds a twenty-dollar bill on the street — a nice surprise, a small lift in mood. Sam reaches into their jacket and realises they've lost a twenty-dollar bill that was there this morning. Now ask yourself: do those feelings cancel out? If Alex and Sam compared notes, would Alex's happiness offset Sam's misery? Not even close. Sam feels roughly twice as bad as Alex feels good. Same objective amount of money. Completely different emotional impact. This is loss aversion. And it shows up everywhere. Investors hold onto losing stocks far too long — because selling them makes the loss feel real, and that's painful. Workers resist pay cuts far more strongly than they welcome equivalent pay raises. Once you own something — a house, a job title, a parking spot — giving it up feels like a loss, so you demand far more to part with it than you'd pay to acquire it. The value function is steeper in the loss domain than the gain domain. That asymmetry is one of the most important and robust findings in all of behavioural economics.",
+  "Prospect Theory is the cornerstone of modern behavioural economics precisely because it is both psychologically realistic and formally tractable. It replaces the normative framework of expected utility — which describes how people should choose — with a descriptive framework — which captures how people actually choose. It generates testable predictions in finance, insurance, health, and public policy that expected utility cannot explain. The disposition effect in financial markets, insurance demand for small risks, and the design of effective policy incentives all rely on Prospect Theory. Understanding it is essential to understanding the rest of the course."
+];
+const VOICE_ID='WmFyZIEC0qrjgbkDYIMP',MODEL_ID='eleven_turbo_v2_5';
+let audioBuffers=new Array(narrations.length).fill(null);
+const apiKey='sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted=false,currentAudio=null,currentSpeech=null,speechEndTimer=null;
+const loadingOverlay=document.getElementById('loading-overlay'),loadingText=document.getElementById('loading-text'),statusBar=document.getElementById('status-bar');
+function setStatus(msg){if(statusBar)statusBar.textContent=msg;}
+async function generateAudio(idx){
+  const resp=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,{method:'POST',headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},body:JSON.stringify({text:narrations[idx],model_id:MODEL_ID,voice_settings:{stability:0.45,similarity_boost:0.82,style:0.3,use_speaker_boost:true}})});
+  if(!resp.ok)throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+async function generateAll(){
+  loadingOverlay.classList.add('show');
+  for(let i=0;i<narrations.length;i++){loadingText.textContent=`Generating narration ${i+1} of ${narrations.length}…`;try{audioBuffers[i]=await generateAudio(i);}catch(e){console.warn(`Slide ${i} failed:`,e.message);}}
+  loadingOverlay.classList.remove('show');initCurves();runTimeline(0);playSlideAudio(0);
+}
+function stopAudio(){if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}if(currentSpeech){speechSynthesis.cancel();currentSpeech=null;}clearTimeout(speechEndTimer);stopTimer();}
+function playSlideAudio(idx){
+  stopAudio();if(muted){startTimer(20000,()=>goTo(idx+1));return;}
+  if(audioBuffers[idx]){setStatus('');const audio=new Audio(audioBuffers[idx]);currentAudio=audio;audio.addEventListener('loadedmetadata',()=>startTimer(audio.duration*1000,null));audio.addEventListener('ended',()=>{currentAudio=null;goTo(idx+1);});audio.play().catch(()=>speakWithBrowser(idx));}else{speakWithBrowser(idx);}
+}
+function speakWithBrowser(idx){
+  if(!('speechSynthesis' in window)){startTimer(20000,()=>goTo(idx+1));return;}
+  speechSynthesis.cancel();const text=narrations[idx],rate=0.92,estimatedMs=Math.round((text.trim().split(/\s+/).length/145)*60000/rate)+2000;
+  const utter=new SpeechSynthesisUtterance(text);utter.rate=rate;utter.pitch=0.95;utter.volume=1;
+  const doSpeak=()=>{setStatus('');const voices=speechSynthesis.getVoices();const voice=voices.find(v=>v.name==='Daniel')||voices.find(v=>v.name==='Alex')||voices.find(v=>/Google US English/i.test(v.name))||voices.find(v=>v.lang==='en-US'&&!v.localService)||voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang.startsWith('en'));if(voice)utter.voice=voice;startTimer(estimatedMs,null);utter.onend=()=>{clearTimeout(speechEndTimer);currentSpeech=null;goTo(idx+1);};utter.onerror=()=>{clearTimeout(speechEndTimer);currentSpeech=null;startTimer(15000,()=>goTo(idx+1));};speechEndTimer=setTimeout(()=>{speechSynthesis.cancel();currentSpeech=null;goTo(idx+1);},estimatedMs+6000);speechSynthesis.speak(utter);currentSpeech=utter;};
+  speechSynthesis.getVoices().length>0?doSpeak():speechSynthesis.addEventListener('voiceschanged',doSpeak,{once:true});
+}
+const muteBtn=document.getElementById('btn-mute');
+muteBtn.addEventListener('click',()=>{muted=!muted;muteBtn.textContent=muted?'🔇':'🔊';if(muted){stopAudio();setStatus('');startTimer(20000,()=>goTo(current+1));}else{playSlideAudio(current);}});
+const slides=document.querySelectorAll('.slide'),dotsContainer=document.getElementById('dots'),timerBar=document.getElementById('timer-bar'),TOTAL=slides.length;
+let current=0,timerTimeout=null,rafId=null,timerStart=null,timerDuration=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.addEventListener('click',()=>goTo(i));dotsContainer.appendChild(d);});
+function getDots(){return dotsContainer.querySelectorAll('.dot');}
+function goTo(idx){if(idx>=TOTAL)idx=0;slides[current].classList.remove('active');getDots()[current].classList.remove('on');resetAni();current=(idx+TOTAL)%TOTAL;slides[current].classList.add('active');getDots()[current].classList.add('on');runTimeline(current);playSlideAudio(current);}
+function stopTimer(){clearTimeout(timerTimeout);cancelAnimationFrame(rafId);timerBar.style.width='0%';}
+function startTimer(durationMs,cb){stopTimer();timerStart=performance.now();timerDuration=durationMs;function tick(ts){const pct=Math.min((ts-timerStart)/timerDuration*100,100);timerBar.style.width=pct+'%';if(pct<100)rafId=requestAnimationFrame(tick);}rafId=requestAnimationFrame(tick);if(cb)timerTimeout=setTimeout(cb,durationMs);}
+document.getElementById('btn-next').addEventListener('click',()=>goTo(current+1));
+document.getElementById('btn-prev').addEventListener('click',()=>goTo(current-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goTo(current+1);if(e.key==='ArrowLeft')goTo(current-1);if(e.key==='m')muteBtn.click();});
+let aniTimers=[];
+function stopAni(){aniTimers.forEach(clearTimeout);aniTimers=[];}
+function sch(ms,fn){aniTimers.push(setTimeout(fn,ms));}
+function initCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{const tag=el.tagName.toLowerCase();let len;if(tag==='line'){const x1=+el.getAttribute('x1'),y1=+el.getAttribute('y1'),x2=+el.getAttribute('x2'),y2=+el.getAttribute('y2');len=Math.sqrt((x2-x1)**2+(y2-y1)**2);}else{len=el.getTotalLength?el.getTotalLength():600;}el.dataset.origLen=len;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function resetCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{el.style.transition='none';const len=el.dataset.origLen||9999;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function drawCurve(id,durMs,delayMs){sch(delayMs||0,()=>{const el=document.getElementById(id);if(!el)return;requestAnimationFrame(()=>{el.style.transition=`stroke-dashoffset ${durMs||1800}ms ease-in-out`;el.style.strokeDashoffset=0;});});}
+function litEl(sel){document.querySelectorAll(sel).forEach(el=>el.classList.add('val-lit'));}
+function resetAni(){stopAni();document.querySelectorAll('.ppf-pt').forEach(el=>el.classList.remove('ppf-show'));document.querySelectorAll('.val-lit').forEach(el=>el.classList.remove('val-lit'));document.querySelectorAll('.pt-row.dim').forEach(el=>el.classList.remove('dim'));resetCurves();}
+function runTimeline(idx){
+  switch(idx){
+    case 0:drawCurve('t-gain',1200,600);drawCurve('t-loss',1200,1500);sch(2700,()=>document.getElementById('t-ref')?.classList.add('ppf-show'));break;
+    case 2:drawCurve('ref-line',900,400);sch(1500,()=>document.getElementById('ref-pin')?.classList.add('ppf-show'));sch(4000,()=>document.getElementById('ref-gains')?.classList.add('ppf-show'));sch(5500,()=>document.getElementById('ref-losses')?.classList.add('ppf-show'));sch(16000,()=>document.getElementById('ref-ex')?.classList.add('ppf-show'));break;
+    case 3:drawCurve('vf-gain',1400,400);drawCurve('vf-loss',1400,1600);sch(600,()=>document.getElementById('vf-ref')?.classList.add('ppf-show'));sch(18000,()=>document.getElementById('vf-ann')?.classList.add('ppf-show'));break;
+    case 4:drawCurve('pw-diag',1000,300);sch(500,()=>litEl('#pw-diag-lbl'));drawCurve('pw-curve',1800,1400);sch(1800,()=>litEl('#pw-lbl'));sch(10000,()=>document.getElementById('pw-over')?.classList.add('ppf-show'));sch(22000,()=>document.getElementById('pw-under')?.classList.add('ppf-show'));break;
+    case 5:drawCurve('ds-gain',1300,400);drawCurve('ds-loss',1300,1500);sch(14000,()=>document.getElementById('ds-conc')?.classList.add('ppf-show'));sch(22000,()=>document.getElementById('ds-conv')?.classList.add('ppf-show'));break;
+    case 6:break;
+  }
+}
+generateAll();
+</script>
+</body>
+</html>

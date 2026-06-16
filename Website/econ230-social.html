@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Preferences — ECON 230</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+  :root{--ink:#0f1117;--paper:#f7f4ee;--gold:#c8a84b;--teal:#1a7a6e;--rust:#c0442a;--blue:#1a4a8a;--purple:#6b3fa0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#090b10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;gap:18px;}
+  #back-bar{width:860px;font-size:12px;color:#445;}#back-bar a{color:#667;text-decoration:none;transition:color .2s;}#back-bar a:hover{color:var(--gold);}
+  #status-bar{width:860px;font-size:12px;color:#556;text-align:right;min-height:16px;}
+  #stage{width:860px;height:540px;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 32px 80px rgba(0,0,0,.7);}
+  .slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .55s ease;display:flex;flex-direction:column;justify-content:center;padding:52px 64px;}
+  .slide.active{opacity:1;pointer-events:all;}
+  .fade-in{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+  .slide.active .fade-in{opacity:1;transform:none;}
+  .fade-in:nth-child(2){transition-delay:.15s;}.fade-in:nth-child(3){transition-delay:.3s;}.fade-in:nth-child(4){transition-delay:.45s;}.fade-in:nth-child(5){transition-delay:.6s;}.fade-in:nth-child(6){transition-delay:.75s;}
+  #author-wm{position:absolute;bottom:60px;left:18px;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.07em;text-transform:uppercase;pointer-events:none;z-index:5;}
+  /* S0 */
+  #s0{background:var(--ink);}
+  #s0 .label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+  #s0 .rule{width:56px;height:3px;background:var(--gold);margin-bottom:28px;}
+  #s0 h1{font-family:'Playfair Display',serif;font-size:52px;line-height:1.1;color:var(--paper);}
+  #s0 h1 em{font-style:italic;color:var(--gold);}
+  #s0 .sub{margin-top:20px;font-size:15px;color:#8898a0;font-weight:300;max-width:420px;line-height:1.55;}
+  #s0 .author-line{margin-top:16px;font-size:11.5px;color:rgba(200,168,75,.6);letter-spacing:.1em;text-transform:uppercase;}
+  #s0 .diagram{position:absolute;right:52px;top:50%;transform:translateY(-50%);width:220px;height:220px;}
+  /* S1 light */
+  #s1{background:var(--paper);}
+  #s1 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+  #s1 h2{font-family:'Playfair Display',serif;font-size:34px;color:var(--ink);line-height:1.2;margin-bottom:24px;}
+  /* S2 dark horiz */
+  #s2{background:#0a0f18;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s2 .sl{flex:1;min-width:0;}
+  #s2 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--paper);margin-bottom:8px;}
+  #s2 .intro{font-size:13px;color:#8aafc8;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S3 light */
+  #s3{background:var(--paper);padding:44px 64px;}
+  #s3 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+  #s3 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--ink);margin-bottom:20px;}
+  /* S4 dark horiz */
+  #s4{background:#100a18;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s4 .sl{flex:1;min-width:0;}
+  #s4 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--paper);margin-bottom:8px;}
+  #s4 .intro{font-size:13px;color:#c0a8e8;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S5 light */
+  #s5{background:var(--paper);padding:44px 64px;}
+  #s5 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  #s5 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--ink);margin-bottom:20px;}
+  /* S6 */
+  #s6{background:#0a0f1a;}
+  #s6 .quote-mark{font-family:'Playfair Display',serif;font-size:120px;line-height:.7;color:rgba(255,255,255,.1);margin-bottom:-10px;}
+  #s6 blockquote{font-family:'Playfair Display',serif;font-size:24px;line-height:1.55;color:white;max-width:660px;margin-bottom:24px;}
+  #s6 blockquote em{font-style:italic;color:var(--gold);}
+  #s6 .attr{font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.08em;}
+  #s6 .tag{position:absolute;bottom:44px;right:60px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+  /* Shared components */
+  .cards{display:flex;gap:18px;}
+  .card{flex:1;background:white;border-radius:6px;padding:22px 18px;border-top:4px solid var(--blue);box-shadow:0 4px 20px rgba(0,0,0,.07);}
+  .card.gold-t{border-color:var(--gold);}.card.rust-t{border-color:var(--rust);}.card.teal-t{border-color:var(--teal);}
+  .card .icon{font-size:26px;margin-bottom:10px;}
+  .card h3{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px;letter-spacing:.04em;}
+  .card p{font-size:12.5px;color:#444;line-height:1.6;font-weight:300;}
+  .facts{display:flex;flex-direction:column;gap:11px;}
+  .frow{display:flex;align-items:flex-start;gap:12px;font-size:12.5px;font-weight:300;line-height:1.5;}
+  .fbadge{flex-shrink:0;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:1px;}
+  .fb-blue{background:rgba(26,74,138,.2);color:#6090e0;}.fb-gold{background:rgba(200,168,75,.2);color:var(--gold);}
+  .fb-rust{background:rgba(192,68,42,.2);color:#e07060;}.fb-teal{background:rgba(26,122,110,.25);color:#1a9a8e;}
+  .fb-pur{background:rgba(107,63,160,.25);color:#c0a0f0;}
+  #s2 .frow{color:#99aabb;} #s4 .frow{color:#ccbbee;}
+  .soc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .soc-panel{background:white;border-radius:8px;padding:16px 18px;box-shadow:0 3px 14px rgba(0,0,0,.07);}
+  .soc-panel h3{font-size:12.5px;font-weight:700;margin-bottom:8px;}
+  .soc-panel p{font-size:12px;color:#333;line-height:1.5;font-weight:300;}
+  .soc-panel.blue-p h3{color:var(--blue);}.soc-panel.gold-p h3{color:#a08030;}.soc-panel.teal-p h3{color:var(--teal);}.soc-panel.rust-p h3{color:var(--rust);}
+  /* Controls */
+  #controls{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .3s,transform .3s;}
+  .dot.on{background:var(--gold);transform:scale(1.4);}
+  #btn-prev,#btn-next,#btn-mute{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--gold);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+  #btn-prev:hover,#btn-next:hover,#btn-mute:hover{background:rgba(255,255,255,.2);}
+  #timer-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--gold);width:0%;}
+  #loading-overlay{position:absolute;inset:0;background:rgba(10,12,18,.88);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:10;}
+  #loading-overlay.show{display:flex;}
+  .spinner{width:44px;height:44px;border-radius:50%;border:3px solid rgba(200,168,75,.2);border-top-color:var(--gold);animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #loading-overlay p{font-size:14px;color:#889;}
+  .anim-curve{stroke-dasharray:9999;stroke-dashoffset:9999;}
+  .ppf-pt{opacity:0;transition:opacity .7s ease;}.ppf-pt.ppf-show{opacity:1;}
+  .ppf-ripple{transform-box:fill-box;transform-origin:center;}
+  .ppf-pt.ppf-show .ppf-ripple{animation:ripple-out 1.8s ease-out .1s forwards;}
+  @keyframes ripple-out{0%{opacity:.7;transform:scale(1);}100%{opacity:0;transform:scale(5);}}
+  .val-axis{opacity:.15;transition:opacity .5s ease;}.val-axis.val-lit{opacity:1;}
+  .soc-panel{transition:box-shadow .4s ease;}.soc-panel.teach-on{box-shadow:0 0 0 2px var(--blue),0 3px 14px rgba(0,0,0,.07);}
+  @keyframes ex-bob   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+  @keyframes ex-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+  @keyframes ex-slide-up { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+<div id="back-bar"><a href="econ230-topics.html">← ECON 230 Topics</a></div>
+<div id="status-bar"></div>
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- S0: Title -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 230 · Other-Regarding Preferences</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Social<br><em>Preferences</em></h1>
+    <p class="sub fade-in">Fairness, reciprocity, and cooperation — how other people's outcomes enter our own utility.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 220 220" width="220" height="220" fill="none">
+        <circle cx="110" cy="110" r="104" stroke="rgba(26,74,138,.15)" stroke-width="1.5"/>
+        <!-- Two people (proposer and responder) -->
+        <circle cx="72" cy="90" r="22" stroke="rgba(200,168,75,.6)" stroke-width="1.5" fill="rgba(200,168,75,.08)"/>
+        <text x="72" y="95" fill="rgba(200,168,75,.8)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Proposer</text>
+        <circle cx="148" cy="90" r="22" stroke="rgba(26,74,138,.6)" stroke-width="1.5" fill="rgba(26,74,138,.08)"/>
+        <text x="148" y="95" fill="rgba(96,144,224,.8)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Responder</text>
+        <!-- Offer arrow -->
+        <g id="t-offer" class="ppf-pt">
+          <line x1="94" y1="90" x2="125" y2="90" stroke="var(--gold)" stroke-width="1.8"/>
+          <polygon points="128,90 120,86 120,94" fill="var(--gold)"/>
+          <text x="110" y="82" fill="rgba(200,168,75,.75)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">Offer</text>
+        </g>
+        <!-- Accept/Reject -->
+        <g id="t-resp" class="ppf-pt">
+          <text x="148" y="128" fill="rgba(96,144,224,.7)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Accept ✓</text>
+          <text x="148" y="140" fill="rgba(192,68,42,.7)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Reject ✗</text>
+        </g>
+        <!-- Fair split label -->
+        <text x="110" y="175" fill="rgba(255,255,255,.35)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Ultimatum Game</text>
+        <text x="110" y="187" fill="rgba(255,255,255,.22)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">Modal offer: ~45–50%</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- S1: Beyond self-interest (light) -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Evidence</div>
+    <h2 class="fade-in">People regularly sacrifice material gain to achieve fair outcomes.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">🤝</div>
+        <h3>Ultimatum Game</h3>
+        <p>Two players split a sum. The proposer offers a split; the responder accepts or rejects. Rejection means both get nothing. Offers below 20–30% are almost universally rejected — people pay to punish unfairness.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">🎁</div>
+        <h3>Dictator Game</h3>
+        <p>The proposer simply chooses how to split — no rejection possible. Standard theory predicts keeping everything. In practice, most proposers give 20–30%, with no strategic reason to do so.</p>
+      </div>
+      <div class="card teal-t fade-in">
+        <div class="icon">🌍</div>
+        <h3>Cross-Cultural Evidence</h3>
+        <p>These patterns have been replicated across dozens of cultures and populations. The specifics vary, but the departure from pure self-interest is universal — it is not a Western artefact.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2: Ultimatum game results (dark horiz) -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Ultimatum Game: What the Data Show</h2>
+      <p class="intro fade-in">The modal offer is close to an even split. Low offers are rejected at substantial personal cost — revealing a preference for punishment of unfairness.</p>
+      <div class="facts fade-in">
+        <div class="frow" id="ug1">
+          <span class="fbadge fb-blue">Finding 1</span>
+          <span>The most common offer is 40–50% of the total. Very few proposers offer the minimum despite it being the rational choice under pure self-interest.</span>
+        </div>
+        <div class="frow" id="ug2">
+          <span class="fbadge fb-rust">Finding 2</span>
+          <span>Offers below 20–30% are rejected roughly half the time or more. Responders forfeit real money to punish what they perceive as an unfair offer.</span>
+        </div>
+        <div class="frow" id="ug3">
+          <span class="fbadge fb-gold">Interpretation</span>
+          <span>Proposers anticipate rejection and offer more. Responders are driven by fairness norms, not just money. Both sides exhibit social preferences.</span>
+        </div>
+        <div class="frow" id="ug4">
+          <span class="fbadge fb-teal">Dictator</span>
+          <span>Removing the responder's power to reject, proposers still give away 20–30%. This isolates pure altruism and fairness from strategic motives.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Offer distribution chart -->
+    <svg class="fade-in" viewBox="0 0 300 280" width="300" height="280" style="flex-shrink:0;">
+      <line x1="44" y1="248" x2="272" y2="248" stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+      <line x1="44" y1="248" x2="44" y2="20" stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+      <text x="158" y="272" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Offer (% of total) →</text>
+      <text x="22" y="135" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 135)">Frequency →</text>
+      <!-- Bars: 0–10%, 10–20%, 20–30%, 30–40%, 40–50% -->
+      <rect id="bar0" class="val-axis" x="52" y="228" width="32" height="20" fill="rgba(192,68,42,.55)" rx="2"/>
+      <text x="68" y="264" fill="rgba(255,255,255,.4)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">0–10</text>
+      <rect id="bar1" class="val-axis" x="98" y="198" width="32" height="50" fill="rgba(192,68,42,.55)" rx="2"/>
+      <text x="114" y="264" fill="rgba(255,255,255,.4)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">10–20</text>
+      <rect id="bar2" class="val-axis" x="144" y="158" width="32" height="90" fill="rgba(200,168,75,.55)" rx="2"/>
+      <text x="160" y="264" fill="rgba(255,255,255,.4)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">20–30</text>
+      <rect id="bar3" class="val-axis" x="190" y="108" width="32" height="140" fill="rgba(26,122,110,.65)" rx="2"/>
+      <text x="206" y="264" fill="rgba(255,255,255,.4)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">30–40</text>
+      <rect id="bar4" class="val-axis" x="236" y="48" width="32" height="200" fill="rgba(26,74,138,.75)" rx="2"/>
+      <text x="252" y="264" fill="rgba(255,255,255,.4)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">40–50</text>
+      <!-- Modal label -->
+      <g id="modal-ann" class="ppf-pt">
+        <text x="252" y="40" fill="rgba(96,144,224,.85)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">Modal</text>
+        <text x="252" y="30" fill="rgba(96,144,224,.65)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">(most common)</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- S3: Inequality aversion + reciprocity (light) -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">Formal Models</div>
+    <h2 class="fade-in">Inequality Aversion &amp; Reciprocity</h2>
+    <div class="soc-grid">
+      <div class="soc-panel blue-p fade-in" id="sp1">
+        <h3>Fehr-Schmidt Model</h3>
+        <p>People dislike both advantageous and disadvantageous inequality. Utility falls when outcomes are unequal — whether you are ahead or behind. The disutility from being behind is larger.</p>
+      </div>
+      <div class="soc-panel gold-p fade-in" id="sp2">
+        <h3>Predictions</h3>
+        <p>Explains ultimatum rejections, dictator giving, wage compression in firms, and resistance to price gouging — all without assuming altruism. Only inequity aversion is needed.</p>
+      </div>
+      <div class="soc-panel teal-p fade-in" id="sp3">
+        <h3>Positive Reciprocity</h3>
+        <p>Respond to generosity with generosity — even when there is no material incentive. Workers who receive unexpectedly high wages work harder. Trust games reveal willingness to reward trust.</p>
+      </div>
+      <div class="soc-panel rust-p fade-in" id="sp4">
+        <h3>Negative Reciprocity</h3>
+        <p>Respond to unkindness with punishment — even at personal cost, even anonymously. Altruistic punishment is common in public goods games and drives cooperation norms in society.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: Altruism and cooperation (dark horiz) -->
+  <div class="slide" id="s4">
+    <div class="sl">
+      <h2 class="fade-in">Altruism &amp; Cooperation</h2>
+      <p class="intro fade-in">Public goods experiments reveal that cooperation is real but fragile — sustained by conditional cooperators who punish free-riders when given the chance.</p>
+      <div class="facts fade-in">
+        <div class="frow" id="coop1">
+          <span class="fbadge fb-teal">Finding</span>
+          <span>In public goods games, significant contributions persist — especially early in the game and when subjects can communicate. Pure self-interest predicts zero contribution.</span>
+        </div>
+        <div class="frow" id="coop2">
+          <span class="fbadge fb-gold">Conditional</span>
+          <span>Most subjects are conditional cooperators — willing to contribute if they believe others will. Free riders exploit this, eroding contributions over time unless punishment is available.</span>
+        </div>
+        <div class="frow" id="coop3">
+          <span class="fbadge fb-rust">Punishment</span>
+          <span>When subjects can pay to punish free riders — even anonymously — cooperation is sustained at high levels. Altruistic punishment is the mechanism that holds cooperation together.</span>
+        </div>
+        <div class="frow" id="coop4">
+          <span class="fbadge fb-pur">Markets</span>
+          <span>Social preferences operate in markets too: sellers who price-gouge during shortages face consumer boycotts; employers who impose unfair pay cuts see effort decline beyond what economics predicts.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Cooperation diagram -->
+    <svg class="fade-in" viewBox="0 0 300 280" width="300" height="280" style="flex-shrink:0;">
+      <line x1="44" y1="248" x2="272" y2="248" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+      <line x1="44" y1="248" x2="44" y2="20" stroke="rgba(255,255,255,.22)" stroke-width="1.2"/>
+      <text x="158" y="272" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Round →</text>
+      <text x="22" y="135" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 135)">Contribution →</text>
+      <!-- With punishment (stays high, teal) -->
+      <path id="coop-with" class="anim-curve" d="M52,65 C90,68 140,72 268,70" stroke="#1a9a8e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <!-- Without punishment (declines, rust) -->
+      <path id="coop-without" class="anim-curve" d="M52,65 C90,90 150,160 268,220" stroke="#c0442a" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <!-- Labels -->
+      <g id="coop-labels" class="ppf-pt">
+        <text x="246" y="62" fill="#1a9a8e" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="600">With punishment</text>
+        <text x="210" y="230" fill="#c0442a" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="600">No punishment</text>
+      </g>
+      <!-- High/low reference lines -->
+      <text x="38" y="68" fill="rgba(255,255,255,.3)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="end">High</text>
+      <text x="38" y="248" fill="rgba(255,255,255,.3)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="end">0</text>
+    </svg>
+  </div>
+
+  <!-- S5: Broader implications (light) -->
+  <div class="slide" id="s5">
+    <div class="eyebrow fade-in">Why This Matters</div>
+    <h2 class="fade-in">Social preferences shape markets, organisations, and policy.</h2>
+    <div class="soc-grid">
+      <div class="soc-panel blue-p fade-in">
+        <h3>Labour Markets</h3>
+        <p>Workers respond to perceived fairness of wages. Pay cuts below a reference wage trigger effort reductions beyond what efficiency wage theory predicts. Gift exchange is real.</p>
+      </div>
+      <div class="soc-panel gold-p fade-in">
+        <h3>Contracting</h3>
+        <p>Explicit contracts can crowd out intrinsic motivation — reducing performance. Monitoring workers signals distrust, undermining the cooperative relationship. Less is sometimes more.</p>
+      </div>
+      <div class="soc-panel teal-p fade-in">
+        <h3>Tax Compliance</h3>
+        <p>People are more likely to pay taxes when they believe others are complying and when they trust the government to use funds fairly. Compliance is a social norm, not just a calculation.</p>
+      </div>
+      <div class="soc-panel rust-p fade-in">
+        <h3>Price Fairness</h3>
+        <p>Sellers who raise prices during a shortage face consumer backlash even when supply and demand justify it. The concept of a "fair price" constrains markets in ways standard models miss.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6: Animated example -->
+  <div class="slide" id="s-ex-s" style="background:#0a0f1a;flex-direction:row;align-items:center;gap:32px;padding:44px 52px;">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;" class="fade-in">REAL-LIFE EXAMPLE</div>
+      <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:25px;color:var(--paper);line-height:1.35;margin-bottom:14px;">Tipping at a Restaurant You'll Never Return To</h2>
+      <p class="fade-in" style="font-size:12.5px;color:#8898a0;font-weight:300;line-height:1.72;max-width:345px;">
+        You've eaten. The bill is paid. You're in a city you'll never visit again. The waiter can do nothing more for you.<br><br>
+        <strong style="color:var(--paper)">Standard economics says: tip nothing.</strong> No future relationship. No material benefit. Zero.<br><br>
+        But most people tip anyway — because the waiter worked hard, and <strong style="color:var(--gold)">fairness matters to us</strong>, even when no one is watching and there's nothing to gain. That's a social preference.
+      </p>
+    </div>
+    <svg viewBox="0 0 290 270" width="290" height="270" fill="none" style="flex-shrink:0;">
+      <!-- Table -->
+      <rect x="80" y="155" width="130" height="10" rx="3" fill="rgba(100,80,60,.7)" stroke="rgba(130,100,70,.5)" stroke-width="1"/>
+      <line x1="100" y1="165" x2="100" y2="200" stroke="rgba(100,80,60,.6)" stroke-width="3" stroke-linecap="round"/>
+      <line x1="190" y1="165" x2="190" y2="200" stroke="rgba(100,80,60,.6)" stroke-width="3" stroke-linecap="round"/>
+      <!-- Plate on table -->
+      <ellipse cx="145" cy="155" rx="28" ry="8" fill="rgba(200,168,75,.15)" stroke="rgba(200,168,75,.3)" stroke-width="1"/>
+      <text x="145" y="158" fill="rgba(200,168,75,.6)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">🍽️</text>
+      <!-- Customer (stick figure sitting) -->
+      <g style="animation:ex-bob 2.5s ease-in-out infinite;">
+        <circle cx="80" cy="130" r="17" fill="none" stroke="rgba(26,74,138,.9)" stroke-width="1.8"/>
+        <circle cx="74" cy="126" r="2.5" fill="rgba(26,74,138,.9)"/>
+        <circle cx="86" cy="126" r="2.5" fill="rgba(26,74,138,.9)"/>
+        <path d="M74 137 Q80 143 86 137" stroke="rgba(26,74,138,.85)" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+        <line x1="80" y1="147" x2="80" y2="165" stroke="rgba(26,74,138,.75)" stroke-width="1.7"/>
+        <line x1="80" y1="153" x2="65" y2="160" stroke="rgba(26,74,138,.75)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="80" y1="153" x2="95" y2="155" stroke="rgba(26,74,138,.75)" stroke-width="1.7" stroke-linecap="round"/>
+      </g>
+      <!-- Thought bubble -->
+      <g style="animation:ex-slide-up .6s ease-out 1s both;opacity:0;">
+        <circle cx="100" cy="108" r="4" fill="rgba(255,255,255,.22)"/>
+        <circle cx="112" cy="100" r="6" fill="rgba(255,255,255,.18)"/>
+        <rect x="115" y="76" width="110" height="28" rx="6" fill="rgba(255,255,255,.16)" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+        <text x="170" y="86" fill="rgba(255,255,255,.75)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">"They worked hard...</text>
+        <text x="170" y="98" fill="rgba(200,168,75,.85)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">it's only fair." ✓</text>
+      </g>
+      <!-- Coin moving toward tip jar -->
+      <g id="tip-coin" style="animation:ex-float 2s ease-in-out infinite 1.5s;">
+        <circle cx="118" cy="162" r="11" fill="rgba(200,168,75,.6)" stroke="rgba(200,168,75,.9)" stroke-width="1.5"/>
+        <text x="118" y="166" fill="rgba(200,168,75,1)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">$</text>
+      </g>
+      <!-- Tip jar -->
+      <rect x="198" y="138" width="36" height="28" rx="4" fill="rgba(26,74,138,.25)" stroke="rgba(26,74,138,.55)" stroke-width="1.2"/>
+      <text x="216" y="130" fill="rgba(26,74,138,.7)" font-size="8" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">TIP JAR</text>
+      <text x="216" y="157" fill="rgba(200,168,75,.7)" font-size="14" font-family="Space Grotesk,sans-serif" text-anchor="middle">$</text>
+      <!-- Waiter stick figure (waving) -->
+      <g style="animation:ex-bob 2.2s ease-in-out infinite .8s;">
+        <circle cx="216" cy="100" r="17" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.8"/>
+        <circle cx="210" cy="96" r="2.5" fill="rgba(255,255,255,.9)"/>
+        <circle cx="222" cy="96" r="2.5" fill="rgba(255,255,255,.9)"/>
+        <path d="M210 108 Q216 116 222 108" stroke="rgba(255,255,255,.85)" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+        <!-- Waiter coat details -->
+        <line x1="216" y1="117" x2="216" y2="138" stroke="rgba(255,255,255,.7)" stroke-width="1.7"/>
+        <!-- Waving arm -->
+        <line x1="216" y1="124" x2="197" y2="112" stroke="rgba(255,255,255,.7)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="216" y1="124" x2="235" y2="107" stroke="rgba(200,168,75,.8)" stroke-width="1.7" stroke-linecap="round"/>
+        <circle cx="236" cy="106" r="4" fill="rgba(200,168,75,.5)"/>
+        <line x1="216" y1="138" x2="208" y2="152" stroke="rgba(255,255,255,.7)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="216" y1="138" x2="224" y2="152" stroke="rgba(255,255,255,.7)" stroke-width="1.7" stroke-linecap="round"/>
+      </g>
+      <!-- Heart from waiter -->
+      <text x="240" y="98" fill="rgba(192,68,42,.7)" font-size="14" style="animation:ex-float 1.8s ease-in-out infinite 2s;">♥</text>
+      <text x="56" y="255" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif">"I'll never return — but tipping is the right thing to do."</text>
+    </svg>
+  </div>
+
+  <!-- S7: Takeaway -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Humans are <em>conditionally cooperative social animals</em>. We are not purely selfish — but not purely altruistic either. We care about fairness, reward generosity, and punish unkindness at personal cost. These are not departures from rationality. They are rational responses to a social world where reputation, reciprocity, and trust are economically valuable.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 230 · UNBC</div>
+    <div class="tag">Fairness · Reciprocity · Ultimatum Game · Inequality Aversion</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Standard economic theory assumes that people care only about their own material payoffs. But decades of experimental evidence show that people regularly sacrifice personal gain to achieve fair outcomes, punish unfair behaviour at personal cost, reward generosity they did not expect, and cooperate even when defection would pay more. This topic surveys the evidence on social preferences — departures from pure self-interest that have profound implications for markets, organisations, and policy.",
+  "The ultimatum game is one of the most replicated experiments in the history of economics. Two players split a sum — say ten dollars. The proposer makes an offer; the responder accepts or rejects. If the responder rejects, both players receive nothing. Standard theory predicts the proposer offers the minimum possible amount, and the responder accepts any positive offer — a rational agent should prefer one dollar to nothing. In practice, offers below 20 to 30 percent are almost universally rejected, even at significant personal cost to the responder. And the modal offer — the most common offer — is close to 50 percent. The dictator game removes the responder's power to reject entirely: the proposer simply chooses the split with no consequences. Standard theory now predicts the proposer keeps everything. In practice, most proposers give away 20 to 30 percent, with no strategic reason whatsoever to do so. These findings have been replicated across dozens of countries and cultures. The departure from pure self-interest is not a Western anomaly — it is a feature of human social cognition.",
+  "The experimental evidence has motivated formal models of social preferences. The Fehr-Schmidt inequality aversion model assumes that people experience disutility from unequal outcomes — whether they are the ones ahead or behind. The disutility from being below others — disadvantageous inequality — is larger than the disutility from being above — advantageous inequality. This simple assumption generates the patterns observed in ultimatum and dictator games without invoking altruism. Reciprocity goes a step further. Positive reciprocity means responding to generosity with generosity, even when there is no material incentive to do so. Workers who receive unexpectedly high wages work harder — the gift exchange model. Negative reciprocity means punishing unkindness even at personal cost, even anonymously, even when you will never interact with that person again. Altruistic punishment is among the most striking findings in experimental economics.",
+  "Cooperation failures are a central topic in economics. Why do people free ride on public goods, pollute common resources, or defect in prisoners' dilemmas? Pure self-interest predicts full defection. But in experiments, significant cooperation persists — driven by conditional cooperators who are willing to contribute if they believe others will. The key finding is what happens when subjects can choose to punish free riders. When punishment is available, cooperation is sustained at high levels across many rounds. Without the option to punish, contributions decline steadily as free riders erode others' willingness to contribute. Social preferences operate in markets too: sellers who raise prices during a shortage face consumer backlash even when supply and demand justify it. Employers who impose pay cuts below a reference wage see effort fall beyond what standard efficiency wage theory predicts. Social norms and fairness considerations constrain economic behaviour in ways that purely self-interested models miss.",
+  "Social preferences have far-reaching implications for the design of economic institutions. In labour markets, workers respond to the perceived fairness of wages and working conditions. Pay cuts below a reference wage trigger disproportionate effort reductions — the labour supply curve is not smooth at the reference wage. In contracting, explicit monitoring and incentive contracts can crowd out intrinsic motivation, reducing performance below what a simple model would predict. Paying someone to do a task signals distrust, and distrust reduces cooperation. In tax compliance, people are far more likely to pay taxes when they believe others are also paying and when they trust the government to use the revenue fairly. Compliance is a social norm as much as a legal obligation. And in product markets, price gouging — raising prices sharply during a disaster or shortage — triggers consumer backlash, boycotts, and reputational damage that constrains firms' ability to extract full surplus even when it is economically justified.",
+  "Here is a puzzle that standard economics cannot easily solve. You are eating at a restaurant in a city you will never visit again. The meal is finished, the bill is paid, and you are about to leave. The waiter has done their job — they cannot do anything more for you. You have no future relationship with them. According to the standard model, a purely self-interested person should tip nothing. There is no material benefit to tipping. No repeat business. No reputation at stake. But most people tip anyway — typically fifteen to twenty percent. Why? Because not tipping would feel wrong. The waiter worked hard, provided a service, and deserves fair compensation. We have a social preference for fairness — a preference that is not reducible to material self-interest. We care about whether people are treated right, even when we gain nothing from caring. And this preference is real and consequential. It shapes wages, contracts, cooperation in organisations, and the willingness to pay taxes. Any economic model that excludes it is missing something important about how people actually behave.",
+  "The central lesson of the social preferences literature is that humans are conditionally cooperative social animals. We are not purely selfish — but we are not purely altruistic either. We care about fairness, we respond to the intentions behind others' actions, we reward generosity and punish unkindness even at real personal cost. These preferences are not departures from rationality. They are rational responses to a social environment where reputation, reciprocity, and trust are economically valuable. A person with strong fairness preferences is making a sensible long-run investment in social capital. Incorporating social preferences into economic models does not make economics less rigorous — it makes it more accurate, more predictive, and more useful as a guide to policy and institutional design."
+];
+const VOICE_ID='WmFyZIEC0qrjgbkDYIMP',MODEL_ID='eleven_turbo_v2_5';
+let audioBuffers=new Array(narrations.length).fill(null);
+const apiKey='sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted=false,currentAudio=null,currentSpeech=null,speechEndTimer=null;
+const loadingOverlay=document.getElementById('loading-overlay'),loadingText=document.getElementById('loading-text'),statusBar=document.getElementById('status-bar');
+function setStatus(msg){if(statusBar)statusBar.textContent=msg;}
+async function generateAudio(idx){const resp=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,{method:'POST',headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},body:JSON.stringify({text:narrations[idx],model_id:MODEL_ID,voice_settings:{stability:0.45,similarity_boost:0.82,style:0.3,use_speaker_boost:true}})});if(!resp.ok)throw new Error(`ElevenLabs ${resp.status}`);return URL.createObjectURL(await resp.blob());}
+async function generateAll(){loadingOverlay.classList.add('show');for(let i=0;i<narrations.length;i++){loadingText.textContent=`Generating narration ${i+1} of ${narrations.length}…`;try{audioBuffers[i]=await generateAudio(i);}catch(e){console.warn(`Slide ${i} failed:`,e.message);}}loadingOverlay.classList.remove('show');initCurves();runTimeline(0);playSlideAudio(0);}
+function stopAudio(){if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}if(currentSpeech){speechSynthesis.cancel();currentSpeech=null;}clearTimeout(speechEndTimer);stopTimer();}
+function playSlideAudio(idx){stopAudio();if(muted){startTimer(20000,()=>goTo(idx+1));return;}if(audioBuffers[idx]){setStatus('');const audio=new Audio(audioBuffers[idx]);currentAudio=audio;audio.addEventListener('loadedmetadata',()=>startTimer(audio.duration*1000,null));audio.addEventListener('ended',()=>{currentAudio=null;goTo(idx+1);});audio.play().catch(()=>speakWithBrowser(idx));}else{speakWithBrowser(idx);}}
+function speakWithBrowser(idx){if(!('speechSynthesis' in window)){startTimer(20000,()=>goTo(idx+1));return;}speechSynthesis.cancel();const text=narrations[idx],rate=0.92,estimatedMs=Math.round((text.trim().split(/\s+/).length/145)*60000/rate)+2000;const utter=new SpeechSynthesisUtterance(text);utter.rate=rate;utter.pitch=0.95;utter.volume=1;const doSpeak=()=>{setStatus('');const voices=speechSynthesis.getVoices();const voice=voices.find(v=>v.name==='Daniel')||voices.find(v=>v.name==='Alex')||voices.find(v=>/Google US English/i.test(v.name))||voices.find(v=>v.lang==='en-US'&&!v.localService)||voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang.startsWith('en'));if(voice)utter.voice=voice;startTimer(estimatedMs,null);utter.onend=()=>{clearTimeout(speechEndTimer);currentSpeech=null;goTo(idx+1);};utter.onerror=()=>{clearTimeout(speechEndTimer);currentSpeech=null;startTimer(15000,()=>goTo(idx+1));};speechEndTimer=setTimeout(()=>{speechSynthesis.cancel();currentSpeech=null;goTo(idx+1);},estimatedMs+6000);speechSynthesis.speak(utter);currentSpeech=utter;};speechSynthesis.getVoices().length>0?doSpeak():speechSynthesis.addEventListener('voiceschanged',doSpeak,{once:true});}
+const muteBtn=document.getElementById('btn-mute');
+muteBtn.addEventListener('click',()=>{muted=!muted;muteBtn.textContent=muted?'🔇':'🔊';if(muted){stopAudio();setStatus('');startTimer(20000,()=>goTo(current+1));}else{playSlideAudio(current);}});
+const slides=document.querySelectorAll('.slide'),dotsContainer=document.getElementById('dots'),timerBar=document.getElementById('timer-bar'),TOTAL=slides.length;
+let current=0,timerTimeout=null,rafId=null,timerStart=null,timerDuration=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.addEventListener('click',()=>goTo(i));dotsContainer.appendChild(d);});
+function getDots(){return dotsContainer.querySelectorAll('.dot');}
+function goTo(idx){if(idx>=TOTAL)idx=0;slides[current].classList.remove('active');getDots()[current].classList.remove('on');resetAni();current=(idx+TOTAL)%TOTAL;slides[current].classList.add('active');getDots()[current].classList.add('on');runTimeline(current);playSlideAudio(current);}
+function stopTimer(){clearTimeout(timerTimeout);cancelAnimationFrame(rafId);timerBar.style.width='0%';}
+function startTimer(durationMs,cb){stopTimer();timerStart=performance.now();timerDuration=durationMs;function tick(ts){const pct=Math.min((ts-timerStart)/timerDuration*100,100);timerBar.style.width=pct+'%';if(pct<100)rafId=requestAnimationFrame(tick);}rafId=requestAnimationFrame(tick);if(cb)timerTimeout=setTimeout(cb,durationMs);}
+document.getElementById('btn-next').addEventListener('click',()=>goTo(current+1));
+document.getElementById('btn-prev').addEventListener('click',()=>goTo(current-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goTo(current+1);if(e.key==='ArrowLeft')goTo(current-1);if(e.key==='m')muteBtn.click();});
+let aniTimers=[];
+function stopAni(){aniTimers.forEach(clearTimeout);aniTimers=[];}
+function sch(ms,fn){aniTimers.push(setTimeout(fn,ms));}
+function initCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{const tag=el.tagName.toLowerCase();let len;if(tag==='line'){const x1=+el.getAttribute('x1'),y1=+el.getAttribute('y1'),x2=+el.getAttribute('x2'),y2=+el.getAttribute('y2');len=Math.sqrt((x2-x1)**2+(y2-y1)**2);}else{len=el.getTotalLength?el.getTotalLength():600;}el.dataset.origLen=len;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function resetCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{el.style.transition='none';const len=el.dataset.origLen||9999;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function drawCurve(id,durMs,delayMs){sch(delayMs||0,()=>{const el=document.getElementById(id);if(!el)return;requestAnimationFrame(()=>{el.style.transition=`stroke-dashoffset ${durMs||1800}ms ease-in-out`;el.style.strokeDashoffset=0;});});}
+function litEl(sel){document.querySelectorAll(sel).forEach(el=>el.classList.add('val-lit'));}
+function resetAni(){stopAni();document.querySelectorAll('.ppf-pt').forEach(el=>el.classList.remove('ppf-show'));document.querySelectorAll('.val-lit').forEach(el=>el.classList.remove('val-lit'));document.querySelectorAll('.teach-on').forEach(el=>el.classList.remove('teach-on'));resetCurves();}
+function runTimeline(idx){
+  switch(idx){
+    case 0:sch(800,()=>document.getElementById('t-offer')?.classList.add('ppf-show'));sch(2000,()=>document.getElementById('t-resp')?.classList.add('ppf-show'));break;
+    case 2:sch(400,()=>litEl('#bar0,#bar1,#bar2,#bar3,#bar4'));sch(18000,()=>document.getElementById('modal-ann')?.classList.add('ppf-show'));break;
+    case 3:sch(3000,()=>{document.getElementById('sp1')?.classList.add('teach-on');document.getElementById('sp2')?.classList.add('teach-on');});sch(22000,()=>{document.getElementById('sp1')?.classList.remove('teach-on');document.getElementById('sp2')?.classList.remove('teach-on');document.getElementById('sp3')?.classList.add('teach-on');document.getElementById('sp4')?.classList.add('teach-on');});break;
+    case 4:drawCurve('coop-with',1600,400);drawCurve('coop-without',1600,2200);sch(2400,()=>document.getElementById('coop-labels')?.classList.add('ppf-show'));break;
+    case 6:break;
+  }
+}
+generateAll();
+</script>
+</body>
+</html>

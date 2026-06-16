@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Limits of Rationality — ECON 230</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:    #0f1117;
+    --paper:  #f7f4ee;
+    --gold:   #c8a84b;
+    --teal:   #1a7a6e;
+    --rust:   #c0442a;
+    --blue:   #1a4a8a;
+    --purple: #6b3fa0;
+    --mist:   #dde8e6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px;
+    font-size: 9px; color: rgba(255,255,255,.18); letter-spacing: .07em;
+    text-transform: uppercase; pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 .rule  { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 52px; line-height: 1.1; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub { margin-top: 20px; font-size: 16px; color: #8898a0; font-weight: 300; max-width: 420px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(200,168,75,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .diagram { position: absolute; right: 58px; top: 50%; transform: translateY(-50%); width: 210px; height: 210px; }
+
+  /* ── Slide 1 – Rational Agent ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--blue); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 36px; color: var(--ink); line-height: 1.15; margin-bottom: 24px; }
+  .cards { display: flex; gap: 18px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 22px 18px; border-top: 4px solid var(--blue); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.gold-t  { border-color: var(--gold); }
+  .card.purple-t { border-color: var(--purple); }
+  .card .icon { font-size: 26px; margin-bottom: 10px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 7px; letter-spacing: .04em; }
+  .card p  { font-size: 12.5px; color: #444; line-height: 1.6; font-weight: 300; }
+
+  /* ── Slide 2 – Expected Utility (horizontal) ── */
+  #s2 { background: #0f1a2a; flex-direction: row; align-items: center; gap: 36px; padding: 44px 56px; }
+  #s2 .sl { flex: 1; min-width: 0; }
+  #s2 h2  { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 8px; }
+  #s2 .intro { font-size: 13px; color: #8aafc8; font-weight: 300; line-height: 1.6; margin-bottom: 18px; }
+  .eu-facts { display: flex; flex-direction: column; gap: 11px; }
+  .eu-row   { display: flex; align-items: flex-start; gap: 12px; font-size: 12.5px; font-weight: 300; line-height: 1.5; color: #bbc; }
+  .eu-badge {
+    flex-shrink: 0; padding: 2px 10px; border-radius: 20px; font-size: 11px;
+    font-weight: 700; letter-spacing: .04em; margin-top: 1px;
+    background: rgba(200,168,75,.2); color: var(--gold);
+  }
+  .eu-badge.b { background: rgba(107,63,160,.25); color: #b89fe0; }
+
+  /* ── Slide 3 – Why it fails (paper) ── */
+  #s3 { background: var(--paper); padding: 40px 64px; }
+  #s3 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--rust); margin-bottom: 10px; }
+  #s3 h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--ink); margin-bottom: 20px; }
+  .fail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .fail-panel { background: white; border-radius: 8px; padding: 16px 18px; box-shadow: 0 3px 14px rgba(0,0,0,.07); border-left: 4px solid var(--rust); }
+  .fail-panel h3 { font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--rust); margin-bottom: 8px; }
+  .fail-panel p  { font-size: 12.5px; color: #333; line-height: 1.5; font-weight: 300; }
+  .fail-note {
+    margin-top: 14px; padding: 10px 16px;
+    background: rgba(107,63,160,.07); border-left: 3px solid var(--purple);
+    border-radius: 0 5px 5px 0; font-size: 12px; color: #333; line-height: 1.55;
+  }
+  .fail-note strong { color: var(--purple); }
+
+  /* ── Slide 4 – Bounded Rationality (dark horizontal) ── */
+  #s4 { background: #0d0f1a; flex-direction: row; align-items: center; gap: 36px; padding: 44px 52px; }
+  #s4 .sl { flex: 1; min-width: 0; }
+  #s4 h2  { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 8px; }
+  #s4 .intro { font-size: 12.5px; color: #8899bb; font-weight: 300; line-height: 1.6; margin-bottom: 16px; }
+  .br-facts { display: flex; flex-direction: column; gap: 11px; }
+  .br-fact  { display: flex; align-items: flex-start; gap: 10px; }
+  .br-dot   { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+  .br-fact p { font-size: 12px; color: #99aabb; line-height: 1.5; font-weight: 300; }
+  .br-fact strong { color: var(--paper); font-weight: 600; }
+
+  /* ── Slide 5 – Implications ── */
+  #s5 { background: var(--paper); padding: 44px 64px; }
+  #s5 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+  #s5 h2 { font-family: 'Playfair Display', serif; font-size: 32px; color: var(--ink); margin-bottom: 22px; }
+  .impl-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .impl-panel { background: white; border-radius: 8px; padding: 18px; box-shadow: 0 3px 14px rgba(0,0,0,.07); }
+  .impl-panel h3 { font-size: 12.5px; font-weight: 700; color: var(--teal); margin-bottom: 8px; }
+  .impl-panel p  { font-size: 12.5px; color: #333; line-height: 1.5; font-weight: 300; }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: var(--purple); }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.15); margin-bottom: -10px; }
+  #s6 blockquote  { font-family: 'Playfair Display', serif; font-size: 26px; line-height: 1.5; color: white; max-width: 640px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.6); letter-spacing: .08em; }
+  #s6 .tag  { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.4); }
+
+  /* ── Controls ── */
+  #controls {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    color: var(--gold); width: 34px; height: 34px; border-radius: 50%;
+    cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+  #loading-overlay {
+    position: absolute; inset: 0; background: rgba(10,12,18,.88);
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px; z-index: 10;
+  }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(200,168,75,.2); border-top-color: var(--gold); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  .anim-curve { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .7s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+  .ppf-ripple { transform-box: fill-box; transform-origin: center; }
+  .ppf-pt.ppf-show .ppf-ripple { animation: ripple-out 1.8s ease-out .1s forwards; }
+  @keyframes ripple-out { 0% { opacity: .7; transform: scale(1); } 100% { opacity: 0; transform: scale(5); } }
+  .val-axis { opacity: .2; transition: opacity .5s ease; }
+  .val-axis.val-lit { opacity: 1; }
+  .fail-panel { transition: box-shadow .4s ease; }
+  .fail-panel.teach-on { box-shadow: 0 0 0 2px var(--rust), 0 3px 14px rgba(0,0,0,.07); }
+  .impl-panel { transition: box-shadow .4s ease; }
+  .impl-panel.teach-on { box-shadow: 0 0 0 2px var(--teal), 0 3px 14px rgba(0,0,0,.07); }
+  @keyframes ex-bob   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+  @keyframes ex-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  @keyframes ex-appear{ from{opacity:0} to{opacity:1} }
+  .ex-label { font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px; }
+  .ex-desc  { font-size:12.5px;color:#8898a0;font-weight:300;line-height:1.72;max-width:345px; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ230-topics.html">← ECON 230 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 230 · Foundations</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Limits of<br><em>Rationality</em></h1>
+    <p class="sub fade-in">Why the standard model of rational choice breaks down — and what replaces it.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <!-- Brain / decision diagram -->
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 210 210" width="210" height="210" fill="none">
+        <circle cx="105" cy="105" r="100" stroke="rgba(107,63,160,.2)" stroke-width="1.5"/>
+        <!-- Utility curve (concave) -->
+        <path id="title-u" class="anim-curve" d="M30,175 Q80,60 180,40" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round"/>
+        <!-- Constraint line -->
+        <line id="title-c" class="anim-curve" x1="30" y1="155" x2="175" y2="35" stroke="rgba(107,63,160,.7)" stroke-width="1.8" stroke-dasharray="6 3"/>
+        <!-- Optimal point -->
+        <g id="title-opt" class="ppf-pt">
+          <circle class="ppf-ripple" cx="120" cy="88" r="8" fill="white"/>
+          <circle cx="120" cy="88" r="5" fill="white"/>
+        </g>
+        <!-- Question mark — "but does it hold?" -->
+        <text x="148" y="148" fill="rgba(200,168,75,.5)" font-size="42" font-family="Playfair Display,serif" font-weight="700">?</text>
+        <text x="35" y="202" fill="rgba(107,63,160,.5)" font-size="10" font-family="Space Grotesk,sans-serif" letter-spacing=".06em">RATIONAL AGENT</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: The Rational Agent Model ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Standard Model</div>
+    <h2 class="fade-in">Economics assumes a perfectly<br>rational decision-maker.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">📋</div>
+        <h3>Well-Defined Preferences</h3>
+        <p>Agents have complete, consistent, and transitive preferences over all possible outcomes. They always know what they want.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">🎲</div>
+        <h3>Expected Utility</h3>
+        <p>Under uncertainty, agents maximise expected utility — weighting outcomes by their probabilities and choosing the option with the highest weighted value.</p>
+      </div>
+      <div class="card purple-t fade-in">
+        <div class="icon">⚙️</div>
+        <h3>Full Optimisation</h3>
+        <p>Given all available information, agents compute the best possible choice and execute it — every time, at no cognitive cost.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: Expected Utility Theory ── -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Expected Utility Theory</h2>
+      <p class="intro fade-in">The formal language of rational choice under risk, developed by Von Neumann and Morgenstern (1944).</p>
+      <div class="eu-facts fade-in">
+        <div class="eu-row" id="eu1">
+          <span class="eu-badge">Rule</span>
+          <span>For each risky option, multiply each outcome's value by its probability and sum the results. Choose the option with the highest expected utility.</span>
+        </div>
+        <div class="eu-row" id="eu2">
+          <span class="eu-badge">Example</span>
+          <span><strong style="color:#dde">Gamble A:</strong> 50% chance of $100, 50% chance of $0. EU = 0.5 × u($100) + 0.5 × u($0).</span>
+        </div>
+        <div class="eu-row" id="eu3">
+          <span class="eu-badge">Key</span>
+          <span>The utility function u(·) captures risk preferences. A concave u means risk aversion — a sure $50 is preferred to the gamble above.</span>
+        </div>
+        <div class="eu-row" id="eu4">
+          <span class="eu-badge b">Axioms</span>
+          <span>The model rests on four axioms: completeness, transitivity, continuity, and independence. Violate any one — and EU breaks down.</span>
+        </div>
+      </div>
+    </div>
+    <!-- EU diagram -->
+    <svg class="fade-in" viewBox="0 0 320 280" width="320" height="280" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="44" y1="248" x2="304" y2="248" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+      <line x1="44" y1="248" x2="44" y2="20"  stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
+      <polygon points="44,15 39,25 49,25" fill="rgba(255,255,255,.3)"/>
+      <polygon points="309,248 299,243 299,253" fill="rgba(255,255,255,.3)"/>
+      <!-- Concave utility curve -->
+      <path id="eu-curve" class="anim-curve" d="M54,238 Q120,80 290,38" stroke="var(--gold)" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+      <!-- CE point (certainty equivalent) -->
+      <g id="eu-ce" class="ppf-pt">
+        <line x1="44" y1="138" x2="175" y2="138" stroke="rgba(200,168,75,.35)" stroke-width="1" stroke-dasharray="4 3"/>
+        <line x1="175" y1="138" x2="175" y2="248" stroke="rgba(200,168,75,.35)" stroke-width="1" stroke-dasharray="4 3"/>
+        <circle class="ppf-ripple" cx="175" cy="138" r="7" fill="var(--gold)"/>
+        <circle cx="175" cy="138" r="4.5" fill="var(--gold)"/>
+        <text x="180" y="134" fill="rgba(200,168,75,.9)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600">u($50)</text>
+      </g>
+      <!-- Chord (EU of gamble) -->
+      <g id="eu-chord" class="ppf-pt">
+        <line x1="54" y1="238" x2="290" y2="38" stroke="rgba(255,255,255,.2)" stroke-width="1.2" stroke-dasharray="5 3"/>
+        <circle cx="172" cy="138" r="4" fill="rgba(255,255,255,.45)"/>
+        <text x="182" y="175" fill="rgba(255,255,255,.5)" font-size="10" font-family="Space Grotesk,sans-serif">EU(gamble)</text>
+        <line x1="181" y1="172" x2="174" y2="142" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+      </g>
+      <!-- Axis labels -->
+      <text x="174" y="268" fill="rgba(255,255,255,.45)" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle">Wealth →</text>
+      <text x="22"  y="135" fill="rgba(255,255,255,.45)" font-size="11" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 135)">Utility →</text>
+      <text id="eu-lbl" class="val-axis" x="296" y="34" fill="var(--gold)" font-size="12" font-family="Space Grotesk,sans-serif" font-weight="700">u(w)</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Why it Fails ── -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">Empirical Evidence</div>
+    <h2 class="fade-in">The model fails systematically<br>in real-world settings.</h2>
+    <div class="fail-grid">
+      <div class="fail-panel fade-in" id="fp1">
+        <h3>Allais Paradox</h3>
+        <p>Most people violate the independence axiom of EU theory when choosing between carefully designed lotteries — a finding replicated worldwide.</p>
+      </div>
+      <div class="fail-panel fade-in" id="fp2">
+        <h3>Loss Aversion</h3>
+        <p>Losses loom roughly twice as large as equivalent gains. People refuse fair gambles — a systematic departure from expected utility maximisation.</p>
+      </div>
+      <div class="fail-panel fade-in" id="fp3">
+        <h3>Framing Effects</h3>
+        <p>Identical choices yield different decisions depending on how they are presented — as gains or losses, percentages or frequencies.</p>
+      </div>
+      <div class="fail-panel fade-in" id="fp4">
+        <h3>Present Bias</h3>
+        <p>People over-weight immediate rewards relative to future ones — beyond what standard discounting predicts — leading to self-control failures.</p>
+      </div>
+    </div>
+    <div class="fail-note fade-in" id="fail-note">
+      <strong>Pattern:</strong> These are not random errors. They are systematic, predictable, and stable across populations — which is what makes them economically important.
+    </div>
+  </div>
+
+  <!-- ── Slide 4: Bounded Rationality ── -->
+  <div class="slide" id="s4">
+    <div class="sl">
+      <h2 class="fade-in">Bounded Rationality</h2>
+      <p class="intro fade-in">Herbert Simon (1955) argued that people are rational — but only within limits set by their cognitive capacity, time, and available information.</p>
+      <div class="br-facts fade-in">
+        <div class="br-fact">
+          <div class="br-dot" style="background:var(--gold)"></div>
+          <p><strong>Cognitive limits:</strong> Working memory, attention, and processing speed are finite. Full optimisation is computationally impossible for most real decisions.</p>
+        </div>
+        <div class="br-fact">
+          <div class="br-dot" style="background:#b89fe0"></div>
+          <p><strong>Information limits:</strong> We rarely have complete information. Gathering it is costly in time and effort. Decisions are made under genuine uncertainty.</p>
+        </div>
+        <div class="br-fact">
+          <div class="br-dot" style="background:var(--teal)"></div>
+          <p><strong>Satisficing, not optimising:</strong> Rather than finding the best option, people search until they find one that is "good enough" — and stop there.</p>
+        </div>
+        <div class="br-fact">
+          <div class="br-dot" style="background:var(--rust)"></div>
+          <p><strong>Heuristics:</strong> Mental shortcuts — rules of thumb — substitute for full computation. They are often effective, but create predictable biases.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Satisficing diagram -->
+    <svg class="fade-in" viewBox="0 0 320 280" width="320" height="280" style="flex-shrink:0;">
+      <!-- Aspiration threshold line -->
+      <line id="br-thresh" class="anim-curve" x1="44" y1="110" x2="300" y2="110" stroke="rgba(200,168,75,.6)" stroke-width="1.5" stroke-dasharray="7 4"/>
+      <text id="br-thresh-lbl" class="val-axis" x="308" y="114" fill="rgba(200,168,75,.8)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600">"good enough"</text>
+      <!-- Optimum marker -->
+      <line id="br-opt" class="val-axis" x1="44" y1="42" x2="300" y2="42" stroke="rgba(255,255,255,.2)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text id="br-opt-lbl" class="val-axis" x="308" y="46" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif">optimal</text>
+      <!-- Options searched (dots) -->
+      <g id="br-opts" class="ppf-pt">
+        <circle cx="80"  cy="175" r="6" fill="rgba(255,255,255,.25)"/>
+        <circle cx="130" cy="195" r="6" fill="rgba(255,255,255,.25)"/>
+        <circle cx="180" cy="88"  r="6" fill="var(--gold)"/>
+        <!-- Arrow stops here -->
+        <line x1="55" y1="175" x2="200" y2="175" stroke="rgba(255,255,255,.15)" stroke-width="1" stroke-dasharray="3 3"/>
+        <polygon points="205,175 195,170 195,180" fill="rgba(255,255,255,.15)"/>
+        <!-- Stop label -->
+        <text x="172" y="78" fill="rgba(200,168,75,.85)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">STOP — satisfice</text>
+        <line x1="180" y1="82" x2="180" y2="88" stroke="rgba(200,168,75,.5)" stroke-width="1"/>
+      </g>
+      <!-- Axes -->
+      <line x1="44" y1="248" x2="304" y2="248" stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+      <line x1="44" y1="248" x2="44" y2="20"  stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+      <text x="174" y="268" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Options Searched →</text>
+      <text x="22"  y="135" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 135)">Value →</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 5: Implications ── -->
+  <div class="slide" id="s5">
+    <div class="eyebrow fade-in">So What?</div>
+    <h2 class="fade-in">Why this matters for economics<br>and policy.</h2>
+    <div class="impl-grid">
+      <div class="impl-panel fade-in" id="ip1">
+        <h3>Markets Can Amplify Mistakes</h3>
+        <p>When many people share the same bias — such as overconfidence or present bias — markets do not automatically correct it. Errors can persist and compound.</p>
+      </div>
+      <div class="impl-panel fade-in" id="ip2">
+        <h3>Standard Policy May Fail</h3>
+        <p>Policies designed for fully rational agents often do not work as predicted. Information campaigns, price signals, and incentives all interact with cognitive limits.</p>
+      </div>
+      <div class="impl-panel fade-in" id="ip3">
+        <h3>Behavioural Policy Works</h3>
+        <p>Nudges, defaults, and choice architecture exploit known biases to improve outcomes — without restricting freedom. Pension auto-enrolment is a canonical example.</p>
+      </div>
+      <div class="impl-panel fade-in" id="ip4">
+        <h3>Better Models</h3>
+        <p>Prospect theory, hyperbolic discounting, and dual-process models replace EU theory with frameworks that fit the data — and generate testable predictions.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 6: Animated example ── -->
+  <div class="slide" id="s-ex-r" style="background:#0d0818;flex-direction:row;align-items:center;gap:32px;padding:44px 52px;">
+    <div style="flex:1;min-width:0;">
+      <div class="ex-label fade-in">REAL-LIFE EXAMPLE</div>
+      <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:25px;color:var(--paper);line-height:1.35;margin-bottom:14px;">The Cereal Aisle</h2>
+      <p class="ex-desc fade-in">
+        A perfectly rational shopper facing 47 cereals would read every label, calculate cost-per-calorie, and pick the optimal box. <strong style="color:var(--paper)">Nobody does this.</strong><br><br>
+        Instead, you grab the familiar brand at eye level — something <strong style="color:var(--gold)">"good enough"</strong> — and move on. That's satisficing, not optimising. Bounded rationality, not laziness.
+      </p>
+    </div>
+    <svg viewBox="0 0 290 270" width="290" height="270" fill="none" style="flex-shrink:0;">
+      <!-- Shelf backdrop -->
+      <rect x="20" y="20" width="250" height="155" rx="5" fill="rgba(107,63,160,.08)" stroke="rgba(107,63,160,.22)" stroke-width="1.2"/>
+      <line x1="20" y1="92" x2="270" y2="92" stroke="rgba(107,63,160,.15)" stroke-width="1"/>
+      <!-- Top-shelf boxes (6 boxes) -->
+      <rect x="30"  y="30" width="28" height="55" rx="2" fill="rgba(192,68,42,.5)"   stroke="rgba(192,68,42,.65)"   stroke-width="1"/>
+      <rect x="64"  y="30" width="28" height="55" rx="2" fill="rgba(26,122,110,.5)"  stroke="rgba(26,122,110,.65)"  stroke-width="1"/>
+      <rect x="98"  y="30" width="28" height="55" rx="2" fill="rgba(200,168,75,.5)"  stroke="rgba(200,168,75,.65)"  stroke-width="1"/>
+      <rect x="132" y="30" width="28" height="55" rx="2" fill="rgba(26,74,138,.5)"   stroke="rgba(26,74,138,.65)"   stroke-width="1"/>
+      <rect x="166" y="30" width="28" height="55" rx="2" fill="rgba(107,63,160,.5)"  stroke="rgba(107,63,160,.65)"  stroke-width="1"/>
+      <rect x="200" y="30" width="28" height="55" rx="2" fill="rgba(26,122,110,.4)"  stroke="rgba(26,122,110,.55)"  stroke-width="1"/>
+      <rect x="234" y="30" width="28" height="55" rx="2" fill="rgba(192,68,42,.38)"  stroke="rgba(192,68,42,.5)"    stroke-width="1"/>
+      <!-- Bottom-shelf boxes -->
+      <rect x="30"  y="100" width="28" height="55" rx="2" fill="rgba(200,168,75,.38)"  stroke="rgba(200,168,75,.5)"  stroke-width="1"/>
+      <rect x="64"  y="100" width="28" height="55" rx="2" fill="rgba(107,63,160,.38)"  stroke="rgba(107,63,160,.5)"  stroke-width="1"/>
+      <rect x="98"  y="100" width="28" height="55" rx="2" fill="rgba(192,68,42,.38)"   stroke="rgba(192,68,42,.5)"   stroke-width="1"/>
+      <rect x="132" y="100" width="28" height="55" rx="2" fill="rgba(26,122,110,.38)"  stroke="rgba(26,122,110,.5)"  stroke-width="1"/>
+      <rect x="166" y="100" width="28" height="55" rx="2" fill="rgba(26,74,138,.38)"   stroke="rgba(26,74,138,.5)"   stroke-width="1"/>
+      <rect x="200" y="100" width="28" height="55" rx="2" fill="rgba(107,63,160,.32)"  stroke="rgba(107,63,160,.45)" stroke-width="1"/>
+      <rect x="234" y="100" width="28" height="55" rx="2" fill="rgba(200,168,75,.3)"   stroke="rgba(200,168,75,.42)" stroke-width="1"/>
+      <!-- "47 OPTIONS" label -->
+      <text x="145" y="193" fill="rgba(200,168,75,.75)" font-size="10.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">47 OPTIONS</text>
+      <!-- Stick figure (bewildered) -->
+      <g style="animation:ex-bob 2.2s ease-in-out infinite;">
+        <circle cx="145" cy="220" r="16" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="1.8"/>
+        <circle cx="139" cy="217" r="2" fill="rgba(255,255,255,.9)"/>
+        <circle cx="151" cy="217" r="2" fill="rgba(255,255,255,.9)"/>
+        <!-- Furrowed brows -->
+        <line x1="136" y1="212" x2="142" y2="210" stroke="rgba(255,255,255,.7)" stroke-width="1.2" stroke-linecap="round"/>
+        <line x1="154" y1="210" x2="148" y2="212" stroke="rgba(255,255,255,.7)" stroke-width="1.2" stroke-linecap="round"/>
+        <!-- Wavy confused mouth -->
+        <path d="M139 224 Q142 222 145 224 Q148 226 151 224" stroke="rgba(255,255,255,.65)" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+        <!-- Body -->
+        <line x1="145" y1="236" x2="145" y2="258" stroke="rgba(255,255,255,.7)" stroke-width="1.7"/>
+        <!-- Arms up (shrug) -->
+        <line x1="145" y1="242" x2="128" y2="233" stroke="rgba(255,255,255,.7)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="145" y1="242" x2="162" y2="233" stroke="rgba(255,255,255,.7)" stroke-width="1.7" stroke-linecap="round"/>
+        <!-- Hands open -->
+        <circle cx="127" cy="232" r="3" fill="rgba(255,255,255,.4)"/>
+        <circle cx="163" cy="232" r="3" fill="rgba(255,255,255,.4)"/>
+        <!-- Legs -->
+        <line x1="145" y1="258" x2="136" y2="270" stroke="rgba(255,255,255,.7)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="145" y1="258" x2="154" y2="270" stroke="rgba(255,255,255,.7)" stroke-width="1.7" stroke-linecap="round"/>
+      </g>
+      <!-- Floating question marks -->
+      <text x="112" y="207" fill="rgba(200,168,75,.95)" font-size="17" font-family="Playfair Display,serif" font-weight="700" style="animation:ex-float 1.9s ease-in-out infinite;">?</text>
+      <text x="174" y="202" fill="rgba(107,63,160,.9)"  font-size="14" font-family="Playfair Display,serif" font-weight="700" style="animation:ex-float 2.3s ease-in-out infinite .5s;">?</text>
+      <text x="127" y="197" fill="rgba(200,168,75,.6)"  font-size="11" font-family="Playfair Display,serif" font-weight="700" style="animation:ex-float 1.6s ease-in-out infinite 1s;">?</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 7: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      People are not irrational. They are <em>intentionally rational</em> — but cognitively constrained. Understanding those constraints is the starting point of behavioural economics.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 230 · UNBC</div>
+    <div class="tag">Rationality · Bounded · Heuristics · Behavioural Economics</div>
+  </div>
+
+  <!-- Loading overlay -->
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p id="loading-text">Generating voice narration…</p>
+  </div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Welcome to ECON 230. We begin with a foundational question: are people actually rational? Standard economics says yes — agents have consistent preferences, compute expected utility, and choose optimally. This topic examines where that model comes from, where it breaks down, and what framework replaces it.",
+  "The rational agent model makes three core assumptions. First, agents have well-defined, consistent preferences — they always know what they want and can rank all possible outcomes. Second, under uncertainty, they maximise expected utility — weighting each possible outcome by its probability and choosing the option with the highest weighted value. Third, they optimise fully, processing all available information at no cognitive cost to arrive at the best possible decision. This is the benchmark model that underlies most of microeconomic theory.",
+  "The formal foundation of rational choice under risk is expected utility theory, developed by Von Neumann and Morgenstern in 1944. The rule is straightforward: for each risky option, multiply the utility of each possible outcome by its probability, sum the results, and choose the option with the highest expected utility. A key insight is that the utility function can be concave — meaning each additional dollar of wealth adds less utility than the last. This captures risk aversion: a person with a concave utility function strictly prefers a certain $50 to a fifty-fifty gamble between $100 and nothing, even though the expected money values are equal. The theory rests on four axioms: completeness, transitivity, continuity, and independence. Violate any one of these, and expected utility breaks down.",
+  "And people do violate them — systematically. The Allais Paradox, first demonstrated in 1953, shows that most people violate the independence axiom when choosing between carefully designed lotteries. Loss aversion — the finding that losses loom roughly twice as large as equivalent gains — is inconsistent with standard expected utility. Framing effects show that the same choice, described differently, produces systematically different decisions. And present bias leads people to over-weight immediate rewards relative to future ones far more than standard discounting predicts. The critical point is that these are not random errors. They are predictable, stable, and consistent across populations and cultures. That is what makes them economically important — and what makes behavioural economics a science rather than a collection of anecdotes.",
+  "Herbert Simon introduced the concept of bounded rationality in 1955. His argument was precise: people intend to be rational, but their rationality is bounded by three things — the limits of their cognitive capacity, the limits of the information available to them, and the time they have to make a decision. Given these constraints, people do not optimise. Instead, they satisfice — they search through available options until they find one that meets an aspiration threshold, a level that is good enough, and they stop there. They use heuristics — mental shortcuts — that substitute for full computation. These heuristics are often effective. They evolved precisely because they work well in the environments where humans typically face decisions. But they create predictable biases when applied in environments they were not designed for.",
+  "Bounded rationality and systematic bias have profound implications. For markets: when many agents share the same bias, markets do not automatically correct it. Overconfidence in financial markets, for example, can persist and generate excess volatility. For policy: interventions designed for fully rational agents often fail. Information campaigns have weak effects when the problem is not lack of information but present bias or inattention. And for policy design: behavioural economics opens an entirely new toolkit. Choice architecture — designing the context in which decisions are made — can dramatically improve outcomes without restricting freedom or changing prices. Automatic enrolment in pension plans is a canonical example: the same contribution rates are available, but changing the default from opt-in to opt-out raises participation from around 40% to over 90%.",
+  "Let's ground this with a real example. Imagine you're at the grocery store walking down the cereal aisle. There are forty-seven different boxes. A perfectly rational agent would read every nutrition label, calculate cost per calorie, factor in personal preferences across all dimensions, and select the optimal box. Does anyone actually do this? Of course not. You grab the familiar brand — the one you recognise, the one at eye level, maybe the one you had as a kid. You find something good enough, and you move on. This is bounded rationality in action — not laziness or irrationality, but the entirely sensible decision to stop searching once you've found something that meets your needs. Herbert Simon called it satisficing. And it happens not just in supermarkets but in every domain where real people make decisions under real cognitive constraints — which is everywhere.",
+  "The key idea of this course is this: people are not irrational. They are intentionally rational — they are trying to make good decisions. But they are cognitively constrained — by limited attention, limited memory, limited time, and limited information. Behavioural economics is the systematic study of those constraints and their consequences for individual decisions, market outcomes, and policy. Everything we study this term — biases, heuristics, social influences, addiction, deceptive practices, and policy interventions — flows from this single foundational insight."
+];
+
+const VOICE_ID = 'WmFyZIEC0qrjgbkDYIMP';
+const MODEL_ID = 'eleven_turbo_v2_5';
+
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted = false;
+let currentAudio = null;
+let currentSpeech = null;
+let speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed — browser TTS:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initCurves();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer);
+  stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else {
+    speakWithBrowser(idx);
+  }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx];
+  const rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel')
+               || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US')
+               || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend  = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter);
+    currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted;
+  muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides        = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar      = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0;
+let timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer();
+  timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initCurves() {
+  document.querySelectorAll('.anim-curve').forEach(el => {
+    const tag = el.tagName.toLowerCase();
+    let len;
+    if (tag === 'line') {
+      const x1 = +el.getAttribute('x1'), y1 = +el.getAttribute('y1');
+      const x2 = +el.getAttribute('x2'), y2 = +el.getAttribute('y2');
+      len = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+    } else {
+      len = el.getTotalLength ? el.getTotalLength() : 600;
+    }
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function resetCurves() {
+  document.querySelectorAll('.anim-curve').forEach(el => {
+    el.style.transition = 'none';
+    const len = el.dataset.origLen || 9999;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawCurve(id, durMs, delayMs) {
+  sch(delayMs || 0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs || 1800}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function showPt(id) { sch(0, () => document.getElementById(id)?.classList.add('ppf-show')); }
+function litEl(sel) { document.querySelectorAll(sel).forEach(el => el.classList.add('val-lit')); }
+
+function resetAni() {
+  stopAni();
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.val-lit').forEach(el => el.classList.remove('val-lit'));
+  document.querySelectorAll('.teach-on').forEach(el => el.classList.remove('teach-on'));
+  resetCurves();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0:
+      drawCurve('title-u', 1400, 700);
+      drawCurve('title-c', 1200, 1600);
+      sch(2800, () => document.getElementById('title-opt')?.classList.add('ppf-show'));
+      break;
+
+    case 2:
+      drawCurve('eu-curve', 1800, 400);
+      sch(700,   () => litEl('#eu-lbl'));
+      sch(12000, () => document.getElementById('eu-ce')?.classList.add('ppf-show'));
+      sch(22000, () => document.getElementById('eu-chord')?.classList.add('ppf-show'));
+      break;
+
+    case 3:
+      sch(3000,  () => document.getElementById('fp1')?.classList.add('teach-on'));
+      sch(14000, () => { document.getElementById('fp1')?.classList.remove('teach-on'); document.getElementById('fp2')?.classList.add('teach-on'); });
+      sch(25000, () => { document.getElementById('fp2')?.classList.remove('teach-on'); document.getElementById('fp3')?.classList.add('teach-on'); });
+      sch(35000, () => { document.getElementById('fp3')?.classList.remove('teach-on'); document.getElementById('fp4')?.classList.add('teach-on'); });
+      break;
+
+    case 4:
+      drawCurve('br-thresh', 1400, 500);
+      sch(800,   () => litEl('#br-thresh-lbl'));
+      sch(2000,  () => litEl('#br-opt, #br-opt-lbl'));
+      sch(8000,  () => document.getElementById('br-opts')?.classList.add('ppf-show'));
+      break;
+
+    case 5:
+      sch(3000,  () => document.getElementById('ip1')?.classList.add('teach-on'));
+      sch(16000, () => { document.getElementById('ip1')?.classList.remove('teach-on'); document.getElementById('ip2')?.classList.add('teach-on'); });
+      sch(29000, () => { document.getElementById('ip2')?.classList.remove('teach-on'); document.getElementById('ip3')?.classList.add('teach-on'); });
+      sch(43000, () => { document.getElementById('ip3')?.classList.remove('teach-on'); document.getElementById('ip4')?.classList.add('teach-on'); });
+      break;
+    case 6: break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>

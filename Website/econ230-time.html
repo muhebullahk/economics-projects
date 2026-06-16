@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Inconsistency and Present Bias — ECON 230</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+  :root{--ink:#0f1117;--paper:#f7f4ee;--gold:#c8a84b;--teal:#1a7a6e;--rust:#c0442a;--blue:#1a4a8a;--purple:#6b3fa0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#090b10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;gap:18px;}
+  #back-bar{width:860px;font-size:12px;color:#445;}#back-bar a{color:#667;text-decoration:none;transition:color .2s;}#back-bar a:hover{color:var(--gold);}
+  #status-bar{width:860px;font-size:12px;color:#556;text-align:right;min-height:16px;}
+  #stage{width:860px;height:540px;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 32px 80px rgba(0,0,0,.7);}
+  .slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .55s ease;display:flex;flex-direction:column;justify-content:center;padding:52px 64px;}
+  .slide.active{opacity:1;pointer-events:all;}
+  .fade-in{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+  .slide.active .fade-in{opacity:1;transform:none;}
+  .fade-in:nth-child(2){transition-delay:.15s;}.fade-in:nth-child(3){transition-delay:.3s;}.fade-in:nth-child(4){transition-delay:.45s;}.fade-in:nth-child(5){transition-delay:.6s;}.fade-in:nth-child(6){transition-delay:.75s;}
+  #author-wm{position:absolute;bottom:60px;left:18px;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.07em;text-transform:uppercase;pointer-events:none;z-index:5;}
+  /* S0 */
+  #s0{background:var(--ink);}
+  #s0 .label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+  #s0 .rule{width:56px;height:3px;background:var(--gold);margin-bottom:28px;}
+  #s0 h1{font-family:'Playfair Display',serif;font-size:46px;line-height:1.1;color:var(--paper);}
+  #s0 h1 em{font-style:italic;color:var(--gold);}
+  #s0 .sub{margin-top:20px;font-size:15px;color:#8898a0;font-weight:300;max-width:400px;line-height:1.55;}
+  #s0 .author-line{margin-top:16px;font-size:11.5px;color:rgba(200,168,75,.6);letter-spacing:.1em;text-transform:uppercase;}
+  #s0 .diagram{position:absolute;right:52px;top:50%;transform:translateY(-50%);width:230px;height:230px;}
+  /* S1 light horiz */
+  #s1{background:var(--paper);flex-direction:row;align-items:center;gap:36px;padding:44px 56px;}
+  #s1 .sl{flex:1;min-width:0;}
+  #s1 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--ink);margin-bottom:8px;}
+  #s1 .intro{font-size:13px;color:#555;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S2 dark horiz */
+  #s2{background:#091810;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s2 .sl{flex:1;min-width:0;}
+  #s2 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--paper);margin-bottom:8px;}
+  #s2 .intro{font-size:13px;color:#8fa;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S3 light */
+  #s3{background:var(--paper);padding:44px 64px;}
+  #s3 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  #s3 h2{font-family:'Playfair Display',serif;font-size:32px;color:var(--ink);margin-bottom:22px;}
+  /* S4 dark */
+  #s4{background:#0a0f14;padding:44px 64px;}
+  #s4 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+  #s4 h2{font-family:'Playfair Display',serif;font-size:32px;color:var(--paper);margin-bottom:22px;}
+  /* S5 light */
+  #s5{background:var(--paper);padding:44px 64px;}
+  #s5 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  #s5 h2{font-family:'Playfair Display',serif;font-size:32px;color:var(--ink);margin-bottom:20px;}
+  /* S6 */
+  #s6{background:#091a10;}
+  #s6 .quote-mark{font-family:'Playfair Display',serif;font-size:120px;line-height:.7;color:rgba(255,255,255,.1);margin-bottom:-10px;}
+  #s6 blockquote{font-family:'Playfair Display',serif;font-size:24px;line-height:1.55;color:white;max-width:660px;margin-bottom:24px;}
+  #s6 blockquote em{font-style:italic;color:var(--gold);}
+  #s6 .attr{font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.08em;}
+  #s6 .tag{position:absolute;bottom:44px;right:60px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+  /* Shared */
+  .facts{display:flex;flex-direction:column;gap:11px;}
+  .frow{display:flex;align-items:flex-start;gap:12px;font-size:12.5px;font-weight:300;line-height:1.5;}
+  .fbadge{flex-shrink:0;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:1px;}
+  .fb-teal{background:rgba(26,122,110,.25);color:#1a9a8e;} .fb-gold{background:rgba(200,168,75,.2);color:var(--gold);}
+  .fb-rust{background:rgba(192,68,42,.2);color:#e07060;} .fb-pur{background:rgba(107,63,160,.25);color:#c0a0f0;}
+  .cards-3{display:flex;gap:16px;}
+  .card{flex:1;background:white;border-radius:6px;padding:20px 16px;border-top:4px solid var(--teal);box-shadow:0 4px 20px rgba(0,0,0,.07);}
+  .card.gold-t{border-color:var(--gold);} .card.rust-t{border-color:var(--rust);} .card.blue-t{border-color:var(--blue);}
+  .card .icon{font-size:24px;margin-bottom:8px;}
+  .card h3{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:.04em;}
+  .card p{font-size:12px;color:#444;line-height:1.6;font-weight:300;}
+  .commit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .commit-panel{background:white;border-radius:8px;padding:16px;box-shadow:0 3px 14px rgba(0,0,0,.07);border-left:4px solid var(--teal);}
+  .commit-panel h3{font-size:12.5px;font-weight:700;color:var(--teal);margin-bottom:8px;}
+  .commit-panel p{font-size:12px;color:#333;line-height:1.5;font-weight:300;}
+  /* Controls */
+  #controls{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .3s,transform .3s;}
+  .dot.on{background:var(--gold);transform:scale(1.4);}
+  #btn-prev,#btn-next,#btn-mute{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--gold);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+  #btn-prev:hover,#btn-next:hover,#btn-mute:hover{background:rgba(255,255,255,.2);}
+  #timer-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--gold);width:0%;}
+  #loading-overlay{position:absolute;inset:0;background:rgba(10,12,18,.88);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:10;}
+  #loading-overlay.show{display:flex;}
+  .spinner{width:44px;height:44px;border-radius:50%;border:3px solid rgba(200,168,75,.2);border-top-color:var(--gold);animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #loading-overlay p{font-size:14px;color:#889;}
+  .anim-curve{stroke-dasharray:9999;stroke-dashoffset:9999;}
+  .ppf-pt{opacity:0;transition:opacity .7s ease;}.ppf-pt.ppf-show{opacity:1;}
+  .ppf-ripple{transform-box:fill-box;transform-origin:center;}
+  .ppf-pt.ppf-show .ppf-ripple{animation:ripple-out 1.8s ease-out .1s forwards;}
+  @keyframes ripple-out{0%{opacity:.7;transform:scale(1);}100%{opacity:0;transform:scale(5);}}
+  .val-axis{opacity:.15;transition:opacity .5s ease;}.val-axis.val-lit{opacity:1;}
+  .frow{transition:opacity .35s ease;}.frow.dim{opacity:.3;}
+  @keyframes ex-bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+  @keyframes ex-hop { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-14px)} }
+  @keyframes ex-float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+</style>
+</head>
+<body>
+<div id="back-bar"><a href="econ230-topics.html">← ECON 230 Topics</a></div>
+<div id="status-bar"></div>
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- S0: Title -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 230 · Intertemporal Choice</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Time Inconsistency<br>&amp; <em>Present Bias</em></h1>
+    <p class="sub fade-in">Why good intentions fail — and why the future self cannot always trust the present self.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 230 230" width="230" height="230" fill="none">
+        <circle cx="115" cy="115" r="108" stroke="rgba(26,122,110,.12)" stroke-width="1.5"/>
+        <!-- Time axis -->
+        <line x1="25" y1="175" x2="205" y2="175" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+        <polygon points="208,175 198,170 198,180" fill="rgba(255,255,255,.2)"/>
+        <text x="210" y="179" fill="rgba(255,255,255,.3)" font-size="8" font-family="Space Grotesk,sans-serif">t</text>
+        <!-- Exponential curve (smooth, gold) -->
+        <path id="t-exp" class="anim-curve" d="M30,55 C65,65 110,110 200,165" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Hyperbolic curve (fast drop, rust) -->
+        <path id="t-hyp" class="anim-curve" d="M30,55 C38,95 75,135 200,165" stroke="#1a9a8e" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Legend labels -->
+        <g id="t-leg" class="ppf-pt">
+          <text x="35" y="45" fill="rgba(200,168,75,.8)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600">Exponential</text>
+          <text x="35" y="80" fill="rgba(26,154,142,.8)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600">Hyperbolic</text>
+        </g>
+        <text x="25" y="178" fill="rgba(255,255,255,.25)" font-size="8" font-family="Space Grotesk,sans-serif">Now</text>
+        <text x="185" y="178" fill="rgba(255,255,255,.25)" font-size="8" font-family="Space Grotesk,sans-serif">Future</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- S1: Exponential vs Hyperbolic (light horiz) -->
+  <div class="slide" id="s1">
+    <div class="sl">
+      <h2 class="fade-in">Exponential vs. Hyperbolic Discounting</h2>
+      <p class="intro fade-in">Standard economics assumes constant discounting. But people discount the near future far more steeply than the distant future — producing time-inconsistent preferences.</p>
+      <div class="facts fade-in">
+        <div class="frow" id="e1" style="color:#333">
+          <span class="fbadge fb-gold">Standard</span>
+          <span><strong>Exponential discounting:</strong> value declines by the same percentage each period. Preferences are consistent — the same choice looks the same from any vantage point.</span>
+        </div>
+        <div class="frow" id="e2" style="color:#333">
+          <span class="fbadge fb-teal">Actual</span>
+          <span><strong>Hyperbolic discounting:</strong> value drops sharply in the near term, then flattens. The near future is over-penalised relative to the distant future.</span>
+        </div>
+        <div class="frow" id="e3" style="color:#333">
+          <span class="fbadge fb-rust">Problem</span>
+          <span><strong>Time inconsistency:</strong> you prefer $110 next week to $100 today — but when next week arrives, you prefer $100 immediately to waiting another week.</span>
+        </div>
+        <div class="frow" id="e4" style="color:#333">
+          <span class="fbadge fb-pur">Result</span>
+          <span>Plans made today are not carried out tomorrow. The self that plans and the self that acts face different preference orderings — generating self-control failures.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Discount curves comparison -->
+    <svg class="fade-in" viewBox="0 0 300 280" width="300" height="280" style="flex-shrink:0;">
+      <line x1="44" y1="248" x2="280" y2="248" stroke="#aaa" stroke-width="1.2"/>
+      <line x1="44" y1="248" x2="44" y2="20" stroke="#aaa" stroke-width="1.2"/>
+      <polygon points="284,248 274,243 274,253" fill="#aaa"/>
+      <polygon points="44,15 39,25 49,25" fill="#aaa"/>
+      <!-- Exponential curve (gold) -->
+      <path id="exp-curve" class="anim-curve" d="M44,35 C90,55 160,140 272,230" stroke="var(--gold)" stroke-width="2.3" stroke-linecap="round" fill="none"/>
+      <text id="exp-lbl" class="val-axis" x="238" y="218" fill="var(--gold)" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700">Exponential</text>
+      <!-- Hyperbolic curve (teal) — drops faster initially -->
+      <path id="hyp-curve" class="anim-curve" d="M44,35 C55,95 110,165 272,230" stroke="#1a7a6e" stroke-width="2.3" stroke-linecap="round" fill="none"/>
+      <text id="hyp-lbl" class="val-axis" x="182" y="195" fill="#1a7a6e" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700">Hyperbolic</text>
+      <!-- Preference reversal annotation -->
+      <g id="rev-ann" class="ppf-pt">
+        <line x1="96" y1="248" x2="96" y2="112" stroke="rgba(192,68,42,.4)" stroke-width="1" stroke-dasharray="3 2"/>
+        <text x="100" y="108" fill="rgba(192,68,42,.7)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600">Reversal zone:</text>
+        <text x="100" y="119" fill="rgba(192,68,42,.55)" font-size="8" font-family="Space Grotesk,sans-serif">hyperbolic drops</text>
+        <text x="100" y="129" fill="rgba(192,68,42,.55)" font-size="8" font-family="Space Grotesk,sans-serif">faster near-term</text>
+      </g>
+      <text x="160" y="268" fill="#777" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Time →</text>
+      <text x="22" y="135" fill="#777" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 135)">Discount Factor →</text>
+      <text x="44" y="33" fill="#888" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">1.0</text>
+      <text x="37" y="248" fill="#888" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">0</text>
+    </svg>
+  </div>
+
+  <!-- S2: β-δ model (dark horiz) -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">The β-δ Model</h2>
+      <p class="intro fade-in">Quasi-hyperbolic discounting captures present bias with two parameters: <em style="color:var(--gold)">δ</em> for long-run patience and <em style="color:#1a9a8e">β</em> for the bias toward the present.</p>
+      <div class="facts fade-in">
+        <div class="frow" id="b1">
+          <span class="fbadge fb-gold">δ (delta)</span>
+          <span>The standard per-period discount factor — how much you discount one period into the future. Applies equally to all future periods. Measures long-run patience.</span>
+        </div>
+        <div class="frow" id="b2">
+          <span class="fbadge fb-teal">β (beta)</span>
+          <span>An additional discount applied to <em style="color:#ccd">everything that is not immediate</em>. If β &lt; 1, the present is over-weighted relative to all future periods.</span>
+        </div>
+        <div class="frow" id="b3">
+          <span class="fbadge fb-rust">Example</span>
+          <span>β = 0.7 means a reward arriving next month is valued at only 70% of what it would be worth if it arrived today — beyond the standard δ discounting.</span>
+        </div>
+        <div class="frow" id="b4">
+          <span class="fbadge fb-pur">Naïve vs Sophisticated</span>
+          <span>Naïve agents do not anticipate their own future bias and make promises they cannot keep. Sophisticated agents foresee it — and seek commitment devices.</span>
+        </div>
+      </div>
+    </div>
+    <!-- β-δ timeline -->
+    <svg class="fade-in" viewBox="0 0 310 280" width="310" height="280" style="flex-shrink:0;">
+      <!-- Timeline -->
+      <line id="bd-line" class="anim-curve" x1="30" y1="140" x2="285" y2="140" stroke="rgba(255,255,255,.28)" stroke-width="1.5"/>
+      <polygon points="288,140 278,135 278,145" fill="rgba(255,255,255,.28)"/>
+      <!-- Now label -->
+      <text x="30" y="158" fill="rgba(255,255,255,.5)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">Now</text>
+      <!-- Immediate reward bar -->
+      <g id="bd-now" class="ppf-pt">
+        <rect x="18" y="80" width="24" height="60" fill="rgba(200,168,75,.75)" rx="2"/>
+        <text x="30" y="74" fill="var(--gold)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">$100</text>
+      </g>
+      <!-- Period 1 reward (discounted by β×δ) -->
+      <g id="bd-p1" class="ppf-pt">
+        <rect x="103" y="102" width="24" height="38" fill="rgba(26,122,110,.65)" rx="2"/>
+        <text x="115" y="96" fill="#1a9a8e" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">β·δ·$100</text>
+        <text x="115" y="160" fill="rgba(255,255,255,.4)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">t=1</text>
+      </g>
+      <!-- Period 2 reward (discounted by β×δ²) -->
+      <g id="bd-p2" class="ppf-pt">
+        <rect x="188" y="110" width="24" height="30" fill="rgba(26,122,110,.45)" rx="2"/>
+        <text x="200" y="104" fill="rgba(26,154,142,.7)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">β·δ²·$100</text>
+        <text x="200" y="160" fill="rgba(255,255,255,.4)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">t=2</text>
+      </g>
+      <!-- β drop annotation -->
+      <g id="bd-beta" class="ppf-pt">
+        <line x1="42" y1="110" x2="103" y2="120" stroke="rgba(192,68,42,.6)" stroke-width="1.2" stroke-dasharray="3 2"/>
+        <text x="72" y="108" fill="rgba(192,68,42,.8)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">β discount</text>
+        <text x="72" y="119" fill="rgba(192,68,42,.6)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">(present bias)</text>
+      </g>
+      <text x="155" y="270" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Time →</text>
+    </svg>
+  </div>
+
+  <!-- S3: Applications (light) -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">Real-World Footprint</div>
+    <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:32px;color:var(--ink);margin-bottom:22px;">Present bias leaves a wide empirical trace.</h2>
+    <div class="cards-3">
+      <div class="card fade-in">
+        <div class="icon">🏦</div>
+        <h3>Retirement Savings</h3>
+        <p>People consistently plan to save more "next year" — but next year never comes. They repeatedly delay. Auto-enrolment in pension plans works precisely because it removes the need for an active decision.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">💳</div>
+        <h3>Credit Card Debt</h3>
+        <p>Consumers borrow at high rates for present consumption, planning to pay off balances quickly. Balances accumulate. The average borrower carries debt at rates they would never accept if asked in advance.</p>
+      </div>
+      <div class="card rust-t fade-in">
+        <div class="icon">🥦</div>
+        <h3>Diet &amp; Exercise</h3>
+        <p>Ambitious Monday plans are abandoned by Tuesday. Immediate effort costs are over-weighted relative to future health benefits. The present self consistently overrules the planning self.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: Commitment devices (dark) -->
+  <div class="slide" id="s4">
+    <div class="eyebrow fade-in">The Solution</div>
+    <h2 class="fade-in" style="color:var(--paper)">Commitment Devices</h2>
+    <div class="commit-grid" style="margin-top:4px;">
+      <div class="commit-panel fade-in">
+        <h3>What They Are</h3>
+        <p>Mechanisms that restrict future choice to enforce a plan made in the present. The present self ties the future self's hands — preventing the future self from giving in to present bias.</p>
+      </div>
+      <div class="commit-panel fade-in" style="border-color:var(--gold);">
+        <h3 style="color:var(--gold)">Classic Example</h3>
+        <p>Ulysses tied himself to the mast to resist the Sirens. Automatic pension contributions remove monthly decisions. Pre-commitment savings accounts lock funds until a target date.</p>
+      </div>
+      <div class="commit-panel fade-in" style="border-color:var(--rust);">
+        <h3 style="color:var(--rust)">Who Uses Them</h3>
+        <p>Sophisticated agents — those who foresee their own future bias — actively seek commitment devices. Naïve agents do not anticipate bias and make promises they cannot keep.</p>
+      </div>
+      <div class="commit-panel fade-in" style="border-color:var(--purple);">
+        <h3 style="color:#b89fe0">Policy Design</h3>
+        <p>Opt-out pension enrolment raises participation from ~40% to over 90%. Deadlines with penalties help procrastinators. Sin taxes on cigarettes and junk food act as commitment mechanisms.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5: Animated example -->
+  <div class="slide" id="s5" style="background:#0a1208;flex-direction:row;align-items:center;gap:32px;padding:44px 52px;">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;" class="fade-in">REAL-LIFE EXAMPLE</div>
+      <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:25px;color:var(--paper);line-height:1.35;margin-bottom:14px;">The New Year's Resolution</h2>
+      <p class="fade-in" style="font-size:12.5px;color:#8898a0;font-weight:300;line-height:1.72;max-width:345px;">
+        <strong style="color:var(--paper)">January 1st:</strong> You're pumped. "I'll go to the gym every day!" Your future self sounds incredibly disciplined.<br><br>
+        <strong style="color:var(--rust)">February 1st:</strong> The alarm goes off at 6:30am. It's cold. The couch is right there.<br><br>
+        You didn't change your values — you still believe exercise matters. But the <strong style="color:var(--gold)">immediate cost beats the distant benefit</strong>. That's present bias. The planning self and the acting self want different things.
+      </p>
+    </div>
+    <svg viewBox="0 0 290 270" width="290" height="270" fill="none" style="flex-shrink:0;">
+      <!-- Dividing line -->
+      <line x1="145" y1="10" x2="145" y2="260" stroke="rgba(255,255,255,.1)" stroke-width="1" stroke-dasharray="5 3"/>
+      <!-- LEFT: January 1 -->
+      <text x="72" y="28" fill="rgba(26,154,142,.7)" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">JAN 1</text>
+      <!-- Calendar page -->
+      <rect x="36" y="35" width="72" height="60" rx="4" fill="rgba(26,122,110,.2)" stroke="rgba(26,154,142,.5)" stroke-width="1.2"/>
+      <line x1="36" y1="50" x2="108" y2="50" stroke="rgba(26,154,142,.4)" stroke-width="1"/>
+      <text x="72" y="47" fill="rgba(26,154,142,.8)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">JANUARY</text>
+      <text x="72" y="78" fill="rgba(26,154,142,.95)" font-size="28" font-family="Playfair Display,serif" font-weight="700" text-anchor="middle">1</text>
+      <!-- Resolution note -->
+      <rect x="30" y="105" width="84" height="30" rx="3" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+      <text x="72" y="118" fill="rgba(255,255,255,.7)" font-size="7.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">"Gym every day!</text>
+      <text x="72" y="129" fill="rgba(255,255,255,.7)" font-size="7.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Starting NOW! 💪"</text>
+      <!-- Energetic stick figure (Jan) -->
+      <g style="animation:ex-hop 1.8s ease-in-out infinite 1.5s;">
+        <circle cx="72" cy="182" r="15" fill="none" stroke="rgba(26,154,142,.9)" stroke-width="1.8"/>
+        <circle cx="66" cy="178" r="2.2" fill="rgba(26,154,142,.95)"/>
+        <circle cx="78" cy="178" r="2.2" fill="rgba(26,154,142,.95)"/>
+        <path d="M66 188 Q72 195 78 188" stroke="rgba(26,154,142,.9)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <line x1="72" y1="197" x2="72" y2="218" stroke="rgba(26,154,142,.8)" stroke-width="1.7"/>
+        <line x1="72" y1="204" x2="58" y2="194" stroke="rgba(26,154,142,.8)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="72" y1="204" x2="86" y2="194" stroke="rgba(26,154,142,.8)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="72" y1="218" x2="64" y2="230" stroke="rgba(26,154,142,.8)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="72" y1="218" x2="80" y2="230" stroke="rgba(26,154,142,.8)" stroke-width="1.7" stroke-linecap="round"/>
+      </g>
+      <text x="72" y="248" fill="rgba(26,154,142,.6)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Ready to go! 🏋️</text>
+
+      <!-- RIGHT: February -->
+      <text x="218" y="28" fill="rgba(192,68,42,.7)" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">FEB 1</text>
+      <!-- Calendar page -->
+      <rect x="182" y="35" width="72" height="60" rx="4" fill="rgba(192,68,42,.15)" stroke="rgba(192,68,42,.45)" stroke-width="1.2"/>
+      <line x1="182" y1="50" x2="254" y2="50" stroke="rgba(192,68,42,.35)" stroke-width="1"/>
+      <text x="218" y="47" fill="rgba(192,68,42,.75)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">FEBRUARY</text>
+      <text x="218" y="78" fill="rgba(192,68,42,.9)" font-size="28" font-family="Playfair Display,serif" font-weight="700" text-anchor="middle">1</text>
+      <!-- Excuse speech bubble -->
+      <rect x="176" y="105" width="84" height="30" rx="3" fill="rgba(255,255,255,.08)" stroke="rgba(192,68,42,.4)" stroke-width="1"/>
+      <text x="218" y="118" fill="rgba(192,68,42,.75)" font-size="7.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">"It's cold... I'll</text>
+      <text x="218" y="129" fill="rgba(192,68,42,.75)" font-size="7.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">start Monday 😅"</text>
+      <!-- Slouched couch-sitting figure (Feb) -->
+      <g style="animation:ex-bob 3s ease-in-out infinite .5s;">
+        <!-- Couch -->
+        <rect x="188" y="210" width="60" height="20" rx="4" fill="rgba(80,60,40,.6)" stroke="rgba(100,80,60,.5)" stroke-width="1"/>
+        <rect x="183" y="195" width="14" height="35" rx="3" fill="rgba(80,60,40,.6)" stroke="rgba(100,80,60,.5)" stroke-width="1"/>
+        <rect x="257" y="195" width="14" height="35" rx="3" fill="rgba(80,60,40,.6)" stroke="rgba(100,80,60,.5)" stroke-width="1"/>
+        <!-- Slumped figure sitting -->
+        <circle cx="218" cy="182" r="15" fill="none" stroke="rgba(192,68,42,.75)" stroke-width="1.8"/>
+        <circle cx="212" cy="179" r="2" fill="rgba(192,68,42,.8)"/>
+        <circle cx="224" cy="179" r="2" fill="rgba(192,68,42,.8)"/>
+        <!-- Flat/bored mouth -->
+        <line x1="213" y1="188" x2="223" y2="188" stroke="rgba(192,68,42,.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <!-- Body slouched on couch -->
+        <line x1="218" y1="197" x2="218" y2="210" stroke="rgba(192,68,42,.7)" stroke-width="1.7"/>
+        <!-- Arms on couch armrests -->
+        <line x1="218" y1="204" x2="194" y2="207" stroke="rgba(192,68,42,.7)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="218" y1="204" x2="242" y2="207" stroke="rgba(192,68,42,.7)" stroke-width="1.7" stroke-linecap="round"/>
+        <!-- Legs extended on couch -->
+        <line x1="218" y1="210" x2="205" y2="212" stroke="rgba(192,68,42,.7)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="218" y1="210" x2="231" y2="212" stroke="rgba(192,68,42,.7)" stroke-width="1.7" stroke-linecap="round"/>
+      </g>
+      <text x="218" y="248" fill="rgba(192,68,42,.6)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Just 5 more mins… 📺</text>
+    </svg>
+  </div>
+
+  <!-- S6: Takeaway -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Present bias explains why good intentions are not enough. The present self discounts the future too steeply — and <em>knowing</em> you should save, exercise, or quit is not the same as doing it. The solution is not willpower. It is <em>better design</em>.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 230 · UNBC</div>
+    <div class="tag">Hyperbolic Discounting · β-δ Model · Commitment · Self-Control</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Standard economics assumes that people discount future payoffs at a constant rate — a method called exponential discounting. This produces consistent preferences over time: a choice you would make today is the same choice you would make tomorrow. But people actually discount hyperbolically — they are disproportionately impatient about the near future relative to the distant future. This is the source of present bias, and it explains why people procrastinate, undersave for retirement, and abandon diets the moment they start.",
+  "Under exponential discounting, value declines by the same fixed percentage each period, regardless of when the decision falls. If you prefer $110 next week to $100 today, you should also prefer $110 in fifty-three weeks to $100 in fifty-two weeks — the same one-week wait for the same ten-dollar gain. Most people satisfy this: they say yes to both or no to both. Hyperbolic discounting breaks this consistency. Under hyperbolic preferences, a one-week delay in the near future feels far more significant than the same delay far in the future. Preferences reverse over time: you plan to do something next week, but when next week arrives, you prefer the immediate option again. This is time inconsistency — and it is why so many plans fail.",
+  "The beta-delta model captures present bias with just two parameters. Delta is the standard per-period discount factor — how much you discount one period into the future, applied symmetrically to all future periods. Beta is the present-bias parameter — an additional discount applied to everything that is not immediate. If beta is less than one, you apply an extra penalty to any future payoff, regardless of when it falls. A beta of 0.7 means you value next month's reward as only 70% of what it would be worth if it arrived today — on top of the standard delta discounting. This simple structure generates time-inconsistent preferences and explains the gap between planning and behaviour. There is a crucial further distinction between naïve and sophisticated agents. Naïve agents do not anticipate their own future bias — they make plans their future selves will not execute. Sophisticated agents foresee their bias — and respond by actively seeking commitment devices.",
+  "Present bias leaves a wide empirical footprint. In retirement savings: people consistently report they plan to save more in the future — but the future never comes. They repeatedly delay. The evidence from field experiments is stark: when pension enrolment is opt-in, participation rates hover around 40%. When it is made opt-out — the default is enrolment — participation rises above 90%. The same contribution rates are available either way. Only the default changed. In credit card markets: consumers borrow at high interest rates for present consumption, fully intending to repay quickly. Yet balances accumulate. Many households hold both high-interest credit card debt and low-yield savings accounts simultaneously — an arbitrage inconsistent with standard theory. In diet and exercise: ambitious plans made Monday are abandoned by Tuesday. The immediate cost of effort is over-weighted relative to future health benefits. The planning self and the acting self are, in a meaningful sense, different agents.",
+  "If present bias causes people to make choices they later regret, can people solve their own self-control problems? The answer is yes — partly — through commitment devices. A commitment device is any mechanism that restricts future choice in order to enforce a plan made in the present. Ulysses tied himself to the mast to resist the Sirens — perhaps the original commitment device. Automatic pension contributions remove the need for active monthly decisions, so the present-biased self never gets the chance to procrastinate. Pre-commitment savings accounts lock funds until a target date. Nicotine patches and gastric sleeves restrict access to addictive substances. Crucially, it is sophisticated agents — those who foresee their own bias — who actively seek out these devices. Commitment is rational precisely because the future self cannot be fully trusted to follow through on the present self's plans.",
+  "Here's a story almost everyone recognises. It's New Year's Eve. You feel reflective and motivated. You write down your resolution: starting January first, I will go to the gym every single day. You mean it completely. Future-you sounds like a real athlete. Fast forward to February first. The alarm goes off at six-thirty in the morning. It's dark. It's cold outside. The gym bag is across the room. And somehow, the couch seems like a perfectly reasonable place to be. What happened? Did your values change? No — you still believe exercise matters. But right now, in this moment, the immediate cost of getting up is right here in front of you, and the health benefit is weeks away. You heavily discounted that future benefit. This is present bias. Your December-planning-self made a promise that your February-acting-self has no intention of keeping. And this exact pattern — ambitious intentions, systematic failure to follow through — is what the beta-delta model captures. The planning self and the acting self are, in a meaningful economic sense, different agents with different preferences.",
+  "The policy implications of present bias are profound. First, defaults matter enormously: because people procrastinate on active decisions, the default option becomes the effective choice for many. Setting the right default — opt-out pension enrolment, automatic green energy tariffs, healthy cafeteria defaults — can improve outcomes dramatically at low cost. Second, commitment devices can be offered as policy instruments — through tax-advantaged locked savings accounts, deadlines with real penalties, or product designs that build in friction for procrastination. Third, the key conceptual shift is this: good intentions are not enough. The reason people fail to save, exercise, or quit smoking is not lack of knowledge or caring. It is that the present self systematically over-weighs immediate costs and under-weighs future benefits. Policy must account for this — and work with human psychology rather than against it."
+];
+const VOICE_ID='WmFyZIEC0qrjgbkDYIMP',MODEL_ID='eleven_turbo_v2_5';
+let audioBuffers=new Array(narrations.length).fill(null);
+const apiKey='sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted=false,currentAudio=null,currentSpeech=null,speechEndTimer=null;
+const loadingOverlay=document.getElementById('loading-overlay'),loadingText=document.getElementById('loading-text'),statusBar=document.getElementById('status-bar');
+function setStatus(msg){if(statusBar)statusBar.textContent=msg;}
+async function generateAudio(idx){const resp=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,{method:'POST',headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},body:JSON.stringify({text:narrations[idx],model_id:MODEL_ID,voice_settings:{stability:0.45,similarity_boost:0.82,style:0.3,use_speaker_boost:true}})});if(!resp.ok)throw new Error(`ElevenLabs ${resp.status}`);return URL.createObjectURL(await resp.blob());}
+async function generateAll(){loadingOverlay.classList.add('show');for(let i=0;i<narrations.length;i++){loadingText.textContent=`Generating narration ${i+1} of ${narrations.length}…`;try{audioBuffers[i]=await generateAudio(i);}catch(e){console.warn(`Slide ${i} failed:`,e.message);}}loadingOverlay.classList.remove('show');initCurves();runTimeline(0);playSlideAudio(0);}
+function stopAudio(){if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}if(currentSpeech){speechSynthesis.cancel();currentSpeech=null;}clearTimeout(speechEndTimer);stopTimer();}
+function playSlideAudio(idx){stopAudio();if(muted){startTimer(20000,()=>goTo(idx+1));return;}if(audioBuffers[idx]){setStatus('');const audio=new Audio(audioBuffers[idx]);currentAudio=audio;audio.addEventListener('loadedmetadata',()=>startTimer(audio.duration*1000,null));audio.addEventListener('ended',()=>{currentAudio=null;goTo(idx+1);});audio.play().catch(()=>speakWithBrowser(idx));}else{speakWithBrowser(idx);}}
+function speakWithBrowser(idx){if(!('speechSynthesis' in window)){startTimer(20000,()=>goTo(idx+1));return;}speechSynthesis.cancel();const text=narrations[idx],rate=0.92,estimatedMs=Math.round((text.trim().split(/\s+/).length/145)*60000/rate)+2000;const utter=new SpeechSynthesisUtterance(text);utter.rate=rate;utter.pitch=0.95;utter.volume=1;const doSpeak=()=>{setStatus('');const voices=speechSynthesis.getVoices();const voice=voices.find(v=>v.name==='Daniel')||voices.find(v=>v.name==='Alex')||voices.find(v=>/Google US English/i.test(v.name))||voices.find(v=>v.lang==='en-US'&&!v.localService)||voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang.startsWith('en'));if(voice)utter.voice=voice;startTimer(estimatedMs,null);utter.onend=()=>{clearTimeout(speechEndTimer);currentSpeech=null;goTo(idx+1);};utter.onerror=()=>{clearTimeout(speechEndTimer);currentSpeech=null;startTimer(15000,()=>goTo(idx+1));};speechEndTimer=setTimeout(()=>{speechSynthesis.cancel();currentSpeech=null;goTo(idx+1);},estimatedMs+6000);speechSynthesis.speak(utter);currentSpeech=utter;};speechSynthesis.getVoices().length>0?doSpeak():speechSynthesis.addEventListener('voiceschanged',doSpeak,{once:true});}
+const muteBtn=document.getElementById('btn-mute');
+muteBtn.addEventListener('click',()=>{muted=!muted;muteBtn.textContent=muted?'🔇':'🔊';if(muted){stopAudio();setStatus('');startTimer(20000,()=>goTo(current+1));}else{playSlideAudio(current);}});
+const slides=document.querySelectorAll('.slide'),dotsContainer=document.getElementById('dots'),timerBar=document.getElementById('timer-bar'),TOTAL=slides.length;
+let current=0,timerTimeout=null,rafId=null,timerStart=null,timerDuration=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.addEventListener('click',()=>goTo(i));dotsContainer.appendChild(d);});
+function getDots(){return dotsContainer.querySelectorAll('.dot');}
+function goTo(idx){if(idx>=TOTAL)idx=0;slides[current].classList.remove('active');getDots()[current].classList.remove('on');resetAni();current=(idx+TOTAL)%TOTAL;slides[current].classList.add('active');getDots()[current].classList.add('on');runTimeline(current);playSlideAudio(current);}
+function stopTimer(){clearTimeout(timerTimeout);cancelAnimationFrame(rafId);timerBar.style.width='0%';}
+function startTimer(durationMs,cb){stopTimer();timerStart=performance.now();timerDuration=durationMs;function tick(ts){const pct=Math.min((ts-timerStart)/timerDuration*100,100);timerBar.style.width=pct+'%';if(pct<100)rafId=requestAnimationFrame(tick);}rafId=requestAnimationFrame(tick);if(cb)timerTimeout=setTimeout(cb,durationMs);}
+document.getElementById('btn-next').addEventListener('click',()=>goTo(current+1));
+document.getElementById('btn-prev').addEventListener('click',()=>goTo(current-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goTo(current+1);if(e.key==='ArrowLeft')goTo(current-1);if(e.key==='m')muteBtn.click();});
+let aniTimers=[];
+function stopAni(){aniTimers.forEach(clearTimeout);aniTimers=[];}
+function sch(ms,fn){aniTimers.push(setTimeout(fn,ms));}
+function initCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{const tag=el.tagName.toLowerCase();let len;if(tag==='line'){const x1=+el.getAttribute('x1'),y1=+el.getAttribute('y1'),x2=+el.getAttribute('x2'),y2=+el.getAttribute('y2');len=Math.sqrt((x2-x1)**2+(y2-y1)**2);}else{len=el.getTotalLength?el.getTotalLength():600;}el.dataset.origLen=len;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function resetCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{el.style.transition='none';const len=el.dataset.origLen||9999;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function drawCurve(id,durMs,delayMs){sch(delayMs||0,()=>{const el=document.getElementById(id);if(!el)return;requestAnimationFrame(()=>{el.style.transition=`stroke-dashoffset ${durMs||1800}ms ease-in-out`;el.style.strokeDashoffset=0;});});}
+function litEl(sel){document.querySelectorAll(sel).forEach(el=>el.classList.add('val-lit'));}
+function resetAni(){stopAni();document.querySelectorAll('.ppf-pt').forEach(el=>el.classList.remove('ppf-show'));document.querySelectorAll('.val-lit').forEach(el=>el.classList.remove('val-lit'));resetCurves();}
+function runTimeline(idx){
+  switch(idx){
+    case 0:drawCurve('t-exp',1300,600);drawCurve('t-hyp',1300,1500);sch(2800,()=>document.getElementById('t-leg')?.classList.add('ppf-show'));break;
+    case 5:break;
+    case 1:drawCurve('exp-curve',1400,400);sch(700,()=>litEl('#exp-lbl'));drawCurve('hyp-curve',1400,2000);sch(2300,()=>litEl('#hyp-lbl'));sch(22000,()=>document.getElementById('rev-ann')?.classList.add('ppf-show'));break;
+    case 2:drawCurve('bd-line',900,400);sch(1600,()=>document.getElementById('bd-now')?.classList.add('ppf-show'));sch(3000,()=>document.getElementById('bd-p1')?.classList.add('ppf-show'));sch(5000,()=>document.getElementById('bd-p2')?.classList.add('ppf-show'));sch(12000,()=>document.getElementById('bd-beta')?.classList.add('ppf-show'));break;
+  }
+}
+generateAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nudges and Choice Architecture — ECON 230</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+  :root{--ink:#0f1117;--paper:#f7f4ee;--gold:#c8a84b;--teal:#1a7a6e;--rust:#c0442a;--blue:#1a4a8a;--purple:#6b3fa0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#090b10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;gap:18px;}
+  #back-bar{width:860px;font-size:12px;color:#445;}#back-bar a{color:#667;text-decoration:none;transition:color .2s;}#back-bar a:hover{color:var(--gold);}
+  #status-bar{width:860px;font-size:12px;color:#556;text-align:right;min-height:16px;}
+  #stage{width:860px;height:540px;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 32px 80px rgba(0,0,0,.7);}
+  .slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .55s ease;display:flex;flex-direction:column;justify-content:center;padding:52px 64px;}
+  .slide.active{opacity:1;pointer-events:all;}
+  .fade-in{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+  .slide.active .fade-in{opacity:1;transform:none;}
+  .fade-in:nth-child(2){transition-delay:.15s;}.fade-in:nth-child(3){transition-delay:.3s;}.fade-in:nth-child(4){transition-delay:.45s;}.fade-in:nth-child(5){transition-delay:.6s;}.fade-in:nth-child(6){transition-delay:.75s;}
+  #author-wm{position:absolute;bottom:60px;left:18px;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.07em;text-transform:uppercase;pointer-events:none;z-index:5;}
+  /* S0 */
+  #s0{background:var(--ink);}
+  #s0 .label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+  #s0 .rule{width:56px;height:3px;background:var(--gold);margin-bottom:28px;}
+  #s0 h1{font-family:'Playfair Display',serif;font-size:52px;line-height:1.1;color:var(--paper);}
+  #s0 h1 em{font-style:italic;color:var(--gold);}
+  #s0 .sub{margin-top:20px;font-size:15px;color:#8898a0;font-weight:300;max-width:420px;line-height:1.55;}
+  #s0 .author-line{margin-top:16px;font-size:11.5px;color:rgba(200,168,75,.6);letter-spacing:.1em;text-transform:uppercase;}
+  #s0 .diagram{position:absolute;right:52px;top:50%;transform:translateY(-50%);width:220px;height:220px;}
+  /* S1 light */
+  #s1{background:var(--paper);}
+  #s1 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:14px;}
+  #s1 h2{font-family:'Playfair Display',serif;font-size:34px;color:var(--ink);line-height:1.2;margin-bottom:24px;}
+  /* S2 dark horiz */
+  #s2{background:#0f0c00;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s2 .sl{flex:1;min-width:0;}
+  #s2 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--paper);margin-bottom:8px;}
+  #s2 .intro{font-size:13px;color:#c8b870;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S3 light */
+  #s3{background:var(--paper);padding:44px 64px;}
+  #s3 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--blue);margin-bottom:10px;}
+  #s3 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--ink);margin-bottom:20px;}
+  /* S4 dark horiz */
+  #s4{background:#0a0f18;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s4 .sl{flex:1;min-width:0;}
+  #s4 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--paper);margin-bottom:8px;}
+  #s4 .intro{font-size:13px;color:#8aafc8;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S5 light */
+  #s5{background:var(--paper);padding:44px 64px;}
+  #s5 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  #s5 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--ink);margin-bottom:20px;}
+  /* S6 dark quote */
+  #s6{background:#0a0c06;}
+  #s6 .quote-mark{font-family:'Playfair Display',serif;font-size:120px;line-height:.7;color:rgba(200,168,75,.15);margin-bottom:-10px;}
+  #s6 blockquote{font-family:'Playfair Display',serif;font-size:24px;line-height:1.55;color:white;max-width:660px;margin-bottom:24px;}
+  #s6 blockquote em{font-style:italic;color:var(--gold);}
+  #s6 .attr{font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.08em;}
+  #s6 .tag{position:absolute;bottom:44px;right:60px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+  /* Shared components */
+  .cards{display:flex;gap:18px;}
+  .card{flex:1;background:white;border-radius:6px;padding:22px 18px;border-top:4px solid var(--blue);box-shadow:0 4px 20px rgba(0,0,0,.07);}
+  .card.gold-t{border-color:var(--gold);}.card.rust-t{border-color:var(--rust);}.card.teal-t{border-color:var(--teal);}
+  .card .icon{font-size:26px;margin-bottom:10px;}
+  .card h3{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px;letter-spacing:.04em;}
+  .card p{font-size:12.5px;color:#444;line-height:1.6;font-weight:300;}
+  .facts{display:flex;flex-direction:column;gap:11px;}
+  .frow{display:flex;align-items:flex-start;gap:12px;font-size:12.5px;font-weight:300;line-height:1.5;}
+  .fbadge{flex-shrink:0;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:1px;}
+  .fb-blue{background:rgba(26,74,138,.2);color:#6090e0;}.fb-gold{background:rgba(200,168,75,.2);color:var(--gold);}
+  .fb-rust{background:rgba(192,68,42,.2);color:#e07060;}.fb-teal{background:rgba(26,122,110,.25);color:#1a9a8e;}
+  .fb-pur{background:rgba(107,63,160,.25);color:#c0a0f0;}
+  #s2 .frow{color:#c8b870;} #s4 .frow{color:#99aabb;}
+  .soc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .soc-panel{background:white;border-radius:8px;padding:16px 18px;box-shadow:0 3px 14px rgba(0,0,0,.07);}
+  .soc-panel h3{font-size:12.5px;font-weight:700;margin-bottom:8px;}
+  .soc-panel p{font-size:12px;color:#333;line-height:1.5;font-weight:300;}
+  .soc-panel.blue-p h3{color:var(--blue);}.soc-panel.gold-p h3{color:#a08030;}.soc-panel.teal-p h3{color:var(--teal);}.soc-panel.rust-p h3{color:var(--rust);}
+  /* Controls */
+  #controls{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .3s,transform .3s;}
+  .dot.on{background:var(--gold);transform:scale(1.4);}
+  #btn-prev,#btn-next,#btn-mute{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--gold);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+  #btn-prev:hover,#btn-next:hover,#btn-mute:hover{background:rgba(255,255,255,.2);}
+  #timer-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--gold);width:0%;}
+  #loading-overlay{position:absolute;inset:0;background:rgba(10,12,18,.88);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:10;}
+  #loading-overlay.show{display:flex;}
+  .spinner{width:44px;height:44px;border-radius:50%;border:3px solid rgba(200,168,75,.2);border-top-color:var(--gold);animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #loading-overlay p{font-size:14px;color:#889;}
+  .anim-curve{stroke-dasharray:9999;stroke-dashoffset:9999;}
+  .ppf-pt{opacity:0;transition:opacity .7s ease;}.ppf-pt.ppf-show{opacity:1;}
+  .val-axis{opacity:.15;transition:opacity .5s ease;}.val-axis.val-lit{opacity:1;}
+  .soc-panel{transition:box-shadow .4s ease;}.soc-panel.teach-on{box-shadow:0 0 0 2px var(--blue),0 3px 14px rgba(0,0,0,.07);}
+  @keyframes ex-bob     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+  @keyframes ex-float   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+  @keyframes ex-glow    { 0%,100%{opacity:.55} 50%{opacity:1} }
+  @keyframes ex-slide-up{ from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes ex-eye     { 0%,100%{transform:scaleY(1)} 48%,52%{transform:scaleY(.1)} }
+</style>
+</head>
+<body>
+<div id="back-bar"><a href="econ230-topics.html">← ECON 230 Topics</a></div>
+<div id="status-bar"></div>
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- S0: Title -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 230 · Behavioural Policy</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Nudges &amp;<br><em>Choice Architecture</em></h1>
+    <p class="sub fade-in">How the design of choice environments shapes decisions — and what that means for policy.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 220 220" width="220" height="220" fill="none">
+        <circle cx="110" cy="110" r="104" stroke="rgba(200,168,75,.12)" stroke-width="1.5"/>
+        <rect x="44" y="50" width="132" height="120" rx="8" fill="rgba(200,168,75,.07)" stroke="rgba(200,168,75,.3)" stroke-width="1.2"/>
+        <rect x="58" y="65" width="60" height="6" rx="3" fill="rgba(200,168,75,.35)"/>
+        <!-- Default option highlighted -->
+        <rect x="58" y="88" width="104" height="26" rx="5" fill="rgba(200,168,75,.18)" stroke="var(--gold)" stroke-width="1.5"/>
+        <rect x="65" y="95" width="12" height="12" rx="2" fill="var(--gold)" opacity=".9"/>
+        <text x="82" y="104" fill="rgba(200,168,75,.9)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="600">Enrol in pension ✓</text>
+        <text x="58" y="84" fill="rgba(200,168,75,.5)" font-size="7.5" font-family="Space Grotesk,sans-serif" font-weight="700" letter-spacing=".05em">DEFAULT</text>
+        <!-- Opt-out option -->
+        <rect x="65" y="127" width="12" height="12" rx="2" stroke="rgba(255,255,255,.25)" stroke-width="1.2" fill="none"/>
+        <text x="82" y="137" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif">Opt out</text>
+        <!-- Nudge arrow -->
+        <g id="nudge-arrow" class="ppf-pt">
+          <path d="M155 101 L176 101" stroke="var(--gold)" stroke-width="1.8" stroke-linecap="round"/>
+          <polygon points="180,101 172,97 172,105" fill="var(--gold)"/>
+          <text x="167" y="92" fill="rgba(200,168,75,.6)" font-size="7.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">nudge</text>
+        </g>
+        <text x="110" y="188" fill="rgba(255,255,255,.3)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Thaler &amp; Sunstein, 2008</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- S1: What is a nudge? (light) -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Concept</div>
+    <h2 class="fade-in">A nudge preserves freedom of choice while making better outcomes the path of least resistance.</h2>
+    <div class="cards">
+      <div class="card gold-t fade-in">
+        <div class="icon">🎯</div>
+        <h3>Libertarian Paternalism</h3>
+        <p>Thaler and Sunstein's term: paternalistic in outcomes — steering people toward better choices — but libertarian in means. No options are removed; no costs are imposed on alternatives.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="icon">🏗️</div>
+        <h3>Choice Architecture</h3>
+        <p>Every presentation of a choice is a design. The order of options, the default, the framing, and the complexity of the form all influence decisions — whether the designer intends it or not.</p>
+      </div>
+      <div class="card teal-t fade-in">
+        <div class="icon">📖</div>
+        <h3>Nudge (2008)</h3>
+        <p>Thaler and Sunstein's book brought these ideas into mainstream policy. Thaler received the 2017 Nobel Prize in Economics in part for this work on nudges and retirement savings.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2: Default effects (dark horiz) -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Default Effects</h2>
+      <p class="intro fade-in">The option set as the default is chosen disproportionately — far beyond what preferences alone can explain. Defaults are powerful precisely because inertia is powerful.</p>
+      <div class="facts fade-in">
+        <div class="frow">
+          <span class="fbadge fb-gold">Organ Donation</span>
+          <span>Countries with opt-out defaults see donor rates above 90%. Opt-in countries average below 20%. Same preferences, same populations — radically different outcomes from a single design choice.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-teal">Retirement</span>
+          <span>Auto-enrolment in workplace pension schemes raises participation from 40–50% to over 90% — with no change to contribution rates, employer matching, or any financial incentive.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-blue">Why It Works</span>
+          <span>Loss aversion, status quo bias, and procrastination all reinforce the default. Opting out requires an active decision; inertia keeps most people where they start.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-rust">Implication</span>
+          <span>There is no neutral default. A choice architect always sets one — explicitly or implicitly. The question is not whether to design defaults, but how to design them responsibly.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Organ donation bar chart -->
+    <svg class="fade-in" viewBox="0 0 280 280" width="280" height="280" style="flex-shrink:0;">
+      <line x1="44" y1="248" x2="254" y2="248" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <line x1="44" y1="248" x2="44" y2="20" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <text x="149" y="272" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Default type →</text>
+      <text x="20" y="135" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 20 135)">Donor rate →</text>
+      <!-- Opt-in bar ~18% -->
+      <rect id="bar-optin" class="val-axis" x="68" y="211" width="64" height="37" fill="rgba(192,68,42,.55)" rx="3"/>
+      <text x="100" y="264" fill="rgba(255,255,255,.4)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Opt-in</text>
+      <g id="lbl-optin" class="ppf-pt">
+        <text x="100" y="206" fill="rgba(192,68,42,.9)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">~18%</text>
+      </g>
+      <!-- Opt-out bar ~92% -->
+      <rect id="bar-optout" class="val-axis" x="158" y="53" width="64" height="195" fill="rgba(200,168,75,.65)" rx="3"/>
+      <text x="190" y="264" fill="rgba(255,255,255,.4)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Opt-out</text>
+      <g id="lbl-optout" class="ppf-pt">
+        <text x="190" y="46" fill="rgba(200,168,75,.95)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">~92%</text>
+      </g>
+      <text x="149" y="14" fill="rgba(255,255,255,.3)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Organ donation rates by default</text>
+    </svg>
+  </div>
+
+  <!-- S3: Framing effects (light) -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">Framing Effects</div>
+    <h2 class="fade-in">Logically equivalent descriptions produce systematically different choices.</h2>
+    <div class="soc-grid">
+      <div class="soc-panel gold-p fade-in" id="sp1">
+        <h3>The Asian Disease Problem</h3>
+        <p>Kahneman and Tversky: framing a policy as saving 200 lives generates more support than framing an equivalent policy as 400 people dying. Identical outcomes; opposite preferences.</p>
+      </div>
+      <div class="soc-panel blue-p fade-in" id="sp2">
+        <h3>Gain vs. Loss Frames</h3>
+        <p>People are more responsive to potential losses than equivalent gains. "You will lose $50 on your energy bill if you don't insulate" outperforms "You will save $50 if you insulate."</p>
+      </div>
+      <div class="soc-panel teal-p fade-in" id="sp3">
+        <h3>Attribute Framing</h3>
+        <p>"95% fat-free" and "5% fat" are mathematically identical — but the first is perceived as healthier. Framing a product or policy by its positive attribute shifts evaluation significantly.</p>
+      </div>
+      <div class="soc-panel rust-p fade-in" id="sp4">
+        <h3>Policy Application</h3>
+        <p>Public health campaigns, energy conservation messages, and tax compliance letters routinely exploit framing. Framing is not deception — both frames are true. But how you frame it changes what people do.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: Simplification and salience (dark horiz) -->
+  <div class="slide" id="s4">
+    <div class="sl">
+      <h2 class="fade-in">Simplification &amp; Salience</h2>
+      <p class="intro fade-in">Complexity is a barrier to good decision-making. Making the right choice easy — and making costs and benefits visible at the moment of decision — is itself a powerful nudge.</p>
+      <div class="facts fade-in">
+        <div class="frow">
+          <span class="fbadge fb-blue">Complexity</span>
+          <span>Complex enrolment forms, multi-page pension statements, and jargon-filled contracts reduce take-up of valuable programs — even when people want to participate. Simplification raises participation.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-teal">Salience</span>
+          <span>Information that is available but not salient has little effect. Making a fee, a tax, or a health risk visible and prominent at the point of decision — rather than buried in small print — changes behaviour.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-gold">FAFSA</span>
+          <span>Simplifying the US financial aid form raised college enrolment among low-income students significantly. The barrier was not the cost of college — it was the cost of applying.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-rust">Energy Labels</span>
+          <span>Displaying energy costs as dollar amounts on appliance labels changes purchasing decisions more than displaying energy units. Salience requires translation into terms people actually use.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Salience curve -->
+    <svg class="fade-in" viewBox="0 0 280 280" width="280" height="280" style="flex-shrink:0;">
+      <line x1="44" y1="248" x2="252" y2="248" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <line x1="44" y1="248" x2="44" y2="20" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <text x="148" y="272" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Information salience →</text>
+      <text x="20" y="135" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 20 135)">Behaviour change →</text>
+      <path id="sal-curve" class="anim-curve" d="M52,240 C90,230 140,155 248,48" stroke="var(--gold)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <g id="sal-labels" class="ppf-pt">
+        <circle cx="88" cy="228" r="4" fill="rgba(192,68,42,.7)"/>
+        <text x="94" y="224" fill="rgba(192,68,42,.85)" font-size="9" font-family="Space Grotesk,sans-serif">Buried in small print</text>
+        <circle cx="204" cy="84" r="4" fill="rgba(200,168,75,.85)"/>
+        <text x="145" y="76" fill="rgba(200,168,75,.95)" font-size="9" font-family="Space Grotesk,sans-serif">Prominent at point of choice</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- S5: Nudges vs mandates (light) -->
+  <div class="slide" id="s5">
+    <div class="eyebrow fade-in">The Policy Spectrum</div>
+    <h2 class="fade-in">Nudges occupy a middle ground between information and mandates.</h2>
+    <div class="soc-grid">
+      <div class="soc-panel blue-p fade-in" id="sp5">
+        <h3>Information Provision</h3>
+        <p>The lightest touch — share evidence and trust people to decide. Often insufficient alone: most smokers know cigarettes are harmful. Information is necessary but rarely enough on its own.</p>
+      </div>
+      <div class="soc-panel gold-p fade-in" id="sp6">
+        <h3>Nudges</h3>
+        <p>Change the choice architecture — defaults, framing, salience, simplification — without restricting options. More effective than information alone; preserves autonomy. The "libertarian paternalist" tool.</p>
+      </div>
+      <div class="soc-panel teal-p fade-in" id="sp7">
+        <h3>Taxes &amp; Subsidies</h3>
+        <p>Price-based tools shift incentives directly. More coercive than nudges — options exist, but at different costs. Sugar taxes, carbon pricing, and smoking levies are examples.</p>
+      </div>
+      <div class="soc-panel rust-p fade-in" id="sp8">
+        <h3>Mandates &amp; Bans</h3>
+        <p>Remove choice entirely. Seatbelt laws, food bans, and compulsory savings schemes. The strongest tool — and the most contested on autonomy grounds. Nudge advocates prefer to avoid this level.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6: Animated example -->
+  <div class="slide" id="s-ex-n" style="background:#0a0c06;flex-direction:row;align-items:center;gap:32px;padding:44px 52px;">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;" class="fade-in">REAL-LIFE EXAMPLE</div>
+      <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:25px;color:var(--paper);line-height:1.35;margin-bottom:14px;">The Cafeteria Fruit Bowl</h2>
+      <p class="fade-in" style="font-size:12.5px;color:#8898a0;font-weight:300;line-height:1.72;max-width:345px;">
+        A researcher moved the <strong style="color:#1aaa98">fruit bowl to eye level</strong> at a school cafeteria — and hid the chips at the bottom shelf.<br><br>
+        Nothing was banned. No prices changed. No lectures delivered. Students could still choose whatever they wanted.<br><br>
+        Result: <strong style="color:var(--gold)">fruit choices increased 35%.</strong> The architecture of the environment shaped the decision — without removing any freedom. That's a nudge.
+      </p>
+    </div>
+    <svg viewBox="0 0 290 270" width="290" height="270" fill="none" style="flex-shrink:0;">
+      <!-- Cafeteria counter -->
+      <rect x="30" y="200" width="250" height="12" rx="3" fill="rgba(100,80,60,.55)" stroke="rgba(130,100,70,.4)" stroke-width="1"/>
+      <!-- Shelf back panel -->
+      <rect x="50" y="40" width="200" height="158" rx="4" fill="rgba(255,255,255,.04)" stroke="rgba(255,255,255,.1)" stroke-width="1"/>
+      <!-- TOP SHELF (eye level) — fruit highlighted -->
+      <rect x="56" y="48" width="188" height="55" rx="3" fill="rgba(26,154,142,.12)" stroke="rgba(26,154,142,.4)" stroke-width="1.5"/>
+      <text x="150" y="62" fill="rgba(26,154,142,.55)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700" letter-spacing=".1em">EYE LEVEL ★</text>
+      <!-- Fruit items -->
+      <text x="82"  y="98" font-size="26" style="animation:ex-glow 2s ease-in-out infinite;">🍎</text>
+      <text x="118" y="98" font-size="26" style="animation:ex-glow 2s ease-in-out infinite .3s;">🍌</text>
+      <text x="154" y="98" font-size="26" style="animation:ex-glow 2s ease-in-out infinite .6s;">🍊</text>
+      <text x="190" y="98" font-size="26" style="animation:ex-glow 2s ease-in-out infinite .9s;">🍇</text>
+      <text x="224" y="98" font-size="26" style="animation:ex-glow 2s ease-in-out infinite 1.2s;">🍓</text>
+      <!-- BOTTOM SHELF — chips dim -->
+      <rect x="56" y="115" width="188" height="55" rx="3" fill="rgba(80,80,80,.08)" stroke="rgba(80,80,80,.2)" stroke-width="1"/>
+      <text x="150" y="129" fill="rgba(255,255,255,.2)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle" letter-spacing=".08em">bottom shelf</text>
+      <!-- Chips items (dim) -->
+      <text x="82"  y="162" font-size="20" opacity=".3">🍟</text>
+      <text x="118" y="162" font-size="20" opacity=".3">🍫</text>
+      <text x="154" y="162" font-size="20" opacity=".3">🥤</text>
+      <text x="190" y="162" font-size="20" opacity=".3">🍪</text>
+      <text x="224" y="162" font-size="20" opacity=".3">🍩</text>
+      <!-- Student stick figure -->
+      <g style="animation:ex-bob 2.4s ease-in-out infinite;">
+        <circle cx="25" cy="155" r="16" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="1.8"/>
+        <!-- Eyes looking RIGHT and UP (toward fruit shelf) -->
+        <ellipse cx="19" cy="151" rx="2.5" ry="2.8" fill="rgba(255,255,255,.9)" style="animation:ex-eye 3.5s ease-in-out infinite;"/>
+        <ellipse cx="31" cy="151" rx="2.5" ry="2.8" fill="rgba(255,255,255,.9)" style="animation:ex-eye 3.5s ease-in-out infinite .1s;"/>
+        <circle cx="20" cy="151" r="1.2" fill="rgba(26,74,138,.8)"/>
+        <circle cx="32" cy="151" r="1.2" fill="rgba(26,74,138,.8)"/>
+        <path d="M19 162 Q25 168 31 162" stroke="rgba(255,255,255,.7)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <line x1="25" y1="171" x2="25" y2="190" stroke="rgba(255,255,255,.65)" stroke-width="1.7"/>
+        <line x1="25" y1="178" x2="12" y2="188" stroke="rgba(255,255,255,.65)" stroke-width="1.7" stroke-linecap="round"/>
+        <!-- Arm reaching for fruit -->
+        <line x1="25" y1="178" x2="46" y2="168" stroke="rgba(255,255,255,.65)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="25" y1="190" x2="18" y2="202" stroke="rgba(255,255,255,.65)" stroke-width="1.7" stroke-linecap="round"/>
+        <line x1="25" y1="190" x2="32" y2="202" stroke="rgba(255,255,255,.65)" stroke-width="1.7" stroke-linecap="round"/>
+      </g>
+      <!-- Gaze arrow toward fruit -->
+      <g style="animation:ex-slide-up .5s ease-out 1.5s both;opacity:0;">
+        <path d="M42 162 L68 82" stroke="rgba(26,154,142,.6)" stroke-width="1.3" stroke-dasharray="4 3" stroke-linecap="round"/>
+        <polygon points="69,78 63,86 73,85" fill="rgba(26,154,142,.6)"/>
+        <text x="68" y="126" fill="rgba(26,154,142,.7)" font-size="8" font-family="Space Grotesk,sans-serif" transform="rotate(-68 68 126)">eyes go here</text>
+      </g>
+      <!-- +35% badge -->
+      <g style="animation:ex-slide-up .5s ease-out 2s both;opacity:0;">
+        <rect x="200" y="205" width="78" height="32" rx="5" fill="rgba(26,154,142,.25)" stroke="rgba(26,154,142,.7)" stroke-width="1.3"/>
+        <text x="239" y="218" fill="rgba(26,154,142,.95)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">+35% fruit</text>
+        <text x="239" y="231" fill="rgba(26,154,142,.7)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">chosen 🍎</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- S7: Takeaway -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Choice architects cannot avoid influencing behaviour. Every default, every form layout, every label design nudges people in some direction. The question is not whether to nudge — it is whether to do so <em>deliberately and transparently</em>, with the decision-maker's own long-run interests in mind.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 230 · UNBC</div>
+    <div class="tag">Defaults · Framing · Salience · Libertarian Paternalism</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Standard economic policy assumes that informing people of their options is enough to produce good decisions. But if people are boundedly rational, prone to inertia, sensitive to framing, and easily overwhelmed by complexity, then the design of the choice environment matters as much as the options themselves. This topic is about nudges and choice architecture — the idea, developed most fully by Richard Thaler and Cass Sunstein, that small changes to how choices are presented can have large effects on behaviour, without restricting anyone's options.",
+  "Thaler and Sunstein coined the term libertarian paternalism to describe their approach. It is paternalistic in the sense that it steers people toward better outcomes — better, at least, by their own stated long-run preferences. But it is libertarian in means: no options are removed, no costs are imposed on alternatives. A nudge is any design feature that influences behaviour in a predictable way without restricting options or significantly changing economic incentives. Choice architecture is the broader idea: every presentation of a choice is a design. The order of items on a menu, the layout of a form, the default on a pension enrolment sheet — all of these are architectural decisions, whether or not anyone treats them as such. Thaler received the 2017 Nobel Prize in Economics partly for this work, and for his earlier research on mental accounting and retirement savings.",
+  "The single most powerful nudge is the default — the outcome that occurs if the person takes no action. Defaults matter because of status quo bias, inertia, and loss aversion. Changing the default does not remove any option; it simply determines where inaction leads. The organ donation literature provides the most dramatic illustration. Countries with opt-out registration — where everyone is a donor unless they actively deregister — have donor rates above 90 percent. Countries with opt-in systems — where you must actively sign up — average below 20 percent. The same populations, the same preferences, the same legal right to choose either way: the only difference is the default. In retirement savings, auto-enrolment in workplace pension schemes raises participation from around 40 to 50 percent under opt-in to over 90 percent under opt-out — with no change to contribution rates, employer matching, or any financial incentive. The implication is striking: there is no neutral default. A choice architect always sets one, explicitly or implicitly. The question is not whether to design defaults, but how to design them responsibly.",
+  "Framing effects are a second major tool of choice architecture. A framing effect occurs when logically equivalent descriptions of the same situation produce systematically different responses. Kahneman and Tversky's Asian Disease Problem is the classic demonstration: subjects prefer a policy described as saving 200 lives with certainty over one described as a one-in-three chance of saving 600 — but when the same options are described in terms of deaths rather than lives saved, preferences reverse. The outcomes are mathematically identical; the framing changes the decision. Gain versus loss frames exploit the asymmetry between gains and losses in prospect theory. Telling homeowners they will lose money on their energy bills if they fail to insulate is more effective than telling them they will save the same amount if they do. Attribute framing works similarly: ninety-five percent fat-free and five percent fat are identical, but evaluated very differently. These effects are robust, replicable, and large enough to matter for real policy. Public health campaigns, tax compliance letters, and energy-conservation messages are routinely designed to exploit framing.",
+  "A third tool is simplification and salience — reducing friction and making costs and benefits visible at the right moment. Complexity acts as a barrier even when it imposes no direct cost. People often fail to enrol in programmes they want, claim benefits they qualify for, and make active choices they prefer — simply because the process is too difficult. Simplifying the United States Free Application for Federal Student Aid, known as FAFSA, raised college enrolment significantly among low-income students. The barrier was not the cost of college; it was the cost of applying. Salience is related but distinct. Information that is technically available — in a footnote, on a website, in a disclosure document — often has little behavioural effect. Making it prominent, clear, and present at the moment of decision is what activates it. Energy-efficiency labels on appliances change purchasing decisions more when they display costs in dollars than when they display kilowatt-hours, because dollars are the unit in which people actually think about their bills.",
+  "Nudges sit in the middle of a spectrum of policy interventions. At one end is pure information provision — sharing evidence and trusting people to decide. This is the least coercive approach but often the least effective: most smokers know the health risks; most people know they should save more for retirement. Information is necessary but rarely sufficient on its own. Nudges go one step further: they change the choice architecture without changing the menu of options or the price attached to any of them. More effective than information alone; much less restrictive than price-based tools. Taxes and subsidies shift incentives directly by changing the relative price of different options — more coercive, but choices remain. Mandates and bans eliminate the choice entirely. The libertarian paternalist argument is that nudges can often achieve comparable outcomes to mandates — in domains like retirement savings, energy efficiency, and health — while preserving freedom of choice. Critics argue that nudges can be manipulative when used to serve the choice architect's interests rather than the decision-maker's, and that transparency about nudge design is an ethical requirement.",
+  "Here is a real experiment. A researcher at a school cafeteria wanted students to choose healthier food. She didn't ban chips. She didn't raise their price. She didn't lecture students about nutrition. She simply moved the fruit bowl to the front of the counter at eye level, and moved the chips to the bottom shelf at the back. That was the entire intervention. Result: students chose fruit thirty-five percent more often than before. Nobody was forced to do anything. The chips were still there. The choice was identical. But the design of the environment — what you see first, what is easiest to reach, what catches your eye — made the healthy choice the easy choice. This is what nudge theory is about. And it generalises far beyond cafeterias. Putting a healthy default on a restaurant menu, making the stairs more attractive than the elevator, setting auto-enrolment as the pension default — all of these are nudges. They work not by changing what's available but by changing how the options are presented. Choice architecture is never neutral, and nudge theory says: let's design it deliberately.",
+  "The central insight of the nudge literature is that choice architects cannot avoid influencing behaviour. Every default, every form layout, every label design, every ordering of options pushes people in some direction — whether or not that push is intentional. The question is not whether to nudge, but whether to do so deliberately and transparently, with the decision-maker's own long-run interests in mind. Thaler and Sunstein argue that the best nudges are those the decision-maker would endorse on reflection — nudges that help the present self act on the preferences the future self would want. Done well, choice architecture does not override agency. It uses the structure of choice to help people achieve what they already want."
+];
+const VOICE_ID='WmFyZIEC0qrjgbkDYIMP',MODEL_ID='eleven_turbo_v2_5';
+let audioBuffers=new Array(narrations.length).fill(null);
+const apiKey='sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted=false,currentAudio=null,currentSpeech=null,speechEndTimer=null;
+const loadingOverlay=document.getElementById('loading-overlay'),loadingText=document.getElementById('loading-text'),statusBar=document.getElementById('status-bar');
+function setStatus(msg){if(statusBar)statusBar.textContent=msg;}
+async function generateAudio(idx){const resp=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,{method:'POST',headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},body:JSON.stringify({text:narrations[idx],model_id:MODEL_ID,voice_settings:{stability:0.45,similarity_boost:0.82,style:0.3,use_speaker_boost:true}})});if(!resp.ok)throw new Error(`ElevenLabs ${resp.status}`);return URL.createObjectURL(await resp.blob());}
+async function generateAll(){loadingOverlay.classList.add('show');for(let i=0;i<narrations.length;i++){loadingText.textContent=`Generating narration ${i+1} of ${narrations.length}…`;try{audioBuffers[i]=await generateAudio(i);}catch(e){console.warn(`Slide ${i} failed:`,e.message);}}loadingOverlay.classList.remove('show');initCurves();runTimeline(0);playSlideAudio(0);}
+function stopAudio(){if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}if(currentSpeech){speechSynthesis.cancel();currentSpeech=null;}clearTimeout(speechEndTimer);stopTimer();}
+function playSlideAudio(idx){stopAudio();if(muted){startTimer(20000,()=>goTo(idx+1));return;}if(audioBuffers[idx]){setStatus('');const audio=new Audio(audioBuffers[idx]);currentAudio=audio;audio.addEventListener('loadedmetadata',()=>startTimer(audio.duration*1000,null));audio.addEventListener('ended',()=>{currentAudio=null;goTo(idx+1);});audio.play().catch(()=>speakWithBrowser(idx));}else{speakWithBrowser(idx);}}
+function speakWithBrowser(idx){if(!('speechSynthesis' in window)){startTimer(20000,()=>goTo(idx+1));return;}speechSynthesis.cancel();const text=narrations[idx],rate=0.92,estimatedMs=Math.round((text.trim().split(/\s+/).length/145)*60000/rate)+2000;const utter=new SpeechSynthesisUtterance(text);utter.rate=rate;utter.pitch=0.95;utter.volume=1;const doSpeak=()=>{setStatus('');const voices=speechSynthesis.getVoices();const voice=voices.find(v=>v.name==='Daniel')||voices.find(v=>v.name==='Alex')||voices.find(v=>/Google US English/i.test(v.name))||voices.find(v=>v.lang==='en-US'&&!v.localService)||voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang.startsWith('en'));if(voice)utter.voice=voice;startTimer(estimatedMs,null);utter.onend=()=>{clearTimeout(speechEndTimer);currentSpeech=null;goTo(idx+1);};utter.onerror=()=>{clearTimeout(speechEndTimer);currentSpeech=null;startTimer(15000,()=>goTo(idx+1));};speechEndTimer=setTimeout(()=>{speechSynthesis.cancel();currentSpeech=null;goTo(idx+1);},estimatedMs+6000);speechSynthesis.speak(utter);currentSpeech=utter;};speechSynthesis.getVoices().length>0?doSpeak():speechSynthesis.addEventListener('voiceschanged',doSpeak,{once:true});}
+const muteBtn=document.getElementById('btn-mute');
+muteBtn.addEventListener('click',()=>{muted=!muted;muteBtn.textContent=muted?'🔇':'🔊';if(muted){stopAudio();setStatus('');startTimer(20000,()=>goTo(current+1));}else{playSlideAudio(current);}});
+const slides=document.querySelectorAll('.slide'),dotsContainer=document.getElementById('dots'),timerBar=document.getElementById('timer-bar'),TOTAL=slides.length;
+let current=0,timerTimeout=null,rafId=null,timerStart=null,timerDuration=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.addEventListener('click',()=>goTo(i));dotsContainer.appendChild(d);});
+function getDots(){return dotsContainer.querySelectorAll('.dot');}
+function goTo(idx){if(idx>=TOTAL)idx=0;slides[current].classList.remove('active');getDots()[current].classList.remove('on');resetAni();current=(idx+TOTAL)%TOTAL;slides[current].classList.add('active');getDots()[current].classList.add('on');runTimeline(current);playSlideAudio(current);}
+function stopTimer(){clearTimeout(timerTimeout);cancelAnimationFrame(rafId);timerBar.style.width='0%';}
+function startTimer(durationMs,cb){stopTimer();timerStart=performance.now();timerDuration=durationMs;function tick(ts){const pct=Math.min((ts-timerStart)/timerDuration*100,100);timerBar.style.width=pct+'%';if(pct<100)rafId=requestAnimationFrame(tick);}rafId=requestAnimationFrame(tick);if(cb)timerTimeout=setTimeout(cb,durationMs);}
+document.getElementById('btn-next').addEventListener('click',()=>goTo(current+1));
+document.getElementById('btn-prev').addEventListener('click',()=>goTo(current-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goTo(current+1);if(e.key==='ArrowLeft')goTo(current-1);if(e.key==='m')muteBtn.click();});
+let aniTimers=[];
+function stopAni(){aniTimers.forEach(clearTimeout);aniTimers=[];}
+function sch(ms,fn){aniTimers.push(setTimeout(fn,ms));}
+function initCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{const len=el.getTotalLength?el.getTotalLength():600;el.dataset.origLen=len;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function resetCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{el.style.transition='none';const len=el.dataset.origLen||9999;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function drawCurve(id,durMs,delayMs){sch(delayMs||0,()=>{const el=document.getElementById(id);if(!el)return;requestAnimationFrame(()=>{el.style.transition=`stroke-dashoffset ${durMs||1800}ms ease-in-out`;el.style.strokeDashoffset=0;});});}
+function litEl(sel){document.querySelectorAll(sel).forEach(el=>el.classList.add('val-lit'));}
+function resetAni(){stopAni();document.querySelectorAll('.ppf-pt').forEach(el=>el.classList.remove('ppf-show'));document.querySelectorAll('.val-lit').forEach(el=>el.classList.remove('val-lit'));document.querySelectorAll('.teach-on').forEach(el=>el.classList.remove('teach-on'));resetCurves();}
+function runTimeline(idx){
+  switch(idx){
+    case 0:sch(1200,()=>document.getElementById('nudge-arrow')?.classList.add('ppf-show'));break;
+    case 2:sch(400,()=>litEl('#bar-optin,#bar-optout'));sch(1800,()=>{document.getElementById('lbl-optin')?.classList.add('ppf-show');document.getElementById('lbl-optout')?.classList.add('ppf-show');});break;
+    case 3:sch(3000,()=>{document.getElementById('sp1')?.classList.add('teach-on');document.getElementById('sp2')?.classList.add('teach-on');});sch(22000,()=>{document.getElementById('sp1')?.classList.remove('teach-on');document.getElementById('sp2')?.classList.remove('teach-on');document.getElementById('sp3')?.classList.add('teach-on');document.getElementById('sp4')?.classList.add('teach-on');});break;
+    case 4:drawCurve('sal-curve',1800,400);sch(2400,()=>document.getElementById('sal-labels')?.classList.add('ppf-show'));break;
+    case 5:sch(3000,()=>{document.getElementById('sp5')?.classList.add('teach-on');document.getElementById('sp6')?.classList.add('teach-on');});sch(22000,()=>{document.getElementById('sp5')?.classList.remove('teach-on');document.getElementById('sp6')?.classList.remove('teach-on');document.getElementById('sp7')?.classList.add('teach-on');document.getElementById('sp8')?.classList.add('teach-on');});break;
+    case 6:break;
+  }
+}
+generateAll();
+</script>
+</body>
+</html>

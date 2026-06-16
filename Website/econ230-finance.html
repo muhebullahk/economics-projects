@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Behavioural Finance — ECON 230</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+  :root{--ink:#0f1117;--paper:#f7f4ee;--gold:#c8a84b;--teal:#1a7a6e;--teal-lt:#1aaa98;--rust:#c0442a;--blue:#1a4a8a;--purple:#6b3fa0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#090b10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;gap:18px;}
+  #back-bar{width:860px;font-size:12px;color:#445;}#back-bar a{color:#667;text-decoration:none;transition:color .2s;}#back-bar a:hover{color:var(--teal-lt);}
+  #status-bar{width:860px;font-size:12px;color:#556;text-align:right;min-height:16px;}
+  #stage{width:860px;height:540px;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 32px 80px rgba(0,0,0,.7);}
+  .slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .55s ease;display:flex;flex-direction:column;justify-content:center;padding:52px 64px;}
+  .slide.active{opacity:1;pointer-events:all;}
+  .fade-in{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+  .slide.active .fade-in{opacity:1;transform:none;}
+  .fade-in:nth-child(2){transition-delay:.15s;}.fade-in:nth-child(3){transition-delay:.3s;}.fade-in:nth-child(4){transition-delay:.45s;}.fade-in:nth-child(5){transition-delay:.6s;}.fade-in:nth-child(6){transition-delay:.75s;}
+  #author-wm{position:absolute;bottom:60px;left:18px;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.07em;text-transform:uppercase;pointer-events:none;z-index:5;}
+  /* S0 */
+  #s0{background:#050e0c;}
+  #s0 .label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal-lt);margin-bottom:18px;}
+  #s0 .rule{width:56px;height:3px;background:var(--teal-lt);margin-bottom:28px;}
+  #s0 h1{font-family:'Playfair Display',serif;font-size:52px;line-height:1.1;color:var(--paper);}
+  #s0 h1 em{font-style:italic;color:var(--teal-lt);}
+  #s0 .sub{margin-top:20px;font-size:15px;color:#8898a0;font-weight:300;max-width:420px;line-height:1.55;}
+  #s0 .author-line{margin-top:16px;font-size:11.5px;color:rgba(26,170,152,.6);letter-spacing:.1em;text-transform:uppercase;}
+  #s0 .diagram{position:absolute;right:52px;top:50%;transform:translateY(-50%);width:220px;height:220px;}
+  /* S1 light */
+  #s1{background:var(--paper);}
+  #s1 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:14px;}
+  #s1 h2{font-family:'Playfair Display',serif;font-size:34px;color:var(--ink);line-height:1.2;margin-bottom:24px;}
+  /* S2 dark horiz */
+  #s2{background:#040d0b;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s2 .sl{flex:1;min-width:0;}
+  #s2 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--paper);margin-bottom:8px;}
+  #s2 .intro{font-size:13px;color:#7acac0;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S3 light */
+  #s3{background:var(--paper);padding:44px 64px;}
+  #s3 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  #s3 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--ink);margin-bottom:20px;}
+  /* S4 dark horiz */
+  #s4{background:#080d14;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s4 .sl{flex:1;min-width:0;}
+  #s4 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--paper);margin-bottom:8px;}
+  #s4 .intro{font-size:13px;color:#8aafc8;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S5 light */
+  #s5{background:var(--paper);padding:44px 64px;}
+  #s5 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal);margin-bottom:10px;}
+  #s5 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--ink);margin-bottom:20px;}
+  /* S6 quote */
+  #s6{background:#040d0b;}
+  #s6 .quote-mark{font-family:'Playfair Display',serif;font-size:120px;line-height:.7;color:rgba(26,170,152,.12);margin-bottom:-10px;}
+  #s6 blockquote{font-family:'Playfair Display',serif;font-size:24px;line-height:1.55;color:white;max-width:660px;margin-bottom:24px;}
+  #s6 blockquote em{font-style:italic;color:var(--teal-lt);}
+  #s6 .attr{font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.08em;}
+  #s6 .tag{position:absolute;bottom:44px;right:60px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+  /* Shared */
+  .cards{display:flex;gap:18px;}
+  .card{flex:1;background:white;border-radius:6px;padding:22px 18px;border-top:4px solid var(--teal);box-shadow:0 4px 20px rgba(0,0,0,.07);}
+  .card.gold-t{border-color:var(--gold);}.card.rust-t{border-color:var(--rust);}.card.blue-t{border-color:var(--blue);}
+  .card .icon{font-size:26px;margin-bottom:10px;}
+  .card h3{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:7px;letter-spacing:.04em;}
+  .card p{font-size:12.5px;color:#444;line-height:1.6;font-weight:300;}
+  .facts{display:flex;flex-direction:column;gap:11px;}
+  .frow{display:flex;align-items:flex-start;gap:12px;font-size:12.5px;font-weight:300;line-height:1.5;}
+  .fbadge{flex-shrink:0;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:1px;}
+  .fb-blue{background:rgba(26,74,138,.2);color:#6090e0;}.fb-gold{background:rgba(200,168,75,.2);color:var(--gold);}
+  .fb-rust{background:rgba(192,68,42,.2);color:#e07060;}.fb-teal{background:rgba(26,122,110,.25);color:#1aaa98;}
+  .fb-pur{background:rgba(107,63,160,.25);color:#c0a0f0;}
+  #s2 .frow{color:#9acec8;} #s4 .frow{color:#99aabb;}
+  .soc-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .soc-panel{background:white;border-radius:8px;padding:16px 18px;box-shadow:0 3px 14px rgba(0,0,0,.07);}
+  .soc-panel h3{font-size:12.5px;font-weight:700;margin-bottom:8px;}
+  .soc-panel p{font-size:12px;color:#333;line-height:1.5;font-weight:300;}
+  .soc-panel.blue-p h3{color:var(--blue);}.soc-panel.gold-p h3{color:#a08030;}.soc-panel.teal-p h3{color:var(--teal);}.soc-panel.rust-p h3{color:var(--rust);}
+  /* Controls */
+  #controls{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .3s,transform .3s;}
+  .dot.on{background:var(--teal-lt);transform:scale(1.4);}
+  #btn-prev,#btn-next,#btn-mute{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--teal-lt);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+  #btn-prev:hover,#btn-next:hover,#btn-mute:hover{background:rgba(255,255,255,.2);}
+  #timer-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--teal-lt);width:0%;}
+  #loading-overlay{position:absolute;inset:0;background:rgba(10,12,18,.88);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:10;}
+  #loading-overlay.show{display:flex;}
+  .spinner{width:44px;height:44px;border-radius:50%;border:3px solid rgba(26,170,152,.2);border-top-color:var(--teal-lt);animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #loading-overlay p{font-size:14px;color:#889;}
+  .anim-curve{stroke-dasharray:9999;stroke-dashoffset:9999;}
+  .ppf-pt{opacity:0;transition:opacity .7s ease;}.ppf-pt.ppf-show{opacity:1;}
+  .val-axis{opacity:.15;transition:opacity .5s ease;}.val-axis.val-lit{opacity:1;}
+  .soc-panel{transition:box-shadow .4s ease;}.soc-panel.teach-on{box-shadow:0 0 0 2px var(--teal),0 3px 14px rgba(0,0,0,.07);}
+  @keyframes ex-bob    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+  @keyframes ex-float  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+  @keyframes ex-hop    { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-14px)} }
+  @keyframes ex-slide-up { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes ex-run    { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
+</style>
+</head>
+<body>
+<div id="back-bar"><a href="econ230-topics.html">← ECON 230 Topics</a></div>
+<div id="status-bar"></div>
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- S0: Title -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 230 · Behavioural Finance</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Markets &amp;<br><em>Behavioural Finance</em></h1>
+    <p class="sub fade-in">When individual biases aggregate into markets — bubbles, herding, and the limits of arbitrage.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 220 220" width="220" height="220" fill="none">
+        <circle cx="110" cy="110" r="104" stroke="rgba(26,122,110,.12)" stroke-width="1.5"/>
+        <line x1="28" y1="185" x2="200" y2="185" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+        <line x1="28" y1="185" x2="28" y2="28" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+        <!-- Fundamental value dashed -->
+        <line x1="28" y1="135" x2="200" y2="130" stroke="rgba(26,170,152,.35)" stroke-width="1.2" stroke-dasharray="4 3"/>
+        <text x="170" y="124" fill="rgba(26,170,152,.5)" font-size="7" font-family="Space Grotesk,sans-serif">Fundamental</text>
+        <!-- Bubble price path -->
+        <path id="s0-bubble" class="anim-curve" d="M28,162 C52,152 72,112 98,62 C112,38 122,33 132,46 C148,68 165,132 200,162" stroke="#1aaa98" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <!-- Peak marker -->
+        <g id="s0-peak" class="ppf-pt">
+          <circle cx="132" cy="46" r="3.5" fill="#1aaa98" opacity=".9"/>
+          <text x="138" y="43" fill="rgba(26,170,152,.9)" font-size="7.5" font-family="Space Grotesk,sans-serif" font-weight="600">Peak</text>
+          <text x="138" y="53" fill="rgba(192,68,42,.75)" font-size="7" font-family="Space Grotesk,sans-serif">Crash ↓</text>
+        </g>
+        <text x="114" y="198" fill="rgba(255,255,255,.28)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">Time →</text>
+        <text x="12" y="108" fill="rgba(255,255,255,.28)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 12 108)">Price →</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- S1: From individual biases to markets (light) -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">The Bridge</div>
+    <h2 class="fade-in">Individual biases can aggregate into systematic, market-wide patterns.</h2>
+    <div class="cards">
+      <div class="card fade-in">
+        <div class="icon">🧩</div>
+        <h3>From Psychology to Prices</h3>
+        <p>Heuristics and biases do not cancel out in markets — they can reinforce each other. When many investors share the same cognitive error, that error moves prices in ways that can persist for extended periods.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">⚖️</div>
+        <h3>The Efficient Market Hypothesis</h3>
+        <p>The standard benchmark: prices reflect all available information, so sustained mispricings cannot exist. Behavioural finance challenges this by documenting systematic anomalies that EMH cannot explain.</p>
+      </div>
+      <div class="card rust-t fade-in">
+        <div class="icon">🚧</div>
+        <h3>Limits to Arbitrage</h3>
+        <p>Even when rational traders identify a mispricing, they may be unable or unwilling to correct it. Risk, short-selling constraints, and investor horizons can all prevent arbitrage from restoring prices to fundamentals.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S2: Asset bubbles and herding (dark horiz) -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Asset Bubbles &amp; Herding</h2>
+      <p class="intro fade-in">Prices can deviate far from fundamental value for years. Herding — following others rather than independent information — is a key mechanism that sustains and amplifies these deviations.</p>
+      <div class="facts fade-in">
+        <div class="frow">
+          <span class="fbadge fb-teal">Herding</span>
+          <span>Investors observe the actions of others and infer information from them. When enough investors follow this strategy simultaneously, prices can move not on fundamentals but on the shared belief that prices will rise.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-gold">Dot-Com</span>
+          <span>The NASDAQ rose ~400% between 1995 and March 2000, driven by enthusiasm for internet firms with no earnings. From peak to trough it fell 78%. Many firms valued in the billions had no revenue at all.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-rust">Housing 2008</span>
+          <span>US house prices rose 124% between 1997 and 2006. The belief that prices could only rise was itself the source of demand sustaining the rise — a classic self-reinforcing bubble narrative.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-blue">Greater Fool</span>
+          <span>A rational investor can participate in a bubble if they expect to sell before it bursts. This dynamic — profiting by selling to someone who will pay even more — can sustain prices above fundamentals indefinitely.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Bubble price chart -->
+    <svg class="fade-in" viewBox="0 0 280 280" width="280" height="280" style="flex-shrink:0;">
+      <line x1="30" y1="250" x2="265" y2="250" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <line x1="30" y1="250" x2="30" y2="20" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <text x="148" y="272" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Time →</text>
+      <text x="14" y="135" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 14 135)">Price →</text>
+      <!-- Fundamental value (dashed) -->
+      <line id="fund-line" class="val-axis" x1="30" y1="198" x2="265" y2="188" stroke="rgba(26,170,152,.65)" stroke-width="1.2" stroke-dasharray="5 3"/>
+      <!-- Bubble price path -->
+      <path id="bubble-chart" class="anim-curve" d="M30,222 C60,212 96,170 130,82 C148,40 158,30 170,42 C188,62 215,162 265,218" stroke="#1aaa98" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <!-- Phase labels -->
+      <g id="phase-labels" class="ppf-pt">
+        <text x="78" y="176" fill="rgba(26,170,152,.8)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600">Boom</text>
+        <text x="162" y="32" fill="rgba(200,168,75,.9)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600">Peak</text>
+        <text x="222" y="200" fill="rgba(192,68,42,.85)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600">Crash</text>
+        <text x="232" y="178" fill="rgba(26,170,152,.55)" font-size="7.5" font-family="Space Grotesk,sans-serif">Fundamental</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- S3: Overreaction and underreaction (light) -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">Price Dynamics</div>
+    <h2 class="fade-in">Markets overreact to some information and underreact to other information.</h2>
+    <div class="soc-grid">
+      <div class="soc-panel teal-p fade-in" id="sp1">
+        <h3>Overreaction</h3>
+        <p>Investors give too much weight to recent dramatic information. Stocks with strong recent performance become overvalued; stocks with poor recent performance become undervalued. Prices overshoot fundamentals.</p>
+      </div>
+      <div class="soc-panel blue-p fade-in" id="sp2">
+        <h3>Mean Reversion</h3>
+        <p>De Bondt and Thaler (1985) showed past extreme losers outperform past extreme winners over 3–5 year horizons — consistent with overreaction followed by correction. Contrarian strategies exploit this pattern.</p>
+      </div>
+      <div class="soc-panel gold-p fade-in" id="sp3">
+        <h3>Underreaction</h3>
+        <p>Markets are slow to incorporate certain information. Post-earnings announcement drift shows prices continuing to move in the direction of an earnings surprise for weeks or months — long after the news is public.</p>
+      </div>
+      <div class="soc-panel rust-p fade-in" id="sp4">
+        <h3>Momentum</h3>
+        <p>In the short run (3–12 months), winners tend to keep winning and losers keep losing — consistent with underreaction. Momentum and reversal coexist because each operates on a different time horizon.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: Noise traders vs rational traders (dark horiz) -->
+  <div class="slide" id="s4">
+    <div class="sl">
+      <h2 class="fade-in">Noise Traders vs Rational Traders</h2>
+      <p class="intro fade-in">DeLong, Shleifer, Summers, and Waldmann showed that noise traders — who trade on sentiment rather than information — can survive in equilibrium and permanently move prices away from fundamentals.</p>
+      <div class="facts fade-in">
+        <div class="frow">
+          <span class="fbadge fb-teal">Noise Traders</span>
+          <span>Trade on sentiment, tips, and trends — not on fundamental information. Individually they may lose money, but collectively they move prices and create risk that deters rational arbitrageurs from correcting those prices.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-blue">Rational Traders</span>
+          <span>Know the fundamental value and want to arbitrage mispricings. But they face noise trader risk: the mispricing may worsen before it corrects, forcing losses if capital is withdrawn before the correction occurs.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-gold">Limits to Arbitrage</span>
+          <span>Shleifer and Vishny: arbitrage requires capital and time. If a mispricing worsens, rational traders may face investor redemptions and be forced to exit at a loss — "arbitrage is not a reliable correcting mechanism."</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-rust">Implication</span>
+          <span>Markets can be systematically mispriced for extended periods. Prices reflect both fundamental information and investor sentiment, and sentiment can be the dominant force — especially in the short run.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Noise trader price diagram -->
+    <svg class="fade-in" viewBox="0 0 280 280" width="280" height="280" style="flex-shrink:0;">
+      <line x1="30" y1="250" x2="265" y2="250" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <line x1="30" y1="250" x2="30" y2="20" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <text x="148" y="272" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Time →</text>
+      <text x="14" y="135" fill="rgba(255,255,255,.35)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 14 135)">Price →</text>
+      <!-- Fundamental value (flat dashed) -->
+      <line id="nt-fund" class="val-axis" x1="30" y1="148" x2="265" y2="148" stroke="rgba(26,170,152,.65)" stroke-width="1.2" stroke-dasharray="5 3"/>
+      <!-- Noisy market price -->
+      <path id="nt-price" class="anim-curve" d="M30,148 C52,122 72,102 98,118 C124,134 136,82 156,92 C176,102 202,158 230,136 C248,124 258,142 265,140" stroke="rgba(200,168,75,.85)" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <!-- Labels -->
+      <g id="nt-labels" class="ppf-pt">
+        <text x="238" y="132" fill="rgba(200,168,75,.85)" font-size="8.5" font-family="Space Grotesk,sans-serif">Market</text>
+        <text x="238" y="143" fill="rgba(200,168,75,.85)" font-size="8.5" font-family="Space Grotesk,sans-serif">price</text>
+        <text x="176" y="140" fill="rgba(26,170,152,.65)" font-size="7.5" font-family="Space Grotesk,sans-serif">Fundamental</text>
+        <!-- Sentiment gap indicator -->
+        <line x1="156" y1="94" x2="156" y2="146" stroke="rgba(192,68,42,.5)" stroke-width="1" stroke-dasharray="3 2"/>
+        <text x="160" y="118" fill="rgba(192,68,42,.7)" font-size="7.5" font-family="Space Grotesk,sans-serif">Sentiment</text>
+        <text x="160" y="128" fill="rgba(192,68,42,.7)" font-size="7.5" font-family="Space Grotesk,sans-serif">gap</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- S5: Investor sentiment (light) -->
+  <div class="slide" id="s5">
+    <div class="eyebrow fade-in">Investor Sentiment</div>
+    <h2 class="fade-in">Optimism and pessimism beyond what fundamentals justify move prices in predictable ways.</h2>
+    <div class="soc-grid">
+      <div class="soc-panel teal-p fade-in" id="sp5">
+        <h3>What Is Sentiment?</h3>
+        <p>The tendency of investors to form beliefs about future returns not fully justified by fundamentals. High-sentiment periods feature excessive optimism about earnings growth; low-sentiment periods feature excessive pessimism.</p>
+      </div>
+      <div class="soc-panel blue-p fade-in" id="sp6">
+        <h3>Measuring Sentiment</h3>
+        <p>Indicators include IPO volume and first-day returns, closed-end fund discounts, mutual fund flows, surveys of investor confidence, and put-call ratios. Each captures a different dimension of collective market mood.</p>
+      </div>
+      <div class="soc-panel gold-p fade-in" id="sp7">
+        <h3>Effects on Returns</h3>
+        <p>Baker and Wurgler showed high investor sentiment predicts lower future returns — especially for stocks hardest to value and arbitrage: small caps, growth stocks, young firms, and high-volatility stocks.</p>
+      </div>
+      <div class="soc-panel rust-p fade-in" id="sp8">
+        <h3>Extrapolation</h3>
+        <p>Investors project recent returns into the future. After a long bull market, expectations become too optimistic; after a crash, too pessimistic. This amplifies boom-bust cycles rather than damping them — the opposite of what EMH predicts.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S6: Animated example -->
+  <div class="slide" id="s-ex-f" style="background:#040d0b;flex-direction:row;align-items:center;gap:32px;padding:44px 52px;">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-lt);margin-bottom:12px;" class="fade-in">REAL-LIFE EXAMPLE</div>
+      <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:25px;color:var(--paper);line-height:1.35;margin-bottom:14px;">GameStop 2021</h2>
+      <p class="fade-in" style="font-size:12.5px;color:#8898a0;font-weight:300;line-height:1.72;max-width:345px;">
+        A struggling video game retailer worth <strong style="color:var(--paper)">~$20/share</strong> shot to <strong style="color:var(--teal-lt)">~$480</strong> in two weeks — then crashed back down.<br><br>
+        Reddit users piled in. Not because they believed in GameStop's business, but because <strong style="color:var(--gold)">everyone else was buying</strong>. Classic herding. Classic greater fool.<br><br>
+        Sentiment and crowd psychology drove a $30B valuation for a company losing money. That's behavioural finance in the real world.
+      </p>
+    </div>
+    <svg viewBox="0 0 290 270" width="290" height="270" fill="none" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="35" y1="235" x2="270" y2="235" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <line x1="35" y1="235" x2="35" y2="20" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <text x="152" y="255" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Jan 2021 → Feb 2021</text>
+      <text x="18" y="128" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 18 128)">Price →</text>
+      <!-- Fundamental value (dashed, flat low) -->
+      <line x1="35" y1="218" x2="270" y2="218" stroke="rgba(26,170,152,.4)" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="240" y="213" fill="rgba(26,170,152,.5)" font-size="7.5" font-family="Space Grotesk,sans-serif">~$20 real value</text>
+      <!-- Price path: flat → rocket → crash -->
+      <path id="gme-path" class="anim-curve" d="M35,218 C60,216 80,215 100,212 C120,208 125,180 135,120 C145,65 155,30 165,28 C175,30 185,65 200,140 C215,185 235,215 270,220" stroke="#1aaa98" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <!-- Peak label -->
+      <g id="gme-peak" class="ppf-pt">
+        <circle cx="165" cy="28" r="5" fill="#1aaa98" opacity=".9"/>
+        <text x="170" y="22" fill="rgba(200,168,75,.95)" font-size="9.5" font-family="Space Grotesk,sans-serif" font-weight="700">~$480</text>
+        <text x="170" y="33" fill="rgba(200,168,75,.65)" font-size="8" font-family="Space Grotesk,sans-serif">PEAK</text>
+      </g>
+      <!-- Crowd of figures (herding, jumping onto rising chart) -->
+      <!-- Figure 1 (early buyer, small, left) -->
+      <g style="animation:ex-hop 2.2s ease-in-out infinite 0s;">
+        <circle cx="100" cy="195" r="9" fill="none" stroke="rgba(26,170,152,.8)" stroke-width="1.4"/>
+        <circle cx="97" cy="193" r="1.3" fill="rgba(26,170,152,.9)"/>
+        <circle cx="103" cy="193" r="1.3" fill="rgba(26,170,152,.9)"/>
+        <path d="M97 199 Q100 203 103 199" stroke="rgba(26,170,152,.8)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <line x1="100" y1="204" x2="100" y2="215" stroke="rgba(26,170,152,.7)" stroke-width="1.3"/>
+        <line x1="100" y1="208" x2="92" y2="213" stroke="rgba(26,170,152,.7)" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="100" y1="208" x2="108" y2="213" stroke="rgba(26,170,152,.7)" stroke-width="1.3" stroke-linecap="round"/>
+      </g>
+      <!-- Figure 2 (mid buyer) -->
+      <g style="animation:ex-hop 2s ease-in-out infinite .4s;">
+        <circle cx="130" cy="170" r="9" fill="none" stroke="rgba(200,168,75,.8)" stroke-width="1.4"/>
+        <circle cx="127" cy="168" r="1.3" fill="rgba(200,168,75,.9)"/>
+        <circle cx="133" cy="168" r="1.3" fill="rgba(200,168,75,.9)"/>
+        <path d="M127 174 Q130 178 133 174" stroke="rgba(200,168,75,.8)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <line x1="130" y1="179" x2="130" y2="190" stroke="rgba(200,168,75,.7)" stroke-width="1.3"/>
+        <line x1="130" y1="183" x2="122" y2="188" stroke="rgba(200,168,75,.7)" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="130" y1="183" x2="138" y2="188" stroke="rgba(200,168,75,.7)" stroke-width="1.3" stroke-linecap="round"/>
+      </g>
+      <!-- Figure 3 (peak buyer, near top — losing) -->
+      <g style="animation:ex-bob 1.5s ease-in-out infinite .8s;">
+        <circle cx="163" cy="55" r="9" fill="none" stroke="rgba(192,68,42,.85)" stroke-width="1.4"/>
+        <circle cx="160" cy="53" r="1.3" fill="rgba(192,68,42,.9)"/>
+        <circle cx="166" cy="53" r="1.3" fill="rgba(192,68,42,.9)"/>
+        <!-- Worried mouth -->
+        <path d="M160 61 Q163 57 166 61" stroke="rgba(192,68,42,.85)" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+        <line x1="163" y1="64" x2="163" y2="75" stroke="rgba(192,68,42,.75)" stroke-width="1.3"/>
+        <line x1="163" y1="68" x2="155" y2="73" stroke="rgba(192,68,42,.75)" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="163" y1="68" x2="171" y2="73" stroke="rgba(192,68,42,.75)" stroke-width="1.3" stroke-linecap="round"/>
+      </g>
+      <!-- Reddit logo hint -->
+      <g style="animation:ex-slide-up .5s ease-out 1.8s both;opacity:0;">
+        <circle cx="58" cy="105" r="16" fill="rgba(255,69,0,.25)" stroke="rgba(255,69,0,.5)" stroke-width="1.2"/>
+        <text x="58" y="110" fill="rgba(255,120,50,.85)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">r/GME</text>
+      </g>
+      <!-- "BUY BUY BUY!" bubble -->
+      <g style="animation:ex-slide-up .5s ease-out 2.2s both;opacity:0;">
+        <rect x="62" y="82" width="78" height="20" rx="5" fill="rgba(255,255,255,.12)" stroke="rgba(255,255,255,.3)" stroke-width="1"/>
+        <text x="101" y="96" fill="rgba(255,255,255,.8)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">BUY! BUY! BUY! 📈</text>
+      </g>
+      <!-- Crash label -->
+      <g id="gme-crash" class="ppf-pt">
+        <text x="242" y="215" fill="rgba(192,68,42,.8)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700">Crash</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- S7: Takeaway -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Prices are not just signals about fundamentals — they reflect the <em>psychology of the market</em>. Sentiment, herding, and the limits of arbitrage mean that mispricings can persist far longer than rational models predict. Understanding this does not make markets predictable. It makes them comprehensible.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 230 · UNBC</div>
+    <div class="tag">Bubbles · Herding · Noise Traders · Sentiment</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Standard financial economics rests on a powerful assumption: prices in competitive markets reflect all available information. If an asset is mispriced, rational traders will exploit the opportunity and restore the price to its fundamental value. But over the past four decades, a large body of rigorous evidence has documented systematic departures from this benchmark — patterns in financial markets that are difficult to reconcile with the efficient market hypothesis but follow naturally from what we know about human psychology. This topic introduces behavioural finance — the application of behavioural economics to financial markets. We cover asset bubbles and herding, overreaction and underreaction in prices, noise traders and the limits of arbitrage, and the role of investor sentiment in driving returns.",
+  "One of the first questions in behavioural finance is whether individual cognitive biases can survive in a competitive market. Standard economic reasoning says they cannot: rational traders take the other side of biased trades, profit from them, and drive prices back toward fundamentals. Individual irrationality should average out. But this argument depends on two assumptions that do not always hold. First, that errors are independent and cancel each other out — but when many investors share the same bias, their errors do not cancel; they compound. Herding, overconfidence, and extrapolation are correlated across investors, not random. Second, that rational arbitrage is always possible — but in practice, arbitrage is costly, risky, and limited in scale. The efficient market hypothesis — the benchmark against which behavioural finance is tested — holds that prices fully reflect all available information at all times. Behavioural finance does not claim that markets are always wrong. It claims that systematic, predictable patterns of mispricing exist, and that these patterns can be traced to identifiable psychological forces.",
+  "An asset bubble occurs when prices rise far above fundamental value, sustained by the expectation that prices will continue to rise rather than by evidence about future earnings or dividends. The most dramatic recent examples are the dot-com bubble of the late 1990s and the US housing bubble of the 2000s. The NASDAQ rose roughly 400 percent between 1995 and early 2000, driven by enthusiasm for internet companies — many of which had no earnings, no clear path to profitability, and in some cases no revenue at all. From its peak in March 2000, the NASDAQ lost 78 percent of its value by October 2002. The mechanism behind bubbles typically involves herding. Investors observe the actions of others and infer information from them. When enough investors follow this strategy simultaneously, prices can move not on fundamentals but on the shared belief that prices will continue to rise. This belief is initially self-fulfilling, which makes it hard to dismiss as irrational. A rational investor can participate in a bubble if they expect to exit before the collapse — exploiting what is sometimes called the greater fool dynamic, profiting by selling to someone who will pay even more. This makes bubbles individually rational even when they are collectively destructive.",
+  "One of the most studied patterns in financial markets is the coexistence of overreaction and underreaction to information. Overreaction means investors respond too strongly to recent dramatic information — especially to long runs of good or bad performance. De Bondt and Thaler's landmark 1985 paper showed that stocks with extreme performance over a three-to-five-year period subsequently reverse: past losers significantly outperform past winners over the following three to five years. This is consistent with overreaction: investors extrapolate the recent trend too far, pushing prices above or below fundamental value, and the market later corrects. Contrarian strategies exploit overreaction by buying past losers and selling past winners. But the same markets that overreact over long horizons appear to underreact over short horizons. Post-earnings announcement drift is the most carefully documented example: after a firm reports earnings that significantly beat or miss expectations, the stock continues drifting in the direction of the surprise for weeks or months. A rational market should incorporate the news immediately. The persistence of this drift suggests investors update their beliefs too slowly. Momentum strategies exploit underreaction by buying recent winners and selling recent losers. The coexistence of momentum in the short run and reversal in the long run is one of the central empirical puzzles of the field.",
+  "A central question in behavioural finance is whether irrational traders — noise traders — can survive in competitive markets, or whether rational arbitrageurs will drive them out. Classical theory says they cannot survive: rational traders take the other side of their trades, profit from them, and noise traders lose money until they are eliminated. DeLong, Shleifer, Summers, and Waldmann showed in a 1990 paper that this conclusion is wrong. Noise traders can survive and persist in equilibrium for a subtle reason: they create risk. When a noise trader pushes a price away from fundamental value, a rational arbitrageur who bets against this mispricing faces uncertainty about when the correction will come. If the noise trader becomes even more optimistic before correcting, the price could diverge further before it reverts — and a rational trader with limited capital or a finite investment horizon may be forced to exit at a loss precisely when the opportunity is greatest. Shleifer and Vishny formalised this as the limits-to-arbitrage argument: arbitrage requires capital and time. If a rational fund manager's investors observe short-term losses on an arbitrage position, they may withdraw capital exactly when the position is most attractive. This funding liquidity spiral was observed dramatically during the 2007 to 2008 financial crisis. The implication is that markets can remain mispriced for extended periods, and sentiment can be the dominant force driving prices — especially in the short run.",
+  "Investor sentiment refers to the tendency of market participants to form beliefs about future returns that are not fully justified by fundamentals — to be more optimistic or more pessimistic than the evidence warrants. The key insight from the literature is that sentiment is not random noise: it is correlated across investors and systematic in its effects on prices. Baker and Wurgler developed a composite sentiment measure based on indicators including IPO volume and first-day returns, closed-end fund discounts, trading volume, equity issuance patterns, and dividend premium. They showed that high investor sentiment predicts lower future returns — and that this effect is strongest for stocks that are hardest to value and hardest to arbitrage: small-capitalisation stocks, high-volatility stocks, growth stocks, young firms, and stocks with no current earnings. The mechanism is straightforward: when sentiment is high, these hard-to-value stocks are driven above fundamental value by over-optimistic investors, and subsequently earn lower returns as sentiment normalises. A key driver of sentiment is extrapolation: investors project recent performance into the future. After a prolonged bull market, expectations become excessively optimistic; after a crash, excessively pessimistic. This amplifies boom and bust cycles rather than damping them — the opposite of the stabilising force that efficient market theory attributes to rational speculators.",
+  "Here is one of the most dramatic examples of herding and behavioural finance in recent memory. In early January 2021, GameStop — a struggling bricks-and-mortar video game retailer — was trading at around twenty dollars a share. The company was losing money. Nobody seriously thought it had a bright future. Then something extraordinary happened. On Reddit, millions of small retail investors noticed that large hedge funds had bet heavily against the stock. They coordinated to buy shares en masse. The price started rising. As it rose, more people noticed, and more people piled in — not because they believed in GameStop's business model, but because they saw the price going up and everyone else was buying. That's herding. By the end of January, the price had hit nearly five hundred dollars a share. A company that rational analysis said was worth a fraction of that was suddenly valued at thirty billion dollars — driven entirely by collective sentiment, social media momentum, and the greater fool dynamic: each buyer believed someone else would pay even more. Then the buying slowed. Arbitrageurs stepped back in. The price collapsed. Many retail investors who bought near the peak lost most of their money. The episode is a textbook illustration of how sentiment, herding, and the limits of arbitrage interact in financial markets.",
+  "The core insight of behavioural finance is that prices are not just signals about fundamentals — they reflect the psychology of the market. Sentiment, herding, overreaction, and the limits of arbitrage mean that mispricings can emerge, persist, and grow far beyond what rational models predict. This does not mean that markets are random, or that professional investors can reliably exploit behavioural patterns to earn large abnormal returns — especially after the patterns become widely known and are traded against. But it does mean that financial crises, bubbles, and crashes are not statistical accidents. They are predictable consequences of identifiable human tendencies — tendencies that a richer model of investor behaviour can help explain, and that better-designed regulation and institutional structure might help contain."
+];
+const VOICE_ID='WmFyZIEC0qrjgbkDYIMP',MODEL_ID='eleven_turbo_v2_5';
+let audioBuffers=new Array(narrations.length).fill(null);
+const apiKey='sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted=false,currentAudio=null,currentSpeech=null,speechEndTimer=null;
+const loadingOverlay=document.getElementById('loading-overlay'),loadingText=document.getElementById('loading-text'),statusBar=document.getElementById('status-bar');
+function setStatus(msg){if(statusBar)statusBar.textContent=msg;}
+async function generateAudio(idx){const resp=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,{method:'POST',headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},body:JSON.stringify({text:narrations[idx],model_id:MODEL_ID,voice_settings:{stability:0.45,similarity_boost:0.82,style:0.3,use_speaker_boost:true}})});if(!resp.ok)throw new Error(`ElevenLabs ${resp.status}`);return URL.createObjectURL(await resp.blob());}
+async function generateAll(){loadingOverlay.classList.add('show');for(let i=0;i<narrations.length;i++){loadingText.textContent=`Generating narration ${i+1} of ${narrations.length}…`;try{audioBuffers[i]=await generateAudio(i);}catch(e){console.warn(`Slide ${i} failed:`,e.message);}}loadingOverlay.classList.remove('show');initCurves();runTimeline(0);playSlideAudio(0);}
+function stopAudio(){if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}if(currentSpeech){speechSynthesis.cancel();currentSpeech=null;}clearTimeout(speechEndTimer);stopTimer();}
+function playSlideAudio(idx){stopAudio();if(muted){startTimer(20000,()=>goTo(idx+1));return;}if(audioBuffers[idx]){setStatus('');const audio=new Audio(audioBuffers[idx]);currentAudio=audio;audio.addEventListener('loadedmetadata',()=>startTimer(audio.duration*1000,null));audio.addEventListener('ended',()=>{currentAudio=null;goTo(idx+1);});audio.play().catch(()=>speakWithBrowser(idx));}else{speakWithBrowser(idx);}}
+function speakWithBrowser(idx){if(!('speechSynthesis' in window)){startTimer(20000,()=>goTo(idx+1));return;}speechSynthesis.cancel();const text=narrations[idx],rate=0.92,estimatedMs=Math.round((text.trim().split(/\s+/).length/145)*60000/rate)+2000;const utter=new SpeechSynthesisUtterance(text);utter.rate=rate;utter.pitch=0.95;utter.volume=1;const doSpeak=()=>{setStatus('');const voices=speechSynthesis.getVoices();const voice=voices.find(v=>v.name==='Daniel')||voices.find(v=>v.name==='Alex')||voices.find(v=>/Google US English/i.test(v.name))||voices.find(v=>v.lang==='en-US'&&!v.localService)||voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang.startsWith('en'));if(voice)utter.voice=voice;startTimer(estimatedMs,null);utter.onend=()=>{clearTimeout(speechEndTimer);currentSpeech=null;goTo(idx+1);};utter.onerror=()=>{clearTimeout(speechEndTimer);currentSpeech=null;startTimer(15000,()=>goTo(idx+1));};speechEndTimer=setTimeout(()=>{speechSynthesis.cancel();currentSpeech=null;goTo(idx+1);},estimatedMs+6000);speechSynthesis.speak(utter);currentSpeech=utter;};speechSynthesis.getVoices().length>0?doSpeak():speechSynthesis.addEventListener('voiceschanged',doSpeak,{once:true});}
+const muteBtn=document.getElementById('btn-mute');
+muteBtn.addEventListener('click',()=>{muted=!muted;muteBtn.textContent=muted?'🔇':'🔊';if(muted){stopAudio();setStatus('');startTimer(20000,()=>goTo(current+1));}else{playSlideAudio(current);}});
+const slides=document.querySelectorAll('.slide'),dotsContainer=document.getElementById('dots'),timerBar=document.getElementById('timer-bar'),TOTAL=slides.length;
+let current=0,timerTimeout=null,rafId=null,timerStart=null,timerDuration=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.addEventListener('click',()=>goTo(i));dotsContainer.appendChild(d);});
+function getDots(){return dotsContainer.querySelectorAll('.dot');}
+function goTo(idx){if(idx>=TOTAL)idx=0;slides[current].classList.remove('active');getDots()[current].classList.remove('on');resetAni();current=(idx+TOTAL)%TOTAL;slides[current].classList.add('active');getDots()[current].classList.add('on');runTimeline(current);playSlideAudio(current);}
+function stopTimer(){clearTimeout(timerTimeout);cancelAnimationFrame(rafId);timerBar.style.width='0%';}
+function startTimer(durationMs,cb){stopTimer();timerStart=performance.now();timerDuration=durationMs;function tick(ts){const pct=Math.min((ts-timerStart)/timerDuration*100,100);timerBar.style.width=pct+'%';if(pct<100)rafId=requestAnimationFrame(tick);}rafId=requestAnimationFrame(tick);if(cb)timerTimeout=setTimeout(cb,durationMs);}
+document.getElementById('btn-next').addEventListener('click',()=>goTo(current+1));
+document.getElementById('btn-prev').addEventListener('click',()=>goTo(current-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goTo(current+1);if(e.key==='ArrowLeft')goTo(current-1);if(e.key==='m')muteBtn.click();});
+let aniTimers=[];
+function stopAni(){aniTimers.forEach(clearTimeout);aniTimers=[];}
+function sch(ms,fn){aniTimers.push(setTimeout(fn,ms));}
+function initCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{const tag=el.tagName.toLowerCase();let len;if(tag==='line'){const x1=+el.getAttribute('x1'),y1=+el.getAttribute('y1'),x2=+el.getAttribute('x2'),y2=+el.getAttribute('y2');len=Math.sqrt((x2-x1)**2+(y2-y1)**2);}else{len=el.getTotalLength?el.getTotalLength():600;}el.dataset.origLen=len;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function resetCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{el.style.transition='none';const len=el.dataset.origLen||9999;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function drawCurve(id,durMs,delayMs){sch(delayMs||0,()=>{const el=document.getElementById(id);if(!el)return;requestAnimationFrame(()=>{el.style.transition=`stroke-dashoffset ${durMs||1800}ms ease-in-out`;el.style.strokeDashoffset=0;});});}
+function litEl(sel){document.querySelectorAll(sel).forEach(el=>el.classList.add('val-lit'));}
+function resetAni(){stopAni();document.querySelectorAll('.ppf-pt').forEach(el=>el.classList.remove('ppf-show'));document.querySelectorAll('.val-lit').forEach(el=>el.classList.remove('val-lit'));document.querySelectorAll('.teach-on').forEach(el=>el.classList.remove('teach-on'));resetCurves();}
+function runTimeline(idx){
+  switch(idx){
+    case 0:drawCurve('s0-bubble',2000,800);sch(3000,()=>document.getElementById('s0-peak')?.classList.add('ppf-show'));break;
+    case 2:litEl('#fund-line');drawCurve('bubble-chart',2200,400);sch(2900,()=>document.getElementById('phase-labels')?.classList.add('ppf-show'));break;
+    case 3:sch(3000,()=>{document.getElementById('sp1')?.classList.add('teach-on');document.getElementById('sp2')?.classList.add('teach-on');});sch(22000,()=>{document.getElementById('sp1')?.classList.remove('teach-on');document.getElementById('sp2')?.classList.remove('teach-on');document.getElementById('sp3')?.classList.add('teach-on');document.getElementById('sp4')?.classList.add('teach-on');});break;
+    case 4:litEl('#nt-fund');drawCurve('nt-price',2000,600);sch(2700,()=>document.getElementById('nt-labels')?.classList.add('ppf-show'));break;
+    case 5:sch(3000,()=>{document.getElementById('sp5')?.classList.add('teach-on');document.getElementById('sp6')?.classList.add('teach-on');});sch(22000,()=>{document.getElementById('sp5')?.classList.remove('teach-on');document.getElementById('sp6')?.classList.remove('teach-on');document.getElementById('sp7')?.classList.add('teach-on');document.getElementById('sp8')?.classList.add('teach-on');});break;
+    case 6:drawCurve('gme-path',2400,400);sch(2900,()=>document.getElementById('gme-peak')?.classList.add('ppf-show'));sch(3500,()=>document.getElementById('gme-crash')?.classList.add('ppf-show'));break;
+  }
+}
+generateAll();
+</script>
+</body>
+</html>

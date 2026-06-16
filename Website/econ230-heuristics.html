@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heuristics and Biases — ECON 230</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+  :root {
+    --ink:    #0f1117;
+    --paper:  #f7f4ee;
+    --gold:   #c8a84b;
+    --teal:   #1a7a6e;
+    --rust:   #c0442a;
+    --blue:   #1a4a8a;
+    --purple: #6b3fa0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #090b10;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    min-height: 100vh; font-family: 'Space Grotesk', sans-serif; gap: 18px;
+  }
+
+  #back-bar { width: 860px; font-size: 12px; color: #445; }
+  #back-bar a { color: #667; text-decoration: none; transition: color .2s; }
+  #back-bar a:hover { color: var(--gold); }
+  #status-bar { width: 860px; font-size: 12px; color: #556; text-align: right; min-height: 16px; }
+
+  #stage {
+    width: 860px; height: 540px; position: relative; overflow: hidden;
+    border-radius: 6px; box-shadow: 0 32px 80px rgba(0,0,0,.7);
+  }
+
+  .slide {
+    position: absolute; inset: 0; opacity: 0; pointer-events: none;
+    transition: opacity .55s ease; display: flex; flex-direction: column;
+    justify-content: center; padding: 52px 64px;
+  }
+  .slide.active { opacity: 1; pointer-events: all; }
+
+  .fade-in { opacity: 0; transform: translateY(14px); transition: opacity .5s ease, transform .5s ease; }
+  .slide.active .fade-in { opacity: 1; transform: none; }
+  .fade-in:nth-child(2) { transition-delay: .15s; }
+  .fade-in:nth-child(3) { transition-delay: .3s; }
+  .fade-in:nth-child(4) { transition-delay: .45s; }
+  .fade-in:nth-child(5) { transition-delay: .6s; }
+  .fade-in:nth-child(6) { transition-delay: .75s; }
+
+  #author-wm {
+    position: absolute; bottom: 60px; left: 18px;
+    font-size: 9px; color: rgba(255,255,255,.18); letter-spacing: .07em;
+    text-transform: uppercase; pointer-events: none; z-index: 5;
+  }
+
+  /* ── Slide 0 – Title ── */
+  #s0 { background: var(--ink); }
+  #s0 .label { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  #s0 .rule  { width: 56px; height: 3px; background: var(--gold); margin-bottom: 28px; }
+  #s0 h1 { font-family: 'Playfair Display', serif; font-size: 52px; line-height: 1.1; color: var(--paper); }
+  #s0 h1 em { font-style: italic; color: var(--gold); }
+  #s0 .sub { margin-top: 20px; font-size: 16px; color: #8898a0; font-weight: 300; max-width: 420px; line-height: 1.55; }
+  #s0 .author-line { margin-top: 16px; font-size: 11.5px; color: rgba(200,168,75,.6); letter-spacing: .1em; text-transform: uppercase; }
+  #s0 .diagram { position: absolute; right: 58px; top: 50%; transform: translateY(-50%); width: 210px; height: 210px; }
+
+  /* ── Slide 1 – System 1 & 2 ── */
+  #s1 { background: var(--paper); }
+  #s1 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--purple); margin-bottom: 14px; }
+  #s1 h2 { font-family: 'Playfair Display', serif; font-size: 34px; color: var(--ink); line-height: 1.2; margin-bottom: 24px; }
+  .cards { display: flex; gap: 18px; }
+  .card { flex: 1; background: white; border-radius: 6px; padding: 22px 18px; border-top: 4px solid var(--blue); box-shadow: 0 4px 20px rgba(0,0,0,.07); }
+  .card.gold-t   { border-color: var(--gold); }
+  .card.purple-t { border-color: var(--purple); }
+  .card .icon { font-size: 26px; margin-bottom: 10px; }
+  .card h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 7px; letter-spacing: .04em; }
+  .card p  { font-size: 12.5px; color: #444; line-height: 1.6; font-weight: 300; }
+
+  /* ── Slides 2 & 4 – dark horizontal ── */
+  #s2 { background: #0f1a19; flex-direction: row; align-items: center; gap: 36px; padding: 44px 56px; }
+  #s4 { background: #0f1117; flex-direction: row; align-items: center; gap: 36px; padding: 44px 52px; }
+  #s2 .sl, #s4 .sl { flex: 1; min-width: 0; }
+  #s2 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 8px; }
+  #s4 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--paper); margin-bottom: 8px; }
+  #s2 .intro { font-size: 13px; color: #8fa; font-weight: 300; line-height: 1.6; margin-bottom: 18px; }
+  #s4 .intro { font-size: 13px; color: #8899aa; font-weight: 300; line-height: 1.6; margin-bottom: 18px; }
+  .h-facts { display: flex; flex-direction: column; gap: 11px; }
+  .h-row { display: flex; align-items: flex-start; gap: 12px; font-size: 12.5px; font-weight: 300; line-height: 1.5; }
+  .h-badge {
+    flex-shrink: 0; padding: 2px 10px; border-radius: 20px; font-size: 11px;
+    font-weight: 700; letter-spacing: .04em; margin-top: 1px;
+  }
+  .hb-teal   { background: rgba(26,122,110,.25); color: #1a9a8e; }
+  .hb-gold   { background: rgba(200,168,75,.2);  color: var(--gold); }
+  .hb-rust   { background: rgba(192,68,42,.2);   color: #e07060; }
+  .hb-purple { background: rgba(107,63,160,.25); color: #b89fe0; }
+  #s2 .h-row { color: #bbc; }
+  #s4 .h-row { color: #99aabb; }
+
+  /* ── Slide 3 – Availability (light horizontal) ── */
+  #s3 { background: var(--paper); flex-direction: row; align-items: center; gap: 36px; padding: 44px 56px; }
+  #s3 .sl { flex: 1; min-width: 0; }
+  #s3 h2  { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--ink); margin-bottom: 8px; }
+  #s3 .intro { font-size: 13px; color: #555; font-weight: 300; line-height: 1.6; margin-bottom: 18px; }
+  #s3 .h-row { color: #333; }
+
+  /* ── Slide 5 – Confirmation & Overconfidence ── */
+  #s5 { background: var(--paper); padding: 40px 64px; }
+  #s5 .eyebrow { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--rust); margin-bottom: 10px; }
+  #s5 h2 { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--ink); margin-bottom: 20px; }
+  .bias-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .bias-panel { background: white; border-radius: 8px; padding: 18px; box-shadow: 0 3px 14px rgba(0,0,0,.07); }
+  .bias-panel h3 { font-size: 12.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 8px; }
+  .bias-panel p  { font-size: 12.5px; color: #333; line-height: 1.5; font-weight: 300; }
+  .bias-panel.conf h3 { color: var(--rust); }
+  .bias-panel.over h3 { color: var(--blue); }
+  .bias-note {
+    margin-top: 14px; padding: 10px 16px;
+    background: rgba(107,63,160,.07); border-left: 3px solid var(--purple);
+    border-radius: 0 5px 5px 0; font-size: 12px; color: #333; line-height: 1.55;
+  }
+  .bias-note strong { color: var(--purple); }
+
+  /* ── Slide 6 – Takeaway ── */
+  #s6 { background: #1a2a1a; }
+  #s6 .quote-mark { font-family: 'Playfair Display', serif; font-size: 120px; line-height: .7; color: rgba(255,255,255,.1); margin-bottom: -10px; }
+  #s6 blockquote  { font-family: 'Playfair Display', serif; font-size: 24px; line-height: 1.55; color: white; max-width: 660px; margin-bottom: 24px; }
+  #s6 blockquote em { font-style: italic; color: var(--gold); }
+  #s6 .attr { font-size: 13px; color: rgba(255,255,255,.55); letter-spacing: .08em; }
+  #s6 .tag  { position: absolute; bottom: 44px; right: 60px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.35); }
+
+  /* ── Controls ── */
+  #controls {
+    position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,.25); cursor: pointer; transition: background .3s, transform .3s; }
+  .dot.on { background: var(--gold); transform: scale(1.4); }
+  #btn-prev, #btn-next, #btn-mute {
+    background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2);
+    color: var(--gold); width: 34px; height: 34px; border-radius: 50%;
+    cursor: pointer; font-size: 15px; display: flex; align-items: center; justify-content: center;
+    transition: background .2s;
+  }
+  #btn-prev:hover, #btn-next:hover, #btn-mute:hover { background: rgba(255,255,255,.2); }
+  #timer-bar { position: absolute; bottom: 0; left: 0; height: 3px; background: var(--gold); width: 0%; }
+  #loading-overlay {
+    position: absolute; inset: 0; background: rgba(10,12,18,.88);
+    display: none; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px; z-index: 10;
+  }
+  #loading-overlay.show { display: flex; }
+  .spinner { width: 44px; height: 44px; border-radius: 50%; border: 3px solid rgba(200,168,75,.2); border-top-color: var(--gold); animation: spin .8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #loading-overlay p { font-size: 14px; color: #889; }
+
+  .anim-curve { stroke-dasharray: 9999; stroke-dashoffset: 9999; }
+  .ppf-pt { opacity: 0; transition: opacity .7s ease; }
+  .ppf-pt.ppf-show { opacity: 1; }
+  .ppf-ripple { transform-box: fill-box; transform-origin: center; }
+  .ppf-pt.ppf-show .ppf-ripple { animation: ripple-out 1.8s ease-out .1s forwards; }
+  @keyframes ripple-out { 0% { opacity: .7; transform: scale(1); } 100% { opacity: 0; transform: scale(5); } }
+  .val-axis { opacity: .15; transition: opacity .5s ease; }
+  .val-axis.val-lit { opacity: 1; }
+  .bias-panel { transition: box-shadow .4s ease; }
+  .bias-panel.teach-on { box-shadow: 0 0 0 2px var(--rust), 0 3px 14px rgba(0,0,0,.07); }
+  .bias-panel.teach-on-b { box-shadow: 0 0 0 2px var(--blue), 0 3px 14px rgba(0,0,0,.07) !important; }
+  .h-row { transition: opacity .35s ease; }
+  .h-row.dim { opacity: .3; }
+  @keyframes ex-bob      { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+  @keyframes ex-float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-9px)} }
+  @keyframes ex-slide-up { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes ex-cross    { from{stroke-dashoffset:80} to{stroke-dashoffset:0} }
+  .ex-label { font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px; }
+  .ex-desc  { font-size:12.5px;color:#8898a0;font-weight:300;line-height:1.72;max-width:345px; }
+</style>
+</head>
+<body>
+
+<div id="back-bar"><a href="econ230-topics.html">← ECON 230 Topics</a></div>
+<div id="status-bar"></div>
+
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- ── Slide 0: Title ── -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 230 · Judgement &amp; Decision-Making</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Heuristics<br>&amp; <em>Biases</em></h1>
+    <p class="sub fade-in">How mental shortcuts shape judgment — and where they systematically go wrong.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 210 210" width="210" height="210" fill="none">
+        <circle cx="105" cy="105" r="100" stroke="rgba(200,168,75,.12)" stroke-width="1.5"/>
+        <!-- System 1 circle (left) -->
+        <circle id="t-s1" class="anim-curve" cx="78" cy="95" r="48" stroke="var(--gold)" stroke-width="1.8"/>
+        <text x="78" y="88" fill="rgba(200,168,75,.85)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SYSTEM 1</text>
+        <text x="78" y="101" fill="rgba(200,168,75,.55)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">Fast · Auto</text>
+        <!-- System 2 circle (right) -->
+        <circle id="t-s2" class="anim-curve" cx="138" cy="95" r="48" stroke="rgba(107,63,160,.7)" stroke-width="1.8"/>
+        <text x="138" y="88" fill="rgba(184,159,224,.85)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SYSTEM 2</text>
+        <text x="138" y="101" fill="rgba(184,159,224,.55)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">Slow · Deliberate</text>
+        <!-- Bias arrow down from S1 -->
+        <g id="t-bias" class="ppf-pt">
+          <line x1="78" y1="143" x2="78" y2="175" stroke="rgba(192,68,42,.6)" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <polygon points="78,180 73,170 83,170" fill="rgba(192,68,42,.6)"/>
+          <text x="78" y="196" fill="rgba(192,68,42,.7)" font-size="8" font-family="Space Grotesk,sans-serif" letter-spacing=".08em" text-anchor="middle">BIASES</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ── Slide 1: System 1 & 2 ── -->
+  <div class="slide" id="s1">
+    <div class="eyebrow fade-in">Kahneman &amp; Tversky · Thinking, Fast and Slow</div>
+    <h2 class="fade-in">Two systems govern how<br>we think and decide.</h2>
+    <div class="cards">
+      <div class="card gold-t fade-in">
+        <div class="icon">⚡</div>
+        <h3>System 1 — Fast</h3>
+        <p>Automatic, effortless, and always on. Generates intuitions, impressions, and quick judgments. Runs on heuristics — mental shortcuts that work well most of the time.</p>
+      </div>
+      <div class="card purple-t fade-in">
+        <div class="icon">🔍</div>
+        <h3>System 2 — Slow</h3>
+        <p>Deliberate, effortful, and limited in capacity. Engages for hard problems, calculations, and override of impulse. Lazy by design — it defers to System 1 whenever possible.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="icon">🎯</div>
+        <h3>Where Biases Come From</h3>
+        <p>Biases arise when System 1 shortcuts are applied outside the environments for which they work. The errors are predictable because they follow directly from the heuristic used.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Slide 2: Representativeness ── -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Representativeness Heuristic</h2>
+      <p class="intro fade-in">Judge probability by how much something resembles your mental prototype — how <em style="color:var(--gold)">representative</em> it is of a category.</p>
+      <div class="h-facts fade-in">
+        <div class="h-row" id="r1">
+          <span class="h-badge hb-teal">Rule</span>
+          <span>If it looks like a duck and quacks like a duck, it's probably a duck. Representativeness is a useful default — but it ignores base rates.</span>
+        </div>
+        <div class="h-row" id="r2">
+          <span class="h-badge hb-gold">Linda</span>
+          <span>Linda is 31, single, outspoken, and concerned with social justice. Which is more probable — that she is a bank teller, or a bank teller <em style="color:#ccd">and</em> a feminist?</span>
+        </div>
+        <div class="h-row" id="r3">
+          <span class="h-badge hb-rust">Fallacy</span>
+          <span>Most people choose "bank teller and feminist" — but a conjunction can never be more probable than either part alone. Representativeness overrides logic.</span>
+        </div>
+        <div class="h-row" id="r4">
+          <span class="h-badge hb-purple">Also</span>
+          <span><strong style="color:#ccd">Base rate neglect:</strong> when given a vivid description, people ignore the background frequency of the category entirely.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Conjunction fallacy visual -->
+    <svg class="fade-in" viewBox="0 0 300 280" width="300" height="280" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="44" y1="248" x2="270" y2="248" stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+      <line x1="44" y1="248" x2="44" y2="20"  stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
+      <text x="157" y="272" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Option</text>
+      <text x="22" y="135" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 135)">Probability</text>
+      <!-- Bar 1: Bank Teller (higher actual probability) -->
+      <rect id="bar1" class="val-axis" x="68" y="72" width="72" height="176" fill="rgba(26,154,142,.55)" rx="3"/>
+      <text id="bar1-lbl" class="val-axis" x="104" y="65" fill="#1a9a8e" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">HIGHER P</text>
+      <text x="104" y="264" fill="rgba(255,255,255,.55)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Bank Teller</text>
+      <!-- Bar 2: Bank Teller + Feminist (lower actual probability) -->
+      <rect id="bar2" class="val-axis" x="170" y="152" width="72" height="96" fill="rgba(200,168,75,.45)" rx="3"/>
+      <text id="bar2-lbl" class="val-axis" x="206" y="145" fill="var(--gold)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="700">LOWER P</text>
+      <text x="206" y="264" fill="rgba(255,255,255,.55)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">BT + Feminist</text>
+      <!-- "Most choose this" annotation -->
+      <g id="bar2-arrow" class="ppf-pt">
+        <line x1="206" y1="132" x2="206" y2="108" stroke="rgba(192,68,42,.7)" stroke-width="1.2" stroke-dasharray="3 2"/>
+        <polygon points="206,104 201,114 211,114" fill="rgba(192,68,42,.7)"/>
+        <text x="206" y="100" fill="rgba(192,68,42,.85)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">Most choose ↑</text>
+        <text x="206" y="90" fill="rgba(192,68,42,.65)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Conjunction fallacy</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 3: Availability ── -->
+  <div class="slide" id="s3">
+    <div class="sl">
+      <h2 class="fade-in">Availability Heuristic</h2>
+      <p class="intro fade-in">Judge the frequency or probability of an event by how easily examples come to mind.</p>
+      <div class="h-facts fade-in">
+        <div class="h-row" id="a1">
+          <span class="h-badge hb-teal">Rule</span>
+          <span style="color:#333">If you can quickly recall many examples, it feels frequent. If examples are hard to retrieve, it feels rare.</span>
+        </div>
+        <div class="h-row" id="a2">
+          <span class="h-badge hb-rust">Problem</span>
+          <span style="color:#333">Ease of recall is driven by vividness, recency, and media coverage — not actual frequency. Dramatic events feel more common than they are.</span>
+        </div>
+        <div class="h-row" id="a3">
+          <span class="h-badge hb-gold">Example</span>
+          <span style="color:#333">Plane crashes vs. car crashes: people fear flying more than driving, despite car travel being far more dangerous per kilometre. Crashes are vivid and memorable.</span>
+        </div>
+        <div class="h-row" id="a4">
+          <span class="h-badge hb-purple">Also</span>
+          <span style="color:#333">Overreaction to terrorism, underestimation of heart disease, and misjudgement of investment risk all trace partly to availability effects.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Availability visual: perceived vs actual -->
+    <svg class="fade-in" viewBox="0 0 300 280" width="300" height="280" style="flex-shrink:0;">
+      <!-- Axes -->
+      <line x1="44" y1="248" x2="270" y2="248" stroke="#aaa" stroke-width="1.2"/>
+      <line x1="44" y1="248" x2="44" y2="20"  stroke="#aaa" stroke-width="1.2"/>
+      <text x="157" y="272" fill="#777" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Cause of Death</text>
+      <text x="22" y="135" fill="#777" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 135)">Relative Risk</text>
+      <!-- Car crash column -->
+      <!-- Actual (tall, teal) -->
+      <rect id="car-act" class="val-axis" x="60" y="68" width="34" height="180" fill="rgba(26,122,110,.65)" rx="2"/>
+      <!-- Perceived (short, rust) -->
+      <rect id="car-per" class="val-axis" x="96" y="158" width="34" height="90" fill="rgba(192,68,42,.5)" rx="2"/>
+      <text x="95" y="264" fill="#555" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Car</text>
+      <!-- Plane crash column -->
+      <!-- Actual (very short, teal) -->
+      <rect id="plane-act" class="val-axis" x="172" y="228" width="34" height="20" fill="rgba(26,122,110,.65)" rx="2"/>
+      <!-- Perceived (tall, rust) -->
+      <rect id="plane-per" class="val-axis" x="208" y="118" width="34" height="130" fill="rgba(192,68,42,.5)" rx="2"/>
+      <text x="211" y="264" fill="#555" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Plane</text>
+      <!-- Legend -->
+      <g id="av-legend" class="ppf-pt">
+        <rect x="52" y="28" width="12" height="8" fill="rgba(26,122,110,.65)" rx="1"/>
+        <text x="68" y="36" fill="#555" font-size="9" font-family="Space Grotesk,sans-serif">Actual risk</text>
+        <rect x="130" y="28" width="12" height="8" fill="rgba(192,68,42,.5)" rx="1"/>
+        <text x="146" y="36" fill="#555" font-size="9" font-family="Space Grotesk,sans-serif">Perceived risk</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 4: Anchoring ── -->
+  <div class="slide" id="s4">
+    <div class="sl">
+      <h2 class="fade-in">Anchoring Effects</h2>
+      <p class="intro fade-in">An initial number — even an arbitrary one — exerts a powerful pull on subsequent judgments. Adjustment away from the anchor is always insufficient.</p>
+      <div class="h-facts fade-in">
+        <div class="h-row" id="anc1">
+          <span class="h-badge hb-gold">Classic</span>
+          <span>Kahneman &amp; Tversky spun a rigged wheel (10 or 65) and asked the % of African UN members. Those anchored at 10 guessed ~25%; those at 65 guessed ~45%.</span>
+        </div>
+        <div class="h-row" id="anc2">
+          <span class="h-badge hb-teal">Mechanism</span>
+          <span>The anchor activates related information in memory, and people adjust from it — but stop too soon, leaving estimates biased toward the starting point.</span>
+        </div>
+        <div class="h-row" id="anc3">
+          <span class="h-badge hb-rust">Real world</span>
+          <span>Legal sentencing, salary negotiation, real estate listing prices, medical diagnosis, and contract negotiations all show robust anchoring effects.</span>
+        </div>
+        <div class="h-row" id="anc4">
+          <span class="h-badge hb-purple">Key</span>
+          <span>The anchor need not be plausible or even relevant. Being told to consider any number before estimating is enough to shift the final judgment.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Anchoring number line -->
+    <svg class="fade-in" viewBox="0 0 300 280" width="300" height="280" style="flex-shrink:0;">
+      <!-- Number line -->
+      <line id="anc-line" class="anim-curve" x1="44" y1="140" x2="268" y2="140" stroke="rgba(255,255,255,.35)" stroke-width="1.5"/>
+      <polygon points="272,140 262,135 262,145" fill="rgba(255,255,255,.35)"/>
+      <text x="156" y="262" fill="rgba(255,255,255,.4)" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Estimate range →</text>
+      <!-- Low anchor scenario -->
+      <g id="anc-low" class="ppf-pt">
+        <!-- Anchor pin -->
+        <line x1="80" y1="108" x2="80" y2="140" stroke="rgba(200,168,75,.8)" stroke-width="2"/>
+        <polygon points="80,104 75,112 85,112" fill="var(--gold)"/>
+        <text x="80" y="99" fill="var(--gold)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Anchor: 10</text>
+        <!-- Estimate cluster near low anchor -->
+        <circle cx="96"  cy="140" r="5" fill="rgba(200,168,75,.5)"/>
+        <circle cx="108" cy="140" r="5" fill="rgba(200,168,75,.5)"/>
+        <circle cx="120" cy="140" r="5" fill="rgba(200,168,75,.5)"/>
+        <text x="108" y="162" fill="rgba(200,168,75,.7)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Estimates ~25%</text>
+      </g>
+      <!-- High anchor scenario -->
+      <g id="anc-high" class="ppf-pt">
+        <!-- Anchor pin -->
+        <line x1="222" y1="108" x2="222" y2="140" stroke="rgba(184,159,224,.8)" stroke-width="2"/>
+        <polygon points="222,104 217,112 227,112" fill="#b89fe0"/>
+        <text x="222" y="99" fill="#b89fe0" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Anchor: 65</text>
+        <!-- Estimate cluster near high anchor -->
+        <circle cx="196" cy="140" r="5" fill="rgba(184,159,224,.5)"/>
+        <circle cx="208" cy="140" r="5" fill="rgba(184,159,224,.5)"/>
+        <circle cx="220" cy="140" r="5" fill="rgba(184,159,224,.5)"/>
+        <text x="208" y="162" fill="rgba(184,159,224,.7)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Estimates ~45%</text>
+      </g>
+      <!-- True value marker -->
+      <g id="anc-true" class="ppf-pt">
+        <line x1="148" y1="120" x2="148" y2="140" stroke="rgba(255,255,255,.5)" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <circle cx="148" cy="140" r="4" fill="white"/>
+        <text x="148" y="115" fill="rgba(255,255,255,.65)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" font-weight="600">True: ~32%</text>
+      </g>
+      <!-- Scale labels -->
+      <text x="52"  y="156" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">0</text>
+      <text x="156" y="156" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">50</text>
+      <text x="256" y="156" fill="rgba(255,255,255,.3)" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">100</text>
+    </svg>
+  </div>
+
+  <!-- ── Slide 5: Confirmation & Overconfidence ── -->
+  <div class="slide" id="s5">
+    <div class="eyebrow fade-in">Two More Core Biases</div>
+    <h2 class="fade-in">Confirmation Bias &amp; Overconfidence</h2>
+    <div class="bias-grid">
+      <div class="bias-panel conf fade-in" id="bp1">
+        <h3>Confirmation Bias</h3>
+        <p>We seek out, interpret, and remember information in a way that confirms what we already believe. Disconfirming evidence is discounted or ignored.</p>
+      </div>
+      <div class="bias-panel conf fade-in" id="bp2">
+        <h3>Why It Matters</h3>
+        <p>Beliefs become self-reinforcing and sticky. Persistent disagreement survives even when all parties have access to the same data. Common in markets, politics, and medicine.</p>
+      </div>
+      <div class="bias-panel over fade-in" id="bp3">
+        <h3>Calibration Overconfidence</h3>
+        <p>People's 90% confidence intervals are too narrow — when asked for a range they are 90% sure contains the true value, they are typically right only about 50% of the time.</p>
+      </div>
+      <div class="bias-panel over fade-in" id="bp4">
+        <h3>Planning Fallacy</h3>
+        <p>People systematically underestimate how long tasks will take and how much they will cost. Projects run late and over budget almost universally — and we are surprised every time.</p>
+      </div>
+    </div>
+    <div class="bias-note fade-in">
+      <strong>Connection:</strong> Confirmation bias and overconfidence often interact — we are overconfident in beliefs precisely because we have only searched for confirming evidence.
+    </div>
+  </div>
+
+  <!-- ── Slide 6: Animated example ── -->
+  <div class="slide" id="s-ex-h" style="background:#0f1a10;flex-direction:row;align-items:center;gap:32px;padding:44px 52px;">
+    <div style="flex:1;min-width:0;">
+      <div class="ex-label fade-in">REAL-LIFE EXAMPLE</div>
+      <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:25px;color:var(--paper);line-height:1.35;margin-bottom:14px;">The Car Dealership Anchor</h2>
+      <p class="ex-desc fade-in">
+        The salesperson shows you a car and says: <em style="color:var(--paper)">"Was $45,000 — today only $32,000!"</em><br><br>
+        Your brain screams "bargain!" But should the original $45,000 matter at all if the car is only worth $28,000? The high sticker price was placed there <strong style="color:var(--gold)">specifically to make $32,000 feel cheap</strong>. That's the anchor. You know you should ignore it — but you can't.
+      </p>
+    </div>
+    <svg viewBox="0 0 290 270" width="290" height="270" fill="none" style="flex-shrink:0;">
+      <!-- Car body (simple side view) -->
+      <rect x="40" y="145" width="200" height="65" rx="8" fill="rgba(26,74,138,.35)" stroke="rgba(26,74,138,.6)" stroke-width="1.5"/>
+      <path d="M80 145 Q95 105 135 100 L195 100 Q225 105 240 145Z" fill="rgba(26,74,138,.3)" stroke="rgba(26,74,138,.55)" stroke-width="1.5"/>
+      <!-- Windows -->
+      <rect x="92" y="108" width="50" height="35" rx="4" fill="rgba(100,160,220,.35)" stroke="rgba(100,160,220,.5)" stroke-width="1"/>
+      <rect x="148" y="108" width="50" height="35" rx="4" fill="rgba(100,160,220,.35)" stroke="rgba(100,160,220,.5)" stroke-width="1"/>
+      <!-- Wheels -->
+      <circle cx="90"  cy="210" r="22" fill="rgba(30,30,40,.9)" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
+      <circle cx="90"  cy="210" r="10" fill="rgba(80,80,100,.6)" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+      <circle cx="190" cy="210" r="22" fill="rgba(30,30,40,.9)" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
+      <circle cx="190" cy="210" r="10" fill="rgba(80,80,100,.6)" stroke="rgba(255,255,255,.2)" stroke-width="1"/>
+      <!-- Anchor price tag -->
+      <rect x="85" y="32" width="120" height="36" rx="6" fill="rgba(200,168,75,.15)" stroke="rgba(200,168,75,.4)" stroke-width="1.2"/>
+      <text x="145" y="53" fill="rgba(200,168,75,.75)" font-size="17" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">$45,000</text>
+      <!-- Cross-through line (drawn animatedly) -->
+      <line x1="88" y1="52" x2="202" y2="38" stroke="rgba(192,68,42,.9)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="80" style="stroke-dashoffset:0;animation:ex-cross .6s ease-out .8s both;stroke-dashoffset:80;" id="cross-line"/>
+      <!-- New "sale" price -->
+      <g style="animation:ex-slide-up .5s ease-out 1.2s both;opacity:0;">
+        <rect x="82" y="70" width="126" height="38" rx="6" fill="rgba(192,68,42,.25)" stroke="rgba(192,68,42,.7)" stroke-width="1.5"/>
+        <text x="145" y="94" fill="rgba(192,68,42,.95)" font-size="19" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">$32,000</text>
+      </g>
+      <!-- "SALE" badge -->
+      <g style="animation:ex-slide-up .4s ease-out 1.5s both;opacity:0;">
+        <circle cx="258" cy="55" r="22" fill="rgba(192,68,42,.85)"/>
+        <text x="258" y="52" fill="white" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SALE</text>
+        <text x="258" y="64" fill="white" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">-29%</text>
+      </g>
+      <!-- Stick figure customer (happy, eyes wide) -->
+      <g style="animation:ex-bob 2s ease-in-out infinite 2s;">
+        <circle cx="30" cy="185" r="14" fill="none" stroke="rgba(255,255,255,.85)" stroke-width="1.7"/>
+        <circle cx="25" cy="182" r="2" fill="rgba(255,255,255,.95)"/>
+        <circle cx="35" cy="182" r="2" fill="rgba(255,255,255,.95)"/>
+        <!-- Happy wide eyes (gleam) -->
+        <circle cx="25" cy="181" r=".8" fill="rgba(255,255,255,1)"/>
+        <circle cx="35" cy="181" r=".8" fill="rgba(255,255,255,1)"/>
+        <!-- Big smile -->
+        <path d="M24 190 Q30 196 36 190" stroke="rgba(255,255,255,.85)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        <line x1="30" y1="199" x2="30" y2="218" stroke="rgba(255,255,255,.7)" stroke-width="1.6"/>
+        <line x1="30" y1="205" x2="18" y2="198" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="30" y1="205" x2="42" y2="198" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="30" y1="218" x2="23" y2="228" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="round"/>
+        <line x1="30" y1="218" x2="37" y2="228" stroke="rgba(255,255,255,.7)" stroke-width="1.6" stroke-linecap="round"/>
+      </g>
+      <!-- Thought bubble "What a deal!" -->
+      <g style="animation:ex-slide-up .5s ease-out 2s both;opacity:0;">
+        <circle cx="50" cy="158" r="4" fill="rgba(255,255,255,.3)"/>
+        <circle cx="60" cy="148" r="6" fill="rgba(255,255,255,.2)"/>
+        <rect x="62" y="128" width="76" height="22" rx="6" fill="rgba(255,255,255,.18)" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
+        <text x="100" y="143" fill="rgba(255,255,255,.85)" font-size="10" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">What a deal!</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ── Slide 7: Takeaway ── -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Heuristics are not failures of reasoning — they are <em>efficient tools</em> built for a different environment. Behavioural economics maps precisely where those tools misfire, and that map has enormous value for understanding markets, policy, and individual lives.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 230 · UNBC</div>
+    <div class="tag">Representativeness · Availability · Anchoring · Overconfidence</div>
+  </div>
+
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+    <p id="loading-text">Generating voice narration…</p>
+  </div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "This topic introduces one of the most influential research programs in the history of economic thought — the study of heuristics and biases pioneered by Daniel Kahneman and Amos Tversky. Their central finding: the mental shortcuts we use to make quick judgments are efficient in many settings, but they generate systematic, predictable errors. The core reading for this topic is Kahneman's book Thinking, Fast and Slow.",
+  "Kahneman organises human cognition around two systems. System 1 is fast, automatic, and effortless — it runs continuously in the background, generating intuitions and quick judgments without deliberate thought. It is the source of heuristics: mental shortcuts that allow us to navigate a complex world without exhausting our limited cognitive resources. System 2 is slow, deliberate, and effortful — it engages when we need to solve a hard problem, check a calculation, or override an impulse. System 2 is also lazy: it defers to System 1 whenever possible, intervening only when something goes clearly wrong. Biases arise precisely at this boundary — when System 1 applies a shortcut in a context it wasn't designed for, and System 2 fails to catch the error.",
+  "The representativeness heuristic leads us to judge the probability of something by how much it resembles our mental prototype. Consider the Linda problem. Subjects were told: Linda is 31, single, outspoken, and deeply concerned with social justice. Which is more probable — that Linda is a bank teller, or that Linda is a bank teller and active in the feminist movement? Most people choose the conjunction — bank teller and feminist. But this is a logical fallacy. A conjunction of two events can never be more probable than either event alone. The error occurs because the description of Linda is highly representative of a feminist, so the representative option feels more probable even when it is mathematically less so. A related error is base rate neglect — when given a vivid description, people ignore the background frequency of the category entirely.",
+  "The availability heuristic leads us to judge the frequency or probability of an event by how easily examples come to mind. If you can quickly recall many instances, the event feels frequent. If examples are hard to retrieve, it feels rare. The problem is that ease of recall is driven by vividness, recency, and media coverage — not actual frequency. Dramatic events are over-represented in memory and therefore feel more common than they are. Consider plane crashes versus car crashes. Most people fear flying more than driving, despite car travel being far more dangerous per kilometre travelled. Plane crashes are vivid, dramatic, and heavily reported — car crashes are routine. The same mechanism drives overestimation of terrorism risk relative to heart disease, and misjudgement of investment risk based on recent market performance.",
+  "Anchoring is the tendency for an initial number — even a completely arbitrary one — to exert a powerful pull on subsequent judgments. When people receive a starting value and are asked to adjust up or down, they adjust — but not enough. The anchor biases the final estimate toward the starting point. In a classic demonstration, Kahneman and Tversky had subjects spin a wheel that was rigged to land on either 10 or 65. They then asked: what percentage of African countries are members of the United Nations? Those who saw 10 guessed around 25 percent. Those who saw 65 guessed around 45 percent. A random, irrelevant number moved estimates by 20 percentage points. Anchoring has since been documented in legal sentencing, salary negotiations, real estate listing prices, medical diagnosis, and contract negotiations. The anchor does not need to be meaningful. It just needs to be heard first.",
+  "Two further biases complete the core of this topic. Confirmation bias is the tendency to search for, interpret, and remember information in a way that confirms our existing beliefs. We do not weigh evidence neutrally. We treat confirming evidence as strong and disconfirming evidence as weak or suspect. This makes beliefs sticky and self-reinforcing — persistent disagreement survives even when all parties have access to the same information. Overconfidence bias takes two main forms. Calibration overconfidence means our confidence intervals are too narrow: when asked to give a range we are ninety percent sure contains the true answer, most people are right only about half the time. The planning fallacy is the systematic tendency to underestimate how long tasks will take and how much they will cost. Projects run late and over budget almost universally — and we are surprised every time, because we do not update based on past experience.",
+  "Let's make anchoring concrete. Imagine you walk into a car dealership. The salesperson points to a car and says: this vehicle was forty-five thousand dollars, but today it's only thirty-two thousand — thirteen thousand off! Your brain immediately thinks: what a bargain. But stop and ask yourself: why should the original price matter at all? If the car is only worth about twenty-eight thousand dollars, then thirty-two thousand is still too expensive — regardless of what the sticker says. The answer is anchoring. The first number you hear — forty-five thousand — becomes the reference point that your brain adjusts from. And we always adjust too little. We can't ignore the anchor, even when we know it's arbitrary. This is exactly why every sale tag says 'was' and 'now'. It's why salary negotiations benefit the person who names a number first. And it's why real estate agents show you an overpriced property before the one they actually want to sell you. The anchor shapes every judgment that follows.",
+  "The most important lesson from the heuristics and biases program is this: systematic errors in judgment are not evidence that people are irrational or stupid. They are evidence that people are using efficient cognitive tools in environments where those tools misfire. The representativeness heuristic works extremely well when prototypes are good guides to categories. Availability works well when frequency genuinely correlates with memory. Anchoring helps when a reference point is informative. These shortcuts evolved because they work — most of the time. Behavioural economics does not dismiss human judgment. It maps precisely where and why judgment fails. And that map is extraordinarily useful — for designing better policies, better markets, and better institutions."
+];
+
+const VOICE_ID = 'WmFyZIEC0qrjgbkDYIMP';
+const MODEL_ID = 'eleven_turbo_v2_5';
+
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted = false;
+let currentAudio = null;
+let currentSpeech = null;
+let speechEndTimer = null;
+
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
+
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
+  });
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
+}
+
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed — browser TTS:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initCurves();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio) { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer);
+  stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else {
+    speakWithBrowser(idx);
+  }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx];
+  const rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel')
+               || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US')
+               || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend  = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter);
+    currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
+muteBtn.addEventListener('click', () => {
+  muted = !muted;
+  muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
+});
+
+const slides        = document.querySelectorAll('.slide');
+const dotsContainer = document.getElementById('dots');
+const timerBar      = document.getElementById('timer-bar');
+const TOTAL = slides.length;
+let current = 0;
+let timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' on' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsContainer.appendChild(d);
+});
+function getDots() { return dotsContainer.querySelectorAll('.dot'); }
+
+function goTo(idx) {
+  if (idx >= TOTAL) idx = 0;
+  slides[current].classList.remove('active');
+  getDots()[current].classList.remove('on');
+  resetAni();
+  current = (idx + TOTAL) % TOTAL;
+  slides[current].classList.add('active');
+  getDots()[current].classList.add('on');
+  runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer();
+  timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
+}
+
+document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
+document.getElementById('btn-prev').addEventListener('click', () => goTo(current - 1));
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') goTo(current + 1);
+  if (e.key === 'ArrowLeft') goTo(current - 1);
+  if (e.key === 'm') muteBtn.click();
+});
+
+let aniTimers = [];
+function stopAni() { aniTimers.forEach(clearTimeout); aniTimers = []; }
+function sch(ms, fn) { aniTimers.push(setTimeout(fn, ms)); }
+
+function initCurves() {
+  document.querySelectorAll('.anim-curve').forEach(el => {
+    const tag = el.tagName.toLowerCase();
+    let len;
+    if (tag === 'line') {
+      const x1 = +el.getAttribute('x1'), y1 = +el.getAttribute('y1');
+      const x2 = +el.getAttribute('x2'), y2 = +el.getAttribute('y2');
+      len = Math.sqrt((x2-x1)**2 + (y2-y1)**2);
+    } else {
+      len = el.getTotalLength ? el.getTotalLength() : 600;
+    }
+    el.dataset.origLen = len;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function resetCurves() {
+  document.querySelectorAll('.anim-curve').forEach(el => {
+    el.style.transition = 'none';
+    const len = el.dataset.origLen || 9999;
+    el.style.strokeDasharray = len;
+    el.style.strokeDashoffset = len;
+  });
+}
+
+function drawCurve(id, durMs, delayMs) {
+  sch(delayMs || 0, () => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.style.transition = `stroke-dashoffset ${durMs || 1800}ms ease-in-out`;
+      el.style.strokeDashoffset = 0;
+    });
+  });
+}
+
+function litEl(sel) { document.querySelectorAll(sel).forEach(el => el.classList.add('val-lit')); }
+function dimRows(...ids) { ids.forEach(id => document.getElementById(id)?.classList.add('dim')); }
+function unDimAll() { document.querySelectorAll('.h-row.dim').forEach(el => el.classList.remove('dim')); }
+
+function resetAni() {
+  aniTimers.forEach(clearTimeout); aniTimers = [];
+  document.querySelectorAll('.ppf-pt').forEach(el => el.classList.remove('ppf-show'));
+  document.querySelectorAll('.val-lit').forEach(el => el.classList.remove('val-lit'));
+  document.querySelectorAll('.teach-on, .teach-on-b').forEach(el => { el.classList.remove('teach-on'); el.classList.remove('teach-on-b'); });
+  document.querySelectorAll('.h-row.dim').forEach(el => el.classList.remove('dim'));
+  resetCurves();
+}
+
+function runTimeline(idx) {
+  switch (idx) {
+    case 0:
+      drawCurve('t-s1', 1200, 600);
+      drawCurve('t-s2', 1200, 1400);
+      sch(2800, () => document.getElementById('t-bias')?.classList.add('ppf-show'));
+      break;
+
+    case 2: // Representativeness
+      sch(400,   () => litEl('#bar1, #bar1-lbl'));
+      sch(2000,  () => litEl('#bar2, #bar2-lbl'));
+      sch(14000, () => document.getElementById('bar2-arrow')?.classList.add('ppf-show'));
+      sch(5000,  () => dimRows('r2','r3','r4'));
+      sch(14000, () => { unDimAll(); dimRows('r1','r4'); });
+      sch(28000, () => { unDimAll(); dimRows('r1','r2','r3'); });
+      break;
+
+    case 3: // Availability
+      sch(400,   () => litEl('#car-act, #car-per, #plane-act, #plane-per'));
+      sch(1200,  () => document.getElementById('av-legend')?.classList.add('ppf-show'));
+      sch(8000,  () => dimRows('a1','a3','a4'));
+      sch(22000, () => { unDimAll(); dimRows('a1','a2','a4'); });
+      sch(36000, () => unDimAll());
+      break;
+
+    case 4: // Anchoring
+      drawCurve('anc-line', 1000, 400);
+      sch(1600,  () => document.getElementById('anc-low')?.classList.add('ppf-show'));
+      sch(3200,  () => document.getElementById('anc-high')?.classList.add('ppf-show'));
+      sch(18000, () => document.getElementById('anc-true')?.classList.add('ppf-show'));
+      break;
+
+    case 5: // Confirmation & Overconfidence
+      sch(3000,  () => { document.getElementById('bp1')?.classList.add('teach-on'); document.getElementById('bp2')?.classList.add('teach-on'); });
+      sch(22000, () => {
+        document.getElementById('bp1')?.classList.remove('teach-on');
+        document.getElementById('bp2')?.classList.remove('teach-on');
+        document.getElementById('bp3')?.classList.add('teach-on-b');
+        document.getElementById('bp4')?.classList.add('teach-on-b');
+      });
+      break;
+    case 6: break;
+  }
+}
+
+generateAll();
+</script>
+</body>
+</html>

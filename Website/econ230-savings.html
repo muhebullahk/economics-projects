@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intertemporal Choice and Savings Behaviour — ECON 230</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+  :root{--ink:#0f1117;--paper:#f7f4ee;--gold:#c8a84b;--teal:#1a7a6e;--rust:#c0442a;--blue:#1a4a8a;--purple:#6b3fa0;}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:#090b10;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;gap:18px;}
+  #back-bar{width:860px;font-size:12px;color:#445;}#back-bar a{color:#667;text-decoration:none;transition:color .2s;}#back-bar a:hover{color:var(--gold);}
+  #status-bar{width:860px;font-size:12px;color:#556;text-align:right;min-height:16px;}
+  #stage{width:860px;height:540px;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 32px 80px rgba(0,0,0,.7);}
+  .slide{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .55s ease;display:flex;flex-direction:column;justify-content:center;padding:52px 64px;}
+  .slide.active{opacity:1;pointer-events:all;}
+  .fade-in{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+  .slide.active .fade-in{opacity:1;transform:none;}
+  .fade-in:nth-child(2){transition-delay:.15s;}.fade-in:nth-child(3){transition-delay:.3s;}.fade-in:nth-child(4){transition-delay:.45s;}.fade-in:nth-child(5){transition-delay:.6s;}.fade-in:nth-child(6){transition-delay:.75s;}
+  #author-wm{position:absolute;bottom:60px;left:18px;font-size:9px;color:rgba(255,255,255,.18);letter-spacing:.07em;text-transform:uppercase;pointer-events:none;z-index:5;}
+  /* S0 */
+  #s0{background:var(--ink);}
+  #s0 .label{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--rust);margin-bottom:18px;}
+  #s0 .rule{width:56px;height:3px;background:var(--rust);margin-bottom:28px;}
+  #s0 h1{font-family:'Playfair Display',serif;font-size:44px;line-height:1.1;color:var(--paper);}
+  #s0 h1 em{font-style:italic;color:var(--rust);}
+  #s0 .sub{margin-top:20px;font-size:15px;color:#8898a0;font-weight:300;max-width:400px;line-height:1.55;}
+  #s0 .author-line{margin-top:16px;font-size:11.5px;color:rgba(192,68,42,.6);letter-spacing:.1em;text-transform:uppercase;}
+  #s0 .diagram{position:absolute;right:52px;top:50%;transform:translateY(-50%);width:230px;height:230px;}
+  /* S1 light horiz */
+  #s1{background:var(--paper);flex-direction:row;align-items:center;gap:36px;padding:44px 56px;}
+  #s1 .sl{flex:1;min-width:0;}
+  #s1 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--ink);margin-bottom:8px;}
+  #s1 .intro{font-size:13px;color:#555;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S2 dark horiz */
+  #s2{background:#12060a;flex-direction:row;align-items:center;gap:36px;padding:44px 52px;}
+  #s2 .sl{flex:1;min-width:0;}
+  #s2 h2{font-family:'Playfair Display',serif;font-size:30px;color:var(--paper);margin-bottom:8px;}
+  #s2 .intro{font-size:13px;color:#c8a8b8;font-weight:300;line-height:1.6;margin-bottom:18px;}
+  /* S3 light */
+  #s3{background:var(--paper);padding:44px 64px;}
+  #s3 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--rust);margin-bottom:10px;}
+  #s3 h2{font-family:'Playfair Display',serif;font-size:32px;color:var(--ink);margin-bottom:22px;}
+  /* S4 dark */
+  #s4{background:#0a080e;padding:44px 64px;}
+  #s4 .eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+  #s4 h2{font-family:'Playfair Display',serif;font-size:32px;color:var(--paper);margin-bottom:22px;}
+  /* S5 dark horiz */
+  #s5{background:#0e0c00;flex-direction:row;align-items:center;gap:32px;padding:44px 52px;}
+  /* S6 closing */
+  #s6{background:#100806;}
+  #s6 .quote-mark{font-family:'Playfair Display',serif;font-size:120px;line-height:.7;color:rgba(255,255,255,.1);margin-bottom:-10px;}
+  #s6 blockquote{font-family:'Playfair Display',serif;font-size:24px;line-height:1.55;color:white;max-width:660px;margin-bottom:24px;}
+  #s6 blockquote em{font-style:italic;color:var(--rust);}
+  #s6 .attr{font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.08em;}
+  #s6 .tag{position:absolute;bottom:44px;right:60px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);}
+  /* Shared */
+  .facts{display:flex;flex-direction:column;gap:11px;}
+  .frow{display:flex;align-items:flex-start;gap:12px;font-size:12.5px;font-weight:300;line-height:1.5;}
+  .fbadge{flex-shrink:0;padding:2px 10px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:.04em;margin-top:1px;}
+  .fb-rust{background:rgba(192,68,42,.2);color:#e07060;} .fb-gold{background:rgba(200,168,75,.2);color:var(--gold);}
+  .fb-teal{background:rgba(26,122,110,.25);color:#1a9a8e;} .fb-pur{background:rgba(107,63,160,.25);color:#c0a0f0;}
+  .cards-3{display:flex;gap:16px;}
+  .card{flex:1;background:white;border-radius:6px;padding:20px 16px;border-top:4px solid var(--rust);box-shadow:0 4px 20px rgba(0,0,0,.07);}
+  .card.gold-t{border-color:var(--gold);} .card.teal-t{border-color:var(--teal);}
+  .card .icon{font-size:24px;margin-bottom:8px;}
+  .card h3{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px;letter-spacing:.04em;}
+  .card p{font-size:12px;color:#444;line-height:1.6;font-weight:300;}
+  .commit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .commit-panel{background:white;border-radius:8px;padding:16px;box-shadow:0 3px 14px rgba(0,0,0,.07);border-left:4px solid var(--rust);}
+  .commit-panel h3{font-size:12.5px;font-weight:700;color:var(--rust);margin-bottom:8px;}
+  .commit-panel p{font-size:12px;color:#333;line-height:1.5;font-weight:300;}
+  /* Controls */
+  #controls{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;}
+  .dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.25);cursor:pointer;transition:background .3s,transform .3s;}
+  .dot.on{background:var(--gold);transform:scale(1.4);}
+  #btn-prev,#btn-next,#btn-mute{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--gold);width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+  #btn-prev:hover,#btn-next:hover,#btn-mute:hover{background:rgba(255,255,255,.2);}
+  #timer-bar{position:absolute;bottom:0;left:0;height:3px;background:var(--gold);width:0%;}
+  #loading-overlay{position:absolute;inset:0;background:rgba(10,12,18,.88);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:10;}
+  #loading-overlay.show{display:flex;}
+  .spinner{width:44px;height:44px;border-radius:50%;border:3px solid rgba(200,168,75,.2);border-top-color:var(--gold);animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  #loading-overlay p{font-size:14px;color:#889;}
+  .anim-curve{stroke-dasharray:9999;stroke-dashoffset:9999;}
+  .ppf-pt{opacity:0;transition:opacity .7s ease;}.ppf-pt.ppf-show{opacity:1;}
+  .val-axis{opacity:.15;transition:opacity .5s ease;}.val-axis.val-lit{opacity:1;}
+</style>
+</head>
+<body>
+<div id="back-bar"><a href="econ230-topics.html">← ECON 230 Topics</a></div>
+<div id="status-bar"></div>
+<div id="stage">
+  <div id="author-wm">Prof. Muhebullah Karimzada · UNBC Economics</div>
+
+  <!-- S0: Title -->
+  <div class="slide active" id="s0">
+    <div class="label fade-in">ECON 230 · Savings &amp; Choice</div>
+    <div class="rule fade-in"></div>
+    <h1 class="fade-in">Intertemporal Choice<br>&amp; <em>Savings Behaviour</em></h1>
+    <p class="sub fade-in">Why people systematically undersave — and how mental accounting shapes every financial decision.</p>
+    <p class="author-line fade-in">Prof. Muhebullah Karimzada · UNBC Economics</p>
+    <div class="diagram fade-in">
+      <svg viewBox="0 0 230 230" width="230" height="230" fill="none">
+        <circle cx="115" cy="115" r="108" stroke="rgba(192,68,42,.1)" stroke-width="1.5"/>
+        <!-- Piggy bank body -->
+        <ellipse cx="108" cy="128" rx="62" ry="50" fill="rgba(192,68,42,.1)" stroke="rgba(192,68,42,.32)" stroke-width="1.5"/>
+        <!-- Snout -->
+        <ellipse cx="166" cy="132" rx="14" ry="10" fill="rgba(192,68,42,.14)" stroke="rgba(192,68,42,.42)" stroke-width="1.2"/>
+        <circle cx="162" cy="131" r="2.8" fill="rgba(192,68,42,.38)"/>
+        <circle cx="170" cy="131" r="2.8" fill="rgba(192,68,42,.38)"/>
+        <!-- Eye -->
+        <circle cx="144" cy="112" r="3.5" fill="none" stroke="rgba(192,68,42,.45)" stroke-width="1.3"/>
+        <circle cx="144" cy="112" r="1.8" fill="rgba(192,68,42,.45)"/>
+        <!-- Ear -->
+        <ellipse cx="104" cy="78" rx="11" ry="16" fill="rgba(192,68,42,.12)" stroke="rgba(192,68,42,.38)" stroke-width="1.2"/>
+        <!-- Coin slot -->
+        <rect x="96" y="75" width="22" height="4" rx="2" fill="rgba(200,168,75,.45)" stroke="rgba(200,168,75,.65)" stroke-width="1"/>
+        <!-- Coin -->
+        <g id="sv-coin" class="ppf-pt">
+          <ellipse cx="107" cy="68" rx="9" ry="4.5" fill="rgba(200,168,75,.65)" stroke="rgba(200,168,75,.85)" stroke-width="1"/>
+          <text x="107" y="70.5" fill="rgba(200,168,75,.95)" font-size="6" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">$</text>
+        </g>
+        <!-- Legs -->
+        <rect x="80" y="168" width="11" height="20" rx="3" fill="rgba(192,68,42,.18)" stroke="rgba(192,68,42,.38)" stroke-width="1.1"/>
+        <rect x="97" y="168" width="11" height="20" rx="3" fill="rgba(192,68,42,.18)" stroke="rgba(192,68,42,.38)" stroke-width="1.1"/>
+        <rect x="116" y="168" width="11" height="20" rx="3" fill="rgba(192,68,42,.18)" stroke="rgba(192,68,42,.38)" stroke-width="1.1"/>
+        <rect x="133" y="168" width="11" height="20" rx="3" fill="rgba(192,68,42,.18)" stroke="rgba(192,68,42,.38)" stroke-width="1.1"/>
+        <!-- Tail -->
+        <path d="M48 122 C36 112 34 132 46 130" stroke="rgba(192,68,42,.38)" stroke-width="1.7" fill="none" stroke-linecap="round"/>
+        <!-- Dollar inside (faint) -->
+        <text x="106" y="136" fill="rgba(192,68,42,.14)" font-size="32" font-family="Playfair Display,serif" font-weight="700" text-anchor="middle">$</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- S1: The Savings Shortfall (light horiz) -->
+  <div class="slide" id="s1">
+    <div class="sl">
+      <h2 class="fade-in">The Savings Shortfall</h2>
+      <p class="intro fade-in">People consistently save less than they know they should. This is not a knowledge problem — it is a self-control problem rooted in present bias and the difficulty of making financial decisions under complexity.</p>
+      <div class="facts fade-in">
+        <div class="frow">
+          <span class="fbadge fb-rust">The Gap</span>
+          <span>The median household nearing retirement holds savings sufficient to replace only 30–40% of pre-retirement income. Surveys show people believe 70–80% is needed. They know the target. They don't hit it.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-gold">Why</span>
+          <span>Present bias makes retirement saving especially hard: the cost is immediate (foregone consumption today) while the benefit is distant and abstract (future security in decades). The future self is deeply discounted.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-teal">Intention Gap</span>
+          <span>Laibson et al. (1998): most people report they should save "more than I currently do." The gap between stated intention and actual saving is large, persistent, and cannot be explained by income constraints alone.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-pur">Complexity</span>
+          <span>Complex pension menus, uncertain return projections, and confusing paperwork raise cognitive costs — making procrastination the path of least resistance, even for people who genuinely intend to act.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Bar chart: actual vs intended savings -->
+    <svg class="fade-in" viewBox="0 0 290 280" width="290" height="280" style="flex-shrink:0;">
+      <line x1="40" y1="248" x2="262" y2="248" stroke="#aaa" stroke-width="1.2"/>
+      <line x1="40" y1="248" x2="40" y2="30" stroke="#aaa" stroke-width="1.2"/>
+      <polygon points="266,248 256,243 256,253" fill="#aaa"/>
+      <polygon points="40,25 35,35 45,35" fill="#aaa"/>
+      <!-- Bar 1: Actual saving rate -->
+      <rect id="sv-bar1" class="val-axis" x="60" y="202" width="52" height="46" fill="rgba(192,68,42,.7)" rx="2"/>
+      <text id="sv-lbl1" class="val-axis" x="86" y="196" fill="rgba(192,68,42,.9)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">~5%</text>
+      <text x="86" y="264" fill="#666" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Actual</text>
+      <!-- Bar 2: Intended savings rate -->
+      <rect id="sv-bar2" class="val-axis" x="148" y="152" width="52" height="96" fill="rgba(200,168,75,.65)" rx="2"/>
+      <text id="sv-lbl2" class="val-axis" x="174" y="146" fill="rgba(200,168,75,.95)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">~15%</text>
+      <text x="174" y="264" fill="#666" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">Intended</text>
+      <!-- Gap arrow -->
+      <g id="sv-gap" class="ppf-pt">
+        <line x1="112" y1="177" x2="148" y2="177" stroke="rgba(192,68,42,.55)" stroke-width="1.2" stroke-dasharray="3 2"/>
+        <text x="130" y="170" fill="rgba(192,68,42,.75)" font-size="8.5" font-family="Space Grotesk,sans-serif" font-weight="600" text-anchor="middle">Gap</text>
+      </g>
+      <text x="150" y="270" fill="#777" font-size="10" font-family="Space Grotesk,sans-serif" text-anchor="middle">Savings Rate →</text>
+      <text x="38" y="33" fill="#888" font-size="9" font-family="Space Grotesk,sans-serif" text-anchor="middle">↑</text>
+    </svg>
+  </div>
+
+  <!-- S2: Mental Accounting (dark horiz) -->
+  <div class="slide" id="s2">
+    <div class="sl">
+      <h2 class="fade-in">Mental Accounting</h2>
+      <p class="intro fade-in">Richard Thaler's theory: people divide money into separate mental "buckets" — and treat each differently, despite money being perfectly fungible.</p>
+      <div class="facts fade-in">
+        <div class="frow">
+          <span class="fbadge fb-gold">Fungibility Fails</span>
+          <span>Standard theory: a dollar is a dollar regardless of source. Reality: a tax refund is spent differently from earned income of the same amount. The source changes its psychological meaning.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-rust">MPC Differs</span>
+          <span>The marginal propensity to consume out of windfall income (bonus, refund, lottery) is far lower than out of regular income — even though the purchasing power is identical. Windfalls feel like wealth to save.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-teal">Credit Card Puzzle</span>
+          <span>Many households hold both high-interest credit card debt (18–22%) and low-yield savings (1–2%) simultaneously. Under standard theory this is dominated. Mental accounting keeps the accounts separate.</span>
+        </div>
+        <div class="frow">
+          <span class="fbadge fb-pur">House Money</span>
+          <span>Thaler's "house money effect": investors take more risk with market gains than with their initial capital. Gains are coded as a separate, more expendable mental account — so risk feels less costly.</span>
+        </div>
+      </div>
+    </div>
+    <!-- Mental buckets diagram -->
+    <svg class="fade-in" viewBox="0 0 270 290" width="270" height="290" style="flex-shrink:0;">
+      <!-- Bucket 1 -->
+      <g id="ma-b1" class="ppf-pt">
+        <rect x="14" y="90" width="66" height="88" rx="4" fill="rgba(200,168,75,.12)" stroke="rgba(200,168,75,.48)" stroke-width="1.2"/>
+        <text x="47" y="83" fill="rgba(200,168,75,.78)" font-size="8" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Current</text>
+        <text x="47" y="94" fill="rgba(200,168,75,.78)" font-size="8" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Income</text>
+        <rect x="16" y="130" width="62" height="46" rx="2" fill="rgba(200,168,75,.28)"/>
+        <text x="47" y="158" fill="rgba(200,168,75,.88)" font-size="18" font-family="Playfair Display,serif" font-weight="700" text-anchor="middle">$$$</text>
+        <text x="47" y="196" fill="rgba(200,168,75,.52)" font-size="7.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">High MPC</text>
+      </g>
+      <!-- Bucket 2 -->
+      <g id="ma-b2" class="ppf-pt">
+        <rect x="101" y="90" width="66" height="88" rx="4" fill="rgba(26,122,110,.12)" stroke="rgba(26,154,142,.48)" stroke-width="1.2"/>
+        <text x="134" y="83" fill="rgba(26,154,142,.78)" font-size="8" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Savings /</text>
+        <text x="134" y="94" fill="rgba(26,154,142,.78)" font-size="8" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Assets</text>
+        <rect x="103" y="148" width="62" height="28" rx="2" fill="rgba(26,122,110,.28)"/>
+        <text x="134" y="166" fill="rgba(26,154,142,.88)" font-size="18" font-family="Playfair Display,serif" font-weight="700" text-anchor="middle">$$</text>
+        <text x="134" y="196" fill="rgba(26,154,142,.52)" font-size="7.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Med. MPC</text>
+      </g>
+      <!-- Bucket 3 -->
+      <g id="ma-b3" class="ppf-pt">
+        <rect x="188" y="90" width="66" height="88" rx="4" fill="rgba(107,63,160,.12)" stroke="rgba(160,120,210,.48)" stroke-width="1.2"/>
+        <text x="221" y="83" fill="rgba(160,120,210,.78)" font-size="8" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Future</text>
+        <text x="221" y="94" fill="rgba(160,120,210,.78)" font-size="8" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Income</text>
+        <rect x="190" y="162" width="62" height="14" rx="2" fill="rgba(107,63,160,.22)"/>
+        <text x="221" y="173" fill="rgba(160,120,210,.88)" font-size="18" font-family="Playfair Display,serif" font-weight="700" text-anchor="middle">$</text>
+        <text x="221" y="196" fill="rgba(160,120,210,.52)" font-size="7.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Low MPC</text>
+      </g>
+      <!-- Note -->
+      <g id="ma-note" class="ppf-pt">
+        <text x="134" y="222" fill="rgba(255,255,255,.35)" font-size="8.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Standard theory: all identical</text>
+        <text x="134" y="235" fill="rgba(255,255,255,.22)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">Reality: treated as separate domains</text>
+      </g>
+    </svg>
+  </div>
+
+  <!-- S3: Automatic Savings (light) -->
+  <div class="slide" id="s3">
+    <div class="eyebrow fade-in">The Fix</div>
+    <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:32px;color:var(--ink);margin-bottom:22px;">Automatic savings programmes work — because they remove the need for willpower.</h2>
+    <div class="cards-3">
+      <div class="card fade-in">
+        <div class="icon">📋</div>
+        <h3>Auto-Enrolment</h3>
+        <p>Switching pension enrolment from opt-in to opt-out raises participation from ~40% to 85–95%. Inertia is powerful — people stay with the default. Setting the right default harnesses inertia constructively.</p>
+      </div>
+      <div class="card gold-t fade-in">
+        <div class="icon">🔮</div>
+        <h3>Save More Tomorrow</h3>
+        <p>Thaler and Benartzi's SMarT programme: workers pre-commit to directing future pay raises into pension savings. The commitment is future-dated — it costs the present self nothing. In trials, savings rates quadrupled.</p>
+      </div>
+      <div class="card teal-t fade-in">
+        <div class="icon">🔒</div>
+        <h3>Commitment Accounts</h3>
+        <p>Locked savings accounts — where funds cannot be withdrawn until a target date — dramatically raise savings in field experiments. Sophisticated agents actively seek them to constrain their future selves.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S4: Debt and Spending (dark) -->
+  <div class="slide" id="s4">
+    <div class="eyebrow fade-in">Beyond Savings</div>
+    <h2 class="fade-in" style="color:var(--paper)">Mental Accounting in Debt and Spending</h2>
+    <div class="commit-grid" style="margin-top:4px;">
+      <div class="commit-panel fade-in">
+        <h3>Credit Card Debt</h3>
+        <p>Minimum payments on high-interest cards while maintaining low-yield savings accounts. Mentally, "debt" and "savings" are separate — the arbitrage is invisible. Standard theory predicts immediate payoff.</p>
+      </div>
+      <div class="commit-panel fade-in" style="border-color:var(--gold);">
+        <h3 style="color:var(--gold)">Windfall Spending</h3>
+        <p>Tax refunds and bonuses are treated as "extra" money — mentally assigned to a savings bucket — and spent more slowly than equivalent regular income. The fungibility of money fails in practice.</p>
+      </div>
+      <div class="commit-panel fade-in" style="border-color:var(--teal);">
+        <h3 style="color:var(--teal)">Sunk Costs</h3>
+        <p>People finish meals they don't enjoy because they paid; hold losing stocks to avoid realising losses already locked in. The money is gone either way — but mental accounting tracks it as still mattering.</p>
+      </div>
+      <div class="commit-panel fade-in" style="border-color:var(--purple);">
+        <h3 style="color:#b89fe0">Payment Decoupling</h3>
+        <p>Credit cards decouple payment from consumption, reducing the "pain of paying" and raising spending. Cash registers higher pain than card; card registers higher pain than subscription. Salience matters.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- S5: SMarT Example (dark horiz) -->
+  <div class="slide" id="s5">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;" class="fade-in">REAL-WORLD EXAMPLE</div>
+      <h2 class="fade-in" style="font-family:'Playfair Display',serif;font-size:25px;color:var(--paper);line-height:1.35;margin-bottom:14px;">The SMarT Programme</h2>
+      <p class="fade-in" style="font-size:12.5px;color:#8898a0;font-weight:300;line-height:1.72;max-width:345px;">
+        Thaler and Benartzi partnered with a manufacturing firm in the late 1990s. They offered employees a simple deal: <strong style="color:var(--paper)">you don't have to save more today</strong> — but the next time you get a pay raise, agree in advance to direct half of it into your pension.<br><br>
+        Because the commitment was future-dated, the present self lost <strong style="color:var(--gold)">nothing in the moment</strong>. Present bias was sidestepped, not overcome. Within two years, average savings rates among participants rose from <strong style="color:var(--rust)">3.5% to 13.6%</strong> — a fourfold increase with no mandate or subsidy.
+      </p>
+    </div>
+    <!-- Chart: savings rate rising over time -->
+    <svg class="fade-in" viewBox="0 0 280 270" width="280" height="270" fill="none" style="flex-shrink:0;">
+      <line x1="40" y1="230" x2="262" y2="230" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <line x1="40" y1="230" x2="40" y2="30" stroke="rgba(255,255,255,.2)" stroke-width="1.2"/>
+      <polygon points="266,230 256,225 256,235" fill="rgba(255,255,255,.2)"/>
+      <polygon points="40,25 35,35 45,35" fill="rgba(255,255,255,.2)"/>
+      <!-- SMarT line (rising) -->
+      <path id="smart-line" class="anim-curve" d="M48,218 C90,215 130,192 175,158 C205,135 232,88 254,62" stroke="var(--gold)" stroke-width="2.3" stroke-linecap="round" fill="none"/>
+      <!-- Control line (flat) -->
+      <path id="ctrl-line" class="anim-curve" d="M48,218 C105,218 185,217 254,217" stroke="rgba(192,68,42,.65)" stroke-width="2" stroke-linecap="round" fill="none" stroke-dasharray="5 3"/>
+      <!-- Labels -->
+      <text id="smart-lbl" class="val-axis" x="224" y="57" fill="var(--gold)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">SMarT: 13.6%</text>
+      <text id="ctrl-lbl" class="val-axis" x="228" y="224" fill="rgba(192,68,42,.82)" font-size="9" font-family="Space Grotesk,sans-serif" font-weight="700" text-anchor="middle">Control: 3.5%</text>
+      <text x="150" y="248" fill="rgba(255,255,255,.38)" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="middle">Years after enrolment →</text>
+      <text x="22" y="135" fill="rgba(255,255,255,.38)" font-size="9.5" font-family="Space Grotesk,sans-serif" text-anchor="middle" transform="rotate(-90 22 135)">Savings Rate →</text>
+      <text x="48" y="242" fill="rgba(255,255,255,.28)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">0</text>
+      <text x="110" y="242" fill="rgba(255,255,255,.28)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">1</text>
+      <text x="172" y="242" fill="rgba(255,255,255,.28)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">2</text>
+      <text x="232" y="242" fill="rgba(255,255,255,.28)" font-size="8" font-family="Space Grotesk,sans-serif" text-anchor="middle">3</text>
+    </svg>
+  </div>
+
+  <!-- S6: Closing quote -->
+  <div class="slide" id="s6">
+    <div class="quote-mark fade-in">"</div>
+    <blockquote class="fade-in">
+      Mental accounting is not irrational. It is a coping strategy for complexity. The problem is that the buckets people form are not always well-aligned with their own long-run interests. <em>Design the environment right</em>, and people save. Design it wrong, and they don't.
+    </blockquote>
+    <div class="attr fade-in">— Prof. Muhebullah Karimzada · ECON 230 · UNBC</div>
+    <div class="tag">Mental Accounting · Auto-Enrolment · SMarT · Commitment</div>
+  </div>
+
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
+  <div id="timer-bar"></div>
+  <div id="controls">
+    <button id="btn-mute" title="Mute narration">🔊</button>
+    <button id="btn-prev">‹</button>
+    <div id="dots"></div>
+    <button id="btn-next">›</button>
+  </div>
+</div>
+
+<script>
+const narrations = [
+  "Intertemporal choice — how people make decisions across time — is one of the most consequential areas of behavioural economics. Savings behaviour is its most visible application. Most people know they should save more than they do. They know when they should start. They have good intentions. Yet the gap between those intentions and actual behaviour is large, persistent, and enormously costly. This topic covers three interconnected ideas: the savings shortfall and its behavioural roots, Richard Thaler's theory of mental accounting, and the policy designs that have succeeded in closing the gap — not by lecturing people, but by changing the environment in which they make decisions.",
+  "The gap between savings intentions and savings reality is one of the most robust findings in household finance. The median household nearing retirement holds assets sufficient to replace only thirty to forty percent of pre-retirement income. Most people believe they need seventy to eighty percent. They are not wrong about the target — they are failing to hit it. David Laibson and colleagues documented this carefully: most people, when asked, say they save less than they should. When asked when they plan to save more, the answer is consistently: in the future. The future, of course, never comes. Present bias makes retirement saving uniquely difficult. The cost is immediate — you give up consumption today. The benefit is distant — security that arrives in decades, for a future self that is hard to identify with. And complexity compounds the problem: complex pension menus, uncertain return projections, and confusing paperwork all raise the cognitive cost of deciding, making procrastination the natural response even for people who genuinely intend to act.",
+  "Richard Thaler's theory of mental accounting identifies a fundamental departure from standard economic theory. Standard theory says money is fungible — a dollar is a dollar regardless of its source. Receiving a two-thousand-dollar tax refund should produce the same spending decisions as earning an extra two thousand dollars over a month. But it doesn't. People assign money to separate mental accounts — current income, savings, future income — and apply different spending rules to each. The marginal propensity to consume out of windfall income is systematically lower than out of regular income. Bonuses and tax refunds feel like wealth to save; regular paychecks feel like money to spend. Mental accounting also explains a striking anomaly: many households simultaneously hold credit card debt at eighteen to twenty-two percent interest and savings accounts earning one to two percent. Under standard theory, this is dominated — you should pay off the debt first. But mental accounting keeps the debt bucket and the savings bucket separate, and people do not naturally move money between them. Thaler's house money effect shows the same logic in investment markets: investors take greater risks with market gains than with their original capital, because gains are coded as belonging to a more expendable mental account.",
+  "The most powerful response to present-biased undersaving is not better financial education or higher returns — it is changing the default. When pension enrolment is opt-in, you have to actively sign up, and participation rates hover around forty percent. When it is made opt-out — you are automatically enrolled unless you actively leave — participation rises to eighty-five to ninety-five percent. The same contribution rates are on offer in both cases. Only the default changed. This works because inertia is powerful: people tend to stay with whatever situation they find themselves in, and setting the right default harnesses that inertia constructively. Thaler and Benartzi's Save More Tomorrow programme went further. Instead of asking workers to reduce take-home pay today — which costs the present self immediately — SMarT asked workers to pre-commit to directing a portion of future pay raises toward their pension. Because the commitment is future-dated, the present self gives up nothing at the moment of signing. In the original field study, savings rates among participants quadrupled over two years. The insight is precise: present bias was sidestepped, not overcome. The key was changing when the decision takes effect.",
+  "Mental accounting reaches far beyond retirement savings. In household debt management, people making minimum credit card payments while holding savings accounts earning lower rates are not confused about arithmetic — they are applying different mental rules to different accounts. The debt bucket and the savings bucket feel like separate domains, and transferring between them violates the implicit logic of each. Windfall spending shows the same logic: a tax refund tends to be spent more slowly than equivalent earned income, even though the purchasing power is identical. The source of money changes its psychological meaning. Sunk costs are another illustration. People finish meals they don't enjoy because they paid for them. They hold losing investments to avoid realising losses that are already real. The mental account is not yet closed — and the psychic cost of closing it at a loss prevents optimal forward-looking decisions. Payment method matters in related ways. Cash registers a higher pain of paying than a credit card, which registers higher pain than a monthly subscription. Reducing the salience of payment — as credit cards and subscriptions do — systematically increases spending. None of this is random. It all follows from the structure of mental accounting.",
+  "The Save More Tomorrow programme is one of the cleanest demonstrations in applied behavioural economics. Thaler and Benartzi ran the original study at a manufacturing company in the late nineteen-nineties. Employees were offered a simple deal. They did not have to save more today. They just had to agree in advance: the next time you receive a pay raise, automatically direct half of the increase into your pension. The key insight was this. Present bias makes people reluctant to reduce take-home pay right now. But if the commitment falls in the future, the present self is not giving up anything in the moment. The future cost is real — but because of present bias, it is steeply discounted. By the time the pay raise arrived, the savings increase happened automatically, with no fresh decision required. Inertia, which normally prevents saving, now prevented people from opting out. The result: average savings rates among participants rose from three point five percent to thirteen point six percent by the end of the third year. A fourfold increase — with no mandate, no tax incentive, and no financial advice. Just a better-designed choice environment.",
+  "The lesson that runs through savings behaviour is precise. You cannot solve undersaving with information campaigns, because the problem is not ignorance. People already know they should save more. The problem is that the present self is making decisions on behalf of the future self — and it consistently underweights the future self's interests. The solution is not to demand more willpower. It is to design environments that do not require willpower: automatic enrolment, pre-commitment devices, simplified defaults. When these tools are applied, savings rates rise dramatically — not because people changed their values, but because the structure of decisions changed around them. Mental accounting tells the same story: how money is labelled, when it arrives, and how payment is presented shapes decisions as powerfully as the amounts involved. The implication is that financial institutions and policymakers have enormous leverage over savings behaviour — not through compulsion, but through design."
+];
+const VOICE_ID='WmFyZIEC0qrjgbkDYIMP',MODEL_ID='eleven_turbo_v2_5';
+let audioBuffers=new Array(narrations.length).fill(null);
+const apiKey='sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted=false,currentAudio=null,currentSpeech=null,speechEndTimer=null;
+const loadingOverlay=document.getElementById('loading-overlay'),loadingText=document.getElementById('loading-text'),statusBar=document.getElementById('status-bar');
+function setStatus(msg){if(statusBar)statusBar.textContent=msg;}
+async function generateAudio(idx){const resp=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`,{method:'POST',headers:{'xi-api-key':apiKey,'Content-Type':'application/json'},body:JSON.stringify({text:narrations[idx],model_id:MODEL_ID,voice_settings:{stability:0.45,similarity_boost:0.82,style:0.3,use_speaker_boost:true}})});if(!resp.ok)throw new Error(`ElevenLabs ${resp.status}`);return URL.createObjectURL(await resp.blob());}
+async function generateAll(){loadingOverlay.classList.add('show');for(let i=0;i<narrations.length;i++){loadingText.textContent=`Generating narration ${i+1} of ${narrations.length}…`;try{audioBuffers[i]=await generateAudio(i);}catch(e){console.warn(`Slide ${i} failed:`,e.message);}}loadingOverlay.classList.remove('show');initCurves();runTimeline(0);playSlideAudio(0);}
+function stopAudio(){if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}if(currentSpeech){speechSynthesis.cancel();currentSpeech=null;}clearTimeout(speechEndTimer);stopTimer();}
+function playSlideAudio(idx){stopAudio();if(muted){startTimer(20000,()=>goTo(idx+1));return;}if(audioBuffers[idx]){setStatus('');const audio=new Audio(audioBuffers[idx]);currentAudio=audio;audio.addEventListener('loadedmetadata',()=>startTimer(audio.duration*1000,null));audio.addEventListener('ended',()=>{currentAudio=null;goTo(idx+1);});audio.play().catch(()=>speakWithBrowser(idx));}else{speakWithBrowser(idx);}}
+function speakWithBrowser(idx){if(!('speechSynthesis' in window)){startTimer(20000,()=>goTo(idx+1));return;}speechSynthesis.cancel();const text=narrations[idx],rate=0.92,estimatedMs=Math.round((text.trim().split(/\s+/).length/145)*60000/rate)+2000;const utter=new SpeechSynthesisUtterance(text);utter.rate=rate;utter.pitch=0.95;utter.volume=1;const doSpeak=()=>{setStatus('');const voices=speechSynthesis.getVoices();const voice=voices.find(v=>v.name==='Daniel')||voices.find(v=>v.name==='Alex')||voices.find(v=>/Google US English/i.test(v.name))||voices.find(v=>v.lang==='en-US'&&!v.localService)||voices.find(v=>v.lang==='en-US')||voices.find(v=>v.lang.startsWith('en'));if(voice)utter.voice=voice;startTimer(estimatedMs,null);utter.onend=()=>{clearTimeout(speechEndTimer);currentSpeech=null;goTo(idx+1);};utter.onerror=()=>{clearTimeout(speechEndTimer);currentSpeech=null;startTimer(15000,()=>goTo(idx+1));};speechEndTimer=setTimeout(()=>{speechSynthesis.cancel();currentSpeech=null;goTo(idx+1);},estimatedMs+6000);speechSynthesis.speak(utter);currentSpeech=utter;};speechSynthesis.getVoices().length>0?doSpeak():speechSynthesis.addEventListener('voiceschanged',doSpeak,{once:true});}
+const muteBtn=document.getElementById('btn-mute');
+muteBtn.addEventListener('click',()=>{muted=!muted;muteBtn.textContent=muted?'🔇':'🔊';if(muted){stopAudio();setStatus('');startTimer(20000,()=>goTo(current+1));}else{playSlideAudio(current);}});
+const slides=document.querySelectorAll('.slide'),dotsContainer=document.getElementById('dots'),timerBar=document.getElementById('timer-bar'),TOTAL=slides.length;
+let current=0,timerTimeout=null,rafId=null,timerStart=null,timerDuration=0;
+slides.forEach((_,i)=>{const d=document.createElement('div');d.className='dot'+(i===0?' on':'');d.addEventListener('click',()=>goTo(i));dotsContainer.appendChild(d);});
+function getDots(){return dotsContainer.querySelectorAll('.dot');}
+function goTo(idx){if(idx>=TOTAL)idx=0;slides[current].classList.remove('active');getDots()[current].classList.remove('on');resetAni();current=(idx+TOTAL)%TOTAL;slides[current].classList.add('active');getDots()[current].classList.add('on');runTimeline(current);playSlideAudio(current);}
+function stopTimer(){clearTimeout(timerTimeout);cancelAnimationFrame(rafId);timerBar.style.width='0%';}
+function startTimer(durationMs,cb){stopTimer();timerStart=performance.now();timerDuration=durationMs;function tick(ts){const pct=Math.min((ts-timerStart)/timerDuration*100,100);timerBar.style.width=pct+'%';if(pct<100)rafId=requestAnimationFrame(tick);}rafId=requestAnimationFrame(tick);if(cb)timerTimeout=setTimeout(cb,durationMs);}
+document.getElementById('btn-next').addEventListener('click',()=>goTo(current+1));
+document.getElementById('btn-prev').addEventListener('click',()=>goTo(current-1));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')goTo(current+1);if(e.key==='ArrowLeft')goTo(current-1);if(e.key==='m')muteBtn.click();});
+let aniTimers=[];
+function stopAni(){aniTimers.forEach(clearTimeout);aniTimers=[];}
+function sch(ms,fn){aniTimers.push(setTimeout(fn,ms));}
+function initCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{const tag=el.tagName.toLowerCase();let len;if(tag==='line'){const x1=+el.getAttribute('x1'),y1=+el.getAttribute('y1'),x2=+el.getAttribute('x2'),y2=+el.getAttribute('y2');len=Math.sqrt((x2-x1)**2+(y2-y1)**2);}else{len=el.getTotalLength?el.getTotalLength():600;}el.dataset.origLen=len;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function resetCurves(){document.querySelectorAll('.anim-curve').forEach(el=>{el.style.transition='none';const len=el.dataset.origLen||9999;el.style.strokeDasharray=len;el.style.strokeDashoffset=len;});}
+function drawCurve(id,durMs,delayMs){sch(delayMs||0,()=>{const el=document.getElementById(id);if(!el)return;requestAnimationFrame(()=>{el.style.transition=`stroke-dashoffset ${durMs||1800}ms ease-in-out`;el.style.strokeDashoffset=0;});});}
+function litEl(sel){document.querySelectorAll(sel).forEach(el=>el.classList.add('val-lit'));}
+function resetAni(){stopAni();document.querySelectorAll('.ppf-pt').forEach(el=>el.classList.remove('ppf-show'));document.querySelectorAll('.val-lit').forEach(el=>el.classList.remove('val-lit'));resetCurves();}
+function runTimeline(idx){
+  switch(idx){
+    case 0:sch(1800,()=>document.getElementById('sv-coin')?.classList.add('ppf-show'));break;
+    case 1:sch(400,()=>litEl('#sv-bar1,#sv-lbl1'));sch(1800,()=>litEl('#sv-bar2,#sv-lbl2'));sch(3200,()=>document.getElementById('sv-gap')?.classList.add('ppf-show'));break;
+    case 2:sch(600,()=>document.getElementById('ma-b1')?.classList.add('ppf-show'));sch(2000,()=>document.getElementById('ma-b2')?.classList.add('ppf-show'));sch(3400,()=>document.getElementById('ma-b3')?.classList.add('ppf-show'));sch(5000,()=>document.getElementById('ma-note')?.classList.add('ppf-show'));break;
+    case 4:drawCurve('smart-line',2000,400);sch(1200,()=>litEl('#smart-lbl'));drawCurve('ctrl-line',1200,2600);sch(2800,()=>litEl('#ctrl-lbl'));break;
+  }
+}
+generateAll();
+</script>
+</body>
+</html>
