@@ -395,6 +395,7 @@
     <div class="tag">Unemployment · Labour Force · NRU · Okun's Law · Cyclical · Structural · Policy</div>
   </div>
 
+  <div id="loading-overlay"><div class="spinner"></div><p id="loading-text">Generating voice narration…</p></div>
   <div id="timer-bar"></div>
   <div id="controls">
     <button id="btn-mute" title="Mute narration">🔊</button>
@@ -405,48 +406,106 @@
 </div>
 
 <script>
-// ── Single continuous audio track ────────────────────────────────────
-const AUDIO_SRC = 'audio/unemployment.mp3';
-let track = null;
-let muted = false;
+const narrations = [
+  "Welcome. In this topic we turn to unemployment — one of the most visible and costly failures of a market economy. When workers who want jobs cannot find them, the loss falls not just on those individuals but on families, communities, and the economy as a whole. Understanding unemployment means understanding its causes, its costs, and the policy tools available to address it.",
+  "Before we can analyse unemployment, we need to measure it precisely. Statistics Canada divides the working-age population into three groups. The employed — those who worked at least one hour in the reference week. The unemployed — those without a job who are actively searching for one. And those not in the labour force — retirees, full-time students, and people who have stopped looking. The labour force is the sum of the employed and unemployed. The unemployment rate is the number of unemployed divided by the total labour force, multiplied by one hundred. One important caveat: the official unemployment rate understates the true picture. Discouraged workers — those who gave up searching because they believe no jobs are available — are classified as out of the labour force, not unemployed. And underemployed workers — those working part-time who want full-time work — are counted as employed. These hidden forms of unemployment can be significant, especially during recessions.",
+  "Economists distinguish three types of unemployment, each with a different cause — and each requiring a different policy response. Frictional unemployment arises when workers are between jobs: searching for the right match, relocating, or transitioning from school to work. It is a normal, healthy feature of a dynamic labour market, and every economy will always have some of it. Structural unemployment is more serious. It arises from a skills mismatch — the jobs that exist don't match the skills of unemployed workers. This can be caused by technological change, the decline of entire industries, or geographic shifts in economic activity. A factory worker replaced by automation, or a coal miner in a region where mines have closed, faces structural unemployment. It tends to last much longer than frictional unemployment. Cyclical unemployment is the type associated with recessions. When aggregate demand falls, firms sell less and hire fewer workers — or lay them off. Cyclical unemployment rises sharply during downturns and falls during expansions. It is the main target of macroeconomic stabilisation policy.",
+  "Even in a healthy economy operating at full capacity, some unemployment always exists. This is called the natural rate of unemployment — the level that prevails when the economy is producing its potential GDP, with zero cyclical unemployment. The natural rate equals frictional plus structural unemployment. In Canada, economists estimate the natural rate at roughly five to six percent, though it shifts over time as demographics, technology, and labour market institutions evolve. Full employment, in macroeconomic terms, does not mean zero unemployment — it means zero cyclical unemployment. When the economy is at full employment, actual output equals potential GDP and the output gap is zero. When cyclical unemployment is positive — when the actual unemployment rate exceeds the natural rate — actual output falls below potential, creating a recessionary gap. Okun's Law provides a simple but powerful relationship: for every one percentage point that unemployment exceeds the natural rate, output falls by approximately two percentage points below potential. This rule underscores how costly even moderate cyclical unemployment can be.",
+  "Why do economists and policymakers care so deeply about unemployment? Because its costs are enormous — both to the economy as a whole and to individual workers and families. The economic costs are direct: unemployed workers produce nothing. Every month of unemployment is output permanently lost — goods not made, services not rendered. Tax revenues fall as incomes decline, while government spending on Employment Insurance and social assistance rises. Okun's Law reminds us that a one-percent rise in cyclical unemployment translates to roughly two percent of lost GDP. But the social and personal costs are equally severe, and they fall disproportionately on the most vulnerable. Long-term unemployment is strongly associated with deteriorating mental health — anxiety, depression, and loss of purpose and identity. Physical health also suffers. Family relationships come under strain. Skills atrophy with disuse. Communities with persistent unemployment see higher rates of crime, addiction, and social disorder. And these costs are not evenly distributed — younger workers, recent immigrants, and minority groups typically experience higher unemployment rates and bear a disproportionate share of the burden.",
+  "The right policy response to unemployment depends critically on its type. Cyclical unemployment is the primary target of demand-side policy. When aggregate demand falls and unemployment rises above the natural rate, both fiscal and monetary policy can help. Governments can increase spending or cut taxes to raise aggregate expenditure and close the recessionary gap. Central banks can lower interest rates to stimulate investment and consumption. Both tools work by boosting demand — creating jobs until unemployment returns to its natural rate. Structural unemployment calls for a very different approach. Demand-side tools cannot fix a skills mismatch. Instead, governments invest in job training programmes, retraining schemes for displaced workers, and long-run education initiatives that close the gap between the skills workers have and the skills employers need. These are supply-side policies — they operate on labour supply and productivity, not on aggregate demand. Frictional unemployment is partly inevitable and partly addressed by Employment Insurance, which provides income support during job search — and acts as an automatic stabiliser by sustaining consumer spending during downturns.",
+  "Unemployment is not just a statistic. Behind every percentage point of the unemployment rate are real people — with skills, ambitions, and families to support — who cannot find work. Understanding the sources of unemployment is essential for designing effective policy. Cyclical unemployment calls for fiscal and monetary stimulus. Structural unemployment requires long-run investment in skills and education. Frictional unemployment is partly inevitable and partly softened by income support that allows better job matching. No single tool addresses all three, but a well-designed combination of policies can keep unemployment close to its natural rate, minimise the output gap, and reduce the enormous human costs that unemployment imposes on individuals and communities."
+];
 
-const timerBar = document.getElementById('timer-bar');
-const muteBtn  = document.getElementById('btn-mute');
-let rafId = null;
+const VOICE_ID = 'WmFyZIEC0qrjgbkDYIMP';
+const MODEL_ID = 'eleven_turbo_v2_5';
+let audioBuffers = new Array(narrations.length).fill(null);
+const apiKey = 'sk_5b66c1b871d0b8d9c852f3b7d6f25946b62097918aec9173';
+let muted = false, currentAudio = null, currentSpeech = null, speechEndTimer = null;
 
-function startProgressBar() {
-  cancelAnimationFrame(rafId);
-  function tick() {
-    if (!track || track.duration === 0) { rafId = requestAnimationFrame(tick); return; }
-    const pct = Math.min(track.currentTime / track.duration * 100, 100);
-    timerBar.style.width = pct + '%';
-    if (pct < 100) rafId = requestAnimationFrame(tick);
-  }
-  rafId = requestAnimationFrame(tick);
-}
+const loadingOverlay = document.getElementById('loading-overlay');
+const loadingText    = document.getElementById('loading-text');
+const statusBar      = document.getElementById('status-bar');
+function setStatus(msg) { if (statusBar) statusBar.textContent = msg; }
 
-function initTrack() {
-  track = new Audio(AUDIO_SRC);
-  track.addEventListener('canplaythrough', () => {
-    if (!muted) track.play().catch(() => {});
-    startProgressBar();
+async function generateAudio(idx) {
+  const resp = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${VOICE_ID}`, {
+    method: 'POST',
+    headers: { 'xi-api-key': apiKey, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: narrations[idx], model_id: MODEL_ID,
+      voice_settings: { stability: 0.45, similarity_boost: 0.82, style: 0.3, use_speaker_boost: true } })
   });
-  track.load();
+  if (!resp.ok) throw new Error(`ElevenLabs ${resp.status}`);
+  return URL.createObjectURL(await resp.blob());
 }
 
+async function generateAll() {
+  loadingOverlay.classList.add('show');
+  for (let i = 0; i < narrations.length; i++) {
+    loadingText.textContent = `Generating narration ${i + 1} of ${narrations.length}…`;
+    try { audioBuffers[i] = await generateAudio(i); }
+    catch(e) { console.warn(`Slide ${i} ElevenLabs failed:`, e.message); }
+  }
+  loadingOverlay.classList.remove('show');
+  initPaths();
+  runTimeline(0);
+  playSlideAudio(0);
+}
+
+function stopAudio() {
+  if (currentAudio)  { currentAudio.pause(); currentAudio.src = ''; currentAudio = null; }
+  if (currentSpeech) { speechSynthesis.cancel(); currentSpeech = null; }
+  clearTimeout(speechEndTimer); stopTimer();
+}
+
+function playSlideAudio(idx) {
+  stopAudio();
+  if (muted) { startTimer(20000, () => goTo(idx + 1)); return; }
+  if (audioBuffers[idx]) {
+    setStatus('');
+    const audio = new Audio(audioBuffers[idx]);
+    currentAudio = audio;
+    audio.addEventListener('loadedmetadata', () => startTimer(audio.duration * 1000, null));
+    audio.addEventListener('ended', () => { currentAudio = null; goTo(idx + 1); });
+    audio.play().catch(() => speakWithBrowser(idx));
+  } else { speakWithBrowser(idx); }
+}
+
+function speakWithBrowser(idx) {
+  if (!('speechSynthesis' in window)) { startTimer(20000, () => goTo(idx + 1)); return; }
+  speechSynthesis.cancel();
+  const text = narrations[idx], rate = 0.92;
+  const estimatedMs = Math.round((text.trim().split(/\s+/).length / 145) * 60000 / rate) + 2000;
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.rate = rate; utter.pitch = 0.95; utter.volume = 1;
+  const doSpeak = () => {
+    setStatus('');
+    const voices = speechSynthesis.getVoices();
+    const voice = voices.find(v => v.name === 'Daniel') || voices.find(v => v.name === 'Alex')
+               || voices.find(v => /Google US English/i.test(v.name))
+               || voices.find(v => v.lang === 'en-US' && !v.localService)
+               || voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+    if (voice) utter.voice = voice;
+    startTimer(estimatedMs, null);
+    utter.onend   = () => { clearTimeout(speechEndTimer); currentSpeech = null; goTo(idx + 1); };
+    utter.onerror = () => { clearTimeout(speechEndTimer); currentSpeech = null; startTimer(15000, () => goTo(idx + 1)); };
+    speechEndTimer = setTimeout(() => { speechSynthesis.cancel(); currentSpeech = null; goTo(idx + 1); }, estimatedMs + 6000);
+    speechSynthesis.speak(utter); currentSpeech = utter;
+  };
+  speechSynthesis.getVoices().length > 0 ? doSpeak() : speechSynthesis.addEventListener('voiceschanged', doSpeak, { once: true });
+}
+
+const muteBtn = document.getElementById('btn-mute');
 muteBtn.addEventListener('click', () => {
-  muted = !muted;
-  muteBtn.textContent = muted ? '🔇' : '🔊';
-  if (!track) return;
-  if (muted) track.pause();
-  else track.play().catch(() => {});
+  muted = !muted; muteBtn.textContent = muted ? '🔇' : '🔊';
+  if (muted) { stopAudio(); setStatus(''); startTimer(20000, () => goTo(current + 1)); }
+  else { playSlideAudio(current); }
 });
 
-// ── Slides ───────────────────────────────────────────────────────────
 const slides = document.querySelectorAll('.slide');
 const dotsContainer = document.getElementById('dots');
+const timerBar = document.getElementById('timer-bar');
 const TOTAL = slides.length;
-let current = 0;
+let current = 0, timerTimeout = null, rafId = null, timerStart = null, timerDuration = 0;
 
 slides.forEach((_, i) => {
   const d = document.createElement('div');
@@ -465,6 +524,19 @@ function goTo(idx) {
   slides[current].classList.add('active');
   getDots()[current].classList.add('on');
   runTimeline(current);
+  playSlideAudio(current);
+}
+
+function stopTimer() { clearTimeout(timerTimeout); cancelAnimationFrame(rafId); timerBar.style.width = '0%'; }
+function startTimer(durationMs, cb) {
+  stopTimer(); timerStart = performance.now(); timerDuration = durationMs;
+  function tick(ts) {
+    const pct = Math.min((ts - timerStart) / timerDuration * 100, 100);
+    timerBar.style.width = pct + '%';
+    if (pct < 100) rafId = requestAnimationFrame(tick);
+  }
+  rafId = requestAnimationFrame(tick);
+  if (cb) timerTimeout = setTimeout(cb, durationMs);
 }
 
 document.getElementById('btn-next').addEventListener('click', () => goTo(current + 1));
@@ -546,9 +618,7 @@ function runTimeline(idx) {
   }
 }
 
-initPaths();
-runTimeline(0);
-initTrack();
+generateAll();
 </script>
 </body>
 </html>
