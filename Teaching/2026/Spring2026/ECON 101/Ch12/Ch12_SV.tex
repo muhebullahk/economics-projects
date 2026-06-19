@@ -1,0 +1,795 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+\definecolor{accent}{RGB}{0,92,184}
+\definecolor{soft}{RGB}{233,244,255}
+\definecolor{canadared}{RGB}{196,30,58}
+\definecolor{leafgreen}{RGB}{0,130,80}
+\definecolor{goldenrod}{RGB}{218,165,32}
+\definecolor{deeporange}{RGB}{220,90,20}
+\definecolor{shiftpurple}{RGB}{130,50,180}
+\definecolor{tealblue}{RGB}{0,128,128}
+\definecolor{lightred}{RGB}{245,210,210}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{title}{fg=white,bg=accent}
+\setbeamercolor{frametitle}{fg=accent}
+\setbeamercolor{block title}{bg=accent!12,fg=accent}
+\setbeamercolor{block body}{bg=soft}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}
+
+% ---------- SAFE TRANSITION FALLBACK ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- TITLE ----------
+\title{\textbf{Fiscal Policy}}
+\subtitle{{\large ECON 101 -- Principles of Macroeconomics}}
+\author{Muhebullah Karimzada}
+\date{Spring 2026}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}{Chapter Outline}
+\transfade
+\begin{itemize}
+  \item \textbf{12.1} What Is Fiscal Policy?
+  \item \textbf{12.2} The Effects of Fiscal Policy on Real GDP and the Price Level
+  \item \textbf{12.4} Government Purchases and Tax Multipliers
+  \item \textbf{12.5} The Limits of Fiscal Policy as a Stimulus
+  \item \textbf{12.6} Deficits, Surpluses, and Federal Government Debt
+  \item \textbf{12.7} The Effects of Fiscal Policy in the Long Run
+  \item \textbf{Appendix} A Closer Look at the Multiplier
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{12.1 What Is Fiscal Policy?}
+% ============================================================
+
+\begin{frame}{12.1 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Define fiscal policy and distinguish between automatic stabilizers and discretionary fiscal policy.
+\end{block}
+\begin{itemize}
+  \item \textbf{Fiscal policy:} changes in \alert{federal government taxes and spending} intended to achieve macroeconomic objectives.
+  \begin{itemize}
+    \item Provincial spending is important but primarily aimed at service delivery, not national macrostabilization.
+  \end{itemize}
+  \item The federal government can \textbf{shift aggregate demand} by changing spending and tax decisions.
+  \item \textbf{Canada 2020 example:} the federal government launched \$314 billion in emergency spending (CERB, CEWS, CERS) --- the largest fiscal intervention in Canadian history.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Automatic Stabilizers vs. Discretionary Fiscal Policy}
+\transfade
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{\textcolor{leafgreen}{Automatic Stabilizers}}
+Spending and taxes that automatically change with the business cycle \textbf{without new legislation}.
+\begin{itemize}
+  \item Employment Insurance (EI): rises in recessions as more workers qualify.
+  \item Income tax: falls in recessions (lower incomes $\Rightarrow$ lower tax revenue).
+  \item Social assistance: rises when unemployment increases.
+\end{itemize}
+\textit{Act fast, no legislative delay.}
+\end{block}
+\column{0.48\textwidth}
+\begin{block}{\textcolor{deeporange}{Discretionary Fiscal Policy}}
+Intentional government actions requiring new legislation.
+\begin{itemize}
+  \item 2009 Economic Action Plan: \$40B infrastructure stimulus.
+  \item 2020 CERB: \$2{,}000/month to unemployed Canadians.
+  \item 2024 GST holiday: temporary sales tax cut.
+  \item 2025 income tax cut proposal.
+\end{itemize}
+\textit{Takes time; subject to political process.}
+\end{block}
+\end{columns}
+\end{frame}
+
+% ============================================================
+\section{12.2 Effects of Fiscal Policy on GDP and the Price Level}
+% ============================================================
+
+\begin{frame}{12.2 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Explain how fiscal policy affects aggregate demand and how it can stabilize the economy.
+\end{block}
+\begin{itemize}
+  \item \textbf{Two channels:}
+  \begin{itemize}
+    \item Changes in government purchases ($G$): affects AD \alert{directly}.
+    \item Changes in taxes ($T$): affects disposable income $\Rightarrow$ consumption $\Rightarrow$ AD \alert{indirectly}.
+  \end{itemize}
+  \item \textbf{Expansionary fiscal policy:} $\uparrow G$ or $\downarrow T$ $\Rightarrow$ AD shifts right.
+  \item \textbf{Contractionary fiscal policy:} $\downarrow G$ or $\uparrow T$ $\Rightarrow$ AD shifts left.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 12.1 -- Expansionary Fiscal Policy (Closing a Recession)}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.80\textwidth, height=0.70\textheight,
+  xlabel={Real GDP (\$billions)},
+  ylabel={Price Level ($P$)},
+  xmin=0, xmax=3000, ymin=80, ymax=200,
+  xtick={500,1000,1500,2000,2500},
+  ytick={90,110,130,150,170,190},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={Expansionary Fiscal Policy: $\uparrow G$ or $\downarrow T$ Closes Recessionary Gap}
+]
+\addplot[shiftpurple, very thick] coordinates {(2000,80)(2000,200)};
+\node[right, font=\tiny, color=shiftpurple] at (axis cs:2050,185) {LRAS};
+\addplot[goldenrod, very thick, domain=200:2800] {0.05*x + 30};
+\node[right, font=\tiny, color=goldenrod] at (axis cs:2650,163) {SRAS};
+% AD1 (below potential)
+\addplot[accent!60, very thick, dashed, domain=200:2800] {215 - 0.055*x}
+  node[right, font=\tiny, color=accent!60] {$AD_1$ (recession)};
+% AD2 (after stimulus)
+\addplot[leafgreen, very thick, domain=200:2800] {240 - 0.055*x}
+  node[right, font=\tiny, color=leafgreen] {$AD_2$ (stimulus)};
+% Eq1: 215-0.055x=0.05x+30 => 185=0.105x => x=1762; P=118
+\addplot[accent, only marks, mark=*, mark size=3.5pt] coordinates {(1762,118)};
+\draw[dashed, accent] (axis cs:1762,118)--(axis cs:1762,0) node[below,font=\tiny,color=accent]{$Y_1$};
+\draw[dashed, accent] (axis cs:1762,118)--(axis cs:0,118) node[left,font=\tiny,color=accent]{$P_1$};
+% Eq2: 240-0.055x=0.05x+30 => 210=0.105x => x=2000; P=130
+\addplot[leafgreen, only marks, mark=*, mark size=3.5pt] coordinates {(2000,130)};
+\draw[dashed, leafgreen] (axis cs:2000,130)--(axis cs:2000,0) node[below,font=\tiny,color=leafgreen]{$Y^*=Y_2$};
+\draw[dashed, leafgreen] (axis cs:2000,130)--(axis cs:0,130) node[left,font=\tiny,color=leafgreen]{$P_2$};
+\draw[->, very thick, leafgreen] (axis cs:1300,165) -- (axis cs:1600,165)
+  node[above, midway, font=\tiny, color=leafgreen] {$\uparrow G$ or $\downarrow T$};
+\node[font=\tiny, fill=leafgreen!10, draw=leafgreen, rounded corners, align=center]
+  at (axis cs:600,175) {\textbf{Canada 2020:}\\CERB + CEWS\\closed recessionary gap};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Figure 12.2 -- Contractionary Fiscal Policy (Fighting Inflation)}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.80\textwidth, height=0.70\textheight,
+  xlabel={Real GDP (\$billions)},
+  ylabel={Price Level ($P$)},
+  xmin=0, xmax=3000, ymin=80, ymax=200,
+  xtick={500,1000,1500,2000,2500},
+  ytick={90,110,130,150,170,190},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={Contractionary Fiscal Policy: $\downarrow G$ or $\uparrow T$ Reduces Inflationary Gap}
+]
+\addplot[shiftpurple, very thick] coordinates {(2000,80)(2000,200)};
+\node[right, font=\tiny, color=shiftpurple] at (axis cs:2050,185) {LRAS};
+\addplot[goldenrod, very thick, domain=200:2800] {0.05*x + 30};
+\node[right, font=\tiny, color=goldenrod] at (axis cs:2650,163) {SRAS};
+% AD1 (above potential - inflationary)
+\addplot[canadared!60, very thick, dashed, domain=200:2800] {260 - 0.055*x}
+  node[right, font=\tiny, color=canadared!60] {$AD_1$ (inflationary)};
+% AD2 (after austerity)
+\addplot[accent, very thick, domain=200:2800] {240 - 0.055*x}
+  node[right, font=\tiny, color=accent] {$AD_2$ (austerity)};
+% Eq1: 260-0.055x=0.05x+30 => x=2190; P=139.5
+\addplot[canadared, only marks, mark=*, mark size=3.5pt] coordinates {(2190,140)};
+\draw[dashed, canadared] (axis cs:2190,140)--(axis cs:2190,0) node[below,font=\tiny,color=canadared]{$Y_1 > Y^*$};
+\draw[dashed, canadared] (axis cs:2190,140)--(axis cs:0,140) node[left,font=\tiny,color=canadared]{$P_1$};
+% Eq2: x=2000; P=130
+\addplot[accent, only marks, mark=*, mark size=3.5pt] coordinates {(2000,130)};
+\draw[dashed, accent] (axis cs:2000,130)--(axis cs:2000,0) node[below,font=\tiny,color=accent]{$Y^*$};
+\draw[dashed, accent] (axis cs:2000,130)--(axis cs:0,130) node[left,font=\tiny,color=accent]{$P_2$};
+\draw[->, very thick, canadared] (axis cs:1700,165) -- (axis cs:1400,165)
+  node[above, midway, font=\tiny, color=canadared] {$\downarrow G$ or $\uparrow T$};
+\node[font=\tiny, fill=lightred, draw=canadared, rounded corners, align=center]
+  at (axis cs:700,175) {\textbf{Canada 1995:}\\Martin's austerity\\closed inflationary\\pressures};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Table 12.1 -- Countercyclical Fiscal Policy in Canada}
+\transfade
+\begin{center}
+\begin{tabular}{p{0.18\linewidth} p{0.18\linewidth} p{0.32\linewidth} p{0.25\linewidth}}
+\toprule
+\textbf{Problem} & \textbf{Policy Type} & \textbf{Government Action} & \textbf{Canadian Example} \\
+\midrule
+Recession & Expansionary & $\uparrow G$ or $\downarrow T$ $\Rightarrow$ AD shifts right & CERB/CEWS 2020 (\$314B) \\
+\addlinespace
+Rising inflation & Contractionary & $\downarrow G$ or $\uparrow T$ $\Rightarrow$ AD shifts left & 1995 Martin budget cuts \\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{0.5em}
+\begin{itemize}
+  \item \textbf{Note:} in Table 12.1 the original text references the U.S. Congress. The Canadian equivalent is Parliament --- specifically the House of Commons, which must pass all spending bills and tax changes.
+  \item Countercyclical policy aims to \textbf{dampen} the business cycle, not eliminate it.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{12.4 Government Purchases and Tax Multipliers}
+% ============================================================
+
+\begin{frame}{12.4 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Explain how the government purchases and tax multipliers work.
+\end{block}
+\begin{itemize}
+  \item A \$1 increase in government spending raises equilibrium GDP by \alert{more than \$1}.
+  \item Why?
+  \begin{itemize}
+    \item Initial spending $\Rightarrow$ incomes rise $\Rightarrow$ consumption rises $\Rightarrow$ incomes rise further $\Rightarrow$ \ldots
+    \item This chain is the \textbf{multiplier effect}.
+  \end{itemize}
+  \item \textbf{Government purchases multiplier:}
+  \[
+    \frac{\Delta Y}{\Delta G} = \frac{1}{1 - \text{MPC}}.
+  \]
+  \item \textbf{Tax multiplier:}
+  \[
+    \frac{\Delta Y}{\Delta T} = -\frac{\text{MPC}}{1 - \text{MPC}}.
+  \]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 12.3 -- The Multiplier Effect in AD-AS}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.82\textwidth, height=0.68\textheight,
+  xlabel={Real GDP (\$billions)},
+  ylabel={Price Level ($P$)},
+  xmin=0, xmax=3000, ymin=80, ymax=200,
+  xtick={500,1000,1500,2000,2500},
+  ytick={90,110,130,150,170,190},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={Multiplier: \$10B Increase in $G$ Raises Equilibrium GDP by \$50B (MPC $= 0.8$)}
+]
+\addplot[shiftpurple, very thick] coordinates {(2000,80)(2000,200)};
+\node[right, font=\tiny, color=shiftpurple] at (axis cs:2050,185) {LRAS};
+\addplot[goldenrod, very thick, domain=200:2800] {0.05*x + 30};
+\node[right, font=\tiny, color=goldenrod] at (axis cs:2650,163) {SRAS};
+% AD1
+\addplot[accent, very thick, dashed, domain=200:2800] {215 - 0.055*x}
+  node[right, font=\tiny, color=accent] {$AD_1$};
+% AD2 (shifted right by full multiplier effect = $50B)
+% If $G rises by 10, multiplier=5 => $Y rises by 50
+% AD1 at x=1762, P=118. AD2 at x=1762+50=1812, but with upward-sloping SRAS
+% price also rises. Let's just show a clean shift.
+\addplot[leafgreen, very thick, domain=200:2800] {232 - 0.055*x}
+  node[right, font=\tiny, color=leafgreen] {$AD_2$ (after multiplier)};
+% Eq1: x=1762; P=118
+\addplot[accent, only marks, mark=*, mark size=3.5pt] coordinates {(1762,118)};
+\draw[dashed, accent] (axis cs:1762,118)--(axis cs:1762,0) node[below,font=\tiny,color=accent]{$Y_1$};
+% Eq2: 232-0.055x=0.05x+30 => 202=0.105x => x=1924; P=0.05*1924+30=126
+\addplot[leafgreen, only marks, mark=*, mark size=3.5pt] coordinates {(1924,126)};
+\draw[dashed, leafgreen] (axis cs:1924,126)--(axis cs:1924,0) node[below,font=\tiny,color=leafgreen]{$Y_2$};
+\draw[<->, very thick, deeporange] (axis cs:1762,88) -- (axis cs:1924,88)
+  node[above, midway, font=\tiny, color=deeporange] {$\Delta Y = \$162B$};
+\node[font=\tiny, fill=soft, draw=deeporange, rounded corners, align=center]
+  at (axis cs:800,175) {$\Delta G = \$10B$ autonomous\\Multiplier $= 5$ (MPC $= 0.8$)\\BUT SRAS slopes up:\\part shows as $\uparrow P$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Government Purchases Multiplier vs. Tax Multiplier}
+\transfade
+\begin{columns}
+\column{0.48\textwidth}
+\begin{block}{\textcolor{accent}{Government Purchases Multiplier}}
+\[
+  \frac{\Delta Y}{\Delta G} = \frac{1}{1-\text{MPC}}
+\]
+\begin{itemize}
+  \item \$1 of $G$ \textbf{directly} adds \$1 to AD.
+  \item Then the induced consumption chain kicks in.
+  \item With MPC $= 0.8$: multiplier $= 5$.
+  \item $\Delta G = \$10B \Rightarrow \Delta Y = \$50B$.
+\end{itemize}
+\end{block}
+\column{0.48\textwidth}
+\begin{block}{\textcolor{canadared}{Tax Multiplier}}
+\[
+  \frac{\Delta Y}{\Delta T} = -\frac{\text{MPC}}{1-\text{MPC}}
+\]
+\begin{itemize}
+  \item Tax cut raises disposable income.
+  \item Households \textbf{save MPS} portion, spend MPC portion.
+  \item First-round effect: \$MPC (not \$1).
+  \item With MPC $= 0.8$: tax multiplier $= -4$.
+  \item $\Delta T = -\$10B \Rightarrow \Delta Y = +\$40B$.
+\end{itemize}
+\end{block}
+\end{columns}
+\vspace{0.4em}
+\begin{itemize}
+  \item The \textbf{government purchases multiplier is larger} (absolute value) than the tax multiplier: spending injection is fully spent, while a tax cut is partly saved.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{12.5 The Limits of Fiscal Policy}
+% ============================================================
+
+\begin{frame}{12.5 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Discuss the difficulties that can arise in implementing fiscal policy.
+\end{block}
+\begin{itemize}
+  \item Fiscal policy is powerful in theory but faces practical limitations:
+  \begin{enumerate}
+    \item \textbf{Timing problems} (legislative and implementation lags).
+    \item \textbf{Crowding out} (higher government borrowing raises interest rates, reducing private spending).
+    \item \textbf{Political constraints} (fiscal policy is a political process, not just an economic one).
+  \end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Timing Problems}
+\transfade
+\begin{enumerate}
+  \item \textbf{Recognition lag:}
+  \begin{itemize}
+    \item GDP data arrives 2--3 months after the quarter ends. By the time a recession is recognized, it may already be deep.
+  \end{itemize}
+  \item \textbf{Legislative delay:}
+  \begin{itemize}
+    \item Parliament must debate and approve spending or tax changes.
+    \item \textbf{Canadian example (2009):} Conservative minority government's Economic Action Plan took months to implement after the recession had begun.
+  \end{itemize}
+  \item \textbf{Implementation delay:}
+  \begin{itemize}
+    \item Infrastructure projects take months to years to actually begin (design, tender, construction).
+    \item \textbf{``Shovel-ready'' projects:} a political priority in 2009 precisely because of this lag.
+  \end{itemize}
+  \item Because of these delays, fiscal stimulus may arrive \alert{after the recession has ended} --- adding fuel to the next boom.
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Crowding Out}
+\transfade
+\begin{block}{Crowding Out}
+A decline in private expenditures (C, I, NX) that results from an increase in government purchases.
+\end{block}
+\begin{itemize}
+  \item \textbf{Mechanism:}
+  \begin{itemize}
+    \item Government increases spending $\Rightarrow$ borrows more (issues more bonds).
+    \item Higher bond supply $\Rightarrow$ bond prices fall $\Rightarrow$ interest rates rise.
+    \item Higher interest rates $\Rightarrow$ lower private investment, lower consumer credit, stronger CAD (lower NX).
+    \item Private spending falls --- partially offsetting the stimulus.
+  \end{itemize}
+  \item \textbf{Canadian context:}
+  \begin{itemize}
+    \item Canada's federal debt is $\approx$\$1.3 trillion (2024).
+    \item Higher debt-to-GDP ratios may gradually raise borrowing costs.
+    \item But with BoC independence, crowding out is partially offset by monetary policy.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 12.4 -- Crowding Out in the Loanable Funds Market}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.78\textwidth, height=0.70\textheight,
+  xlabel={Quantity of Loanable Funds (\$billions)},
+  ylabel={Real Interest Rate (\%)},
+  xmin=0, xmax=10, ymin=0, ymax=8,
+  xtick={0,2,4,6,8,10}, ytick={0,1,2,3,4,5,6,7,8},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={Government Borrowing Raises Interest Rates, Crowding Out Private Investment}
+]
+% Demand for loanable funds
+\addplot[canadared, very thick, domain=0:9] {-0.6*x + 7.7}
+  node[right, font=\tiny, color=canadared] {\textbf{D} (private investment)};
+% S1 (before deficit)
+\addplot[leafgreen, very thick, domain=0:9] {0.6*x + 0.5}
+  node[right, font=\tiny, color=leafgreen] {$S_1$ (private saving)};
+% S2 (after deficit - supply reduced because govt is also borrowing)
+\addplot[goldenrod, very thick, dashed, domain=0:8.5] {0.6*x + 2.2}
+  node[right, font=\tiny, color=goldenrod] {$S_2$ (after govt deficit)};
+% Eq1: -0.6x+7.7=0.6x+0.5 => 7.2=1.2x => x=6; P=4.1
+\addplot[leafgreen, only marks, mark=*, mark size=3.5pt] coordinates {(6.0,4.1)};
+\draw[dashed, leafgreen] (axis cs:6,4.1)--(axis cs:6,0) node[below,font=\tiny,color=leafgreen]{$Q_1$};
+\draw[dashed, leafgreen] (axis cs:6,4.1)--(axis cs:0,4.1) node[left,font=\tiny,color=leafgreen]{$r_1$};
+% Eq2: -0.6x+7.7=0.6x+2.2 => 5.5=1.2x => x=4.58; P=4.96
+\addplot[goldenrod, only marks, mark=*, mark size=3.5pt] coordinates {(4.58,4.95)};
+\draw[dashed, goldenrod] (axis cs:4.58,4.95)--(axis cs:4.58,0) node[below,font=\tiny,color=goldenrod]{$Q_2$};
+\draw[dashed, goldenrod] (axis cs:4.58,4.95)--(axis cs:0,4.95) node[left,font=\tiny,color=goldenrod]{$r_2$};
+\draw[<->, canadared, very thick] (axis cs:4.58,0.4) -- (axis cs:6.0,0.4)
+  node[above, midway, font=\tiny, color=canadared] {Crowding out};
+\node[font=\tiny, fill=lightred, draw=canadared, rounded corners, align=center]
+  at (axis cs:2,6.8) {Govt deficit\\shifts S left\\$\Rightarrow r$ rises\\$\Rightarrow$ fewer private\\loans};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+% ============================================================
+\section{12.6 Deficits, Surpluses, and Federal Government Debt}
+% ============================================================
+
+\begin{frame}{12.6 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Define budget deficit and federal government debt, and explain how the budget serves as an automatic stabilizer.
+\end{block}
+\begin{itemize}
+  \item \textbf{Budget deficit:} expenditures $>$ tax revenues.
+  \item \textbf{Budget surplus:} expenditures $<$ tax revenues.
+  \item \textbf{Federal government debt (national debt):} the total stock of outstanding Government of Canada bonds.
+  \item \textbf{Canadian fiscal history:}
+  \begin{itemize}
+    \item Deficits almost every year since 1970.
+    \item One stretch of surpluses: 1998--2008 (Chrétien/Martin era).
+    \item \alert{2020--21}: deficit of \$314 billion --- by far the largest ever.
+    \item \alert{2024--25}: deficit $\approx$ \$40 billion.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 12.5 -- Canada's Federal Budget Balance (1990--2024)}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.88\textwidth, height=0.68\textheight,
+  xlabel={Fiscal Year (ending March)},
+  ylabel={Federal Budget Balance (\$billions)},
+  xmin=1990, xmax=2025,
+  ymin=-340, ymax=20,
+  xtick={1990,1995,2000,2005,2010,2015,2020,2025},
+  xticklabel style={rotate=45, anchor=east, font=\tiny},
+  grid=both, grid style={dotted,gray!40},
+  tick label style={font=\tiny},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={Canada's Federal Budget Balance: Deficits Dominate (Surplus Era 1998--2008)}
+]
+\addplot[canadared, very thick, ybar, bar width=0.35] coordinates {
+  (1990,-12)(1991,-30)(1992,-35)(1993,-40)(1994,-36)(1995,-30)
+  (1996,-20)(1997,-8)(1998,3)(1999,7)(2000,12)(2001,15)
+  (2002,8)(2003,7)(2004,9)(2005,13)(2006,14)(2007,10)(2008,1)
+  (2009,-55)(2010,-33)(2011,-25)(2012,-18)(2013,-12)(2014,-5)
+  (2015,-2)(2016,-6)(2017,-15)(2018,-19)(2019,-14)(2020,-314)
+  (2021,-90)(2022,-10)(2023,-36)(2024,-40)
+};
+\addplot[goldenrod, dashed, thick] coordinates {(1990,0)(2025,0)};
+\node[font=\tiny, fill=leafgreen!10, draw=leafgreen, rounded corners, align=center]
+  at (axis cs:2003,15) {Surplus years\\1998--2008};
+\node[font=\tiny, fill=lightred, draw=canadared, rounded corners, align=center]
+  at (axis cs:2020,-280) {COVID-19:\\$-$\$314B};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+{\tiny Source: Department of Finance Canada, Federal Budget. Positive = surplus; negative = deficit.}
+\end{frame}
+
+\begin{frame}{Automatic Stabilizers and the Business Cycle}
+\transfade
+\begin{itemize}
+  \item \textbf{In recessions} (automatic stabilizers kick in):
+  \begin{itemize}
+    \item Tax revenues \alert{fall} (lower incomes, profits, consumption).
+    \item EI payments, social assistance \alert{rise}.
+    \item Result: budget deficit grows automatically, helping support AD.
+  \end{itemize}
+  \item \textbf{In expansions}:
+  \begin{itemize}
+    \item Tax revenues \alert{rise}.
+    \item EI, welfare payments \alert{fall}.
+    \item Result: budget moves toward surplus automatically, dampening inflation.
+  \end{itemize}
+  \item \textbf{Canada's EI example (2020):}
+  \begin{itemize}
+    \item EI and emergency benefits paid out $\approx \$100$ billion in 2020 alone.
+    \item This replaced lost income for millions of Canadians, supporting consumption.
+    \item Without this, the recession would have been \textbf{much deeper}.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 12.6 -- Federal Government Debt to GDP Ratio (Canada)}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.88\textwidth, height=0.68\textheight,
+  xlabel={Year},
+  ylabel={Federal Debt-to-GDP Ratio (\%)},
+  xmin=1980, xmax=2025,
+  ymin=0, ymax=75,
+  xtick={1980,1985,1990,1995,2000,2005,2010,2015,2020,2025},
+  xticklabel style={rotate=45, anchor=east, font=\tiny},
+  grid=both, grid style={dotted,gray!40},
+  tick label style={font=\tiny},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={Federal Debt-to-GDP Rose Sharply in 1990s, Then Fell, Then Rose Again (2020)}
+]
+\addplot[accent, very thick, mark=none] coordinates {
+  (1980,25)(1985,40)(1990,50)(1993,68)(1996,68)(2000,55)
+  (2005,35)(2008,28)(2010,33)(2015,30)(2018,27)(2019,27)
+  (2020,47)(2021,50)(2022,43)(2023,42)(2024,42)
+};
+\addplot[goldenrod, dashed, thick] coordinates {(1980,45)(2025,45)}
+  node[right, font=\tiny, color=goldenrod] {G7 avg.};
+\node[font=\tiny, fill=lightred, draw=canadared, rounded corners, align=center]
+  at (axis cs:1995,64) {1993--1996 peak:\\Moody's threatened\\to downgrade Canada};
+\node[font=\tiny, fill=leafgreen!10, draw=leafgreen, rounded corners, align=center]
+  at (axis cs:2010,20) {Sustained decline\\2000--2019};
+\node[font=\tiny, fill=lightred, draw=canadared, rounded corners, align=center]
+  at (axis cs:2021,58) {COVID-19\\spike};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+{\tiny Source: Department of Finance Canada; IMF Fiscal Monitor. G7 average is approximate.}
+\end{frame}
+
+\begin{frame}{Is Government Debt a Problem?}
+\transfade
+\begin{itemize}
+  \item \textbf{Short-term view:} Canada's federal debt-to-GDP ratio ($\approx$42\%) is lower than most G7 countries. Not an immediate crisis.
+  \item \textbf{Long-term concerns:}
+  \begin{itemize}
+    \item If debt grows faster than GDP, interest payments consume a larger share of the budget.
+    \item \textbf{Crowding out:} rising debt may gradually push up real interest rates, reducing private investment.
+    \item \textbf{Generational equity:} future taxpayers (today's children) inherit the debt.
+  \end{itemize}
+  \item \textbf{When is debt less problematic?}
+  \begin{itemize}
+    \item When it finances \textbf{productive investments}: infrastructure, education, R\&D.
+    \item These raise future potential GDP, making the debt easier to service.
+    \item \textbf{Canada 2020:} emergency spending was necessary to prevent economic collapse, even though it was largely consumption-focused.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{12.7 Fiscal Policy in the Long Run}
+% ============================================================
+
+\begin{frame}{12.7 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Discuss the effects of fiscal policy in the long run (supply-side effects).
+\end{block}
+\begin{itemize}
+  \item So far: fiscal policy as a short-run stabilization tool (shifts AD).
+  \item Now: how fiscal policy affects \textbf{potential GDP} (shifts LRAS).
+  \item \textbf{Supply-side economics:}
+  \begin{itemize}
+    \item Fiscal policy actions aimed at increasing long-run aggregate supply.
+    \item Focus: taxes and regulations that affect incentives to work, save, invest, and innovate.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Tax Wedge and Incentives}
+\transfade
+\begin{itemize}
+  \item Most taxes create a \textbf{wedge} between the pre-tax and post-tax return to an activity.
+  \item \textbf{Examples:}
+  \begin{itemize}
+    \item \textbf{Personal income tax:} if your marginal rate is 53\% (federal + BC combined), each extra dollar earned yields only 47 cents after tax.
+    \begin{itemize}
+      \item May reduce hours worked, entrepreneurship, or human capital investment.
+    \end{itemize}
+    \item \textbf{Corporate income tax:} Canada's combined rate $\approx$26\% in 2024.
+    \begin{itemize}
+      \item High rates may reduce investment in new machinery, R\&D, and job creation.
+    \end{itemize}
+    \item \textbf{Capital gains tax:} affects saving and investment decisions.
+    \begin{itemize}
+      \item \textbf{2024 Canada:} Trudeau government raised capital gains inclusion rate from 50\% to 67\% --- controversial impact on investment incentives.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 12.7 -- Supply-Side Effects of a Tax Cut}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.80\textwidth, height=0.70\textheight,
+  xlabel={Real GDP (\$billions)},
+  ylabel={Price Level ($P$)},
+  xmin=0, xmax=3500, ymin=80, ymax=200,
+  xtick={500,1000,1500,2000,2500,3000,3500},
+  ytick={90,100,110,120,130,140,150,160,170,180,190},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  clip=false,
+  title={Supply-Side Tax Reform: LRAS Shifts Right, Price Level Falls}
+]
+% Consistent equations:
+% AD: P=170-0.02x
+% SRAS1: P=0.03x+70  (at x=2000: P=130) -- old LR eq at (2000,130) with AD
+% LRAS1 at x=2000  [AD=SRAS1=130 at x=2000 -- consistent triple intersection]
+% After reform:
+% SRAS2: P=0.03x+45  (shifted down -- lower costs)
+% LRAS2 at x=2500  [AD=SRAS2=120 at x=2500 -- consistent triple intersection]
+% Verification: AD at 2500: 170-0.02*2500=120. SRAS2 at 2500: 0.03*2500+45=120. ✓
+
+% LRAS1 (dashed)
+\addplot[shiftpurple!50, very thick, dashed] coordinates {(2000,80)(2000,200)};
+\node[above, font=\tiny, color=shiftpurple!60] at (axis cs:2000,203) {$LRAS_1$};
+% LRAS2 (solid, right of LRAS1)
+\addplot[shiftpurple, very thick] coordinates {(2500,80)(2500,200)};
+\node[above, font=\tiny, color=shiftpurple] at (axis cs:2500,203) {$LRAS_2$};
+% SRAS1 (dashed)
+\addplot[goldenrod!60, very thick, dashed, domain=300:3200] {0.03*x + 70};
+\node[right, font=\tiny, color=goldenrod!60] at (axis cs:3050,161) {$SRAS_1$};
+% SRAS2 (solid, shifted right/down)
+\addplot[goldenrod, very thick, domain=300:3400] {0.03*x + 45};
+\node[right, font=\tiny, color=goldenrod] at (axis cs:3200,141) {$SRAS_2$};
+% AD: P=170-0.02x
+\addplot[deeporange, very thick, domain=300:3400] {170 - 0.02*x}
+  node[right, font=\tiny, color=deeporange] {\textbf{AD}};
+% Old LR equilibrium: (2000, 130)
+\addplot[accent, only marks, mark=*, mark size=4pt] coordinates {(2000,130)};
+\node[above left, font=\tiny, color=accent] at (axis cs:2000,130) {$E_1$};
+\draw[dashed, accent!60] (axis cs:2000,130)--(axis cs:0,130)
+  node[left, font=\tiny, color=accent] {$P_1=130$};
+% New LR equilibrium: (2500, 120)
+\addplot[leafgreen, only marks, mark=*, mark size=4pt] coordinates {(2500,120)};
+\node[above right, font=\tiny, color=leafgreen] at (axis cs:2500,120) {$E_2$};
+\draw[dashed, leafgreen!60] (axis cs:2500,120)--(axis cs:0,120)
+  node[left, font=\tiny, color=leafgreen] {$P_2=120$};
+% Arrow showing expansion of potential GDP
+\draw[-{Stealth[length=7pt]}, very thick, shiftpurple]
+  (axis cs:2050,170) -- (axis cs:2450,170)
+  node[midway, above, font=\tiny, color=shiftpurple] {Potential GDP rises};
+\node[font=\tiny, fill=leafgreen!10, draw=leafgreen, rounded corners, align=center]
+  at (axis cs:850,185) {Tax reform $\Rightarrow$ more work \& investment\\$\Rightarrow$ LRAS and SRAS shift right\\$\Rightarrow$ higher $Y^*$, lower $P$};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+{\footnotesize Supply-side tax reform raises potential GDP from \$2{,}000B to \$2{,}500B while lowering the long-run price level.}
+\end{frame}
+
+\begin{frame}{Long-Run Effects of Tax Reform: What We Know}
+\transfade
+\begin{itemize}
+  \item Tax reform can increase potential GDP in the long run by:
+  \begin{itemize}
+    \item Raising labour supply (more hours worked, more participation).
+    \item Increasing saving and investment (more capital formation).
+    \item Encouraging entrepreneurship and innovation.
+  \end{itemize}
+  \item \textbf{Uncertainty:}
+  \begin{itemize}
+    \item Magnitude of supply-side effects is \textbf{empirically contested}.
+    \item People may want to work more at lower marginal rates, but may face \textit{constraints} (fixed schedules, childcare).
+    \item Tax cuts also create short-run demand effects (shifting AD right), which may dominate.
+  \end{itemize}
+  \item \textbf{Canadian policy debate:}
+  \begin{itemize}
+    \item 2024 capital gains inclusion rate increase: critics argued it would deter investment; supporters argued revenue would fund social priorities.
+    \item Active empirical research ongoing.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section*{Appendix: A Closer Look at the Multiplier}
+% ============================================================
+
+\begin{frame}{Appendix -- The Government Purchases and Tax Multipliers}
+\transfade
+\begin{itemize}
+  \item Simple Canadian macroeconomic model (closed economy, fixed price level):
+  \begin{align*}
+    C &= 1{,}000 + 0.8(Y - T), \quad T = 250, \\
+    I &= 300, \quad G = 500.
+  \end{align*}
+  \item \textbf{Equilibrium:} $Y = C + I + G$:
+  \[
+    Y = 1{,}000 + 0.8(Y - 250) + 300 + 500.
+  \]
+  \[
+    Y = 1{,}600 + 0.8Y - 200 = 1{,}400 + 0.8Y.
+  \]
+  \[
+    0.2Y = 1{,}400 \quad \Rightarrow \quad Y = \$7{,}000\text{ billion}.
+  \]
+  \item \textbf{Government purchases multiplier:} $\frac{\Delta Y}{\Delta G} = \frac{1}{1 - 0.8} = 5$.
+  \item $\Delta G = +\$10B \Rightarrow \Delta Y = +\$50B$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Tax Multiplier and the Balanced Budget Multiplier}
+\transfade
+\begin{itemize}
+  \item \textbf{Tax multiplier:}
+  \[
+    \frac{\Delta Y}{\Delta T} = -\frac{\text{MPC}}{1 - \text{MPC}} = -\frac{0.8}{0.2} = -4.
+  \]
+  \item $\Delta T = -\$10B$ (tax cut) $\Rightarrow \Delta Y = +\$40B$.
+  \item \textbf{Why smaller than $G$ multiplier?} A \$10B tax cut gives \$10B to households, but they \textbf{save} $0.2 \times 10 = \$2B$, so only \$8B is initially spent.
+  \item \textbf{Balanced budget multiplier:}
+  \begin{itemize}
+    \item Increase $G$ and $T$ by the same amount (\$10B).
+    \item $\Delta Y = (+5) \times 10B + (-4) \times 10B = \$10B$.
+    \item Balanced budget multiplier $= \frac{\Delta Y}{\Delta G} = 1$.
+    \item Equal dollar increases in spending and taxes raise GDP by the same dollar.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section*{Chapter Summary}
+% ============================================================
+
+\begin{frame}{Summary}
+\transfade
+\begin{itemize}
+  \item \textbf{Fiscal policy:} changes in federal spending ($G$) and taxes ($T$) to achieve macroeconomic goals.
+  \item \textbf{Automatic stabilizers} (EI, progressive income tax) cushion downturns without legislation.
+  \item \textbf{Expansionary} ($\uparrow G$ or $\downarrow T$) closes recessionary gaps; \textbf{contractionary} ($\downarrow G$ or $\uparrow T$) reduces inflationary pressure.
+  \item Government purchases multiplier $= \frac{1}{1-\text{MPC}}$; tax multiplier $= -\frac{\text{MPC}}{1-\text{MPC}}$.
+  \item Practical limits: \textbf{timing lags} (recognition, legislative, implementation) and \textbf{crowding out}.
+  \item Canada's federal debt-to-GDP $\approx$42\% (2024) --- manageable but trending higher.
+  \item \textbf{Supply-side} fiscal policy (tax reform) can shift LRAS right and raise potential GDP, but magnitudes are uncertain.
+  \item \textbf{Balanced budget multiplier $= 1$}: equal increases in $G$ and $T$ raise GDP by the same dollar.
+  \item \textbf{Canada 2020 case study:} \$314B in emergency spending was the largest ever fiscal expansion --- essential to prevent depression-level output losses, at the cost of a large deficit and higher debt.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge \textbf{Thank you!}\\[1em]
+\large Questions?
+\end{frame}
+
+\end{document}

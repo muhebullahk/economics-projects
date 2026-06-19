@@ -1,0 +1,613 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\usecolortheme{seahorse}
+\usefonttheme{professionalfonts}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+\definecolor{accent}{RGB}{0,92,184}
+\definecolor{soft}{RGB}{233,244,255}
+\definecolor{canadared}{RGB}{196,30,58}
+\definecolor{leafgreen}{RGB}{0,130,80}
+\definecolor{goldenrod}{RGB}{218,165,32}
+\definecolor{deeporange}{RGB}{220,90,20}
+\definecolor{shiftpurple}{RGB}{130,50,180}
+\definecolor{tealblue}{RGB}{0,128,128}
+\definecolor{lightred}{RGB}{245,210,210}
+\setbeamercolor{structure}{fg=accent}
+\setbeamercolor{title}{fg=white,bg=accent}
+\setbeamercolor{frametitle}{fg=accent}
+\setbeamercolor{block title}{bg=accent!12,fg=accent}
+\setbeamercolor{block body}{bg=soft}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{hyperref}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric}
+\hypersetup{colorlinks=true,linkcolor=accent,urlcolor=accent}
+
+% ---------- SAFE TRANSITION FALLBACK ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- TITLE ----------
+\title{\textbf{Monetary Policy}}
+\subtitle{{\large ECON 101 -- Principles of Macroeconomics}}
+\author{Muhebullah Karimzada}
+\date{Spring 2026}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}{Chapter Outline}
+\transfade
+\begin{itemize}
+  \item \textbf{11.1} What Is Monetary Policy?
+  \item \textbf{11.2} The Money Market and the Bank of Canada's Choice of Monetary Policy Targets
+  \item \textbf{11.3} Monetary Policy and Economic Activity
+  \item \textbf{11.5} A Closer Look at the Bank of Canada's Setting of Monetary Policy Targets
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{11.1 What Is Monetary Policy?}
+% ============================================================
+
+\begin{frame}{11.1 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Define monetary policy and describe the Bank of Canada's monetary policy goals.
+\end{block}
+\begin{itemize}
+  \item \textbf{Monetary policy:} actions the Bank of Canada (BoC) takes to manage the money supply and interest rates to pursue macroeconomic objectives.
+  \item The BoC was established in \textbf{1934} with a mandate to act ``in the best interest of the economic life of the nation.''
+  \item Since WWII: the BoC conducts \textbf{active monetary policy} to stabilize inflation and output.
+  \item \textbf{2022--2024 context:} the BoC conducted the most aggressive rate hiking cycle in 40 years to combat post-COVID inflation.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Four Goals of Monetary Policy}
+\transfade
+\begin{center}
+\begin{tabular}{p{0.25\linewidth} p{0.67\linewidth}}
+\toprule
+\textbf{Goal} & \textbf{Meaning and Canadian Context} \\
+\midrule
+\textcolor{accent}{\textbf{Price Stability}} & Keep inflation low and stable. BoC's explicit target: \alert{2\%} (within 1--3\% band). Low inflation preserves the value of money and reduces uncertainty. \\
+\addlinespace
+\textcolor{leafgreen}{\textbf{High Employment}} & Keep the economy near full employment. BoC monitors the unemployment rate, job vacancies, and wages as indicators of labour market slack. \\
+\addlinespace
+\textcolor{goldenrod}{\textbf{Financial Stability}} & Ensure banks, credit markets, and financial infrastructure function smoothly. Key after 2007--09 global financial crisis. \\
+\addlinespace
+\textcolor{deeporange}{\textbf{Economic Growth}} & Provide a stable monetary environment that supports long-run real GDP growth. \\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{frame}
+
+\begin{frame}{The BoC's Dual Mandate in Practice}
+\transfade
+\begin{itemize}
+  \item The BoC's \textbf{primary operational goal} is the 2\% inflation target (renewed with the federal government every 5 years --- most recently 2021--26).
+  \item But the BoC also cares about \textbf{employment and output}:
+  \begin{itemize}
+    \item In 2021 renewal: the BoC added an explicit \textbf{labour market slack} consideration.
+    \item This moved Canada toward a \textbf{flexible average inflation targeting} (FAIT) framework, similar to the U.S. Fed.
+  \end{itemize}
+  \item \textbf{Short-run trade-off:}
+  \begin{itemize}
+    \item Reducing inflation too aggressively $\Rightarrow$ higher unemployment.
+    \item Easing to reduce unemployment $\Rightarrow$ risk of fuelling inflation.
+  \end{itemize}
+  \item Monetary policy involves \alert{difficult trade-offs}.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{11.2 The Money Market and Policy Targets}
+% ============================================================
+
+\begin{frame}{11.2 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Describe the Bank of Canada's monetary policy targets and explain how expansionary and contractionary policies affect interest rates.
+\end{block}
+\begin{itemize}
+  \item \textbf{BoC's two main tools:}
+  \begin{itemize}
+    \item \textbf{Open market operations:} buying/selling Government of Canada bonds.
+    \item \textbf{Lending to financial institutions:} standing liquidity facilities.
+  \end{itemize}
+  \item These affect \textbf{monetary policy targets:}
+  \begin{itemize}
+    \item Money supply (secondary target).
+    \item Short-term overnight interest rate (\textbf{primary target}).
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 11.1 -- The Money Market}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.78\textwidth, height=0.72\textheight,
+  xlabel={Quantity of Money (\$billions)},
+  ylabel={Nominal Interest Rate (\%)},
+  xmin=0, xmax=2000, ymin=0, ymax=8,
+  xtick={200,400,600,800,1000,1200,1400,1600,1800},
+  ytick={0,1,2,3,4,5,6,7,8},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={Equilibrium in the Money Market}
+]
+% Money supply (vertical line)
+\addplot[leafgreen, very thick] coordinates {(1000,0)(1000,8)};
+\node[right, font=\small, color=leafgreen] at (axis cs:1020,6.5) {\textbf{MS} (set by BoC)};
+% Money demand (downward sloping)
+\addplot[accent, very thick, domain=100:1900] {7.5 - 0.005*x}
+  node[right, font=\small, color=accent] {\textbf{MD}};
+% Equilibrium
+\addplot[canadared, only marks, mark=*, mark size=4pt] coordinates {(1000,2.5)};
+\draw[dashed, goldenrod, thick] (axis cs:1000,2.5) -- (axis cs:0,2.5)
+  node[left, font=\small, color=goldenrod] {$i^* = 2.5\%$};
+\node[font=\small, fill=soft, draw=canadared, rounded corners, align=center]
+  at (axis cs:500,5.5) {BoC targets this\\overnight rate};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Why Money Demand Slopes Downward}
+\transfade
+\begin{itemize}
+  \item \textbf{Why do people hold money?}
+  \begin{itemize}
+    \item To make transactions (buy groceries, pay rent, tap an Interac machine).
+  \end{itemize}
+  \item \textbf{Opportunity cost of holding money:} the interest rate forgone on bonds/savings.
+  \item When interest rates are \textbf{high}:
+  \begin{itemize}
+    \item Keeping cash in your wallet is costly --- you're forgoing 5\% interest on a GIC.
+    \item People shift funds from chequing accounts to savings accounts, bonds, GICs.
+    \item \alert{Less money demanded}.
+  \end{itemize}
+  \item When interest rates are \textbf{low}:
+  \begin{itemize}
+    \item The opportunity cost of holding money is small.
+    \item People hold more money (liquid), less bonds.
+    \item \alert{More money demanded}.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Shifts in Money Demand}
+\transfade
+\begin{itemize}
+  \item Money demand increases when:
+  \begin{itemize}
+    \item Real GDP rises (more transactions needed).
+    \item Price level rises (each transaction requires more dollars).
+  \end{itemize}
+  \item Money demand decreases when:
+  \begin{itemize}
+    \item Real GDP falls (fewer transactions).
+    \item Technological improvements reduce need for cash (e.g., growth of e-transfers, tap payments).
+  \end{itemize}
+  \item \textbf{Canadian example:} Canada has one of the highest contactless payment adoption rates globally --- reducing the demand for physical cash (M1+ currency component has been flat while digital payments soar).
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Figure 11.2 -- Expansionary Monetary Policy (BoC Cuts Rate)}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.78\textwidth, height=0.70\textheight,
+  xlabel={Quantity of Money (\$billions)},
+  ylabel={Nominal Interest Rate (\%)},
+  xmin=0, xmax=2000, ymin=0, ymax=8,
+  xtick={200,400,600,800,1000,1200,1400,1600,1800},
+  ytick={0,1,2,3,4,5,6,7,8},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={BoC Buys Bonds $\Rightarrow$ MS Increases $\Rightarrow$ Interest Rate Falls}
+]
+\addplot[accent, very thick, domain=100:1900] {7.5 - 0.005*x}
+  node[right, font=\small, color=accent] {\textbf{MD}};
+% MS1
+\addplot[leafgreen, very thick] coordinates {(1000,0)(1000,8)};
+\node[above, font=\tiny, color=leafgreen] at (axis cs:1000,8) {$MS_1$};
+% MS2 (shifted right)
+\addplot[leafgreen!50, very thick, dashed] coordinates {(1300,0)(1300,8)};
+\node[above, font=\tiny, color=leafgreen!70] at (axis cs:1300,8) {$MS_2$};
+% Equilibria
+\addplot[canadared, only marks, mark=*, mark size=3.5pt] coordinates {(1000,2.5)};
+\addplot[leafgreen, only marks, mark=*, mark size=3.5pt] coordinates {(1300,1.0)};
+\draw[dashed, canadared] (axis cs:1000,2.5)--(axis cs:0,2.5)
+  node[left, font=\tiny, color=canadared] {$i_1 = 2.5\%$};
+\draw[dashed, leafgreen] (axis cs:1300,1.0)--(axis cs:0,1.0)
+  node[left, font=\tiny, color=leafgreen] {$i_2 = 1.0\%$};
+\draw[->, very thick, deeporange] (axis cs:1000,6) -- (axis cs:1280,6)
+  node[above, midway, font=\tiny, color=deeporange] {MS expands};
+\node[font=\tiny, fill=leafgreen!10, draw=leafgreen, rounded corners, align=center]
+  at (axis cs:400,6.5) {BoC cuts rate:\\$i$ falls, AD rises,\\GDP increases};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Figure 11.3 -- Contractionary Monetary Policy (BoC Raises Rate)}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.78\textwidth, height=0.70\textheight,
+  xlabel={Quantity of Money (\$billions)},
+  ylabel={Nominal Interest Rate (\%)},
+  xmin=0, xmax=2000, ymin=0, ymax=8,
+  xtick={200,400,600,800,1000,1200,1400,1600,1800},
+  ytick={0,1,2,3,4,5,6,7,8},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={BoC Sells Bonds $\Rightarrow$ MS Decreases $\Rightarrow$ Interest Rate Rises}
+]
+\addplot[accent, very thick, domain=100:1900] {7.5 - 0.005*x}
+  node[right, font=\small, color=accent] {\textbf{MD}};
+% MS1
+\addplot[leafgreen, very thick] coordinates {(1000,0)(1000,8)};
+\node[above, font=\tiny, color=leafgreen] at (axis cs:1000,8) {$MS_1$};
+% MS2 (shifted left)
+\addplot[canadared, very thick, dashed] coordinates {(700,0)(700,8)};
+\node[above, font=\tiny, color=canadared] at (axis cs:700,8) {$MS_2$};
+% Equilibria
+\addplot[leafgreen, only marks, mark=*, mark size=3.5pt] coordinates {(1000,2.5)};
+\addplot[canadared, only marks, mark=*, mark size=3.5pt] coordinates {(700,4.0)};
+\draw[dashed, leafgreen] (axis cs:1000,2.5)--(axis cs:0,2.5)
+  node[left, font=\tiny, color=leafgreen] {$i_1 = 2.5\%$};
+\draw[dashed, canadared] (axis cs:700,4.0)--(axis cs:0,4.0)
+  node[left, font=\tiny, color=canadared] {$i_2 = 4.0\%$};
+\draw[->, very thick, canadared] (axis cs:1000,6) -- (axis cs:720,6)
+  node[above, midway, font=\tiny, color=canadared] {MS contracts};
+\node[font=\tiny, fill=lightred, draw=canadared, rounded corners, align=center]
+  at (axis cs:1600,6.5) {BoC raises rate:\\$i$ rises, AD falls,\\inflation slows};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Figure 11.4 -- Canada's Overnight Rate (2015--2025)}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.88\textwidth, height=0.68\textheight,
+  xlabel={Year},
+  ylabel={Target Overnight Rate (\%)},
+  xmin=2015, xmax=2025.5,
+  ymin=0, ymax=6,
+  xtick={2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025},
+  xticklabel style={rotate=45, anchor=east, font=\tiny},
+  ytick={0,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5},
+  grid=both, grid style={dotted,gray!40},
+  tick label style={font=\tiny},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={Bank of Canada Overnight Rate: Emergency Cuts \& Historic Hikes}
+]
+\addplot[accent, very thick, const plot, mark=*, mark size=1.5pt] coordinates {
+  (2015,0.5)(2016,0.5)(2017,1.0)(2018,1.75)(2019,1.75)
+  (2020,0.25)(2021,0.25)(2022,4.25)(2023,5.0)(2024,3.25)(2025,2.75)
+};
+\addplot[goldenrod, dashed, thick] coordinates {(2015,2)(2025.5,2)}
+  node[right, font=\tiny, color=goldenrod] {2\% inflation target proxy};
+% Annotations
+\node[font=\tiny, fill=lightred, draw=canadared, rounded corners, align=center]
+  at (axis cs:2020.5,1.5) {COVID emergency\\cuts to 0.25\%\\(March 2020)};
+\node[font=\tiny, fill=lightred, draw=canadared, rounded corners, align=center]
+  at (axis cs:2022.8,4.8) {Fastest hike cycle\\in 40 years};
+\node[font=\tiny, fill=leafgreen!10, draw=leafgreen, rounded corners, align=center]
+  at (axis cs:2024.5,2.0) {Rate cuts\\2024--25};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+{\tiny Source: Bank of Canada overnight rate press releases. 2025 value is estimated.}
+\end{frame}
+
+% ============================================================
+\section{11.3 Monetary Policy and Economic Activity}
+% ============================================================
+
+\begin{frame}{11.3 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Use AD-AS graphs to show the effects of monetary policy on real GDP and the price level.
+\end{block}
+\begin{itemize}
+  \item How does the overnight rate affect the real economy?
+  \item \textbf{Transmission mechanism:}
+  \begin{enumerate}
+    \item BoC changes overnight rate $\rightarrow$
+    \item Commercial banks adjust prime rate, mortgage rates, GIC rates $\rightarrow$
+    \item Households and firms change spending (C, I, NX) $\rightarrow$
+    \item AD shifts $\rightarrow$
+    \item Real GDP and inflation change.
+  \end{enumerate}
+  \item Typical lag: \alert{12--18 months} from rate change to full inflation effect.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{How Interest Rates Affect Aggregate Demand}
+\transfade
+\begin{enumerate}
+  \item \textbf{Consumption ($C$)}
+  \begin{itemize}
+    \item Lower rates $\Rightarrow$ cheaper consumer credit (car loans, home equity lines).
+    \item \textbf{Key Canadian channel:} most mortgages renew every 5 years --- rate hikes in 2022--23 raised mortgage payments by hundreds of dollars per month for millions of households, cutting disposable income and spending.
+  \end{itemize}
+  \item \textbf{Investment ($I$)}
+  \begin{itemize}
+    \item Lower rates $\Rightarrow$ cheaper to finance factories, equipment, housing.
+    \item Residential construction is especially rate-sensitive.
+  \end{itemize}
+  \item \textbf{Net Exports ($NX$)}
+  \begin{itemize}
+    \item Higher Canadian rates attract foreign capital $\Rightarrow$ CAD appreciates.
+    \item Stronger CAD makes Canadian exports more expensive $\Rightarrow$ NX falls.
+    \item Weaker CAD (after rate cuts) makes Canadian goods cheaper for U.S. buyers.
+  \end{itemize}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Figure 11.5 -- Expansionary Monetary Policy in AD-AS}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.80\textwidth, height=0.70\textheight,
+  xlabel={Real GDP (\$billions)},
+  ylabel={Price Level ($P$)},
+  xmin=0, xmax=3000, ymin=80, ymax=200,
+  xtick={500,1000,1500,2000,2500},
+  ytick={90,110,130,150,170,190},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={BoC Cuts Rates $\Rightarrow$ AD Shifts Right $\Rightarrow$ GDP and $P$ Rise}
+]
+\addplot[shiftpurple, very thick] coordinates {(2000,80)(2000,200)};
+\node[right, font=\tiny, color=shiftpurple] at (axis cs:2050,185) {LRAS};
+\addplot[goldenrod, very thick, domain=200:2800] {0.05*x + 30};
+\node[right, font=\tiny, color=goldenrod] at (axis cs:2650,163) {SRAS};
+% AD1 (recession - below potential)
+\addplot[accent!60, very thick, dashed, domain=200:2800] {215 - 0.055*x}
+  node[right, font=\tiny, color=accent!60] {$AD_1$ (recession)};
+% AD2 (after expansion)
+\addplot[leafgreen, very thick, domain=200:2800] {240 - 0.055*x}
+  node[right, font=\tiny, color=leafgreen] {$AD_2$ (after rate cut)};
+% Eq1: AD1 cap SRAS: 215-0.055x=0.05x+30 => 185=0.105x => x=1762; P=118
+\addplot[accent, only marks, mark=*, mark size=3.5pt] coordinates {(1762,118)};
+\draw[dashed, accent] (axis cs:1762,118)--(axis cs:1762,0) node[below,font=\tiny,color=accent]{$Y_1 < Y^*$};
+\draw[dashed, accent] (axis cs:1762,118)--(axis cs:0,118) node[left,font=\tiny,color=accent]{$P_1$};
+% Eq2: 240-0.055x=0.05x+30 => 210=0.105x => x=2000; P=130
+\addplot[leafgreen, only marks, mark=*, mark size=3.5pt] coordinates {(2000,130)};
+\draw[dashed, leafgreen] (axis cs:2000,130)--(axis cs:2000,0) node[below,font=\tiny,color=leafgreen]{$Y^*$};
+\draw[dashed, leafgreen] (axis cs:2000,130)--(axis cs:0,130) node[left,font=\tiny,color=leafgreen]{$P_2$};
+\draw[->, very thick, leafgreen] (axis cs:1200,165) -- (axis cs:1500,165)
+  node[above, midway, font=\tiny, color=leafgreen] {Expansion};
+\node[font=\tiny, fill=leafgreen!10, draw=leafgreen, rounded corners, align=center]
+  at (axis cs:700,175) {BoC cuts rate:\\$\downarrow i \Rightarrow \uparrow C, I, NX$\\$\Rightarrow$ AD shifts right};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Figure 11.6 -- Contractionary Monetary Policy in AD-AS}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+  width=0.80\textwidth, height=0.70\textheight,
+  xlabel={Real GDP (\$billions)},
+  ylabel={Price Level ($P$)},
+  xmin=0, xmax=3000, ymin=80, ymax=200,
+  xtick={500,1000,1500,2000,2500},
+  ytick={90,110,130,150,170,190},
+  grid=major, grid style={dotted,gray!40},
+  tick label style={font=\small},
+  label style={font=\small},
+  title style={font=\small\bfseries},
+  title={BoC Raises Rates $\Rightarrow$ AD Shifts Left $\Rightarrow$ GDP Slows, Inflation Falls}
+]
+\addplot[shiftpurple, very thick] coordinates {(2000,80)(2000,200)};
+\node[right, font=\tiny, color=shiftpurple] at (axis cs:2050,185) {LRAS};
+\addplot[goldenrod, very thick, domain=200:2800] {0.05*x + 30};
+\node[right, font=\tiny, color=goldenrod] at (axis cs:2650,163) {SRAS};
+% AD1 (above potential - inflationary)
+\addplot[leafgreen, very thick, dashed, domain=200:2800] {260 - 0.055*x}
+  node[right, font=\tiny, color=leafgreen!60] {$AD_1$ (inflationary)};
+% AD2 (after tightening)
+\addplot[canadared, very thick, domain=200:2800] {240 - 0.055*x}
+  node[right, font=\tiny, color=canadared] {$AD_2$ (after rate hike)};
+% Eq1: 260-0.055x=0.05x+30 => 230=0.105x => x=2190; P=139.5
+\addplot[leafgreen, only marks, mark=*, mark size=3.5pt] coordinates {(2190,140)};
+\draw[dashed, leafgreen] (axis cs:2190,140)--(axis cs:2190,0) node[below,font=\tiny,color=leafgreen]{$Y_1 > Y^*$};
+\draw[dashed, leafgreen] (axis cs:2190,140)--(axis cs:0,140) node[left,font=\tiny,color=leafgreen]{$P_1$};
+% Eq2: 240-0.055x=0.05x+30 => 210=0.105x => x=2000; P=130
+\addplot[canadared, only marks, mark=*, mark size=3.5pt] coordinates {(2000,130)};
+\draw[dashed, canadared] (axis cs:2000,130)--(axis cs:2000,0) node[below,font=\tiny,color=canadared]{$Y^*$};
+\draw[dashed, canadared] (axis cs:2000,130)--(axis cs:0,130) node[left,font=\tiny,color=canadared]{$P_2$};
+\draw[->, very thick, canadared] (axis cs:1700,165) -- (axis cs:1400,165)
+  node[above, midway, font=\tiny, color=canadared] {Tightening};
+\node[font=\tiny, fill=lightred, draw=canadared, rounded corners, align=center]
+  at (axis cs:700,175) {BoC hikes rate:\\$\uparrow i \Rightarrow \downarrow C, I, NX$\\$\Rightarrow$ AD shifts left};
+\end{axis}
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Can the BoC Eliminate Recessions?}
+\transfade
+\begin{itemize}
+  \item In textbook diagrams, the BoC:
+  \begin{itemize}
+    \item knows exactly how far to shift AD, and
+    \item manages to shift it by precisely the right amount.
+  \end{itemize}
+  \item In reality, this is far harder:
+\end{itemize}
+\begin{enumerate}
+  \item \textbf{Data lag:} GDP data arrives with a 2--3 month delay. The BoC acts on \textbf{incomplete information}.
+  \item \textbf{Decision lag:} the BoC meets 8 times per year to set the overnight rate. Policies take time to approve.
+  \item \textbf{Effect lag:} interest rate changes take \alert{12--18 months} to fully affect inflation and 6--12 months to affect real GDP.
+\end{enumerate}
+\begin{itemize}
+  \item \textbf{Canada 2021--22 example:} BoC held rates at 0.25\% too long while inflation was building $\Rightarrow$ was ``behind the curve'' $\Rightarrow$ had to hike very aggressively. The BoC acknowledged this in its 2023 review.
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{11.5 Setting Monetary Policy Targets}
+% ============================================================
+
+\begin{frame}{11.5 Learning Objective}
+\transfade
+\begin{block}{Goal}
+Discuss the Bank of Canada's setting of monetary policy targets.
+\end{block}
+\begin{itemize}
+  \item Should the BoC target the money supply ($M$) or the interest rate ($i$)?
+  \item What simple rules can guide monetary policy?
+  \item What is \textbf{inflation targeting} and why did Canada adopt it?
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Monetarism and the Money Growth Rule}
+\transfade
+\begin{itemize}
+  \item \textbf{Milton Friedman} (monetarists) advocated a \textbf{monetary growth rule}:
+  \begin{itemize}
+    \item Increase the money supply at $\approx$ the long-run rate of real GDP growth ($\approx 2\%$).
+    \item This would produce stable prices with $\pi \approx 0$.
+  \end{itemize}
+  \item Friedman argued:
+  \begin{itemize}
+    \item Active monetary policy introduces unpredictability and may \textbf{destabilize} the economy.
+    \item A simple rule reduces discretionary error.
+  \end{itemize}
+  \item \textbf{Why monetarism lost influence after the 1980s:}
+  \begin{itemize}
+    \item The link between M1+/M2 growth and inflation became \textbf{unstable}.
+    \item Financial innovation changed the velocity of money unpredictably.
+    \item Modern economies have more complex transmission channels.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The BoC Can't Target Both $M$ and $i$}
+\transfade
+\begin{itemize}
+  \item It may seem desirable to \textbf{simultaneously} target:
+  \begin{itemize}
+    \item a specific money supply, and
+    \item a specific interest rate.
+  \end{itemize}
+  \item But $M$ and $i$ are \textbf{linked through the money demand curve}:
+  \begin{itemize}
+    \item At a fixed money demand, a given $M$ implies a unique $i$.
+    \item You can choose $M$ or $i$, but not both independently.
+  \end{itemize}
+  \item \textbf{BoC's choice:} target the \textbf{overnight interest rate} (since 1996).
+  \begin{itemize}
+    \item More transparent and more directly linked to economic conditions.
+    \item Communicates clearly to markets (rate announcements on fixed dates).
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{The Taylor Rule}
+\transfade
+\begin{itemize}
+  \item The \textbf{Taylor rule} (John Taylor, Stanford, 1993) provides a formula linking the overnight rate to economic conditions:
+  \[
+    i_t = r^* + \pi_t + \tfrac{1}{2}(\pi_t - \pi^*) + \tfrac{1}{2}\!\left(\frac{Y_t - Y^*_t}{Y^*_t}\right),
+  \]
+  where $r^* \approx 2\%$ (neutral real rate), $\pi^* = 2\%$ (target).
+  \item \textbf{Interpretation:}
+  \begin{itemize}
+    \item If inflation $>$ 2\%: raise $i$ (fight inflation).
+    \item If inflation $<$ 2\%: lower $i$ (stimulate).
+    \item If $Y > Y^*$ (output gap positive): raise $i$.
+    \item If $Y < Y^*$ (output gap negative): lower $i$.
+  \end{itemize}
+  \item The Taylor rule is a useful \alert{benchmark}, not a rigid prescription.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Inflation Targeting: Canada's Framework}
+\transfade
+\begin{itemize}
+  \item \textbf{Canada adopted inflation targeting in 1991} --- one of the first countries to do so.
+  \item \textbf{Target:} CPI inflation of \alert{2\%}, within a control band of 1--3\%.
+  \item \textbf{Why it works:}
+  \begin{itemize}
+    \item Anchors \textbf{inflation expectations} --- if people expect 2\% inflation, they set wages and prices accordingly, which helps deliver 2\% inflation.
+    \item Increases BoC \textbf{accountability} (must explain deviations publicly).
+    \item Provides clarity for households (mortgage planning) and firms (investment decisions).
+  \end{itemize}
+  \item \textbf{Track record:} Canada averaged $\approx$\alert{2.0\%} inflation 1991--2019 --- remarkably close to target. The 2021--22 surge was the first major deviation in 30 years.
+  \begin{itemize}
+    \item \textcolor{goldenrod}{Source: Statistics Canada, CPI; Bank of Canada.}
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section*{Chapter Summary}
+% ============================================================
+
+\begin{frame}{Summary}
+\transfade
+\begin{itemize}
+  \item \textbf{Monetary policy:} Bank of Canada actions to manage money supply and interest rates toward price stability, high employment, financial stability, and growth.
+  \item BoC tools: open market operations and lending facilities $\Rightarrow$ affect the overnight rate.
+  \item \textbf{Expansionary:} BoC buys bonds $\Rightarrow$ MS increases $\Rightarrow$ $i$ falls $\Rightarrow$ C, I, NX rise $\Rightarrow$ AD shifts right $\Rightarrow$ GDP and $P$ rise.
+  \item \textbf{Contractionary:} BoC sells bonds $\Rightarrow$ MS decreases $\Rightarrow$ $i$ rises $\Rightarrow$ C, I, NX fall $\Rightarrow$ AD shifts left $\Rightarrow$ inflation slows.
+  \item Policy effectiveness limited by data, decision, and effect lags.
+  \item The BoC \textbf{cannot simultaneously} target $M$ and $i$ --- it chooses the overnight rate.
+  \item The \textbf{Taylor rule} provides a useful benchmark for setting the overnight rate.
+  \item Canada's \textbf{inflation targeting} (2\% target since 1991) successfully anchored expectations for 30 years until the COVID-19 shock.
+  \item \textbf{2022--24 case study:} BoC raised rate from 0.25\% to 5.0\% to tame 8.1\% inflation; by late 2024, CPI returned to $\approx$1.8--2.7\%, enabling rate cuts.
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\centering
+\Huge \textbf{Thank you!}\\[1em]
+\large Questions?
+\end{frame}
+
+\end{document}
