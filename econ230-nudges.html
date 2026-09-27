@@ -431,5 +431,19 @@ function runTimeline(idx){
 }
 generateAll();
 </script>
+<script>
+(function(){
+  var bb=document.getElementById('back-bar');
+  if(!bb||document.getElementById('visit-n'))return;
+  var s=document.createElement('span');
+  s.style.cssText='float:right;font-size:11px;color:#889;font-family:sans-serif;letter-spacing:.03em;';
+  s.innerHTML='Visits: <strong id="visit-n" style="color:#c8960c;font-weight:700;">&#8212;</strong>';
+  bb.appendChild(s);
+  var key='visits_'+(window.location.pathname.split('/').pop()||'index.html');
+  var n=(parseInt(localStorage.getItem(key))||0)+1;
+  localStorage.setItem(key,n);
+  document.getElementById('visit-n').textContent=n.toLocaleString();
+})();
+</script>
 </body>
 </html>

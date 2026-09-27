@@ -41,6 +41,28 @@
   });
 })();
 
+// Visitor counter — auto-injects into every page using the shared nav
+(function () {
+  const navInner = document.querySelector('.nav-inner');
+  if (!navInner || document.getElementById('visit-n')) return;
+
+  const span = document.createElement('span');
+  span.className = 'visit-ct';
+  span.innerHTML = 'Visits: <strong id="visit-n">—</strong>';
+
+  const brand = navInner.querySelector('.nav-brand');
+  if (brand && brand.nextSibling) {
+    navInner.insertBefore(span, brand.nextSibling);
+  } else {
+    navInner.appendChild(span);
+  }
+
+  const key = 'visits_' + (window.location.pathname.split('/').pop() || 'index.html');
+  const n = (parseInt(localStorage.getItem(key)) || 0) + 1;
+  localStorage.setItem(key, n);
+  document.getElementById('visit-n').textContent = n.toLocaleString();
+})();
+
 // Contact form — simple client-side feedback
 (function () {
   const form = document.getElementById('contact-form');

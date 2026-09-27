@@ -27,6 +27,8 @@
     .nav-brand span{color:var(--gold)}
     .nav-back{color:rgba(255,255,255,.8);font-size:.85rem;font-family:'Helvetica Neue',Arial,sans-serif;text-decoration:none;transition:color .15s;direction:ltr;display:inline-block}
     .nav-back:hover{color:var(--gold)}
+    .visit-ct{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;color:rgba(255,255,255,.55);letter-spacing:.04em}
+    .visit-ct strong{color:var(--gold);font-weight:700}
 
     /* HOME */
     .home-hero{background:linear-gradient(135deg,var(--navy) 0%,#00509e 100%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center}
@@ -147,6 +149,7 @@
 
 <nav>
   <span class="nav-brand">ECON 101 — <span>د ماکرواقتصاد تمرین</span></span>
+  <span class="visit-ct">Visits: <strong id="visit-n">—</strong></span>
   <a class="nav-back" href="teaching.html">← Teaching</a>
 </nav>
 
@@ -873,6 +876,13 @@ function showResults() {
 }
 
 document.getElementById('stat-n').textContent = QB.length;
+</script>
+<script>
+(function(){
+  const n=(parseInt(localStorage.getItem('visits_econ101-pashto.html'))||0)+1;
+  localStorage.setItem('visits_econ101-pashto.html',n);
+  document.getElementById('visit-n').textContent=n.toLocaleString();
+})();
 </script>
 </body>
 </html>
