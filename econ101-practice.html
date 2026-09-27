@@ -21,6 +21,8 @@
     .nav-brand span{color:var(--gold)}
     .nav-back{color:rgba(255,255,255,.8);font-size:.82rem;font-family:'Helvetica Neue',Arial,sans-serif;text-decoration:none;transition:color .15s}
     .nav-back:hover{color:var(--gold)}
+    .visit-ct{font-family:'Helvetica Neue',Arial,sans-serif;font-size:.72rem;color:rgba(255,255,255,.55);letter-spacing:.04em}
+    .visit-ct strong{color:var(--gold);font-weight:700}
 
     /* HOME */
     .home-hero{background:linear-gradient(135deg,var(--navy) 0%,#00509e 100%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center}
@@ -141,6 +143,7 @@
 
 <nav>
   <span class="nav-brand">ECON 101 — <span>Macroeconomics Practice</span></span>
+  <span class="visit-ct">Visits: <strong id="visit-n">—</strong></span>
   <a class="nav-back" href="teaching.html">← Teaching</a>
 </nav>
 
@@ -155,7 +158,7 @@
     <div class="stats-row">
       <div class="stat-card"><div class="num" id="stat-n">72</div><div class="lbl">Questions</div></div>
       <div class="stat-card"><div class="num">6</div><div class="lbl">Types</div></div>
-      <div class="stat-card"><div class="num">8</div><div class="lbl">Topics</div></div>
+      <div class="stat-card"><div class="num">9</div><div class="lbl">Topics</div></div>
     </div>
     <div class="filter-group">
       <div class="filter-label">Topic</div>
@@ -169,6 +172,7 @@
         <div class="chip" data-val="money">Money &amp; Banking</div>
         <div class="chip" data-val="monetary">Monetary Policy</div>
         <div class="chip" data-val="open">Open Economy</div>
+        <div class="chip" data-val="prices">Supply &amp; Demand</div>
       </div>
     </div>
     <div class="filter-group">
@@ -490,6 +494,484 @@ const QB = [
 {t:'an',tp:'open',tl:'Open Economy',
  q:'Canada imposes a tariff on imported steel. Analyze the effects on: (a) domestic consumers, (b) domestic producers, (c) government revenue, and (d) overall national welfare.',
  ma:'A tariff raises the domestic price of steel above the world price.\n\n(a) Domestic consumers: Pay a higher price, consume less, and lose consumer surplus. This is a welfare loss — they pay more for both domestically produced and imported steel.\n\n(b) Domestic steel producers: Benefit from the higher domestic price. They expand output and capture some consumer surplus previously held by buyers. Producer surplus rises.\n\n(c) Government revenue: Collects tariff revenue = tariff per unit × quantity imported. This partially offsets the consumer loss.\n\n(d) National welfare:\n• Gains: producer surplus + tariff revenue\n• Losses: consumer surplus\n• The consumer loss exceeds the combined gain by two "deadweight loss" triangles: (1) inefficient domestic production — resources misallocated to domestic production that could be imported more cheaply; (2) foregone consumer gains from the reduction in imports.\n\nConclusion: The tariff creates net deadweight loss — overall national welfare falls. However, there are second-best justifications: infant industry protection, national security, terms-of-trade improvement (if Canada is large enough to affect world prices), and strategic trade policy.'},
+
+// ── ADDITIONAL MULTIPLE CHOICE ────────────────────────────────────────
+{t:'mc',tp:'foundations',tl:'Foundations & PPF',
+ q:'A student can spend an evening studying or working a 4-hour shift at $18/hour. If the student chooses to study, the opportunity cost is:',
+ opts:['Zero — studying is always worthwhile','$72, the foregone wages','Only the cost of textbooks','The value of all activities the student could have done'],
+ a:1, ex:'Opportunity cost is the value of the best alternative foregone. The best alternative was earning $72 (4 hours × $18). This is the true cost of studying — economists call it an implicit cost.'},
+
+{t:'mc',tp:'money',tl:'Money & Banking',
+ q:'According to the Fisher equation, if the nominal interest rate is 7% and the inflation rate is 3%, the real interest rate is approximately:',
+ opts:['10%','4%','7%','3%'],
+ a:1, ex:'Real interest rate ≈ Nominal rate − Inflation rate = 7% − 3% = 4%. The real rate measures the actual increase in purchasing power the lender receives after adjusting for inflation.'},
+
+{t:'mc',tp:'open',tl:'Open Economy',
+ q:'If the Canadian dollar appreciates relative to the U.S. dollar, which outcome is most likely?',
+ opts:['Canadian exports rise because they are cheaper for Americans','Canadian exports fall because they are more expensive for Americans','Canadian imports fall because foreign goods become more expensive','The Bank of Canada\'s overnight rate automatically rises'],
+ a:1, ex:'When the CAD appreciates, Canadian goods cost more for foreign buyers → exports fall. Imports become cheaper for Canadians → imports rise. The net effect is lower net exports (NX ↓), reducing aggregate demand.'},
+
+{t:'mc',tp:'monetary',tl:'Monetary Policy',
+ q:'The Bank of Canada\'s primary monetary policy mandate is to:',
+ opts:['Maximize employment growth','Maintain low, stable inflation within a 1–3% target band, with a 2% midpoint','Maintain a fixed exchange rate with the U.S. dollar','Finance government deficits through bond purchases'],
+ a:1, ex:'Since 1991, the Bank of Canada has operated under an inflation-targeting framework. The current target band is 1–3% with 2% as the midpoint. Exchange rates float freely; the primary objective is price stability.'},
+
+{t:'mc',tp:'growth',tl:'Growth & Unemployment',
+ q:'The Solow growth model predicts that sustained long-run per-capita economic growth ultimately requires:',
+ opts:['Continuous increases in the labour force','Capital deepening alone','Ongoing technological progress (total factor productivity growth)','Permanently rising government spending'],
+ a:2, ex:'Capital accumulation faces diminishing returns — each additional unit of capital adds less output than the last. Only continuous technological progress (TFP growth) can sustain long-run per-capita growth indefinitely. This is the central result of the Solow model.'},
+
+// ── ADDITIONAL TRUE/FALSE ─────────────────────────────────────────────
+{t:'tf',tp:'foundations',tl:'Foundations & PPF',
+ q:'It is impossible for one country to have a comparative advantage in producing all goods.',
+ a:true, ex:'True. Comparative advantage is defined by relative opportunity costs, which are ratios. If Country A has a lower opportunity cost for Good X, Country B necessarily has a lower opportunity cost for Good Y. No country can have a lower opportunity cost in every good simultaneously.'},
+
+{t:'tf',tp:'money',tl:'Money & Banking',
+ q:'According to the quantity theory of money (MV = PQ), if the money supply doubles while velocity and real output are unchanged, the price level doubles.',
+ a:true, ex:'True. MV = PQ: with V and Q constant, doubling M requires P to double to restore equality. This is the basis for the monetarist view that sustained inflation is ultimately driven by excessive money growth.'},
+
+{t:'tf',tp:'open',tl:'Open Economy',
+ q:'Currency depreciation always improves a country\'s trade balance immediately.',
+ a:false, ex:'False. The J-curve effect shows the trade balance often worsens in the short run after depreciation. Existing import contracts denominated in foreign currency become more expensive, worsening the trade balance initially. Only after quantities adjust — exports rising, imports falling — does the trade balance improve over time.'},
+
+{t:'tf',tp:'growth',tl:'Growth & Unemployment',
+ q:'According to Okun\'s Law, when actual GDP rises above its potential level, the unemployment rate falls.',
+ a:true, ex:'True. Okun\'s Law describes an inverse empirical relationship between the GDP gap and unemployment. When real output exceeds potential, firms need more labour, so unemployment falls. Roughly, a 2% increase in GDP above potential reduces unemployment by about 1 percentage point.'},
+
+{t:'tf',tp:'fiscal',tl:'Fiscal Policy',
+ q:'A government budget deficit and the national debt are the same concept.',
+ a:false, ex:'False. A deficit is a flow: it occurs when government spending exceeds tax revenue in a single fiscal year. The national debt is a stock: the accumulated total of all past deficits minus any surpluses. Running a deficit this year adds to the existing stock of debt.'},
+
+// ── ADDITIONAL NUMERICAL ──────────────────────────────────────────────
+{t:'num',tp:'money',tl:'Money & Banking',
+ q:'The nominal interest rate on a loan is 8.5% per year and annual inflation is 3.5%. Using the Fisher approximation, what is the real interest rate (%)?',
+ a:5, tol:.15, hint:'Real rate ≈ Nominal rate − Inflation rate', unit:'%',
+ ex:'Real interest rate ≈ 8.5% − 3.5% = 5%. The real rate measures the actual gain in purchasing power received by the lender after accounting for inflation.'},
+
+{t:'num',tp:'fiscal',tl:'Fiscal Policy',
+ q:'MPC = 0.8. The government cuts taxes by $25 billion. By how much does equilibrium income change ($ billions)?',
+ a:100, tol:1, hint:'Tax multiplier = −MPC ÷ (1 − MPC). ΔY = tax multiplier × ΔT (a tax cut means ΔT is negative)', unit:'$ billion',
+ ex:'Tax multiplier = −0.8 ÷ 0.2 = −4. Tax cut: ΔT = −$25B. ΔY = −4 × (−25) = +$100 billion. The tax multiplier is smaller in absolute value than the spending multiplier because part of the tax cut leaks into saving.'},
+
+{t:'num',tp:'growth',tl:'Growth & Unemployment',
+ q:'A country\'s real GDP grows at 3.5% per year. Using the Rule of 70, approximately how many years will it take for real GDP to double?',
+ a:20, tol:.5, hint:'Rule of 70: Doubling time ≈ 70 ÷ annual growth rate (%)', unit:'years',
+ ex:'Doubling time ≈ 70 ÷ 3.5 = 20 years. The Rule of 70 gives a quick approximation for compound growth: the number of years to double equals 70 divided by the annual percentage growth rate.'},
+
+// ── ADDITIONAL SHORT ANSWER ───────────────────────────────────────────
+{t:'sa',tp:'foundations',tl:'Foundations & PPF',
+ q:'Distinguish between microeconomics and macroeconomics, and give one example of a question studied in each field.',
+ kw:['microeconomics','macroeconomics','individual','aggregate','firm','household','price','market','GDP','inflation','unemployment'],
+ ma:'Microeconomics studies the behaviour of individual economic agents — households, firms, and markets. It examines how prices are determined, how consumers make choices under budget constraints, and how firms decide on output and pricing.\nExample: Why does the price of avocados rise in winter?\n\nMacroeconomics studies the economy as a whole — aggregate output (GDP), the price level (inflation), unemployment, and growth. It also analyses stabilization policy.\nExample: What causes business cycles and how should policymakers respond to recessions?\n\nThe two fields are complementary: macroeconomic outcomes emerge from the cumulative effect of millions of individual microeconomic decisions.'},
+
+{t:'sa',tp:'money',tl:'Money & Banking',
+ q:'What is quantitative easing (QE), and under what circumstances does a central bank use it?',
+ kw:['zero lower bound','interest rates','bonds','balance sheet','unconventional','money supply','reserves','recession','assets','long-term'],
+ ma:'Quantitative easing (QE) is an unconventional monetary policy tool deployed when the policy interest rate has been cut to (or near) zero and cannot fall further — the zero lower bound.\n\nUnder QE, the central bank purchases large quantities of longer-term assets (government bonds, mortgage-backed securities) from financial institutions, crediting their reserve accounts. The goals are: (1) expand the money supply and inject liquidity; (2) push down long-term interest rates by driving up bond prices; (3) encourage investors to move into riskier assets, stimulating credit and spending.\n\nThe Bank of Canada first deployed QE during the COVID-19 recession in 2020. Once the economy recovers and inflation returns, the central bank reverses QE through "quantitative tightening."'},
+
+{t:'sa',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'What are automatic stabilizers? Give two examples and explain how they dampen economic fluctuations without requiring new legislation.',
+ kw:['automatic stabilizers','progressive','tax','employment insurance','transfer','recession','cyclical','deficit','disposable income'],
+ ma:'Automatic stabilizers are features of the tax and transfer system that automatically inject spending into the economy during recessions and withdraw it during expansions — without requiring new legislation.\n\nExample 1 — Employment Insurance (EI): When unemployment rises in a recession, EI payments automatically increase, sustaining household income and consumption. In expansions, fewer workers claim EI, automatically cooling excess demand.\n\nExample 2 — Progressive income tax: When incomes fall in a recession, workers move into lower tax brackets, cushioning the decline in disposable income. When incomes surge in a boom, higher marginal rates withdraw spending and help prevent overheating.\n\nAutomatic stabilizers reduce the amplitude of business cycles and act quickly — their fiscal response is built into existing legislation, avoiding the recognition and implementation lags of discretionary policy.'},
+
+// ── ADDITIONAL GRAPHICAL ──────────────────────────────────────────────
+{t:'graph',tp:'growth',tl:'Growth & Unemployment',
+ q:'The AD-AS diagram shows LRAS shifting rightward from LRAS₁ to LRAS₂, with AD unchanged. What is the long-run effect on the price level and real GDP?',
+ gfx:'lras_shift',
+ opts:['Higher price level and higher real GDP','Lower price level and higher real GDP','Lower price level and lower real GDP','No change in real GDP'],
+ a:1, ex:'A rightward LRAS shift represents long-run economic growth — potential output expands. With AD unchanged, the new long-run equilibrium lies further right on the AD curve: real GDP rises and the price level falls. This is the beneficial supply-side effect of productivity growth, capital accumulation, or labour force expansion.'},
+
+{t:'graph',tp:'open',tl:'Open Economy',
+ q:'The foreign exchange market for Canadian dollars shows demand for CAD shifting rightward from D₁ to D₂, with supply unchanged. What happens to the value of the CAD?',
+ gfx:'forex',
+ opts:['The CAD depreciates — more dollars are supplied','The CAD appreciates — increased demand bids up its price','The CAD is unchanged — supply automatically adjusts','The exchange rate is set only by the Bank of Canada'],
+ a:1, ex:'An increase in demand for CAD (e.g., higher Canadian interest rates attracting foreign investment, or rising foreign demand for Canadian exports) bids up the price of CAD in terms of foreign currency. The equilibrium exchange rate rises — CAD appreciates.'},
+
+// ── ADDITIONAL ANALYTICAL ─────────────────────────────────────────────
+{t:'an',tp:'open',tl:'Open Economy',
+ q:'The Bank of Canada raises its overnight rate from 3% to 5%. Trace the effects on: (a) domestic investment and consumption, (b) the exchange rate, (c) net exports, and (d) aggregate demand. Is this policy appropriate if Canada\'s inflation is above the 2% target?',
+ ma:'(a) Domestic investment and consumption:\nHigher borrowing costs reduce business investment — fewer projects earn returns above the higher cost of capital — and discourage household spending on housing and durables. Both I and C fall, reducing aggregate demand directly.\n\n(b) Exchange rate:\nHigher Canadian interest rates attract foreign capital seeking better returns. Investors buy CAD to invest in Canadian assets → demand for CAD rises → CAD appreciates.\n\n(c) Net exports:\nA stronger CAD makes Canadian exports more expensive for foreign buyers (X ↓) and makes imports cheaper for Canadians (M ↑). Net exports NX = X − M decline.\n\n(d) Aggregate demand:\nAll three channels — lower I, lower C, and lower NX — shift AD leftward. The economy moves down along SRAS: real GDP falls, unemployment rises, and the price level declines.\n\nPolicy assessment:\nYes, this contractionary monetary policy is appropriate when inflation exceeds the 2% target. By cooling AD, it relieves upward price pressure. The Bank of Canada used exactly this approach in 2022–2023, raising rates from 0.25% to 5% to combat post-pandemic inflation that peaked above 8%.'},
+
+{t:'an',tp:'national',tl:'National Income Accounting',
+ q:'A country\'s real GDP grows by 4% per year. Does this necessarily mean citizens\' well-being has improved? Discuss at least three limitations of GDP as a measure of economic welfare.',
+ ma:'GDP measures the market value of new output, not welfare directly. Key limitations:\n\n1. Distribution: GDP reveals nothing about how income is divided. If growth accrues entirely to the wealthiest households, median living standards may stagnate even as aggregate GDP rises. Distributional measures (Gini coefficient, median household income) are needed.\n\n2. Non-market activities: Unpaid household work — childcare, elder care, cooking, volunteering — is excluded from GDP. If caregivers enter paid employment, GDP rises, but partly because previously unpaid services are monetized, not because true output grew.\n\n3. Environmental sustainability: GDP counts pollution clean-up and resource extraction as positive contributions. An economy depleting natural capital reports rising GDP while undermining future productive capacity. "Green GDP" and the Genuine Progress Indicator (GPI) attempt to correct for environmental degradation.\n\n4. Leisure and working hours: Longer working hours raise GDP but reduce leisure — a dimension of well-being not captured in output statistics.\n\nConclusion: GDP is a useful indicator of productive capacity and trends. But policymakers should complement it with broader welfare measures — Human Development Index, health outcomes, subjective well-being surveys — for a complete picture.'},
+
+// ── BATCH 3: MULTIPLE CHOICE ──────────────────────────────────────────
+{t:'mc',tp:'monetary',tl:'Monetary Policy',
+ q:'Which of the following is an example of expansionary open market operations by the Bank of Canada?',
+ opts:['The Bank sells government bonds to chartered banks','The Bank buys government bonds from chartered banks','The Bank raises the overnight rate target','The Bank increases the required reserve ratio'],
+ a:1, ex:'Buying bonds injects reserves into the banking system, expanding the money supply and putting downward pressure on interest rates — an expansionary operation. Selling bonds drains reserves (contractionary).'},
+
+{t:'mc',tp:'foundations',tl:'Foundations & PPF',
+ q:'Country A can produce 4 units of wheat or 2 units of cloth per hour. Country B can produce 1 unit of wheat or 1 unit of cloth per hour. Which statement is correct?',
+ opts:['Country A has a comparative advantage in both goods','Country A has a comparative advantage in cloth; Country B in wheat','Country A has a comparative advantage in wheat; Country B in cloth','Neither country has a comparative advantage'],
+ a:2, ex:'Country A\'s opportunity cost of wheat = 0.5 cloth; Country B\'s = 1 cloth. Country A has the lower opportunity cost in wheat → comparative advantage in wheat. Country B\'s opportunity cost of cloth = 1 wheat vs. Country A\'s 2 wheat → Country B has comparative advantage in cloth.'},
+
+{t:'mc',tp:'national',tl:'National Income Accounting',
+ q:'The income approach to GDP measures the sum of:',
+ opts:['All final goods and services sold to consumers','All factor incomes — wages, profits, rent, and interest — plus depreciation and indirect taxes','The value added at each stage of production','Government spending plus private investment'],
+ a:1, ex:'The income approach adds all factor incomes earned in production: employee compensation, gross operating surplus (profits), mixed income, depreciation (consumption of fixed capital), and indirect taxes less subsidies. GDP can be measured three equivalent ways: expenditure, output, or income.'},
+
+// ── BATCH 3: TRUE / FALSE ─────────────────────────────────────────────
+{t:'tf',tp:'monetary',tl:'Monetary Policy',
+ q:'The Taylor Rule suggests that a central bank should raise its policy interest rate when inflation exceeds its target or when output exceeds potential GDP.',
+ a:true, ex:'True. The Taylor Rule (Taylor, 1993) provides a guideline for setting the policy rate: raise rates when inflation is above target or when the output gap is positive (economy overheating). It formalizes the dual mandate of price stability and output stabilization.'},
+
+{t:'tf',tp:'growth',tl:'Growth & Unemployment',
+ q:'Investments in education and training are examples of human capital accumulation, which economists recognize as a source of long-run economic growth.',
+ a:true, ex:'True. Human capital — the stock of knowledge, skills, and health embodied in workers — raises labour productivity. Higher productivity means more output per worker, enabling higher living standards. Education, training, and health care investments are all human capital accumulation.'},
+
+{t:'tf',tp:'fiscal',tl:'Fiscal Policy',
+ q:'Discretionary fiscal policy refers to deliberate changes in government spending or taxes that require new legislative action.',
+ a:true, ex:'True. Discretionary policy involves intentional, legislated changes — such as a new stimulus package or a tax reform bill — requiring parliamentary approval. This contrasts with automatic stabilizers (EI, progressive taxes), which adjust without new legislation.'},
+
+// ── BATCH 3: NUMERICAL ────────────────────────────────────────────────
+{t:'num',tp:'foundations',tl:'Foundations & PPF',
+ q:'A country can produce a maximum of 60 units of Good A or 20 units of Good B (linear PPF). What is the opportunity cost of producing one additional unit of Good B, measured in units of Good A foregone?',
+ a:3, tol:.05, hint:'Opportunity cost of B = Maximum A ÷ Maximum B', unit:'units of Good A',
+ ex:'The PPF is linear, so opportunity cost is constant. Moving from max A to max B sacrifices 60 units of A to gain 20 units of B, so 1 unit of B costs 60 ÷ 20 = 3 units of A.'},
+
+{t:'num',tp:'national',tl:'National Income Accounting',
+ q:'The consumption function is C = 50 + 0.75 × Yd. If disposable income (Yd) is $400 billion, what is consumption ($ billions)?',
+ a:350, tol:1, hint:'Substitute Yd into C = 50 + 0.75 × Yd', unit:'$ billion',
+ ex:'C = 50 + 0.75 × 400 = 50 + 300 = $350 billion. The intercept ($50B) is autonomous consumption — spending independent of income; 0.75 is the MPC.'},
+
+{t:'num',tp:'monetary',tl:'Monetary Policy',
+ q:'The Bank of Canada buys $5 billion in government bonds. If the reserve ratio is 10%, by how much can the money supply potentially increase ($ billions)?',
+ a:50, tol:.5, hint:'Potential ΔMoney supply = Bond purchase × (1 ÷ reserve ratio)', unit:'$ billion',
+ ex:'Money multiplier = 1 ÷ 0.10 = 10. Potential ΔMoney supply = $5B × 10 = $50 billion. The purchase injects $5B in new reserves; through successive rounds of lending, the banking system can multiply this tenfold.'},
+
+// ── BATCH 3: SHORT ANSWER ─────────────────────────────────────────────
+{t:'sa',tp:'monetary',tl:'Monetary Policy',
+ q:'Describe the three main instruments of monetary policy available to the Bank of Canada.',
+ kw:['overnight rate','open market','reserve','money supply','interest rate','bonds','target','policy rate','lending'],
+ ma:'1. Policy interest rate (overnight rate target): The Bank sets a target for the rate at which chartered banks lend reserves to each other overnight. Raising the target increases borrowing costs throughout the economy; lowering it stimulates spending. This is the primary instrument.\n\n2. Open market operations (OMO): The Bank buys or sells Government of Canada securities. Buying bonds injects reserves and expands the money supply (expansionary); selling bonds drains reserves (contractionary).\n\n3. Reserve requirements: The Bank can change the fraction of deposits banks must hold as reserves. Raising the ratio restricts lending capacity; lowering it expands it. In practice, Canada does not actively use reserve requirements today — the overnight rate is the primary lever.\n\nNote: During the COVID-19 recession the Bank also deployed quantitative easing as an additional unconventional instrument.'},
+
+{t:'sa',tp:'fiscal',tl:'Fiscal Policy',
+ q:'Explain the difference between automatic stabilizers and discretionary fiscal policy. Which is generally faster to implement, and why?',
+ kw:['automatic','discretionary','legislation','recognition lag','implementation lag','employment insurance','tax','stimulus','budget'],
+ ma:'Automatic stabilizers are built-in features of the tax and transfer system that adjust automatically without new legislation. When incomes fall, EI payments rise and progressive taxes withdraw less — stabilizing demand immediately.\n\nDiscretionary fiscal policy involves deliberate, legislated changes — new spending programs, tax cuts, or stimulus packages — that require parliamentary debate and approval.\n\nAutomatic stabilizers are faster because they kick in the moment economic conditions change. Discretionary policy suffers significant lags:\n• Recognition lag: time to identify the downturn\n• Legislative lag: time to pass a budget\n• Implementation lag: time for spending to reach the economy\n\nBy the time a discretionary stimulus arrives, the recession may already be easing — risking pro-cyclical overheating. Automatic stabilizers bypass all three lags.'},
+
+{t:'sa',tp:'national',tl:'National Income Accounting',
+ q:'What are transfer payments? Explain why government transfer payments such as Employment Insurance benefits are NOT included in GDP.',
+ kw:['transfer payments','production','output','GDP','Employment Insurance','welfare','income redistribution','not counted','no production'],
+ ma:'Transfer payments are government payments to individuals for which no good or service is produced in exchange. Examples: Employment Insurance (EI), Old Age Security (OAS), Canada Child Benefit (CCB), and social assistance.\n\nThey are excluded from GDP because GDP measures the value of new production. Transfer payments merely redistribute purchasing power from taxpayers to recipients — no new output is created in the transaction itself.\n\nIncluding them would cause double-counting: the taxes funding transfers are already part of taxpayer income (income approach), and the goods recipients buy with transfer income are counted when purchased (expenditure approach). Adding transfers again would count the same activity twice.'},
+
+// ── BATCH 3: GRAPHICAL ────────────────────────────────────────────────
+{t:'graph',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'The AD-AS diagram shows the economy at E₁ to the RIGHT of LRAS — an inflationary gap. Which policy best closes this gap?',
+ gfx:'inf_gap',
+ opts:['Increasing government spending','Cutting income taxes','Raising the central bank\'s policy rate or cutting government spending','Buying bonds in the open market'],
+ a:2, ex:'An inflationary gap means output exceeds potential — the economy is overheating. Contractionary policy is needed: raising interest rates (monetary) or cutting spending/raising taxes (fiscal) shifts AD leftward, closing the gap at a lower price level.'},
+
+{t:'graph',tp:'money',tl:'Money & Banking',
+ q:'The loanable funds market shows the supply of loanable funds shifting rightward from S₁ to S₂. What happens to the real interest rate and the quantity of investment?',
+ gfx:'lf_mkt',
+ opts:['Interest rate rises; investment falls','Interest rate falls; investment rises','Interest rate rises; investment rises','Interest rate falls; investment falls'],
+ a:1, ex:'Greater supply of loanable funds (e.g., from higher household saving or capital inflows) creates a surplus at the original rate. Lenders compete for borrowers, driving the rate down. The lower rate makes more investment projects profitable → equilibrium investment rises.'},
+
+{t:'graph',tp:'growth',tl:'Growth & Unemployment',
+ q:'The short-run Phillips curve (SRPC) shows the economy at Point A, where unemployment equals the natural rate U*. If policymakers stimulate demand to push unemployment below U*, where does the economy move in the short run?',
+ gfx:'phillips',
+ opts:['Down and to the right — lower inflation, higher unemployment','Up and to the left — higher inflation, lower unemployment (Point B)','Straight up — higher inflation with no change in unemployment','The SRPC shifts leftward immediately'],
+ a:1, ex:'Moving left along the SRPC means lower unemployment but higher inflation. Stimulating demand shifts the economy from A (at U*) to B (below U*) — buying lower unemployment at the cost of higher inflation. In the long run, the SRPC shifts up as inflation expectations rise.'},
+
+// ── BATCH 3: ANALYTICAL ───────────────────────────────────────────────
+{t:'an',tp:'growth',tl:'Growth & Unemployment',
+ q:'Canada admits 500,000 skilled immigrants in a year. Analyze the short-run and long-run effects on: (a) aggregate supply, (b) aggregate demand, (c) wages, and (d) per-capita GDP.',
+ ma:'(a) Aggregate supply:\nImmigrants expand the labour force, increasing productive capacity. In the long run, the LRAS curve shifts rightward — potential GDP rises. In the short run, SRAS also shifts right as more workers are available at each price level.\n\n(b) Aggregate demand:\nNew residents consume goods and services, pay rent, and purchase furniture, transportation, and other necessities. AD shifts rightward as consumption rises.\n\n(c) Wages:\nIn the short run, greater labour supply puts downward pressure on wages, particularly in sectors immigrants concentrate in. However, as immigrants earn and spend, labour demand also rises in service sectors — partially offsetting wage pressure over time.\n\n(d) Per-capita GDP:\nThe net effect depends on immigrant productivity. Skilled immigrants raise average labour productivity and can grow GDP faster than population, raising per-capita GDP. Short-run gains may be modest if immigrants face credential recognition barriers. Long-run gains from human capital accumulation and innovation tend to be positive — consistent with Canadian immigration policy targeting economic-class admissions.'},
+
+{t:'an',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'A sharp rise in global oil prices hits the Canadian economy. Using the AD-AS model, analyze: (a) the short-run effects on inflation and real GDP, (b) why this is called "stagflation," and (c) the policy dilemma it creates for the Bank of Canada.',
+ ma:'(a) Short-run effects:\nHigher oil prices raise production costs across the economy (transportation, manufacturing, heating). The SRAS curve shifts leftward: at every price level, firms supply less output. The new short-run equilibrium has a higher price level (inflation ↑) and lower real GDP (recession). Unemployment rises.\n\n(b) Stagflation:\nThe simultaneous occurrence of stagnation (recession/slow growth) and inflation is called stagflation. It is unusual because normal recessions are accompanied by falling, not rising, prices. It occurred prominently in the 1970s following OPEC oil price shocks.\n\n(c) Policy dilemma:\nThe Bank faces a classic dilemma:\n• Combat inflation by tightening (raise rates) → AD shifts left → inflation falls, but recession deepens and unemployment worsens further.\n• Combat recession by easing (cut rates) → AD shifts right → GDP recovers, but inflation worsens.\nNo single tool can cure both problems simultaneously. Central banks typically prioritize inflation control while hoping for supply-side recovery. The Bank of Canada confronted a version of this dilemma in 2022 when energy price surges combined with post-pandemic demand, ultimately choosing to raise rates to anchor inflation expectations.'},
+
+{t:'an',tp:'foundations',tl:'Foundations & PPF',
+ q:'Using comparative advantage, explain why two countries can both gain from trade even when one country is absolutely more productive at all goods. Illustrate with a numerical example.',
+ ma:'The principle of comparative advantage (Ricardo, 1817) holds that mutually beneficial trade is possible whenever countries face different opportunity costs — regardless of absolute productivity.\n\nNumerical example:\n• Canada: 1 hour of labour → 10 cars OR 20 wheat\n• Bangladesh: 1 hour of labour → 2 cars OR 2 wheat\n\nCanada is absolutely more productive at both. But opportunity costs differ:\n• Canada: opportunity cost of 1 car = 2 wheat; opportunity cost of 1 wheat = 0.5 cars\n• Bangladesh: opportunity cost of 1 car = 1 wheat; opportunity cost of 1 wheat = 1 car\n\nBangladesh has the lower opportunity cost of cars (1 wheat vs. Canada\'s 2 wheat) → comparative advantage in cars.\nCanada has the lower opportunity cost of wheat (0.5 cars vs. Bangladesh\'s 1 car) → comparative advantage in wheat.\n\nIf Canada specializes in wheat and Bangladesh in cars, world output of both goods rises compared to self-sufficiency. Both countries trade to reach consumption combinations beyond their individual PPFs.\n\nKey insight: Comparative advantage — not absolute advantage — determines the gains from trade. Free trade raises total world output even when one country is more productive at everything.'},
+
+// ── BATCH 4: MULTIPLE CHOICE ──────────────────────────────────────────
+{t:'mc',tp:'money',tl:'Money & Banking',
+ q:'When the Bank of Canada acts as "lender of last resort," it:',
+ opts:['Lends money directly to households unable to access credit','Provides emergency liquidity to solvent but illiquid financial institutions to prevent systemic collapse','Guarantees all bank deposits up to $100,000 (that is CDIC\'s role)','Sets the prime lending rate for commercial mortgages'],
+ a:1, ex:'The lender-of-last-resort function (Bagehot principle) means the central bank stands ready to lend freely at a penalty rate to financially sound institutions facing a temporary liquidity shortage — stopping bank runs from spreading. Deposit insurance (via CDIC in Canada) is a separate, complementary mechanism.'},
+
+{t:'mc',tp:'national',tl:'National Income Accounting',
+ q:'Which statement best distinguishes the Consumer Price Index (CPI) from the GDP deflator?',
+ opts:['The CPI measures only goods; the GDP deflator includes services','The CPI is based on a fixed household consumption basket and includes imports; the GDP deflator covers all domestically produced final goods and services but excludes imports','The GDP deflator uses base-year quantities; the CPI uses current-year prices','They are identical measures that always move together'],
+ a:1, ex:'The CPI tracks the cost of a fixed basket typical for urban households — including imported goods. The GDP deflator covers all domestically produced output (including investment and government purchases) but excludes imports. Both measure the price level but from different angles.'},
+
+{t:'mc',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'The "paradox of thrift" (Keynes) states that if all households simultaneously try to save more:',
+ opts:['National saving always rises, funding more investment','Aggregate income falls, potentially leaving total saving unchanged — individual virtue becomes collective harm','Interest rates rise, stimulating investment and restoring output','The economy automatically expands to accommodate higher desired saving'],
+ a:1, ex:'If every household cuts spending to save more, aggregate demand falls. Lower demand reduces income and output. With lower income, households may end up saving the same amount or less — so the collective attempt to save more produces a smaller economy without more saving.'},
+
+// ── BATCH 4: TRUE / FALSE ─────────────────────────────────────────────
+{t:'tf',tp:'growth',tl:'Growth & Unemployment',
+ q:'When discouraged workers stop looking for jobs and leave the labour force, the official unemployment rate falls even though more people are without work.',
+ a:true, ex:'True. Unemployment rate = Unemployed ÷ Labour Force. Discouraged workers who stop searching are classified as "not in the labour force" — removed from both the numerator and denominator. The rate falls even though labour market conditions have worsened, which is why economists also monitor the labour force participation rate.'},
+
+{t:'tf',tp:'fiscal',tl:'Fiscal Policy',
+ q:'A balanced-budget increase — where government raises both spending and taxes by the same amount — has zero net effect on aggregate demand.',
+ a:false, ex:'False. The balanced-budget multiplier equals 1: an equal rise in G and T increases equilibrium income by exactly the amount of the spending increase. Higher G adds the full dollar to demand; the tax increase reduces disposable income, but households absorb part of the cut through lower saving (MPC < 1), so the demand reduction is smaller than the spending gain — net effect is positive.'},
+
+{t:'tf',tp:'open',tl:'Open Economy',
+ q:'Purchasing Power Parity (PPP) theory predicts that in the long run, exchange rates adjust so that identical traded goods cost the same in all countries when measured in a common currency.',
+ a:true, ex:'True. PPP holds that arbitrage eliminates persistent price differences for traded goods. If a Canadian good costs $5 CAD and the identical good costs $4 USD in the U.S., traders will exploit the gap until exchange rates or prices adjust. PPP holds better in the long run and for easily traded goods; non-traded services and trade barriers cause deviations.'},
+
+// ── BATCH 4: NUMERICAL ────────────────────────────────────────────────
+{t:'num',tp:'money',tl:'Money & Banking',
+ q:'Using the quantity theory (MV = PQ): the money supply (M) is $800 billion, the price level (P) is 1.25, and real output (Q) is $2,400 billion. Calculate the velocity of money (V).',
+ a:3.75, tol:.05, hint:'V = (P × Q) ÷ M', unit:'',
+ ex:'V = PQ ÷ M = (1.25 × 2,400) ÷ 800 = 3,000 ÷ 800 = 3.75. Velocity measures how many times, on average, each dollar is spent on final output per year.'},
+
+{t:'num',tp:'growth',tl:'Growth & Unemployment',
+ q:'Real GDP was $1,200 billion in Year 1 and $1,260 billion in Year 2. What is the real GDP growth rate (%) between the two years?',
+ a:5, tol:.1, hint:'Growth rate = ((New − Old) ÷ Old) × 100', unit:'%',
+ ex:'Growth rate = ((1,260 − 1,200) ÷ 1,200) × 100 = (60 ÷ 1,200) × 100 = 5%.'},
+
+{t:'num',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'The aggregate expenditure function is AE = 200 + 0.6Y ($ billions). What is the equilibrium level of income Y* ($ billions)?',
+ a:500, tol:1, hint:'At equilibrium Y = AE. Solve Y = 200 + 0.6Y for Y.', unit:'$ billion',
+ ex:'Y = 200 + 0.6Y → 0.4Y = 200 → Y* = $500 billion. Equivalently: multiplier = 1 ÷ (1 − 0.6) = 2.5; Y* = 200 × 2.5 = 500.'},
+
+// ── BATCH 4: SHORT ANSWER ─────────────────────────────────────────────
+{t:'sa',tp:'foundations',tl:'Foundations & PPF',
+ q:'Explain the concept of marginal analysis and how it guides rational economic decision-making. Give one real-world example.',
+ kw:['marginal','benefit','cost','additional','last unit','optimal','rational','trade-off','net benefit'],
+ ma:'Marginal analysis compares the additional (marginal) benefit of an action with its additional (marginal) cost. A rational decision-maker continues any activity as long as marginal benefit exceeds marginal cost, and stops when MB = MC.\n\nKey principle: sunk (past) costs are irrelevant — only future marginal costs and benefits matter.\n\nExample: A firm deciding how many workers to hire. Each additional worker adds some output revenue (marginal benefit) but costs a wage (marginal cost). The firm hires up to the point where the marginal revenue product of the last worker equals the wage. Hiring beyond that point would add more cost than benefit — profit falls.'},
+
+{t:'sa',tp:'growth',tl:'Growth & Unemployment',
+ q:'Identify and briefly explain three costs of inflation. How do the costs of anticipated inflation differ from those of unanticipated inflation?',
+ kw:['menu costs','shoe leather','redistribution','uncertainty','real income','anticipated','unanticipated','debtors','creditors','purchasing power'],
+ ma:'Three costs of inflation:\n\n1. Menu costs: Businesses must frequently update prices — reprinting menus, repricing store shelves, updating databases. These consume real resources without adding any output.\n\n2. Shoe-leather costs: Higher inflation erodes the real value of holding cash. People make more frequent trips to the bank (wearing out shoe leather, metaphorically) to minimize idle cash balances — wasting time and effort.\n\n3. Redistribution: Unexpected inflation transfers wealth from creditors to debtors (loans are repaid in dollars worth less than expected) and from workers on fixed nominal wages to employers.\n\nAnticipated vs. unanticipated:\n• Anticipated inflation allows households and firms to adjust wages and contracts in advance (Fisher effect), limiting redistribution. Main costs remain menu and shoe-leather costs.\n• Unanticipated inflation cannot be hedged against. It causes arbitrary redistribution, discourages long-term contracting, and raises economic uncertainty — generally far more damaging.'},
+
+{t:'sa',tp:'open',tl:'Open Economy',
+ q:'Distinguish between the current account and the capital (financial) account of the balance of payments. Why must they sum to zero?',
+ kw:['current account','capital account','financial account','trade balance','exports','imports','investment','foreign direct','balance of payments','deficit'],
+ ma:'The balance of payments records all international economic transactions.\n\nCurrent account: Trade in goods and services (the trade balance), net income from abroad (dividends, interest, wages), and net transfer payments (foreign aid, remittances).\n\nCapital/Financial account: Flows of financial assets — foreign direct investment, portfolio investment (stocks and bonds), and changes in official foreign-exchange reserves.\n\nWhy they sum to zero:\nEvery international transaction has two sides. If Canada runs a current account deficit — importing more than exporting — it must finance the gap by borrowing from foreigners, selling domestic assets to foreigners, or drawing down reserves. These financing flows appear as capital account inflows. By accounting identity, Current Account + Capital Account = 0 (ignoring measurement error). A current account deficit is always exactly matched by a capital account surplus.'},
+
+// ── BATCH 4: GRAPHICAL ────────────────────────────────────────────────
+{t:'graph',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'The diagram shows a consumption function C = a + MPC·Yd alongside a 45° reference line. What does the slope of the consumption function represent?',
+ gfx:'cons_fn',
+ opts:['The average propensity to consume (APC)','The marginal propensity to consume (MPC) — additional consumption per dollar of extra income','The level of autonomous consumption (a)','The break-even level of income'],
+ a:1, ex:'The slope equals the MPC — the fraction of each extra dollar of disposable income spent on consumption. The y-intercept (a) is autonomous consumption, independent of income. The 45° line shows where C = Yd (break-even: all income is consumed, nothing saved).'},
+
+{t:'graph',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'The diagram shows the economy at E₁ in a recessionary gap. SRAS shifts from SRAS₁ to SRAS₂. What causes this long-run adjustment and where does the economy settle at E₂?',
+ gfx:'long_run',
+ opts:['Government increases spending, shifting SRAS rightward','Unemployment above the natural rate pushes wages down, reducing costs and shifting SRAS rightward — output returns to potential at a lower price level','Rising wages shift SRAS right, raising both the price level and output','The Bank of Canada expands the money supply, shifting AD rightward'],
+ a:1, ex:'In a recessionary gap, unemployment exceeds the natural rate, putting downward pressure on wages. Lower labour costs shift SRAS rightward (downward). The economy slides down the AD curve to E₂ at LRAS: real GDP rises back to potential and the price level falls. This is the economy\'s built-in long-run self-correction.'},
+
+{t:'graph',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'The diagram shows SRAS shifting leftward from SRAS₁ to SRAS₂ with AD unchanged. What is the new short-run equilibrium at E₂?',
+ gfx:'sras_shift',
+ opts:['Lower price level and higher real GDP','Higher price level and lower real GDP — stagflation','Higher price level and higher real GDP','The price level and GDP are unchanged'],
+ a:1, ex:'A leftward SRAS shift — caused by higher input costs (e.g., a spike in oil prices, a supply chain disruption, or a sharp wage increase) — moves equilibrium up along AD: the price level rises AND real GDP falls. This simultaneous stagnation and inflation is stagflation. It is the most difficult situation for policymakers because no standard demand-management tool fixes both problems at once.'},
+
+// ── BATCH 4: ANALYTICAL ───────────────────────────────────────────────
+{t:'an',tp:'fiscal',tl:'Fiscal Policy',
+ q:'Why is a $1 increase in government spending generally more stimulative than a $1 tax cut of equal size? Use the multiplier framework in your answer, and identify one practical reason why the difference may be smaller in reality.',
+ ma:'The spending multiplier exceeds the tax multiplier in absolute value because of how each dollar enters aggregate demand.\n\nFormulas:\n• Government spending multiplier = 1 ÷ (1 − MPC)\n• Tax multiplier = −MPC ÷ (1 − MPC)\n\nExample (MPC = 0.8):\n• $1 increase in G → ΔY = $5\n• $1 tax cut → ΔY = $4\n\nThe reason for the difference:\nGovernment spending enters aggregate demand in full from the first dollar — the entire $1 is spent. A tax cut gives households $1 of extra disposable income, but they save a fraction (1 − MPC = 0.20): only $0.80 enters spending in round one. This smaller initial injection produces a smaller total multiplier effect.\n\nPractical qualifications that reduce the difference:\n1. Ricardian equivalence: Rational households, anticipating that today\'s deficit means future tax increases, may save a tax cut entirely — making the tax multiplier near zero.\n2. Targeting: Tax cuts directed at low-income households (high MPC) close the gap with spending; tax cuts for high-income households (low MPC) widen it.\n3. Implementation: Government spending has longer implementation lags; a well-designed tax credit reaches households quickly.'},
+
+{t:'an',tp:'monetary',tl:'Monetary Policy',
+ q:'Explain the zero lower bound (ZLB) problem in monetary policy. Why does it constrain the central bank, and what unconventional tools have central banks used when the ZLB is binding?',
+ ma:'The zero lower bound (ZLB) is the constraint that nominal interest rates cannot fall meaningfully below zero. Holding cash yields 0%: if deposit rates went substantially negative, depositors would simply withdraw cash — so the central bank loses its primary tool of rate cuts.\n\nWhy it constrains monetary policy:\nConventional policy stimulates by cutting the overnight rate, reducing borrowing costs and encouraging investment and consumption. Once the rate hits zero, further cuts are blocked (or deeply counterproductive). In a severe recession — precisely when aggressive easing is most needed — the central bank may run out of conventional ammunition. The economy can fall into a "liquidity trap" where even zero rates fail to stimulate, because weak expectations suppress borrowing and spending regardless of the rate.\n\nUnconventional tools used in practice:\n1. Quantitative Easing (QE): Purchases of longer-term government bonds and other assets to push down long-term yields and inject reserves (used by the Bank of Canada, Federal Reserve, and ECB in 2008–09 and 2020).\n2. Forward guidance: Publicly committing to keep rates low for an extended period, anchoring long-term expectations and encouraging borrowing today.\n3. Negative Interest Rate Policy (NIRP): Setting rates slightly below zero to charge banks for excess reserves, used by the ECB and Bank of Japan.\n4. Yield curve control: Targeting a specific long-term yield directly (Bank of Japan).\n\nLesson: The ZLB makes fiscal policy indispensable in deep downturns, since monetary policy alone may be insufficient.'},
+
+{t:'an',tp:'growth',tl:'Growth & Unemployment',
+ q:'Using Solow growth model logic, analyze how an increase in the national saving rate affects a country\'s level of GDP per capita and its long-run growth rate. Is a higher saving rate always desirable?',
+ ma:'In the Solow model, output per capita y = f(k) depends on capital per capita k, with diminishing returns to capital.\n\nEffect of a higher saving rate:\nA higher saving rate raises investment per worker → capital per worker accumulates faster → k rises toward a new, higher steady state → y (GDP per capita) rises permanently.\n\nEffect on long-run growth rate:\nIn the new steady state, investment again equals depreciation per worker — the economy grows only at the exogenous rate of technological progress. A higher saving rate raises the level of GDP per capita but NOT the long-run growth rate. This is "transitional dynamics": the economy grows faster during the transition but eventually settles back at the same growth rate in a richer steady state.\n\nIs higher saving always better?\nNot necessarily — the Golden Rule saving rate maximizes steady-state consumption per capita. If saving exceeds the Golden Rule level, the economy is "dynamically inefficient": it has over-accumulated capital and households consume less than the maximum possible at steady state. Reducing saving in this case would raise consumption without sacrificing long-run growth.\n\nFor most developed economies (including Canada), evidence suggests saving rates are below the Golden Rule, so higher saving raises both capital stock and steady-state consumption. But the gains from higher saving must also be weighed against the short-run cost: temporarily lower consumption during the transition period.'},
+
+// ── SUPPLY & DEMAND ───────────────────────────────────────────────────
+{t:'mc',tp:'prices',tl:'Supply & Demand',
+ q:'The price of coffee rises. According to the law of demand, all else equal:',
+ opts:['The demand curve for coffee shifts leftward','Quantity demanded of coffee falls — a movement along the demand curve','Supply of coffee increases to meet the higher price','Consumer income automatically adjusts to offset the price rise'],
+ a:1, ex:'The law of demand: higher price → lower quantity demanded, ceteris paribus. This is a movement ALONG the demand curve. The demand curve shifts only when a non-price determinant changes (income, prices of related goods, tastes, expectations, number of buyers).'},
+
+{t:'mc',tp:'prices',tl:'Supply & Demand',
+ q:'Which of the following would shift the supply curve for wheat RIGHTWARD?',
+ opts:['A rise in the market price of wheat','A drought that destroys 20% of the wheat crop','A technological advance that improves crop yields','An increase in consumer incomes'],
+ a:2, ex:'Technological improvement lowers production costs, so suppliers are willing to offer more wheat at every price — supply shifts right. A higher price causes a movement along supply (not a shift). A drought shifts supply left. Consumer income affects demand, not supply.'},
+
+{t:'mc',tp:'prices',tl:'Supply & Demand',
+ q:'In a competitive market, if the current price is above the equilibrium price:',
+ opts:['A shortage develops, driving the price even higher','A surplus forms — quantity supplied exceeds quantity demanded, pushing price down toward equilibrium','Firms voluntarily reduce output to restore balance','Government must intervene to lower the price'],
+ a:1, ex:'Above equilibrium, Qs > Qd — a surplus. Unsold inventory accumulates. Sellers cut prices to clear stock. Price falls until Qs = Qd at the equilibrium. Competitive markets self-correct through the price mechanism.'},
+
+{t:'mc',tp:'prices',tl:'Supply & Demand',
+ q:'Coffee and cream are complements. If the price of coffee rises sharply, the effect on the cream market is:',
+ opts:['Demand for cream rises — people substitute cream for coffee','Demand for cream falls — people buy less coffee and therefore less cream','Supply of cream rises as producers shift from coffee production','The price of cream rises because the two goods are produced jointly'],
+ a:1, ex:'Complements are goods consumed together. Higher coffee prices reduce quantity demanded of coffee → consumers buy less coffee → demand for cream shifts left → price and quantity of cream both fall.'},
+
+{t:'mc',tp:'prices',tl:'Supply & Demand',
+ q:'A price ceiling set BELOW the equilibrium price immediately causes:',
+ opts:['A surplus — quantity supplied exceeds quantity demanded','A shortage — quantity demanded exceeds quantity supplied','No market effect — the equilibrium price prevails anyway','An increase in supply as producers respond to the controlled price'],
+ a:1, ex:'A binding price ceiling (below P*) prevents price from rising to clear the market. At the lower ceiling price, Qd > Qs — a shortage. Classic examples: rent controls, wartime price controls, and price caps on essential goods.'},
+
+{t:'tf',tp:'prices',tl:'Supply & Demand',
+ q:'An increase in the price of a good causes the demand curve for that good to shift leftward.',
+ a:false, ex:'False. A change in a good\'s own price produces a movement ALONG the demand curve (change in quantity demanded), not a shift of the curve. The curve itself shifts only when a non-price determinant changes: income, prices of related goods, tastes, expectations, or number of buyers.'},
+
+{t:'tf',tp:'prices',tl:'Supply & Demand',
+ q:'If supply increases while demand is unchanged, the equilibrium price falls and equilibrium quantity rises.',
+ a:true, ex:'True. A rightward supply shift creates a surplus at the original price. Sellers cut prices to clear surplus; falling price increases quantity demanded (movement along D) until the new equilibrium is reached at a lower price and higher quantity.'},
+
+{t:'tf',tp:'prices',tl:'Supply & Demand',
+ q:'A price floor set above the equilibrium price creates a persistent surplus in the market.',
+ a:true, ex:'True. A binding price floor (above P*) prevents price from falling. At the floor price, Qs > Qd — a surplus. Classic examples: agricultural price supports (government sets minimum prices for grain) and, in the labour market, minimum wage laws.'},
+
+{t:'tf',tp:'prices',tl:'Supply & Demand',
+ q:'If the price elasticity of demand for a good is −0.3, a 10% increase in price leads to a 3% decrease in quantity demanded.',
+ a:true, ex:'True. PED = % ΔQd ÷ % ΔP. % ΔQd = −0.3 × 10% = −3%. Demand is inelastic (|PED| < 1) — quantity is relatively insensitive to price. This is typical of necessities (gasoline, prescription drugs) with few close substitutes.'},
+
+{t:'num',tp:'prices',tl:'Supply & Demand',
+ q:'Price rises from $10 to $12, and quantity demanded falls from 200 to 160 units. What is the absolute value of the price elasticity of demand?',
+ a:1, tol:.05, hint:'PED = (% change in Qd) ÷ (% change in P)', unit:'',
+ ex:'% ΔP = (12−10)/10 × 100 = 20%. % ΔQd = (160−200)/200 × 100 = −20%. PED = −20% ÷ 20% = −1. |PED| = 1 — unit elastic. A 1% price rise leads to a 1% fall in quantity demanded.'},
+
+{t:'num',tp:'prices',tl:'Supply & Demand',
+ q:'Demand: Qd = 100 − 5P. Supply: Qs = 20 + 3P. Find the equilibrium price P* ($).',
+ a:10, tol:.1, hint:'Set Qd = Qs and solve for P', unit:'$',
+ ex:'100 − 5P = 20 + 3P → 80 = 8P → P* = $10. Equilibrium quantity: Q* = 100 − 5(10) = 50 units.'},
+
+{t:'num',tp:'prices',tl:'Supply & Demand',
+ q:'Market price is $8 and 60 units are traded. The demand curve is linear; at Q = 0, maximum willingness to pay is $14. Calculate consumer surplus ($).',
+ a:180, tol:1, hint:'CS = ½ × quantity × (max willingness to pay − market price)', unit:'$',
+ ex:'CS = ½ × 60 × (14 − 8) = ½ × 60 × 6 = $180. Consumer surplus is the area of the triangle below the demand curve and above the market price — the benefit consumers receive beyond what they pay.'},
+
+{t:'sa',tp:'prices',tl:'Supply & Demand',
+ q:'List and briefly explain the five main factors that shift the demand curve.',
+ kw:['income','price of related goods','substitutes','complements','tastes','expectations','number of buyers','normal','inferior'],
+ ma:'The five demand shifters (TIPER):\n\n1. Tastes and preferences: Changed preferences shift demand. Growing health-consciousness raises demand for organic food.\n\n2. Income: For normal goods, higher income raises demand (rightward shift). For inferior goods (e.g., instant noodles), higher income reduces demand (leftward shift).\n\n3. Prices of related goods:\n  • Substitutes (butter and margarine): a rise in butter\'s price increases demand for margarine.\n  • Complements (cars and gasoline): a rise in gasoline prices reduces demand for cars.\n\n4. Expectations: If consumers expect prices to rise, they buy more today → demand shifts right now.\n\n5. Number of buyers: A larger market population increases total demand.'},
+
+{t:'sa',tp:'prices',tl:'Supply & Demand',
+ q:'What is price elasticity of demand, and what are three factors that make demand more elastic?',
+ kw:['price elasticity','percentage','quantity demanded','substitutes','necessity','luxury','time horizon','proportion of income','elastic','inelastic'],
+ ma:'Price elasticity of demand (PED) measures the responsiveness of quantity demanded to a price change: PED = % change in Qd ÷ % change in P. If |PED| > 1, demand is elastic; if |PED| < 1, inelastic.\n\nThree factors that make demand more elastic:\n\n1. Availability of close substitutes: The more substitutes available, the easier it is for consumers to switch when price rises. Demand for one brand of cola is more elastic than demand for all cola combined.\n\n2. Necessity vs. luxury: Necessities (insulin, water) have inelastic demand — consumers buy them regardless of price. Luxuries (vacations, jewellery) have elastic demand — consumers can forgo them.\n\n3. Time horizon: Demand becomes more elastic over time as consumers find alternatives. Short-run gasoline demand is inelastic; long-run demand is more elastic as people buy fuel-efficient cars or change commuting habits.'},
+
+{t:'sa',tp:'prices',tl:'Supply & Demand',
+ q:'Define consumer surplus and producer surplus. Why does a competitive market equilibrium maximize their combined total?',
+ kw:['consumer surplus','producer surplus','willingness to pay','total surplus','social welfare','deadweight loss','market equilibrium','efficient'],
+ ma:'Consumer surplus (CS): The gap between what consumers are willing to pay and what they actually pay. It is the area below the demand curve and above the market price — the net benefit consumers gain from trade.\n\nProducer surplus (PS): The gap between the price producers receive and their minimum acceptable price (marginal cost). It is the area above the supply curve and below the market price — producers\' net gain.\n\nTotal surplus = CS + PS = total gains from trade in the market.\n\nWhy competitive equilibrium maximizes total surplus:\nAt P*, every trade where the buyer\'s willingness to pay exceeds the seller\'s cost occurs, and no trade where cost exceeds value takes place. No mutually beneficial trade is left on the table. Any intervention that sets price above or below P* — a tax, price ceiling, or price floor — blocks some beneficial trades, creating deadweight loss and reducing total surplus below its maximum. This is the efficiency argument for competitive markets.'},
+
+{t:'graph',tp:'prices',tl:'Supply & Demand',
+ q:'The diagram shows supply (S) and demand (D) intersecting at equilibrium E*. If the current market price is above P*, what market force restores equilibrium?',
+ gfx:'sd_eq',
+ opts:['A shortage develops, pushing price further up','Government must set a price ceiling','A surplus forms — sellers cut prices to clear unsold inventory, driving price back to P*','Demand shifts right until the market clears at the higher price'],
+ a:2, ex:'Above P*, Qs > Qd — a surplus. Unsold goods pile up. Competing sellers cut prices to attract buyers. Price falls until the surplus is eliminated at E*. Competitive markets are self-equilibrating: the price mechanism solves the coordination problem automatically.'},
+
+{t:'graph',tp:'prices',tl:'Supply & Demand',
+ q:'The diagram shows demand shifting right from D₁ to D₂ while supply is unchanged. What happens to equilibrium price and quantity?',
+ gfx:'sd_shift',
+ opts:['Price falls, quantity rises — supply has increased','Price rises and quantity rises — demand has increased, bidding up price and drawing out more supply','Price is unchanged, only quantity rises','Price rises, quantity falls'],
+ a:1, ex:'A rightward demand shift means buyers want more at every price. At the old price there is now a shortage. Price is bid up, which (1) moves consumers back along D₂ (reducing Qd) and (2) moves producers up along S (increasing Qs). The new E₂ has both a higher price and higher quantity.'},
+
+{t:'graph',tp:'prices',tl:'Supply & Demand',
+ q:'The diagram shows a price ceiling Pc set BELOW equilibrium price P*. What market outcome does this create?',
+ gfx:'price_ceil',
+ opts:['A surplus — suppliers produce more at the low ceiling price','A shortage — quantity demanded (Qd) exceeds quantity supplied (Qs) at Pc','The market still clears at P* — price ceilings do not bind above P*','Supply increases as producers compete to sell at the lower price'],
+ a:1, ex:'A binding price ceiling (Pc < P*) prevents price from rising to clear the market. At Pc, consumers want Qd but suppliers only offer Qs < Qd. The shortage (Qd − Qs) persists because price cannot rise to eliminate it. Examples: rent controls, utility price caps, wartime controls.'},
+
+{t:'an',tp:'prices',tl:'Supply & Demand',
+ q:'Analyze the effects of a minimum wage set ABOVE the competitive equilibrium wage. Use supply and demand to identify who gains, who loses, and summarize the empirical debate about its real-world effects.',
+ ma:'A minimum wage is a price floor in the labour market — a legally mandated wage below which employers cannot pay.\n\nIf set above the equilibrium wage W*:\n• At Wmin, quantity of labour supplied (workers wanting jobs) rises; quantity of labour demanded (positions firms offer) falls. The gap is unemployment — a labour surplus.\n\nWho gains:\n• Workers who retain their jobs receive higher wages and higher real incomes.\n\nWho loses:\n• Workers priced out of employment — particularly youth, low-skill workers, and new entrants.\n• Firms face higher labour costs → some cut hours, reduce hiring, or substitute capital (self-checkout machines, automation).\n• Consumers may pay higher prices if firms pass on wage costs.\n\nDeadweight loss:\nStandard competitive analysis predicts a welfare triangle of lost gains from trade — employment matches that were mutually beneficial at W* no longer occur.\n\nEmpirical debate:\nCard and Krueger (1994) and subsequent research found that modest minimum wage increases cause little measurable disemployment, especially when the labour market has monopsony features (one dominant employer can hold wages below the competitive level). In that case, a minimum wage can raise both wages and employment — improving efficiency, not reducing it. The balance of evidence suggests effects depend on the size of the increase relative to local wages, the degree of monopsony, and the local economy. The Bank of Canada and Statistics Canada research on Canadian minimum wage increases find modest negative hours effects but broadly positive income effects for low-wage workers.'},
+
+{t:'an',tp:'prices',tl:'Supply & Demand',
+ q:'The government imposes a $3-per-unit excise tax on gasoline. Use supply and demand analysis to explain: (a) how the tax affects equilibrium price and quantity, (b) how the tax burden is split between consumers and producers, and (c) why the tax creates deadweight loss.',
+ ma:'(a) Effect on equilibrium:\nThe tax shifts the supply curve upward by $3 — producers need to receive $3 more per litre to supply the same quantity (the tax is a new per-unit cost). The new equilibrium has a higher consumer price (Pc) and a lower net-of-tax price received by producers (Pp = Pc − $3). Quantity traded falls below the pre-tax equilibrium.\n\n(b) Tax incidence — who bears the burden:\nBoth consumers and producers share the tax:\n• Consumers pay (Pc − P*) more per unit than before.\n• Producers receive (P* − Pp) less per unit than before.\n\nThe split depends on relative elasticities: the more inelastic the demand (or the more elastic the supply), the more of the burden consumers bear. Gasoline demand is relatively inelastic — few short-run substitutes — so consumers bear the larger share of a gasoline tax. The statutory incidence (who writes the cheque) is irrelevant to the economic incidence.\n\n(c) Deadweight loss:\nThe tax creates a wedge between what buyers pay and what sellers receive. At the new, lower quantity, there are trades that would be mutually beneficial (buyer\'s value > seller\'s cost) but do not occur because the tax makes them unprofitable after the wedge. The triangle between the old and new quantity, bounded by the supply and demand curves, is the deadweight loss — value that is destroyed, going to neither the government, consumers, nor producers. The greater the elasticities, the larger the deadweight loss for a given tax rate.'},
+
+// ── BATCH 5: MULTIPLE CHOICE ──────────────────────────────────────────
+{t:'mc',tp:'prices',tl:'Supply & Demand',
+ q:'If demand for a good is price elastic (|PED| > 1), a rise in price will cause total revenue (P × Q) to:',
+ opts:['Rise — a higher price means more revenue per unit sold','Fall — the percentage drop in quantity exceeds the percentage price increase','Stay the same — total revenue is unaffected by elasticity','Rise initially, then fall once the increase is large enough'],
+ a:1, ex:'When demand is elastic, %ΔQ > %ΔP, so TR = P × Q falls when price rises. The loss from lower volume more than offsets the gain from the higher price. The relationship reverses for inelastic demand: a price rise raises TR when |PED| < 1.'},
+
+{t:'mc',tp:'national',tl:'National Income Accounting',
+ q:'In national income accounting, gross private domestic investment (I) includes:',
+ opts:['Household purchases of stocks and bonds','Business spending on new machinery and structures, residential construction, and changes in inventories','All government purchases of public goods and services','Household spending on consumer durables such as cars and appliances'],
+ a:1, ex:'In macroeconomics, investment = business fixed investment (plant, equipment, software) + residential investment (new housing) + inventory investment. Financial transactions — buying stocks or bonds — transfer ownership of existing assets and are not investment in the national accounts. Consumer durables are classified as consumption (C).'},
+
+{t:'mc',tp:'monetary',tl:'Monetary Policy',
+ q:'Unexpected inflation tends to benefit:',
+ opts:['Lenders — they receive higher nominal interest payments','Savers holding cash — their real return rises with inflation','Borrowers (debtors) — they repay loans in dollars worth less than when they borrowed','Workers on fixed nominal wages'],
+ a:2, ex:'Unexpected inflation reduces the real value of debt. Borrowers repay with dollars that buy less than anticipated — a wealth transfer from creditors to debtors. Lenders, pensioners, and fixed-income earners all lose purchasing power. This is why lenders demand an inflation premium (the Fisher effect) in nominal interest rates.'},
+
+// ── BATCH 5: TRUE / FALSE ─────────────────────────────────────────────
+{t:'tf',tp:'prices',tl:'Supply & Demand',
+ q:'If both supply and demand increase simultaneously, equilibrium quantity definitely rises, but the effect on equilibrium price is indeterminate.',
+ a:true, ex:'True. A rightward demand shift pushes price up; a rightward supply shift pushes it down. Both forces push quantity up — so Q always rises. The net price change depends on which shift is larger: if D shifts more than S, price rises; if S shifts more, price falls; if they shift equally (for linear curves), price is unchanged.'},
+
+{t:'tf',tp:'fiscal',tl:'Fiscal Policy',
+ q:'The government spending multiplier is always greater than 1, regardless of economic context.',
+ a:false, ex:'False. The simple Keynesian multiplier 1÷(1−MPC) > 1, but several real-world forces reduce the effective multiplier: (1) crowding out — government borrowing raises interest rates and displaces private investment; (2) import leakages in open economies siphon demand abroad; (3) Ricardian equivalence — households may save a government stimulus anticipating future tax increases; (4) supply constraints near full employment. The effective multiplier can fall below 1, or even approach zero, in these contexts.'},
+
+{t:'tf',tp:'national',tl:'National Income Accounting',
+ q:'Government transfer payments such as Employment Insurance benefits are counted as government spending (G) in the expenditure approach to GDP.',
+ a:false, ex:'False. G in the expenditure approach counts only government purchases of goods and services (roads, military equipment, civil servants\' salaries). Transfer payments are excluded — they redistribute existing income without creating new production. The goods and services recipients buy with transfer income are captured when those consumption transactions occur.'},
+
+// ── BATCH 5: NUMERICAL ────────────────────────────────────────────────
+{t:'num',tp:'prices',tl:'Supply & Demand',
+ q:'At P = $10, quantity demanded is 500 units. Price rises to $11. The price elasticity of demand is −1.5. What is the new quantity demanded?',
+ a:425, tol:1, hint:'%ΔQ = PED × %ΔP. New Q = Old Q × (1 + %ΔQ ÷ 100)', unit:'units',
+ ex:'%ΔP = (11−10)/10 × 100 = 10%. %ΔQ = −1.5 × 10% = −15%. New Qd = 500 × (1 − 0.15) = 425 units. Because |PED| > 1, total revenue falls: was $5,000; now $11 × 425 = $4,675.'},
+
+{t:'num',tp:'aggregate',tl:'Aggregate Expenditure',
+ q:'Disposable income rises from $500 billion to $600 billion. Consumption rises from $430 billion to $505 billion. Calculate the MPC.',
+ a:0.75, tol:.01, hint:'MPC = ΔC ÷ ΔYd', unit:'',
+ ex:'MPC = ΔC ÷ ΔYd = (505 − 430) ÷ (600 − 500) = 75 ÷ 100 = 0.75. For every additional dollar of disposable income, households spend 75 cents and save 25 cents (MPS = 0.25).'},
+
+{t:'num',tp:'money',tl:'Money & Banking',
+ q:'A bank receives $200,000 in new deposits and holds $30,000 in total reserves. How much does the bank lend out ($)?',
+ a:170000, tol:100, hint:'Loans = Deposits − Reserves', unit:'$',
+ ex:'Loans = $200,000 − $30,000 = $170,000. The bank\'s reserve ratio is 15% ($30,000 ÷ $200,000) — above the 10% minimum, meaning it holds $10,000 in excess reserves. Banks create money by lending out the portion of deposits not kept as reserves.'},
+
+// ── BATCH 5: SHORT ANSWER ─────────────────────────────────────────────
+{t:'sa',tp:'prices',tl:'Supply & Demand',
+ q:'Explain the difference between a change in demand and a change in quantity demanded. What causes each?',
+ kw:['demand curve','quantity demanded','shift','movement','price','non-price','income','tastes','substitutes','ceteris paribus'],
+ ma:'Change in quantity demanded: a movement ALONG an existing demand curve, caused solely by a change in the good\'s own price. Everything else is held constant (ceteris paribus). Example: if the price of apples falls from $2 to $1.50, consumers buy more apples — we slide down the curve.\n\nChange in demand: a SHIFT of the entire demand curve to the left or right, caused by a change in any non-price determinant:\n1. Income (normal goods: higher income → rightward shift; inferior goods: leftward)\n2. Prices of related goods (substitutes: rise in related price → rightward shift; complements: rise → leftward)\n3. Consumer tastes and preferences\n4. Expectations about future prices or income\n5. Number of buyers in the market\n\nExample: rising consumer incomes shift the demand curve for restaurant meals to the right — more meals are demanded at every price.\n\nThe distinction matters: a price change never "shifts" a curve; it produces a movement along it. Only non-price factors shift the curve.'},
+
+{t:'sa',tp:'national',tl:'National Income Accounting',
+ q:'Describe the expenditure approach and the income approach to measuring GDP. Why must both methods produce the same result?',
+ kw:['expenditure','income','C + I + G + NX','wages','profits','rent','interest','factor incomes','circular flow','identity'],
+ ma:'Expenditure approach: GDP = C + I + G + NX\n• C: household consumption of goods and services\n• I: gross private investment (capital, residential construction, inventories)\n• G: government purchases of goods and services\n• NX: exports minus imports\nSums all spending on final domestic output.\n\nIncome approach: sums all incomes earned in producing that output: employee compensation (wages, salaries), gross operating surplus (profits, self-employment income), mixed income, depreciation, and indirect taxes less subsidies.\n\nWhy they are equal:\nBy the circular flow identity, every dollar of spending on output becomes a dollar of income for the producer. GDP measured as spending must equal GDP measured as income — they are two perspectives on the same flow of value. One firm\'s expenditure is another\'s revenue; one household\'s spending is another\'s wage or profit. The equality is an accounting identity, true by construction.'},
+
+{t:'sa',tp:'growth',tl:'Growth & Unemployment',
+ q:'What is the output gap (GDP gap)? What are its two forms, and why does it guide monetary and fiscal policy?',
+ kw:['output gap','potential GDP','recessionary gap','inflationary gap','actual GDP','unemployment','inflation','cyclical','natural rate'],
+ ma:'The output gap = Actual real GDP − Potential GDP, where potential GDP is the level of output consistent with stable inflation (full employment of resources).\n\nTwo forms:\n1. Recessionary gap (negative): Actual GDP < Potential. Resources are underused; cyclical unemployment exceeds zero; inflation tends to fall.\n2. Inflationary gap (positive): Actual GDP > Potential. The economy is overheating; unemployment is below the natural rate; inflationary pressure builds.\n\nWhy it guides policy:\n• Recessionary gap → expansionary policy: rate cuts (Bank of Canada) or fiscal stimulus (government) to boost AD and close the gap.\n• Inflationary gap → contractionary policy: rate increases or fiscal restraint to cool demand without triggering a recession.\n\nThe gap also links to unemployment via Okun\'s Law and to inflation via the Phillips curve. In practice, potential GDP is unobservable and must be estimated — errors in measurement can lead to policy mistakes (e.g., tightening too early and deepening a recession, or stimulating too long and igniting inflation).'},
+
+// ── BATCH 5: GRAPHICAL ────────────────────────────────────────────────
+{t:'graph',tp:'prices',tl:'Supply & Demand',
+ q:'An excise tax shifts supply upward from S to S+tax. Consumers pay Pc and producers receive Pp. The per-unit tax equals:',
+ gfx:'sd_tax',
+ opts:['Pc alone — consumers bear the entire burden','Pp alone — producers bear the entire burden','Pc − Pp — the tax wedge split between consumers and producers','P* − Pc only'],
+ a:2, ex:'The per-unit tax = Pc − Pp, the vertical gap between what consumers pay and what producers keep. Both sides share the burden. The grey triangle between Q_tax and Q* is the deadweight loss — beneficial trades that no longer occur because the tax wedge makes them unprofitable for at least one party.'},
+
+{t:'graph',tp:'prices',tl:'Supply & Demand',
+ q:'The diagram shows consumer surplus (CS, blue) and producer surplus (PS, red) at competitive equilibrium E*. Which statement is correct?',
+ gfx:'cs_ps',
+ opts:['CS is the area above the demand curve and below the price','CS + PS is maximized at competitive equilibrium — any price interference creates deadweight loss','Producer surplus equals total revenue minus total variable cost','A price floor above P* raises total surplus by increasing PS'],
+ a:1, ex:'Total surplus (CS + PS) is maximized at competitive equilibrium — every beneficial trade occurs and no harmful trade takes place. CS is the area below D and above P*; PS is above S and below P*. Any binding price ceiling or floor blocks some mutually beneficial trades, shrinking total surplus and creating deadweight loss.'},
+
+{t:'graph',tp:'fiscal',tl:'Fiscal Policy',
+ q:'Government borrowing shifts demand for loanable funds from D₁ to D₂. What does this imply for private investment?',
+ gfx:'crowd_out',
+ opts:['Private investment rises — government borrowing expands total saving available','Private investment falls — higher interest rates crowd out private borrowers (the crowding-out effect)','Private investment is unchanged — interest rates are set by the Bank of Canada alone','Both government and private investment rise because total funds increase'],
+ a:1, ex:'Government borrowing adds to the demand for loanable funds, shifting D right and raising the equilibrium interest rate from r₁ to r₂. Higher rates make private investment projects less attractive — firms borrow and invest less. This "crowding out" reduces the net stimulus from fiscal policy. The extent depends on how sensitive private investment is to interest rates (the investment demand elasticity).'},
+
+// ── BATCH 5: ANALYTICAL ───────────────────────────────────────────────
+{t:'an',tp:'prices',tl:'Supply & Demand',
+ q:'The government introduces a per-unit subsidy on a good. Using supply and demand, analyze: (a) the effect on equilibrium price and quantity, (b) who benefits and by how much, and (c) whether the subsidy is economically efficient.',
+ ma:'A per-unit subsidy is the mirror image of a tax — it shifts the supply curve downward (rightward) by the subsidy amount.\n\n(a) Effect on equilibrium:\nThe subsidy lowers producers\' effective costs → S shifts right. The new equilibrium has a lower consumer price (Pc) and a higher producer price received including subsidy (Pp = Pc + subsidy). Quantity traded rises above the pre-subsidy equilibrium.\n\n(b) Who benefits:\n• Consumers pay a lower price → consumer surplus rises.\n• Producers receive a higher effective price → producer surplus rises.\nThe benefit is split between consumers and producers according to elasticities. The more inelastic the demand, the more of the subsidy benefit flows to consumers (price falls more). The more inelastic the supply, the more flows to producers.\n\n(c) Economic efficiency:\nThe subsidy is not economically efficient — it creates a deadweight loss by encouraging trades where the full social cost of production exceeds consumers\' willingness to pay. At the new, higher quantity, some units are produced at a cost greater than their value to buyers. The government spends more than the combined gain to consumers and producers.\n\nRationale for subsidies despite inefficiency:\n• Positive externalities: if production creates spillover benefits (e.g., vaccines, education), a subsidy corrects the under-provision that competitive markets produce.\n• Equity: subsidizing necessities for low-income households.\n• Infant industry: temporary support until a new industry reaches scale efficiency.'},
+
+{t:'an',tp:'national',tl:'National Income Accounting',
+ q:'Explain the "dual role" of investment (I) in macroeconomic analysis. How does investment affect (a) short-run aggregate demand and (b) long-run aggregate supply? Illustrate using the AD-AS model.',
+ ma:'Investment plays two distinct macroeconomic roles — one operating in the short run through demand, and one operating in the long run through supply.\n\n(a) Short-run role — Aggregate Demand:\nInvestment is a component of aggregate expenditure: GDP = C + I + G + NX. A rise in I directly shifts the AD curve rightward, raising output and the price level in the short run. Through the multiplier, the initial increase in I triggers further rounds of spending: ΔY = (1÷(1−MPC)) × ΔI. This is the demand channel.\n\n(b) Long-run role — Aggregate Supply:\nInvestment adds to the physical capital stock — factories, equipment, technology, infrastructure. A larger capital stock raises labour productivity and potential output. Over time, this shifts the LRAS curve rightward: the economy can produce more at any price level without inflationary pressure. This is the supply channel and the foundation of long-run economic growth in the Solow model.\n\nPolicy implication:\nThere is a tension between short-run stabilization and long-run growth. In a recession, policymakers may want to boost I to stimulate demand quickly. But the long-run benefit of investment depends on its quality and productivity — wasteful investment spending boosts AD now but adds little to future potential. The composition of investment (productive capital vs. speculative assets) matters as much as its quantity for long-run growth.'},
+
+{t:'an',tp:'fiscal',tl:'Fiscal Policy',
+ q:'During a deep recession, some governments pursue "austerity" — cutting spending and raising taxes to reduce deficits. Using the multiplier framework and empirical evidence, analyze the case for and against austerity during a recession.',
+ ma:'Case against austerity during a recession:\n\nMultiplier effect: Government spending has a positive multiplier (1÷(1−MPC) > 1 in a closed economy). Cutting G by $1 reduces GDP by more than $1 in the short run through negative multiplier effects — income falls, consumption falls, income falls further. In a recession, when the output gap is already negative, austerity deepens the contraction.\n\nEmpirically: The IMF (Blanchard and Leigh, 2013) found that fiscal multipliers during the 2008–2012 recession were significantly larger than pre-crisis estimates (above 1.5), meaning austerity programs in Greece, Portugal, and Spain produced larger contractions than predicted — worsening debt-to-GDP ratios despite deficit reduction in nominal terms. "Expansionary austerity" (the idea that deficit cuts would boost confidence and private investment) was largely unsupported by evidence during the acute phase of the recession.\n\nCase for austerity / qualifications:\n1. Sustainability: Large deficits raise public debt, increasing future interest payments and potentially triggering a sovereign debt crisis. If bond markets lose confidence, borrowing costs spike, forcing sharper adjustment later.\n2. Monetary policy space: If the central bank can offset fiscal tightening with rate cuts, the net contractionary effect is reduced. This was less feasible at the zero lower bound in 2010–12.\n3. Composition matters: Spending cuts that reduce distortionary spending or reallocate resources to productive uses have smaller contractionary effects than broad cuts to public investment.\n4. Timing: Austerity is more appropriate once the recovery is established and the output gap has closed — "fix the roof while the sun is shining."\n\nConclusion: Austerity is broadly counterproductive during a deep recession with a large negative output gap and a binding zero lower bound. It is most defensible once recovery is underway and debt sustainability becomes the primary risk.'},
 ];
 
 // ── APP STATE ──────────────────────────────────────────────────────────────
@@ -798,6 +1280,516 @@ function drawGraph(cv, type) {
     ctx.setLineDash([]);
     ctx.fillStyle='#f59e0b'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='center';
     ctx.fillText('← Gap →',gx((e1x+.67)/2),gy(.16));
+
+  } else if (type === 'lras_shift') {
+    ctx.fillText('Real GDP (Y)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price Level (P)',0,0); ctx.restore();
+    // AD curve
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.9)); ctx.lineTo(gx(.9),gy(.07)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('AD',gx(.87),gy(.1));
+    // LRAS1 (grey dashed)
+    ctx.strokeStyle='#9ca3af'; ctx.lineWidth=1.8; ctx.setLineDash([5,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.38),gy(0)); ctx.lineTo(gx(.38),gy(1)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9ca3af'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('LRAS₁',gx(.38),gy(.92));
+    // LRAS2 (dark dashed)
+    ctx.strokeStyle='#374151'; ctx.lineWidth=1.8; ctx.setLineDash([6,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.65),gy(0)); ctx.lineTo(gx(.65),gy(1)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#374151'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('LRAS₂',gx(.65),gy(.96));
+    // Arrow
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.8;
+    ctx.beginPath(); ctx.moveTo(gx(.42),gy(.58)); ctx.lineTo(gx(.61),gy(.58)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.61),gy(.58)); ctx.lineTo(gx(.57),gy(.61)); ctx.lineTo(gx(.57),gy(.55)); ctx.fillStyle='#c8960c'; ctx.fill();
+    // AD: y = 0.9488 - 0.976x  (endpoints .05,.9 → .9,.07)
+    const lE1x=.38, lE1y=0.9488-0.976*.38; // ≈0.578
+    const lE2x=.65, lE2y=0.9488-0.976*.65; // ≈0.314
+    ctx.beginPath(); ctx.arc(gx(lE1x),gy(lE1y),5,0,2*Math.PI); ctx.fillStyle='#6b7280'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(lE1x)-7,gy(lE1y));
+    ctx.beginPath(); ctx.arc(gx(lE2x),gy(lE2y),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.textAlign='left'; ctx.fillText('E₂',gx(lE2x)+7,gy(lE2y));
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(lE1y)); ctx.lineTo(gx(lE1x),gy(lE1y)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(lE2y)); ctx.lineTo(gx(lE2x),gy(lE2y)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right';
+    ctx.fillText('P₁',M.l-2,gy(lE1y)+4); ctx.fillText('P₂',M.l-2,gy(lE2y)+4);
+
+  } else if (type === 'forex') {
+    ctx.fillText('Quantity of CAD',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Exchange Rate ($/CAD)',0,0); ctx.restore();
+    // Supply (upward sloping)
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.1),gy(.1)); ctx.lineTo(gx(.9),gy(.85)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('Supply',gx(.88),gy(.82));
+    // D1 (downward sloping)
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.1),gy(.85)); ctx.lineTo(gx(.85),gy(.1)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.fillText('D₁',gx(.83),gy(.12));
+    // D2 (shifted right, dashed)
+    ctx.strokeStyle='#2563eb'; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.28),gy(.85)); ctx.lineTo(gx(.95),gy(.13)); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='#2563eb'; ctx.fillText('D₂',gx(.92),gy(.16));
+    // Arrow
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.47),gy(.68)); ctx.lineTo(gx(.6),gy(.68)); ctx.stroke();
+    ctx.setLineDash([]);
+    // Supply: y = 0.006 + 0.9375x; D1: y = 0.95 - x; D2: y = 1.13 - x
+    // E1: x=0.487, y≈0.463; E2: x=0.580, y≈0.550
+    const fE1x=.487, fE1y=0.006+0.9375*.487;
+    const fE2x=.580, fE2y=0.006+0.9375*.580;
+    ctx.beginPath(); ctx.arc(gx(fE1x),gy(fE1y),5,0,2*Math.PI); ctx.fillStyle='#374151'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(fE1x)-7,gy(fE1y));
+    ctx.beginPath(); ctx.arc(gx(fE2x),gy(fE2y),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.textAlign='left'; ctx.fillText('E₂',gx(fE2x)+7,gy(fE2y));
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(fE1y)); ctx.lineTo(gx(fE1x),gy(fE1y)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(fE2y)); ctx.lineTo(gx(fE2x),gy(fE2y)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right';
+    ctx.fillText('ER₁',M.l-2,gy(fE1y)+4); ctx.fillText('ER₂',M.l-2,gy(fE2y)+4);
+
+  } else if (type === 'inf_gap') {
+    ctx.fillText('Real GDP (Y)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price Level (P)',0,0); ctx.restore();
+    // LRAS (left of E1)
+    ctx.strokeStyle='#374151'; ctx.lineWidth=1.8; ctx.setLineDash([6,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.45),gy(0)); ctx.lineTo(gx(.45),gy(1)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#374151'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('LRAS (Y*)',gx(.45),gy(.95));
+    // SRAS
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.08),gy(.08)); ctx.lineTo(gx(.95),gy(.9)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('SRAS',gx(.9),gy(.87));
+    // AD intersects SRAS to right of LRAS
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.18),gy(.87)); ctx.lineTo(gx(.95),gy(.1)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.fillText('AD',gx(.92),gy(.13));
+    // E1: AD y=1.05-x, SRAS y=0.08+0.943x → 0.08+0.943x=1.05-x → x=0.499, y=0.551
+    const igE1x=.499, igE1y=1.05-.499;
+    ctx.beginPath(); ctx.arc(gx(igE1x),gy(igE1y),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('E₁',gx(igE1x)+7,gy(igE1y));
+    // Gap annotation
+    ctx.strokeStyle='#f59e0b'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.45),gy(.26)); ctx.lineTo(gx(igE1x),gy(.26)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#f59e0b'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('← Gap →',gx((.45+igE1x)/2),gy(.18));
+
+  } else if (type === 'lf_mkt') {
+    ctx.fillText('Loanable Funds (Q)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Real Interest Rate (r)',0,0); ctx.restore();
+    // Demand (downward sloping)
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.06),gy(.9)); ctx.lineTo(gx(.9),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('D',gx(.88),gy(.09));
+    // S1 (upward sloping)
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.1),gy(.1)); ctx.lineTo(gx(.9),gy(.85)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.fillText('S₁',gx(.88),gy(.82));
+    // S2 (shifted right, dashed)
+    ctx.strokeStyle='#ef4444'; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.28),gy(.1)); ctx.lineTo(gx(.99),gy(.72)); ctx.stroke();
+    ctx.setLineDash([]); ctx.fillStyle='#ef4444'; ctx.fillText('S₂',gx(.96),gy(.69));
+    // Arrow
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.56),gy(.74)); ctx.lineTo(gx(.69),gy(.74)); ctx.stroke();
+    ctx.setLineDash([]);
+    // D: y=0.96-x; S1: y=0.006+0.9375x; S2: y=-0.163+0.9375x
+    // E1: x=0.492, y=0.468; E2: x=0.580, y=0.380
+    const lfE1x=.492, lfE1y=0.96-.492;
+    const lfE2x=.580, lfE2y=0.96-.580;
+    ctx.beginPath(); ctx.arc(gx(lfE1x),gy(lfE1y),5,0,2*Math.PI); ctx.fillStyle='#374151'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(lfE1x)-7,gy(lfE1y));
+    ctx.beginPath(); ctx.arc(gx(lfE2x),gy(lfE2y),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.textAlign='left'; ctx.fillText('E₂',gx(lfE2x)+7,gy(lfE2y));
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(lfE1y)); ctx.lineTo(gx(lfE1x),gy(lfE1y)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(lfE2y)); ctx.lineTo(gx(lfE2x),gy(lfE2y)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right';
+    ctx.fillText('r₁',M.l-2,gy(lfE1y)+4); ctx.fillText('r₂',M.l-2,gy(lfE2y)+4);
+
+  } else if (type === 'phillips') {
+    ctx.fillText('Unemployment Rate',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Inflation Rate',0,0); ctx.restore();
+    // SRPC (downward sloping curve)
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath();
+    for(let i=0;i<=100;i++){
+      const t=i/100;
+      const x=0.1+t*0.78, y=0.85-t*0.7+0.15*t*t;
+      i===0?ctx.moveTo(gx(x),gy(y)):ctx.lineTo(gx(x),gy(y));
+    }
+    ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('SRPC',gx(.82),gy(.17));
+    // Natural rate dashed vertical
+    const uStar=0.53;
+    ctx.strokeStyle='#374151'; ctx.lineWidth=1.5; ctx.setLineDash([5,3]);
+    ctx.beginPath(); ctx.moveTo(gx(uStar),gy(0)); ctx.lineTo(gx(uStar),gy(1)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#374151'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('U*',gx(uStar),gy(0)+13);
+    // Point A at natural rate
+    const tA=(uStar-0.1)/0.78, yA=0.85-tA*0.7+0.15*tA*tA;
+    ctx.beginPath(); ctx.arc(gx(uStar),gy(yA),6,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('A',gx(uStar)-9,gy(yA)-5);
+    // Point B (lower unemployment, higher inflation)
+    const uLow=0.33, tB=(uLow-0.1)/0.78, yB=0.85-tB*0.7+0.15*tB*tB;
+    ctx.beginPath(); ctx.arc(gx(uLow),gy(yB),6,0,2*Math.PI); ctx.fillStyle='#f59e0b'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.textAlign='right'; ctx.fillText('B',gx(uLow)-9,gy(yB)-5);
+    // Arrow A → B
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(uStar-.04),gy(yA+.04)); ctx.lineTo(gx(uLow+.05),gy(yB-.05)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(yA)); ctx.lineTo(gx(uStar),gy(yA)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('π*',M.l-2,gy(yA)+4);
+
+  } else if (type === 'cons_fn') {
+    ctx.fillText('Disposable Income (Yd)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Consumption (C)',0,0); ctx.restore();
+    // 45° line
+    ctx.strokeStyle='#9ca3af'; ctx.lineWidth=1.5; ctx.setLineDash([5,4]);
+    ctx.beginPath(); ctx.moveTo(gx(0),gy(0)); ctx.lineTo(gx(.92),gy(.92)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9ca3af'; ctx.font='11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('C = Yd',gx(.88),gy(.91));
+    // Consumption function: C = 0.15 + 0.75*Yd (break-even at Yd=0.6)
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(0),gy(.15)); ctx.lineTo(gx(.93),gy(.15+.75*.93)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left';
+    ctx.fillText('C = a + MPC·Yd',gx(.58),gy(.64));
+    // Autonomous consumption (y-intercept)
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.15)); ctx.lineTo(gx(.08),gy(.15)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('a',M.l-2,gy(.15)+4);
+    // Break-even point (Yd=0.6, C=0.6)
+    ctx.beginPath(); ctx.arc(gx(.6),gy(.6),5,0,2*Math.PI); ctx.fillStyle='#c8960c'; ctx.fill();
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.6),gy(.6)); ctx.lineTo(gx(.6),gy(0)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='9px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('Break-even',gx(.6),gy(0)+12);
+    // MPC slope triangle
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.5;
+    ctx.beginPath(); ctx.moveTo(gx(.25),gy(.3375)); ctx.lineTo(gx(.45),gy(.3375)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.45),gy(.3375)); ctx.lineTo(gx(.45),gy(.4875)); ctx.stroke();
+    ctx.fillStyle='#c8960c'; ctx.font='bold 9px Helvetica Neue'; ctx.textAlign='left';
+    ctx.fillText('MPC',gx(.46),gy(.41)); ctx.fillText('Run=1',gx(.26),gy(.325));
+    // Saving region label
+    ctx.fillStyle='#059669'; ctx.font='9px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('Saving',gx(.77),gy(.72));
+    ctx.fillStyle='#dc2626'; ctx.fillText('Dissaving',gx(.28),gy(.42));
+
+  } else if (type === 'long_run') {
+    ctx.fillText('Real GDP (Y)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price Level (P)',0,0); ctx.restore();
+    // LRAS
+    ctx.strokeStyle='#374151'; ctx.lineWidth=1.8; ctx.setLineDash([6,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.65),gy(0)); ctx.lineTo(gx(.65),gy(1)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#374151'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('LRAS',gx(.65),gy(.95));
+    // AD: y = 0.96 - x
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.08),gy(.88)); ctx.lineTo(gx(.9),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('AD',gx(.88),gy(.09));
+    // SRAS1: y = 0.0742 + 0.916x — E1 at (0.462, 0.498)
+    ctx.strokeStyle='#9ca3af'; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.12)); ctx.lineTo(gx(.88),gy(.0742+.916*.88)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9ca3af'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('SRAS₁',gx(.84),gy(.88));
+    // SRAS2: y = -0.286 + 0.916x — E2 at (0.65, 0.31)
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.33),gy(-0.286+.916*.33)); ctx.lineTo(gx(.95),gy(-0.286+.916*.95)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.textAlign='left'; ctx.fillText('SRAS₂',gx(.91),gy(-0.286+.916*.95+.04));
+    // Arrow SRAS1 → SRAS2
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.34),gy(.39)); ctx.lineTo(gx(.47),gy(.14)); ctx.stroke();
+    ctx.setLineDash([]);
+    // E1 and E2
+    const lrE1x=.462, lrE1y=0.96-.462;
+    const lrE2x=.65,  lrE2y=0.96-.65;
+    ctx.beginPath(); ctx.arc(gx(lrE1x),gy(lrE1y),5,0,2*Math.PI); ctx.fillStyle='#6b7280'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(lrE1x)-7,gy(lrE1y));
+    ctx.beginPath(); ctx.arc(gx(lrE2x),gy(lrE2y),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.textAlign='left'; ctx.fillText('E₂',gx(lrE2x)+7,gy(lrE2y));
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(lrE1y)); ctx.lineTo(gx(lrE1x),gy(lrE1y)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(lrE2y)); ctx.lineTo(gx(lrE2x),gy(lrE2y)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right';
+    ctx.fillText('P₁',M.l-2,gy(lrE1y)+4); ctx.fillText('P₂',M.l-2,gy(lrE2y)+4);
+
+  } else if (type === 'sras_shift') {
+    ctx.fillText('Real GDP (Y)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price Level (P)',0,0); ctx.restore();
+    // LRAS at x=0.47
+    ctx.strokeStyle='#374151'; ctx.lineWidth=1.8; ctx.setLineDash([6,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.47),gy(0)); ctx.lineTo(gx(.47),gy(1)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#374151'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('LRAS',gx(.47),gy(.95));
+    // AD: y = 0.96 - x
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.08),gy(.88)); ctx.lineTo(gx(.9),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('AD',gx(.88),gy(.09));
+    // SRAS1: y = 0.032 + 0.965x — E1 at (0.472, 0.488)
+    ctx.strokeStyle='#9ca3af'; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.08)); ctx.lineTo(gx(.9),gy(.032+.965*.9)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9ca3af'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('SRAS₁',gx(.86),gy(.032+.965*.9+.04));
+    // SRAS2 shifted left: y = 0.206 + 0.965x — E2 at (0.384, 0.576)
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.206+.965*.05)); ctx.lineTo(gx(.78),gy(.206+.965*.78)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.textAlign='left'; ctx.fillText('SRAS₂',gx(.74),gy(.206+.965*.78+.04));
+    // Arrow SRAS1 → SRAS2 (leftward)
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.6),gy(.61)); ctx.lineTo(gx(.47),gy(.76)); ctx.stroke();
+    ctx.setLineDash([]);
+    // E1 (0.472, 0.488) and E2 (0.384, 0.576)
+    const ssE1x=.472, ssE1y=0.96-.472;
+    const ssE2x=.384, ssE2y=0.96-.384;
+    ctx.beginPath(); ctx.arc(gx(ssE1x),gy(ssE1y),5,0,2*Math.PI); ctx.fillStyle='#6b7280'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(ssE1x)-7,gy(ssE1y));
+    ctx.beginPath(); ctx.arc(gx(ssE2x),gy(ssE2y),5,0,2*Math.PI); ctx.fillStyle='#f59e0b'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.textAlign='right'; ctx.fillText('E₂',gx(ssE2x)-7,gy(ssE2y)-8);
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(ssE1y)); ctx.lineTo(gx(ssE1x),gy(ssE1y)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(ssE2y)); ctx.lineTo(gx(ssE2x),gy(ssE2y)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right';
+    ctx.fillText('P₁',M.l-2,gy(ssE1y)+4); ctx.fillText('P₂',M.l-2,gy(ssE2y)+4);
+
+  } else if (type === 'sd_eq') {
+    ctx.fillText('Quantity',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price (P)',0,0); ctx.restore();
+    // D: y = 0.948 - 0.966x; S: y = 0.012 + 0.966x; E*: (0.485, 0.480)
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.9)); ctx.lineTo(gx(.92),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('D',gx(.9),gy(.09));
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.06)); ctx.lineTo(gx(.92),gy(.9)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.fillText('S',gx(.9),gy(.87));
+    // E*
+    ctx.beginPath(); ctx.arc(gx(.485),gy(.48),6,0,2*Math.PI);
+    ctx.fillStyle='#c8960c'; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='#111'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('E*',gx(.5),gy(.48)-8);
+    // Dashed lines to axes
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.48)); ctx.lineTo(gx(.485),gy(.48)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.485),gy(.48)); ctx.lineTo(gx(.485),gy(0)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue';
+    ctx.textAlign='right'; ctx.fillText('P*',M.l-2,gy(.48)+4);
+    ctx.textAlign='center'; ctx.fillText('Q*',gx(.485),gy(0)+13);
+    // Surplus annotation above P*
+    ctx.fillStyle='#dc2626'; ctx.font='bold 9px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('← Surplus above P* →',gx(.485),gy(.72));
+    ctx.fillStyle='#003366'; ctx.fillText('← Shortage below P* →',gx(.485),gy(.26));
+
+  } else if (type === 'sd_shift') {
+    ctx.fillText('Quantity',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price (P)',0,0); ctx.restore();
+    // S
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.06)); ctx.lineTo(gx(.92),gy(.9)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('S',gx(.9),gy(.87));
+    // D1
+    ctx.strokeStyle='#9ca3af'; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.9)); ctx.lineTo(gx(.92),gy(.06)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9ca3af'; ctx.fillText('D₁',gx(.9),gy(.09));
+    // D2 (shifted right by 0.18)
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.23),gy(.9)); ctx.lineTo(gx(.99),gy(.13)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.fillText('D₂',gx(.95),gy(.17));
+    // Arrow showing demand shift
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.47),gy(.75)); ctx.lineTo(gx(.62),gy(.75)); ctx.stroke();
+    ctx.setLineDash([]);
+    // E1 (0.485, 0.480)
+    ctx.beginPath(); ctx.arc(gx(.485),gy(.48),5,0,2*Math.PI); ctx.fillStyle='#6b7280'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(.485)-7,gy(.48));
+    // E2 (0.575, 0.567)
+    ctx.beginPath(); ctx.arc(gx(.575),gy(.567),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.textAlign='left'; ctx.fillText('E₂',gx(.575)+7,gy(.567));
+    // Dashed lines to axes
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.48)); ctx.lineTo(gx(.485),gy(.48)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.567)); ctx.lineTo(gx(.575),gy(.567)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.485),gy(.48)); ctx.lineTo(gx(.485),gy(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.575),gy(.567)); ctx.lineTo(gx(.575),gy(0)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue';
+    ctx.textAlign='right'; ctx.fillText('P₁',M.l-2,gy(.48)+4); ctx.fillText('P₂',M.l-2,gy(.567)+4);
+    ctx.textAlign='center'; ctx.fillText('Q₁',gx(.485),gy(0)+13); ctx.fillText('Q₂',gx(.575),gy(0)+13);
+
+  } else if (type === 'price_ceil') {
+    ctx.fillText('Quantity',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price (P)',0,0); ctx.restore();
+    // D and S
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.9)); ctx.lineTo(gx(.92),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('D',gx(.9),gy(.09));
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.06)); ctx.lineTo(gx(.92),gy(.9)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.fillText('S',gx(.9),gy(.87));
+    // E* at (0.485, 0.480)
+    ctx.beginPath(); ctx.arc(gx(.485),gy(.48),5,0,2*Math.PI); ctx.fillStyle='#9ca3af'; ctx.fill();
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('P*',M.l-2,gy(.48)+4);
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.48)); ctx.lineTo(gx(.485),gy(.48)); ctx.stroke();
+    ctx.setLineDash([]);
+    // Price ceiling at Pc = 0.28
+    ctx.strokeStyle='#059669'; ctx.lineWidth=2.2; ctx.setLineDash([6,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.28)); ctx.lineTo(gx(.75),gy(.28)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#059669'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('Pc (ceiling)',M.l-2,gy(.28)+4);
+    // At Pc=0.28: Qs=0.277, Qd=0.692
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.277),gy(.28)); ctx.lineTo(gx(.277),gy(0)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.692),gy(.28)); ctx.lineTo(gx(.692),gy(0)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('Qs',gx(.277),gy(0)+13); ctx.fillText('Qd',gx(.692),gy(0)+13);
+    // Shortage bracket
+    ctx.strokeStyle='#f59e0b'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(gx(.277),gy(.18)); ctx.lineTo(gx(.692),gy(.18)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.277),gy(.18)); ctx.lineTo(gx(.277),gy(.14)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.692),gy(.18)); ctx.lineTo(gx(.692),gy(.14)); ctx.stroke();
+    ctx.fillStyle='#f59e0b'; ctx.font='bold 10px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('SHORTAGE',gx((.277+.692)/2),gy(.09));
+    // Dots at Qs and Qd on the supply/demand curves
+    ctx.beginPath(); ctx.arc(gx(.277),gy(.28),4,0,2*Math.PI); ctx.fillStyle='#dc2626'; ctx.fill();
+    ctx.beginPath(); ctx.arc(gx(.692),gy(.28),4,0,2*Math.PI); ctx.fillStyle='#003366'; ctx.fill();
+
+  } else if (type === 'sd_tax') {
+    ctx.fillText('Quantity',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price (P)',0,0); ctx.restore();
+    // D: y=0.948-0.966x; S: y=0.012+0.966x; E*=(0.485,0.480)
+    // Tax=0.18; S+tax: y=0.192+0.966x; Q_tax=0.391, Pc=0.570, Pp=0.390
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.9)); ctx.lineTo(gx(.92),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('D',gx(.9),gy(.09));
+    // S original (grey dashed)
+    ctx.strokeStyle='#9ca3af'; ctx.lineWidth=1.8; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.06)); ctx.lineTo(gx(.92),gy(.9)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9ca3af'; ctx.fillText('S',gx(.9),gy(.87));
+    // S+tax (shifted up by 0.18)
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.06+.18)); ctx.lineTo(gx(.85),gy(.06+.18+.966*.8)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.fillText('S+tax',gx(.82),gy(.06+.18+.966*.8+.04));
+    // E* (grey)
+    ctx.beginPath(); ctx.arc(gx(.485),gy(.48),4,0,2*Math.PI); ctx.fillStyle='#9ca3af'; ctx.fill();
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='center'; ctx.fillText('Q*',gx(.485),gy(0)+13);
+    // New equilibrium: Pc=0.570 (on D), Pp=0.390 (on S), Q_tax=0.391
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.570)); ctx.lineTo(gx(.391),gy(.570)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.390)); ctx.lineTo(gx(.391),gy(.390)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.391),gy(.570)); ctx.lineTo(gx(.391),gy(0)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right';
+    ctx.fillText('Pc',M.l-2,gy(.570)+4); ctx.fillText('Pp',M.l-2,gy(.390)+4);
+    ctx.textAlign='center'; ctx.fillText('Q_tax',gx(.391),gy(0)+13);
+    // Tax wedge bracket
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=2;
+    ctx.beginPath(); ctx.moveTo(M.l+4,gy(.570)); ctx.lineTo(M.l+4,gy(.390)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.570)); ctx.lineTo(M.l+8,gy(.570)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.390)); ctx.lineTo(M.l+8,gy(.390)); ctx.stroke();
+    ctx.fillStyle='#c8960c'; ctx.font='bold 9px Helvetica Neue'; ctx.textAlign='left';
+    ctx.fillText('tax',M.l+10,gy(.48)+4);
+    // DWL triangle (Q_tax to Q*, between D and S curves)
+    ctx.fillStyle='rgba(245,158,11,0.25)';
+    ctx.beginPath();
+    ctx.moveTo(gx(.391),gy(.570)); // Pc at Q_tax (on D)
+    ctx.lineTo(gx(.391),gy(.390)); // Pp at Q_tax (on S)
+    ctx.lineTo(gx(.485),gy(.480)); // E*
+    ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#f59e0b'; ctx.font='bold 9px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('DWL',gx(.436),gy(.455));
+
+  } else if (type === 'cs_ps') {
+    ctx.fillText('Quantity',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Price (P)',0,0); ctx.restore();
+    // CS area (fill before curves)
+    ctx.fillStyle='rgba(0,51,102,0.13)';
+    ctx.beginPath();
+    ctx.moveTo(gx(.05),gy(.9)); ctx.lineTo(gx(.485),gy(.48)); ctx.lineTo(gx(.05),gy(.48));
+    ctx.closePath(); ctx.fill();
+    // PS area
+    ctx.fillStyle='rgba(220,38,38,0.13)';
+    ctx.beginPath();
+    ctx.moveTo(gx(.05),gy(.06)); ctx.lineTo(gx(.485),gy(.48)); ctx.lineTo(gx(.05),gy(.48));
+    ctx.closePath(); ctx.fill();
+    // D
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.9)); ctx.lineTo(gx(.92),gy(.06)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('D',gx(.9),gy(.09));
+    // S
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.05),gy(.06)); ctx.lineTo(gx(.92),gy(.9)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.fillText('S',gx(.9),gy(.87));
+    // E*
+    ctx.beginPath(); ctx.arc(gx(.485),gy(.48),6,0,2*Math.PI);
+    ctx.fillStyle='#c8960c'; ctx.fill(); ctx.strokeStyle='#fff'; ctx.lineWidth=2; ctx.stroke();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('E*',gx(.5),gy(.48)-8);
+    // Dashed reference lines
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.48)); ctx.lineTo(gx(.485),gy(.48)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(gx(.485),gy(.48)); ctx.lineTo(gx(.485),gy(0)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue';
+    ctx.textAlign='right'; ctx.fillText('P*',M.l-2,gy(.48)+4);
+    ctx.textAlign='center'; ctx.fillText('Q*',gx(.485),gy(0)+13);
+    // CS and PS labels
+    ctx.fillStyle='#003366'; ctx.font='bold 12px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('CS',gx(.19),gy(.67));
+    ctx.fillStyle='#dc2626'; ctx.fillText('PS',gx(.19),gy(.31));
+
+  } else if (type === 'crowd_out') {
+    ctx.fillText('Loanable Funds (Q)',M.l+gW/2,H-6);
+    ctx.save(); ctx.translate(13,M.t+gH/2); ctx.rotate(-Math.PI/2); ctx.fillText('Real Interest Rate (r)',0,0); ctx.restore();
+    // S: y=0.006+0.9375x; D1: y=0.96-x; D2: y=1.18-x
+    // E1=(0.492,0.468); E2=(0.606,0.574)
+    ctx.strokeStyle='#dc2626'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.1),gy(.1)); ctx.lineTo(gx(.9),gy(.85)); ctx.stroke();
+    ctx.fillStyle='#dc2626'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='left'; ctx.fillText('S',gx(.88),gy(.82));
+    // D1 (private only)
+    ctx.strokeStyle='#9ca3af'; ctx.lineWidth=2; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.06),gy(.9)); ctx.lineTo(gx(.9),gy(.06)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#9ca3af'; ctx.fillText('D₁',gx(.88),gy(.09));
+    // D2 (private + government, shifted right by 0.22)
+    ctx.strokeStyle='#003366'; ctx.lineWidth=2.5;
+    ctx.beginPath(); ctx.moveTo(gx(.28),gy(.9)); ctx.lineTo(gx(.99),gy(.19)); ctx.stroke();
+    ctx.fillStyle='#003366'; ctx.fillText('D₂',gx(.95),gy(.22));
+    // Arrow
+    ctx.strokeStyle='#c8960c'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.48),gy(.72)); ctx.lineTo(gx(.63),gy(.72)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#c8960c'; ctx.font='bold 8px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('Gov. borrowing →',gx(.555),gy(.65));
+    // E1=(0.492, 0.468)
+    ctx.beginPath(); ctx.arc(gx(.492),gy(.468),5,0,2*Math.PI); ctx.fillStyle='#6b7280'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.font='bold 11px Helvetica Neue'; ctx.textAlign='right'; ctx.fillText('E₁',gx(.492)-7,gy(.468));
+    // E2=(0.606, 0.574); S: y=0.006+0.9375*0.606=0.574 ✓
+    ctx.beginPath(); ctx.arc(gx(.606),gy(.574),5,0,2*Math.PI); ctx.fillStyle='#059669'; ctx.fill();
+    ctx.fillStyle='#111'; ctx.textAlign='left'; ctx.fillText('E₂',gx(.606)+7,gy(.574));
+    // Crowded-out private investment: at r2=0.574, D1 gives x: 0.96-x=0.574 → x=0.386
+    ctx.beginPath(); ctx.arc(gx(.386),gy(.574),4,0,2*Math.PI); ctx.fillStyle='#f59e0b'; ctx.fill();
+    ctx.strokeStyle='#f59e0b'; ctx.lineWidth=1.5; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(gx(.386),gy(.574)); ctx.lineTo(gx(.492),gy(.574)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#f59e0b'; ctx.font='bold 9px Helvetica Neue'; ctx.textAlign='center';
+    ctx.fillText('crowded out',gx(.44),gy(.62));
+    // Dashed lines to axes
+    ctx.strokeStyle='#d1d5db'; ctx.lineWidth=1; ctx.setLineDash([3,3]);
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.468)); ctx.lineTo(gx(.492),gy(.468)); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(M.l,gy(.574)); ctx.lineTo(gx(.386),gy(.574)); ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='#6b7280'; ctx.font='10px Helvetica Neue'; ctx.textAlign='right';
+    ctx.fillText('r₁',M.l-2,gy(.468)+4); ctx.fillText('r₂',M.l-2,gy(.574)+4);
   }
 }
 
@@ -909,6 +1901,12 @@ function showResults() {
 }
 
 document.getElementById('stat-n').textContent = QB.length;
+
+(function(){
+  const n = (parseInt(localStorage.getItem('econ101_visits')) || 0) + 1;
+  localStorage.setItem('econ101_visits', n);
+  document.getElementById('visit-n').textContent = n.toLocaleString();
+})();
 </script>
 </body>
 </html>

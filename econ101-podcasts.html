@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECON 101 Podcasts — Macroeconomics | Karimzada</title>
+  <meta name="description" content="Curated economics podcasts for ECON 101 Macroeconomics at UNBC, organized by topic." />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .course-hero {
+      background: linear-gradient(135deg, var(--primary) 0%, #00509e 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    .course-hero .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: .72rem;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: .25rem .85rem;
+      border-radius: 20px;
+      margin-bottom: .75rem;
+    }
+    .course-hero h1 { font-size: 2rem; margin-bottom: .4rem; }
+    .course-hero p {
+      font-size: .93rem;
+      opacity: .88;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      max-width: 560px;
+      margin: .5rem auto 0;
+      line-height: 1.6;
+    }
+
+    .back-link {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .82rem;
+      color: rgba(255,255,255,.7);
+      text-decoration: none;
+      transition: color var(--transition);
+    }
+    .back-link:hover { color: var(--accent); }
+
+    .topics-section-label {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-top: 2.5rem;
+      margin-bottom: .25rem;
+      padding-bottom: .5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Podcast card grid ── */
+    .podcast-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+    }
+
+    .podcast-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), box-shadow var(--transition);
+      text-decoration: none;
+      color: var(--text);
+    }
+    .podcast-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(0,0,0,.13);
+      color: var(--text);
+    }
+
+    .pc-accent        { height: 5px; background: var(--primary); }
+    .pc-accent.gold   { background: var(--accent); }
+    .pc-accent.teal   { background: #1a7a6e; }
+    .pc-accent.rust   { background: #c0442a; }
+    .pc-accent.purple { background: #6b21a8; }
+    .pc-accent.slate  { background: #475569; }
+
+    .pc-body {
+      padding: 1.1rem 1.2rem .85rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .pc-icon  { font-size: 1.55rem; line-height: 1; margin-bottom: .4rem; }
+    .pc-title { font-size: .97rem; font-weight: bold; line-height: 1.3; margin-bottom: .15rem; }
+    .pc-host  {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .72rem;
+      color: var(--text-muted);
+      margin-bottom: .55rem;
+    }
+    .pc-desc  {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .8rem;
+      color: var(--text);
+      line-height: 1.55;
+      flex: 1;
+    }
+    .pc-tags  { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .7rem; }
+    .pc-tag   {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .63rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: .18rem .55rem;
+      color: var(--text-muted);
+    }
+    .pc-footer {
+      padding: .65rem 1.2rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-alt);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .76rem;
+      font-weight: 700;
+      color: var(--primary-light);
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+    }
+    .podcast-card:hover .pc-footer { color: var(--accent); }
+
+    /* ── Featured episode list ── */
+    .ep-list {
+      margin-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+    }
+    .ep-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      box-shadow: var(--shadow);
+    }
+    .ep-num {
+      flex-shrink: 0;
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .72rem;
+      font-weight: 700;
+      margin-top: .15rem;
+    }
+    .ep-body  { flex: 1; }
+    .ep-meta  {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: .2rem;
+    }
+    .ep-title {
+      font-size: .9rem;
+      font-weight: bold;
+      line-height: 1.35;
+      margin-bottom: .35rem;
+    }
+    .ep-desc  {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .8rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .ep-topic {
+      display: inline-block;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .63rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      background: #dbeafe;
+      color: #1d4ed8;
+      border-radius: 20px;
+      padding: .15rem .55rem;
+      margin-top: .45rem;
+    }
+
+    /* ── Tip box ── */
+    .tip-box {
+      background: #f0f4ff;
+      border-left: 4px solid var(--primary-light);
+      border-radius: 0 8px 8px 0;
+      padding: 1rem 1.3rem;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: .86rem;
+      line-height: 1.65;
+      color: var(--text);
+      margin-top: 2.25rem;
+    }
+    .tip-box strong { color: var(--primary); }
+
+    .visit-ct { font-family:'Helvetica Neue',Arial,sans-serif; font-size:.72rem; color:rgba(255,255,255,.55); letter-spacing:.04em; }
+    .visit-ct strong { color:var(--accent); font-weight:700; }
+
+    @media (max-width: 540px) {
+      .podcast-grid { grid-template-columns: 1fr; }
+      .ep-card { flex-direction: column; gap: .6rem; }
+      .visit-ct { display:none; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">M. <span>Karimzada</span></a>
+    <span class="visit-ct">Visits: <strong id="visit-n">—</strong></span>
+    <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="teaching.html">Teaching</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="course-hero">
+  <p class="breadcrumb" style="margin-bottom:.75rem;">
+    <a href="index.html" class="back-link">Home</a>
+    <span style="color:rgba(255,255,255,.35);margin:0 .4rem">/</span>
+    <a href="teaching.html" class="back-link">Teaching</a>
+    <span style="color:rgba(255,255,255,.35);margin:0 .4rem">/</span>
+    <span style="color:rgba(255,255,255,.9)">ECON 101 Podcasts</span>
+  </p>
+  <div class="badge">ECON 101 &mdash; Macroeconomics</div>
+  <h1>Economics Podcasts</h1>
+  <p>Curated listening for every topic in the course — from Canadian monetary policy to global trade and the history of economic ideas.</p>
+</header>
+
+<main class="page">
+  <section class="section">
+    <div class="container">
+
+      <!-- ── START HERE ── -->
+      <p class="topics-section-label">Start Here &mdash; Accessible &amp; Engaging</p>
+      <div class="podcast-grid">
+
+        <a href="https://www.npr.org/podcasts/510289/planet-money" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent gold"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#127756;</div>
+            <div class="pc-title">Planet Money</div>
+            <div class="pc-host">NPR &mdash; Various hosts</div>
+            <p class="pc-desc">Award-winning storytelling about economics. Each episode takes one real-world event &mdash; a trade war, a bank failure, a peculiar market &mdash; and uses it to illuminate an economic principle. The best general-purpose companion to this course.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">All topics</span>
+              <span class="pc-tag">Trade</span>
+              <span class="pc-tag">Fiscal policy</span>
+              <span class="pc-tag">Markets</span>
+            </div>
+          </div>
+          <div class="pc-footer">Listen free &rarr;</div>
+        </a>
+
+        <a href="https://www.npr.org/podcasts/510325/the-indicator-from-planet-money" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#128202;</div>
+            <div class="pc-title">The Indicator from Planet Money</div>
+            <div class="pc-host">NPR &mdash; Darian Woods &amp; Wailin Wong</div>
+            <p class="pc-desc">A daily 10-minute episode built around one economic number. Perfect for staying current on GDP releases, CPI reports, jobs data, and central bank decisions as they happen. Short enough to listen between classes.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">GDP</span>
+              <span class="pc-tag">Inflation</span>
+              <span class="pc-tag">Unemployment</span>
+              <span class="pc-tag">Monetary policy</span>
+            </div>
+          </div>
+          <div class="pc-footer">Listen free &rarr;</div>
+        </a>
+
+        <a href="https://freakonomics.com/series/freakonomics-radio/" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent rust"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#127922;</div>
+            <div class="pc-title">Freakonomics Radio</div>
+            <div class="pc-host">Stitcher &mdash; Stephen J. Dubner</div>
+            <p class="pc-desc">Applies economic thinking to unconventional questions &mdash; crime, education, parenting, healthcare. Excellent for building intuition about incentives, opportunity cost, and unintended consequences before we formalize those ideas in lecture.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Incentives</span>
+              <span class="pc-tag">Opportunity cost</span>
+              <span class="pc-tag">Behaviour</span>
+            </div>
+          </div>
+          <div class="pc-footer">Listen free &rarr;</div>
+        </a>
+
+      </div>
+
+      <!-- ── CANADIAN ECONOMY ── -->
+      <p class="topics-section-label">The Canadian Economy</p>
+      <div class="podcast-grid">
+
+        <a href="https://www.marketplace.org/shows/marketplace/" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent gold"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#128240;</div>
+            <div class="pc-title">Marketplace</div>
+            <div class="pc-host">APM Radio &mdash; Kai Ryssdal</div>
+            <p class="pc-desc">Daily 30-minute business and economics news from American Public Media. Strong North American coverage, making it highly relevant for tracking macro indicators, Fed and Bank of Canada decisions, and Canada&ndash;US trade flows.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Macro news</span>
+              <span class="pc-tag">Trade</span>
+              <span class="pc-tag">Monetary policy</span>
+              <span class="pc-tag">Canada-US</span>
+            </div>
+          </div>
+          <div class="pc-footer">Listen free &rarr;</div>
+        </a>
+
+      </div>
+
+      <!-- ── STATISTICS CANADA ── -->
+      <p class="topics-section-label">Statistics Canada &mdash; Official Canadian Data</p>
+      <div class="podcast-grid" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));">
+
+        <a href="https://www150.statcan.gc.ca/n1/en/catalogue/45200003" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent teal"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#127809;</div>
+            <div class="pc-title">Eh Sayers</div>
+            <div class="pc-host">Statistics Canada &mdash; Catalogue No. 45-20-0003</div>
+            <p class="pc-desc">Statistics Canada's official podcast. Statisticians and economists explain how Canada's key macroeconomic indicators are produced &mdash; GDP, the Labour Force Survey, the Consumer Price Index, international trade data, and productivity measures. The primary Canadian source for the numbers behind every topic in this course.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">GDP</span>
+              <span class="pc-tag">CPI</span>
+              <span class="pc-tag">Unemployment</span>
+              <span class="pc-tag">Trade</span>
+              <span class="pc-tag">Canada</span>
+              <span class="pc-tag">Official data</span>
+            </div>
+          </div>
+          <div class="pc-footer">All episodes &rarr;</div>
+        </a>
+
+        <a href="https://www.statcan.gc.ca/en/sc/podcasts/eh-sayers-ep30" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent gold"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#128200;</div>
+            <div class="pc-title">GDP Explained Without Putting You to Sleep</div>
+            <div class="pc-host">Eh Sayers Ep. 30 &mdash; February 2026</div>
+            <p class="pc-desc">Host Max Zimmerman talks with Amanda Sinclair, Assistant Director of National Economic Accounts, about what GDP actually measures, why it matters to everyday Canadians, and how Statistics Canada produces the quarterly National Accounts estimate. The most direct possible companion to the National Income chapter.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">GDP</span>
+              <span class="pc-tag">National Accounts</span>
+              <span class="pc-tag">Expenditure approach</span>
+            </div>
+          </div>
+          <div class="pc-footer">Listen free &rarr;</div>
+        </a>
+
+        <a href="https://www.statcan.gc.ca/en/sc/podcasts/eh-sayers-ep12" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent rust"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#128179;</div>
+            <div class="pc-title">In a Movie About the Economy, Is Inflation the Bad Guy?</div>
+            <div class="pc-host">Eh Sayers Ep. 12 &mdash; April 2023</div>
+            <p class="pc-desc">Guy Gellatly, Chief Economic Advisor at Statistics Canada, explains the Bank of Canada's 2% inflation target, why zero inflation is not ideal, and how deflationary spirals work. Covers the CPI, core inflation, and why some inflation supports wage growth &mdash; the measurement foundations of the Inflation chapter.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">CPI</span>
+              <span class="pc-tag">Inflation target</span>
+              <span class="pc-tag">Monetary policy</span>
+            </div>
+          </div>
+          <div class="pc-footer">Listen free &rarr;</div>
+        </a>
+
+      </div>
+
+      <!-- ── STATISTICS CANADA FEATURED EPISODES ── -->
+      <p class="topics-section-label" style="margin-top:1.75rem;">Eh Sayers &mdash; Episodes Paired to This Course</p>
+      <div class="ep-list">
+
+        <a href="https://www.statcan.gc.ca/en/sc/podcasts/eh-sayers-ep26" target="_blank" rel="noopener" class="ep-card" style="text-decoration:none;color:inherit;">
+          <div class="ep-num" style="background:#1a7a6e;">SC</div>
+          <div class="ep-body">
+            <div class="ep-meta">Eh Sayers &middot; Ep. 26 &middot; July 16, 2025</div>
+            <div class="ep-title">"A Tariff on Both Your Houses!"</div>
+            <p class="ep-desc">Guy Gellatly, Chief Economic Advisor at Statistics Canada, explains the Canada&ndash;US tariff conflict: how US exports represent roughly 17% of Canadian GDP, which sectors (manufacturing, oil &amp; gas, autos) are most exposed, and which indicators &mdash; employment, trade flows, investment, and pricing &mdash; to watch as the shock works through the economy.</p>
+            <span class="ep-topic">Open Economy &middot; Aggregate Demand</span>
+          </div>
+        </a>
+
+        <a href="https://www.statcan.gc.ca/en/sc/podcasts/eh-sayers-ep20" target="_blank" rel="noopener" class="ep-card" style="text-decoration:none;color:inherit;">
+          <div class="ep-num" style="background:#1a7a6e;">SC</div>
+          <div class="ep-body">
+            <div class="ep-meta">Eh Sayers &middot; Ep. 20 &middot; August 14, 2024</div>
+            <div class="ep-title">"Why Economists Are Sounding the Alarm on Productivity"</div>
+            <p class="ep-desc">Guy Gellatly explains why Canadian labour productivity declined in 12 of the 15 quarters before this episode and has fallen below pre-pandemic levels. Covers why roughly 90% of GDP-per-capita growth over four decades comes from labour productivity, what low business investment means for long-run living standards, and what AI might &mdash; or might not &mdash; change.</p>
+            <span class="ep-topic">Economic Growth &middot; Long-Run Aggregate Supply</span>
+          </div>
+        </a>
+
+        <a href="https://www.statcan.gc.ca/en/sc/podcasts/eh-sayers-ep18" target="_blank" rel="noopener" class="ep-card" style="text-decoration:none;color:inherit;">
+          <div class="ep-num" style="background:#1a7a6e;">SC</div>
+          <div class="ep-body">
+            <div class="ep-meta">Eh Sayers &middot; Ep. 18 &middot; May 8, 2024</div>
+            <div class="ep-title">"Why Food Inflation Is Such a Hard Nut to Crack"</div>
+            <p class="ep-desc">Taylor Mitchell of Statistics Canada's Prices Division explains the gap between official food CPI numbers and what Canadians feel at the checkout. Covers how grocery prices are collected, why the CPI basket construction matters, the role of supply chains and corporate margins, and why inflation can feel higher than the headline rate even when the data is accurate.</p>
+            <span class="ep-topic">Inflation &middot; CPI Measurement</span>
+          </div>
+        </a>
+
+        <a href="https://www.statcan.gc.ca/en/sc/podcasts/eh-sayers-ep04" target="_blank" rel="noopener" class="ep-card" style="text-decoration:none;color:inherit;">
+          <div class="ep-num" style="background:#1a7a6e;">SC</div>
+          <div class="ep-body">
+            <div class="ep-meta">Eh Sayers &middot; Ep. 4 &middot; January 7, 2022</div>
+            <div class="ep-title">"Who Wins and Who Loses in the Gig Economy?"</div>
+            <p class="ep-desc">Paul Glavin of McMaster University discusses with Statistics Canada how gig and platform work (Uber, Fiverr, TaskRabbit) reshapes labour force participation, job stability, and income distribution. Connects to the Unemployment chapter's discussion of non-standard employment, the Labour Force Survey's classification challenges, and why the headline unemployment rate can miss precarious work.</p>
+            <span class="ep-topic">Growth &amp; Unemployment &middot; Labour Markets</span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- ── POLICY & IN-DEPTH ── -->
+      <p class="topics-section-label">Policy &amp; In-Depth Analysis</p>
+      <div class="podcast-grid">
+
+        <a href="https://www.econtalk.org/" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent purple"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#127897;</div>
+            <div class="pc-title">EconTalk</div>
+            <div class="pc-host">Hoover Institution &mdash; Russ Roberts</div>
+            <p class="pc-desc">Weekly hour-long conversations with leading economists &mdash; Nobel laureates, central bankers, policy researchers. Deep and rigorous. Best for students who want to go beyond the textbook on growth theory, monetary policy, and international trade.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Growth</span>
+              <span class="pc-tag">Trade</span>
+              <span class="pc-tag">Policy</span>
+              <span class="pc-tag">History of ideas</span>
+            </div>
+          </div>
+          <div class="pc-footer">Listen free &rarr;</div>
+        </a>
+
+        <a href="https://www.mercatus.org/macro-musings" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent slate"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#128300;</div>
+            <div class="pc-title">Macro Musings</div>
+            <div class="pc-host">Mercatus Center &mdash; David Beckworth</div>
+            <p class="pc-desc">Focused entirely on monetary economics &mdash; money supply, the zero lower bound, inflation targeting, central bank independence, and quantitative easing. An excellent companion to the Money &amp; Banking and Monetary Policy chapters.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Monetary policy</span>
+              <span class="pc-tag">Money supply</span>
+              <span class="pc-tag">Central banks</span>
+              <span class="pc-tag">ZLB</span>
+            </div>
+          </div>
+          <div class="pc-footer">Listen free &rarr;</div>
+        </a>
+
+      </div>
+
+      <!-- ── DATA & MEASUREMENT ── -->
+      <p class="topics-section-label">Data, Statistics &amp; Critical Thinking</p>
+      <div class="podcast-grid">
+
+        <a href="https://www.piie.com/experts/podcasts/trade-talks" target="_blank" rel="noopener" class="podcast-card">
+          <div class="pc-accent rust"></div>
+          <div class="pc-body">
+            <div class="pc-icon">&#128674;</div>
+            <div class="pc-title">Trade Talks</div>
+            <div class="pc-host">Peterson Institute &mdash; Chad Bown &amp; Soumaya Keynes</div>
+            <p class="pc-desc">A weekly deep-dive on international trade policy &mdash; tariffs, CUSMA/USMCA, global supply chains, and trade deficits. Exactly the material in the Open Economy chapter, applied to current Canada&ndash;US and global developments.</p>
+            <div class="pc-tags">
+              <span class="pc-tag">Open economy</span>
+              <span class="pc-tag">Comparative advantage</span>
+              <span class="pc-tag">Tariffs</span>
+              <span class="pc-tag">Canada-US</span>
+            </div>
+          </div>
+          <div class="pc-footer">Listen free &rarr;</div>
+        </a>
+
+      </div>
+
+      <!-- ── FEATURED EPISODES ── -->
+      <p class="topics-section-label">Featured Episodes &mdash; Paired to Course Topics</p>
+      <div class="ep-list">
+
+        <div class="ep-card">
+          <div class="ep-num">1</div>
+          <div class="ep-body">
+            <div class="ep-meta">Planet Money &middot; Episode 819</div>
+            <div class="ep-title">"The Pigou Club"</div>
+            <p class="ep-desc">Why economists across the political spectrum support carbon taxes &mdash; and why it is so politically difficult to enact them. A masterclass in externalities, deadweight loss, and efficient taxation, with real-world Canadian context.</p>
+            <span class="ep-topic">Fiscal Policy &middot; Supply &amp; Demand</span>
+          </div>
+        </div>
+
+        <div class="ep-card">
+          <div class="ep-num">2</div>
+          <div class="ep-body">
+            <div class="ep-meta">The Indicator &middot; 2022</div>
+            <div class="ep-title">"Why Is Inflation So High Right Now?"</div>
+            <p class="ep-desc">A clear, concise explanation of the post-pandemic inflation surge: supply chain shocks shifting SRAS left, demand stimulus shifting AD right, and why the Bank of Canada responded with the most aggressive rate-hiking cycle since the 1990s.</p>
+            <span class="ep-topic">Monetary Policy &middot; Aggregate Expenditure</span>
+          </div>
+        </div>
+
+        <div class="ep-card">
+          <div class="ep-num">3</div>
+          <div class="ep-body">
+            <div class="ep-meta">Freakonomics Radio &middot; Episode 470</div>
+            <div class="ep-title">"Why Is GDP So Weird?"</div>
+            <p class="ep-desc">Challenges the standard definition of GDP &mdash; what gets counted, what does not, and whether it is still the right measure of economic welfare. Connects the National Income Accounting chapter to the broader debate about measuring wellbeing.</p>
+            <span class="ep-topic">National Income Accounting</span>
+          </div>
+        </div>
+
+        <div class="ep-card">
+          <div class="ep-num">4</div>
+          <div class="ep-body">
+            <div class="ep-meta">EconTalk &middot; 2021</div>
+            <div class="ep-title">David Card on the Minimum Wage</div>
+            <p class="ep-desc">Nobel laureate David Card discusses the Card&ndash;Krueger study, labour market monopsony, and why standard supply-and-demand models sometimes produce wrong predictions about minimum wages. Essential context for the analytical questions in this course.</p>
+            <span class="ep-topic">Supply &amp; Demand &middot; Labour Markets</span>
+          </div>
+        </div>
+
+        <div class="ep-card">
+          <div class="ep-num">5</div>
+          <div class="ep-body">
+            <div class="ep-meta">Planet Money &middot; Episode 608</div>
+            <div class="ep-title">"The Experiment Experiment"</div>
+            <p class="ep-desc">How economists use natural experiments &mdash; the methodological approach behind Card and Krueger, Angrist and Imbens, and the 2021 Nobel Prize in Economics. Explains why careful empirical economics is harder than it looks and why it matters for policy.</p>
+            <span class="ep-topic">Foundations &middot; Methods</span>
+          </div>
+        </div>
+
+        <div class="ep-card">
+          <div class="ep-num">6</div>
+          <div class="ep-body">
+            <div class="ep-meta">Macro Musings &middot; 2020</div>
+            <div class="ep-title">"The Bank of Canada's COVID-19 Response"</div>
+            <p class="ep-desc">David Beckworth interviews a Bank of Canada economist on the emergency rate cuts, quantitative easing programme, and forward guidance deployed in March 2020. A real-time case study in every unconventional monetary policy tool discussed in this course.</p>
+            <span class="ep-topic">Monetary Policy &middot; Money &amp; Banking</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── TIP BOX ── -->
+      <div class="tip-box">
+        <strong>How to use these podcasts in ECON 101.</strong> These are supplementary resources &mdash; nothing here is required listening. The most effective approach is to listen to an episode the same week you cover that topic in lecture. Active listening means pausing to ask yourself: <em>Which model explains this? What shift is the host describing? Is this a movement along a curve or a shift of the curve?</em> Translating the story back into the analytical framework is the real learning exercise.
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <strong style="color:#fff;">Muhebullah Karimzada</strong><br />
+      Assistant Professor of Economics &mdash; UNBC
+    </div>
+    <div class="footer-right">
+      University of Northern British Columbia<br />
+      Prince George, BC, Canada &bull;
+      <a href="mailto:muhebullah.karimzada@unbc.ca">muhebullah.karimzada@unbc.ca</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+(function(){
+  const n = (parseInt(localStorage.getItem('econ101_podcasts_visits')) || 0) + 1;
+  localStorage.setItem('econ101_podcasts_visits', n);
+  document.getElementById('visit-n').textContent = n.toLocaleString();
+})();
+</script>
+</body>
+</html>
