@@ -1,0 +1,598 @@
+%==========================================================
+%  CHAPTER 5: Labour Markets and the Future of Work
+%==========================================================
+
+\chapter{Labour Markets and the Future of Work}
+\label{ch:labour}
+
+\begin{learningobjectives}
+\item Apply the supply and demand model to labour markets and explain how wages and employment are determined in competitive and non-competitive settings.
+\item Define the gig economy, describe its scope in Canada, and analyze the economic trade-offs for gig workers relative to traditional employment.
+\item Explain the gap between real wage growth and labour productivity in Canada since 1980 and identify its primary causes.
+\item Describe trends in Canadian union density, explain the causes of unionization decline, and evaluate the relationship between unionization and wage inequality.
+\item Analyze patterns in Canadian labour force participation across gender, age, and immigrant groups and connect demographic trends to future labour supply challenges.
+\item Evaluate the economics of minimum wage policy, including the standard competitive model, the monopsony model, and the Card-Krueger evidence.
+\end{learningobjectives}
+
+%----------------------------------------------------------
+\section{Labour Markets: An Overview}
+%----------------------------------------------------------
+
+Labour markets are among the most consequential markets in any economy. They determine how the gains from economic activity are distributed across society. The wage a worker earns, the hours they work, the security they enjoy, and the protections available to them depend on how labour markets function---and how policy shapes that functioning.
+
+Canada's labour markets in the 2020s are undergoing significant structural change. The rise of platform-based ``gig'' work is blurring the line between employee and self-employed. The gap between wage growth and productivity growth that opened in the 1980s has not closed. Union membership, which compressed wages across the income distribution for much of the post-war period, has declined sharply in the private sector. And demographic aging is gradually tightening labour supply, with implications for wages, migration policy, and the sustainability of social programs.
+
+This chapter provides the theoretical tools to analyze these trends and applies them to the Canadian labour market context.
+
+%----------------------------------------------------------
+\section{Labour Market Fundamentals}
+%----------------------------------------------------------
+
+\subsection{Supply and Demand in the Labour Market}
+
+Like any market, the labour market coordinates buyers (firms that demand labour) and sellers (workers who supply labour). The ``price'' in this market is the \term{wage rate} ($w$), and the quantity is the number of workers (or hours of work) employed.
+
+\begin{defbox}{Labour Demand}
+The \textbf{demand for labour} is the relationship between the wage rate and the quantity of labour that firms wish to hire, holding other factors constant. The demand curve slopes downward: as wages rise, the quantity of labour demanded falls (firms substitute capital for labour or reduce output).
+
+\textit{Economic intuition:} A firm hires an additional worker as long as the value of the worker's output (marginal revenue product of labour, $MRP_L = MR \times MP_L$) exceeds the wage. The demand curve is the $MRP_L$ schedule.
+
+\textit{Canadian example:} A sawmill in Prince George will hire more workers if lumber prices (and thus the value of their output) rise, or if wages fall due to increased labour supply from immigration.
+\end{defbox}
+
+\begin{defbox}{Labour Supply}
+The \textbf{supply of labour} is the relationship between the wage rate and the quantity of labour that workers wish to supply, holding other factors constant. The supply curve typically slopes upward: higher wages attract more workers (from unemployment, from other markets, from other activities).
+
+\textit{Economic intuition:} A higher wage makes working more attractive relative to leisure (the substitution effect). However, higher wages also raise income, which may allow workers to afford more leisure (the income effect). For most realistic wage ranges, the substitution effect dominates, giving an upward-sloping supply curve.
+
+\textit{Canadian example:} Higher wages in Fort McMurray's oil sands attracted workers from Atlantic Canada, Quebec, and internationally during the commodity boom of the 2000s---a clear supply response to wage differentials.
+\end{defbox}
+
+\subsection{Labour Market Equilibrium}
+
+In a competitive labour market, the equilibrium wage ($w^*$) and level of employment ($L^*$) are determined by the intersection of labour supply and demand.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=11cm, height=9cm,
+  xlabel={Quantity of Labour ($L$)},
+  ylabel={Wage Rate ($w$)},
+  xlabel style={font=\small},
+  ylabel style={font=\small},
+  xmin=0, xmax=10, ymin=0, ymax=10,
+  xtick=\empty, ytick=\empty,
+  axis line style={-Stealth, thick},
+  axis lines=left,
+  clip=false
+]
+% Labour supply (upward sloping)
+\addplot[thick, color=policyblue, domain=1:9] {x}
+  node[right, font=\small] {$S_L$};
+% Labour demand (downward sloping)
+\addplot[thick, color=unbcgreen, domain=1:9] {10 - x}
+  node[right, font=\small] {$D_L = MRP_L$};
+% Equilibrium
+\addplot[only marks, mark=*, color=black, mark size=3pt] coordinates {(5,5)};
+% Dotted lines to axes
+\addplot[thin, dashed, color=chaptergray] coordinates {(5,0)(5,5)};
+\addplot[thin, dashed, color=chaptergray] coordinates {(0,5)(5,5)};
+% Labels
+\node[font=\small] at (axis cs:5,-0.6) {$L^*$};
+\node[font=\small] at (axis cs:-0.6,5) {$w^*$};
+\node[font=\small] at (axis cs:5.3,5.3) {$E^*$};
+% Unemployment (wage floor above equilibrium)
+\addplot[thick, dashed, color=dataorange, domain=0:10] {7}
+  node[right, font=\scriptsize, color=dataorange] {Minimum wage $\bar{w}$};
+\draw[<->, thick, color=dataorange] (axis cs:3,7.1) -- (axis cs:7,7.1)
+  node[above, midway, font=\scriptsize, color=dataorange] {Unemployment};
+\end{axis}
+\end{tikzpicture}
+\caption{The Competitive Labour Market. In a competitive market, the equilibrium wage
+  ($w^*$) and employment ($L^*$) occur at the intersection of labour supply ($S_L$) and
+  demand ($D_L$). A minimum wage set above the equilibrium (orange dashed line) reduces
+  employment from $L^*$ but raises wages for those who retain their jobs. The competitive
+  model predicts a trade-off; more recent evidence suggests this trade-off may be smaller
+  than the simple model implies.}
+\label{fig:labour_market}
+\end{figure}
+
+\subsection{Types of Unemployment}
+
+\begin{defbox}{Types of Unemployment}
+\textbf{Frictional unemployment:} Short-term unemployment arising from the process of matching workers with jobs. Even in a healthy economy, some workers are between jobs.
+
+\textbf{Structural unemployment:} Longer-term unemployment resulting from a mismatch between workers' skills and the skills employers demand, or from geographic mismatch. Structural unemployment may persist even in an economy near full employment.
+
+\textbf{Cyclical unemployment:} Unemployment that rises during recessions and falls during expansions. It reflects insufficient aggregate demand for output and labour.
+
+\textit{Canadian example (2020):} The COVID-19 shutdown caused a massive cyclical unemployment spike (unemployment reached 13.7\% in May 2020) that subsequently reversed quickly as the economy reopened.
+\end{defbox}
+
+The \term{natural rate of unemployment} is the rate consistent with full employment---the sum of frictional and structural unemployment. Canada's natural rate is estimated at approximately 5--6\%, reflecting a dynamic labour market with significant job turnover.
+
+\begin{databox}{Canadian Labour Market Snapshot (2024)}
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+\textbf{Indicator} & \textbf{Value} \\
+\midrule
+Unemployment rate & $\approx$6.3\% \\
+Employment rate (population 15+) & $\approx$61.6\% \\
+Labour force participation rate & $\approx$65.6\% \\
+Employment in services & $\approx$79\% of total \\
+Employment in goods-producing industries & $\approx$21\% \\
+Median hourly wage (all industries) & $\approx$\$28.00 \\
+\midrule
+\multicolumn{2}{l}{\textit{Selected rates by group:}} \\
+Women's participation rate & $\approx$61.6\% \\
+Men's participation rate & $\approx$69.5\% \\
+Youth (15--24) unemployment rate & $\approx$12.4\% \\
+Indigenous peoples employment rate & $\approx$57\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+\source{Statistics Canada, Labour Force Survey, 2024.}
+\end{databox}
+
+%----------------------------------------------------------
+\section{The Gig Economy and Platform Work}
+%----------------------------------------------------------
+
+\subsection{What Is the Gig Economy?}
+
+The \term{gig economy} refers to a labour market characterized by short-term contracts or freelance work as opposed to permanent jobs with a single employer. Platform-mediated gig work---where digital platforms match workers (``independent contractors'') with customers for individual tasks or trips---has grown substantially since the early 2010s.
+
+In Canada, platform-based gig work includes:
+\begin{itemize}
+  \item Ride-hailing (Uber, Lyft)
+  \item Delivery services (DoorDash, SkipTheDishes, Instacart)
+  \item Task work (TaskRabbit, Thumbtack)
+  \item Professional freelancing (Upwork, Fiverr)
+  \item Short-term accommodation (Airbnb hosts)
+\end{itemize}
+
+Estimates of gig economy participation in Canada vary widely (1--2 million workers regularly engaged in gig platforms), partly because the definition of ``gig work'' is contested and partly because many gig workers combine platform work with traditional employment.
+
+\subsection{Worker Classification: The Central Legal Question}
+
+The fundamental labour law question posed by platform gig work is: are these workers \textbf{employees} or \textbf{independent contractors}?
+
+The distinction matters enormously:
+
+\begin{center}
+\begin{tabular}{p{6cm}p{6cm}}
+\toprule
+\textbf{Employee} & \textbf{Independent Contractor} \\
+\midrule
+Entitled to minimum wage & No minimum wage protection \\
+Eligible for EI (if laid off) & Not eligible for EI \\
+CPP contributions by employer & Self-pays CPP contributions \\
+Statutory vacation pay (4--6\%) & No statutory vacation pay \\
+Workplace safety protections (WSBC/WSIB) & Generally excluded \\
+Protection against wrongful dismissal & No dismissal protections \\
+Employer pays 50\% of payroll taxes & Worker pays 100\% of self-employment tax \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Platforms have argued that drivers and couriers are independent contractors, allowing them to avoid the costs associated with employee status. Workers and unions have argued they are employees, given the platforms' control over pricing, routing, and working conditions.
+
+\begin{canexample}{Uber Canada and the Worker Classification Debate}
+In 2020, Ontario enacted Bill 88, the \textit{Working for Workers Act}, which created a third
+category: ``digital platform workers'' who are independent contractors but receive
+certain minimum protections: a minimum earnings floor (based on engaged time, not total
+time waiting for work), mandatory insurance, right to tips, and a \$20 minimum average
+hourly earnings floor (2024,platform workers). This Ontario approach differs from the
+European Union's approach (the EU Platform Work Directive, 2024, establishes a
+presumption of employee status) and from California's Proposition 22 (which codified
+contractor status after a voter referendum). The debate in Canada reflects a genuine
+tension between worker protection and labour market flexibility.
+\end{canexample}
+
+\subsection{Economic Analysis of Gig Work}
+
+From an economic perspective, gig work offers genuine trade-offs:
+
+\textbf{Benefits for workers:} Schedule flexibility, low barriers to entry (no formal credentials required), ability to work across multiple platforms simultaneously, supplemental income for those with other primary employment.
+
+\textbf{Costs for workers:} No guaranteed income, no employer contributions to CPP or EI, no benefits (health, dental, life insurance), no protection against earnings volatility, all fixed costs borne by worker (vehicle, fuel, equipment), exclusion from collective bargaining.
+
+Research on gig earnings is mixed. Studies of Uber drivers in the United States find median effective hourly earnings below minimum wage once all costs (vehicle depreciation, fuel, insurance, self-employment taxes) are deducted. Canadian research shows similar patterns. However, for workers who genuinely prefer flexible scheduling or for those supplementing other income, the earnings comparison to minimum wage is less relevant.
+
+\begin{thinkbox}
+Suppose a DoorDash courier earns \$18/hour in gross revenue per hour worked. After subtracting vehicle costs (\$3.50/hour), fuel (\$2.00/hour), and the incremental self-employment payroll tax burden ($\approx$\$1.50/hour), their effective net hourly earnings are approximately \$11/hour---below the minimum wage in most provinces. The courier does not show up in unemployment statistics and is not eligible for EI if work dries up. How should we measure the ``wages'' of gig workers for policy purposes? Does the flexibility that gig work provides compensate for the loss of standard employment protections?
+\end{thinkbox}
+
+%----------------------------------------------------------
+\section{Real Wages vs.\ Labour Productivity: The Great Decoupling}
+%----------------------------------------------------------
+
+One of the most consequential trends in Canadian (and broader OECD) labour markets since 1980 is the widening gap between labour productivity growth and real wage growth. Economists sometimes call this the \term{productivity-pay gap} or the ``great decoupling.''
+
+\begin{defbox}{Labour Productivity}
+\textbf{Labour productivity} is the amount of output produced per unit of labour input, typically measured as real GDP per hour worked.
+
+\textit{Economic intuition:} If workers collectively produce more per hour, the economy can sustain higher real wages without inflation. The growth of productivity is the long-run source of rising living standards.
+
+\textit{Canadian example:} Canadian labour productivity grew at approximately 1.1\% per year on average between 2000 and 2023---significantly below the U.S.\ rate of approximately 1.8\% and below Canada's own historical average.
+\end{defbox}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=13cm, height=7.5cm,
+  xlabel={Year},
+  ylabel={Index (1981 = 100)},
+  ylabel style={font=\small},
+  xmin=1979, xmax=2023,
+  ymin=85, ymax=200,
+  xtick={1980,1985,1990,1995,2000,2005,2010,2015,2020},
+  xticklabel style={font=\small, rotate=30, anchor=east},
+  yticklabel style={font=\small},
+  ymajorgrids=true, grid style={dashed, gray!25},
+  legend style={at={(0.05,0.95)}, anchor=north west, font=\small},
+  legend entries={Labour productivity (real GDP/hour), Real median hourly wage}
+]
+% Labour productivity (grows more)
+\addplot[thick, color=unbcgreen, mark=*, mark size=1.8pt]
+  coordinates {
+    (1981,100)(1985,105)(1990,112)(1995,118)(2000,130)
+    (2005,138)(2010,146)(2015,152)(2019,158)(2022,162)
+  };
+% Real median wage (grows less)
+\addplot[thick, color=policyblue, dashed, mark=square*, mark size=1.8pt]
+  coordinates {
+    (1981,100)(1985,97)(1990,100)(1995,97)(2000,103)
+    (2005,110)(2010,116)(2015,122)(2019,130)(2022,133)
+  };
+% Annotation
+\draw[<->, thick, color=dataorange]
+  (axis cs:2022,133) -- (axis cs:2022,162)
+  node[right, midway, font=\scriptsize, color=dataorange] {Decoupling gap};
+\end{axis}
+\end{tikzpicture}
+\caption{Labour Productivity vs.\ Real Median Hourly Wages, Canada, 1981--2022 (Index,
+  1981 = 100, approximate). Labour productivity has grown substantially faster than median
+  real wages since 1980, indicating that workers as a whole have not proportionally captured
+  the gains from productivity growth. The gap has been partially offset by non-wage
+  compensation and by government transfers, but a significant divergence remains.}
+\label{fig:productivity_wages}
+\source{Statistics Canada, Productivity Accounts; Labour Force Survey (approximate values).}
+\end{figure}
+
+\subsection{Causes of the Productivity-Pay Gap}
+
+The gap between productivity and wage growth reflects several reinforcing factors:
+
+\textbf{1.\ Declining labour share of income.} The share of GDP going to labour income (wages, salaries, and benefits) has declined in Canada from approximately 58\% in the early 1980s to approximately 53--55\% today. Capital's share has correspondingly increased. This reflects technological change favouring capital, globalization reducing labour bargaining power, and the decline of unions.
+
+\textbf{2.\ Compositional changes.} The median worker is not a representative worker from 1980. Large shifts from manufacturing (relatively high-wage) to services (relatively lower-wage, on average) have weighed on median wages even if individual productivity has risen.
+
+\textbf{3.\ Declining unionization.} As documented in Section~\ref{sec:unions}, union density has fallen substantially. Unions historically extracted a share of productivity gains for workers through collective bargaining. Their decline has reduced workers' bargaining power relative to employers.
+
+\textbf{4.\ Globalization and import competition.} Competition from low-wage economies puts downward pressure on wages of workers in tradeable sectors, constraining wage growth even when domestic productivity rises.
+
+\textbf{5.\ Growing non-wage compensation.} Some of the gap is illusory: benefits (employer pension contributions, health benefits) have grown as a share of total compensation. The productivity-wage gap looks smaller when total compensation (wages plus benefits) is compared to productivity.
+
+%----------------------------------------------------------
+\section{The Decline of Unionization in Canada}
+\label{sec:unions}
+%----------------------------------------------------------
+
+\subsection{Historical Trends}
+
+Canada's union density---the share of paid workers who are union members---has declined substantially from its post-war peak. In the early 1980s, approximately 38\% of Canadian workers were unionized. By 2023, that figure had fallen to approximately 30\%---but this aggregate masks a sharp bifurcation between sectors:
+
+\begin{itemize}
+  \item \textbf{Public sector:} Approximately 74--76\% union density. Federal and provincial employees, teachers, nurses, and transit workers are predominantly unionized.
+  \item \textbf{Private sector:} Approximately 16\% union density---and declining. Manufacturing, retail, hospitality, and the growing tech and gig sectors are largely non-unionized.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=13cm, height=6.5cm,
+  xlabel={Year},
+  ylabel={Union Density (\% of Paid Workers)},
+  ylabel style={font=\small},
+  xmin=1979, xmax=2024,
+  ymin=14, ymax=42,
+  xtick={1981,1985,1990,1995,2000,2005,2010,2015,2020},
+  xticklabel style={font=\small, rotate=30, anchor=east},
+  yticklabel style={font=\small},
+  ymajorgrids=true, grid style={dashed, gray!25},
+  legend style={at={(0.98,0.97)}, anchor=north east, font=\small},
+  legend entries={Overall, Public sector, Private sector}
+]
+\addplot[thick, color=unbcgreen, mark=*, mark size=1.8pt]
+  coordinates {(1981,38)(1985,37)(1990,36)(1995,34)(2000,32)
+               (2005,31)(2010,30)(2015,29)(2019,30)(2023,30)};
+\addplot[thick, color=policyblue, dashed, mark=square*, mark size=1.8pt]
+  coordinates {(1981,65)(1985,67)(1990,70)(1995,73)(2000,74)
+               (2005,74)(2010,75)(2015,75)(2019,75)(2023,75)};
+\addplot[thick, color=dataorange, dotted, mark=triangle*, mark size=1.8pt]
+  coordinates {(1981,26)(1985,25)(1990,22)(1995,21)(2000,19)
+               (2005,18)(2010,17)(2015,16)(2019,16)(2023,16)};
+\end{axis}
+\end{tikzpicture}
+\caption{Union Density in Canada by Sector, 1981--2023. Overall union density has
+  declined modestly, but this masks a sharp divergence: public sector density remains
+  very high while private sector density has fallen by more than a third since 1980.}
+\label{fig:union_density}
+\source{Statistics Canada, Labour Force Survey, custom tabulations.}
+\end{figure}
+
+\subsection{Causes of Unionization Decline}
+
+\textbf{Sectoral shift:} Employment has shifted from heavily unionized manufacturing toward less unionized services. Even within manufacturing, plant closures (often associated with import competition) eliminated union jobs without a corresponding creation of new union workplaces.
+
+\textbf{Legislative environment:} Changes to labour relations legislation in some provinces have made union certification harder (e.g., removing card-check certification in Ontario under the Harris government, though this was partially reversed). The Supreme Court of Canada has affirmed freedom of association includes the right to collective bargaining, but effective certification processes vary provincially.
+
+\textbf{Employer opposition:} Firms in private sector industries facing international competition have strong incentives to resist unionization, which adds to labour costs and reduces operational flexibility.
+
+\textbf{Employment structure:} The rise of part-time, temporary, and gig work---all difficult to organize---contributes to declining effective union density even if formal density changes slowly.
+
+\subsection{Effects of Unionization on Wages and Inequality}
+
+Unions compress the wage distribution in two ways:
+
+\begin{enumerate}
+  \item \textbf{Direct:} Union wage premiums tend to benefit lower-skilled workers more (as a percentage of their wages) than higher-skilled workers, reducing the within-sector wage spread.
+  \item \textbf{Indirect (threat effect):} Non-union employers in industries with significant union presence raise wages to reduce the incentive for workers to organize. As union density falls, this threat effect weakens.
+\end{enumerate}
+
+Canadian and U.S.\ research consistently finds that the decline in unionization accounts for 15--30\% of the increase in wage inequality since 1980. This is separate from, and cumulative with, the effects of technological change and globalization discussed in Chapter~\ref{ch:inequality}.
+
+%----------------------------------------------------------
+\section{Labour Force Participation}
+%----------------------------------------------------------
+
+\subsection{Women's Labour Force Participation}
+
+One of the most significant structural changes in the Canadian labour market over the past 50 years has been the dramatic increase in women's labour force participation. In 1960, approximately 28\% of Canadian women participated in the labour force. By 2024, this rate had risen to approximately 61.6\%---a transformation that fundamentally changed both the economy and Canadian households.
+
+This transformation has been driven by:
+\begin{itemize}
+  \item Rising educational attainment (women now surpass men in post-secondary completion rates)
+  \item Expansion of the service sector, which offers occupations historically more accessible to women
+  \item Policy changes (maternity/parental leave, childcare expansion, human rights protections)
+  \item Changing social norms regarding women's employment and family formation
+\end{itemize}
+
+Despite large gains, gaps remain. The \term{gender wage gap} in Canada (women earn approximately 87--89\% of men's wages on a full-time equivalent basis) persists even after controlling for occupation, industry, and hours of work. Childcare responsibilities continue to suppress women's full-time employment rates and career advancement. Occupational segregation (women concentrated in caring, clerical, and service work; men in technical and resource extraction work) also contributes to persistent wage differences.
+
+\subsection{Aging Workforce and the Demographic Challenge}
+
+Canada's population is aging: the baby boom cohort (born 1946--1965) is moving through retirement age, shrinking the labour force. The old-age dependency ratio (workers aged 15--64 per person aged 65+) is projected to fall from approximately 4.1:1 in 2020 to approximately 2.7:1 by 2040. Fewer workers supporting more retirees creates fiscal pressure on pension (CPP, OAS) and healthcare systems, while reducing the labour supply available to the economy.
+
+Immigration has been the primary policy response. Canada's immigration targets reached 500,000 per year by 2025, with an explicit labour market rationale. Immigrants are younger on average than the native-born population, adding to the working-age labour supply. However, there is a lag: recent immigrants face barriers to credential recognition, networks, and language proficiency that result in initial earnings below native-born workers with comparable education---a ``immigrant earnings gap'' that typically closes over 10--15 years of Canadian labour market experience.
+
+\subsection{Indigenous Labour Force Participation}
+
+The employment rate for Indigenous peoples in Canada is approximately 57\%, compared to approximately 65\% for non-Indigenous Canadians---a gap of 8 percentage points. For First Nations people living on reserve, the employment rate is lower still (approximately 50--52\%). This gap reflects the structural barriers documented in Chapter~\ref{ch:inequality}: inadequate education infrastructure, geographic isolation, historical exclusion, and discrimination.
+
+Reducing Indigenous labour market exclusion is both an equity imperative and an economic opportunity. Indigenous peoples are the fastest-growing segment of the Canadian population. Closing the employment rate gap would add approximately 100,000--130,000 workers to the Canadian labour force---a non-trivial contribution to addressing the aging-related labour shortage.
+
+%----------------------------------------------------------
+\section{Regional Labour Markets: Northern BC}
+%----------------------------------------------------------
+
+Labour markets are not national---they are local and regional. Northern BC's labour market dynamics illustrate features that differ substantially from national trends.
+
+\textbf{Resource sector boom-bust cycles.} Northern BC's economy is dominated by forestry, mining, natural gas, and increasingly LNG-related construction. These sectors are highly sensitive to commodity prices. The forest industry experienced major restructuring from 2007--2010 (mill closures, temporary layoffs in communities like Prince George, Mackenzie, and Houston). LNG construction from 2018--2023 generated elevated wages and labour demand in the region.
+
+\textbf{Wage premium for resource jobs.} Resource-sector jobs in Northern BC (particularly in mining and oil and gas) typically pay well above provincial and national averages, creating a wage structure with limited opportunities between the resource-sector premium and minimum wage service jobs. This ``missing middle'' of moderate-wage employment is a challenge for community economic development.
+
+\textbf{Labour mobility.} The fly-in fly-out model (workers commuting weekly from southern BC or other provinces to resource sites) extracts labour market value from Northern BC without proportionally contributing to local community economic development. This model reduces the multiplier effect of resource wages on local economies.
+
+\textbf{Indigenous labour market integration.} Improving Indigenous participation in the resource sector has become a priority for both employers (facing acute labour shortages) and First Nations governments (seeking economic development). The Coastal GasLink pipeline, for example, included employment commitments to Indigenous workers and businesses. Whether these commitments translate to sustainable long-run employment remains to be seen.
+
+%----------------------------------------------------------
+\section{Minimum Wages in Canada}
+%----------------------------------------------------------
+
+\subsection{Overview of Canadian Minimum Wages}
+
+Minimum wages in Canada are set provincially (with a federal minimum for federally regulated industries). As of 2024, provincial minimum wages ranged from approximately \$14.00/hour (New Brunswick) to \$17.40/hour (British Columbia). Ontario's minimum wage was \$16.55/hour. Most provinces index the minimum wage to inflation.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  xbar,
+  bar width=0.45cm,
+  width=12cm, height=9cm,
+  symbolic y coords={New Brunswick, PEI, Manitoba, Saskatchewan, Nova Scotia, Quebec, Alberta, Ontario, Nunavut, BC},
+  ytick=data,
+  y tick label style={font=\small},
+  xlabel={Minimum Wage (CAD/hour, 2024)},
+  xlabel style={font=\small},
+  xmin=12, xmax=20,
+  xtick={12,13,14,15,16,17,18,19},
+  xticklabel style={font=\small},
+  xmajorgrids=true, grid style={dashed, gray!25},
+  every axis plot/.append style={fill=unbcgreen!60, draw=unbcgreen}
+]
+\addplot coordinates {
+  (14.00,New Brunswick)(15.00,PEI)(15.30,Manitoba)
+  (15.00,Saskatchewan)(15.20,Nova Scotia)(15.75,Quebec)
+  (15.00,Alberta)(16.55,Ontario)(16.00,Nunavut)(17.40,BC)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Provincial Minimum Wages, Canada, 2024. British Columbia has the highest
+  minimum wage among the provinces at \$17.40/hour. The federal minimum wage for
+  federally regulated workers is \$17.30/hour. Significant regional variation in minimum
+  wages reflects differences in cost of living, labour market conditions, and
+  political priorities.}
+\label{fig:min_wage}
+\source{Government of Canada; provincial labour ministry websites, 2024.}
+\end{figure}
+
+\subsection{The Standard Competitive Model}
+
+In the standard competitive labour market model, a minimum wage set above the equilibrium wage ($\bar{w} > w^*$) reduces employment: at the higher wage, firms demand less labour while more workers seek jobs, creating unemployment. This is shown in Figure~\ref{fig:labour_market}. The prediction is a clear trade-off: some workers gain (those who keep their jobs at the higher wage) while others lose (those who become unemployed as a result).
+
+The magnitude of the employment effect depends on the elasticity of labour demand. If firms can easily substitute capital for labour (elastic demand), employment falls significantly. If substitution is difficult (inelastic demand), the employment loss is smaller.
+
+\subsection{The Monopsony Model}
+
+The standard competitive model assumes many firms compete for workers. But what if there is only one buyer of a particular type of labour---a \term{monopsonist}? In a monopsonistic labour market:
+
+\begin{itemize}
+  \item The monopsonist faces the entire upward-sloping labour supply curve.
+  \item To hire more workers, it must raise the wage for all workers (not just the marginal one).
+  \item As a result, the marginal cost of hiring is above the wage rate.
+  \item The monopsonist hires fewer workers at a lower wage than a competitive market would produce.
+  \item A minimum wage, set appropriately, can \textit{increase} both employment and wages, by countering the monopsonist's market power.
+\end{itemize}
+
+While pure monopsony (one employer) is rare, \term{oligopsony} (a few large employers) is common in many local markets. In small communities like those in Northern BC, there may be only one or two large employers for certain occupations. Monopsony power is also relevant in healthcare labour markets, where hospitals are often the dominant employer of nurses.
+
+\subsection{The Card-Krueger Evidence}
+
+The most influential empirical challenge to the standard minimum wage model came from David Card and Alan Krueger's 1994 study comparing fast-food employment in New Jersey (which raised its minimum wage from \$4.25 to \$5.05 in April 1992) to Pennsylvania (which did not). Contrary to the competitive model's prediction, employment in New Jersey's fast-food sector did not fall relative to Pennsylvania. Card and Krueger concluded that the elasticity of employment with respect to the minimum wage was near zero or possibly positive.
+
+This finding sparked ongoing empirical debate. Subsequent research has found:
+\begin{itemize}
+  \item For moderate minimum wage increases (in the range of 10--20\% of the median wage), employment effects are small and often statistically indistinguishable from zero.
+  \item For very large minimum wage increases (e.g., a doubling of the minimum wage), larger negative employment effects become more likely.
+  \item Effects are more negative for specific groups: teenagers, workers with limited education, and workers in regions with lower-wage labour markets.
+\end{itemize}
+
+\begin{canexample}{Ontario's Minimum Wage Increase, 2018--2019}
+On January 1, 2018, Ontario's minimum wage increased from \$11.60 to \$14.00/hour---a
+21\% jump in one step, among the largest one-year minimum wage increases in Canadian
+history. The increase was politically controversial, with business groups predicting
+significant job losses. Subsequent research (including work by Canadian economists)
+found the employment effects were modest in aggregate, though there was evidence of
+reduced hours for some affected workers and accelerated adoption of labour-saving
+technology (self-checkout machines, automated ordering) in certain sectors.
+The subsequent provincial government froze the minimum wage at \$14.00 from 2019 to 2020
+before resuming annual adjustments.
+\end{canexample}
+
+%----------------------------------------------------------
+\section{Policy Debate}
+%----------------------------------------------------------
+
+\begin{policydebate}{Should Canada Expand Protections for Gig Workers?}
+
+\textbf{The Issue}
+
+As platform-based gig work has grown, so has the debate about whether the existing
+legal framework---which classifies most gig workers as independent contractors---adequately
+protects these workers, or whether expanded protections are needed.
+
+\vspace{8pt}
+\textbf{Side A: Expand Protections (Reclassify as Employees)}
+
+\begin{itemize}
+  \item \textbf{Fairness:} Gig workers performing the same tasks as employees (driving, delivering, coding) receive dramatically fewer protections despite comparable economic dependence on the platform.
+  \item \textbf{Social insurance:} When gig workers lose work (due to deactivation, illness, or slowdowns), they typically receive no EI or workers' compensation. This risk is externalized to the worker (and potentially to social assistance systems).
+  \item \textbf{Platform control:} Despite the ``independent'' label, platforms set pricing, routing, standards, and disciplinary procedures with little worker input---resembling employment relationships.
+  \item \textbf{International precedent:} Spain, France, and the UK have granted employee or ``worker'' status to platform workers with positive outcomes for worker welfare and little evidence of platform collapse or large job losses.
+  \item \textbf{Fiscal integrity:} Independent contractor status enables payroll tax avoidance, reducing CPP and EI contributions and shifting costs to taxpayers.
+\end{itemize}
+
+\textbf{Side B: Preserve Independent Contractor Status (With Targeted Reforms)}
+
+\begin{itemize}
+  \item \textbf{Flexibility value:} Many gig workers genuinely value schedule flexibility, which traditional employment with fixed shifts does not offer. Forcing employee status may destroy the flexible element that makes gig work attractive.
+  \item \textbf{Multi-apping:} Many gig workers work for multiple platforms simultaneously. Employee status with one employer is incompatible with this model and could reduce earnings for workers who rely on multi-platform income.
+  \item \textbf{Cost pass-through:} If platforms are required to provide employee benefits, some will raise prices (reducing consumer surplus), reduce active work hours (reducing gig worker earnings), or exit markets (as Uber and Lyft threatened to do in California after AB5 passed). The costs may partly fall on workers.
+  \item \textbf{Targeted approach:} Rather than binary reclassification, targeted reforms---portable benefits, minimum earnings floors, access to dispute resolution---can extend protection without requiring full employee status.
+\end{itemize}
+
+\textbf{Evidence and Policy Direction}
+
+The ``middle ground'' approach---a third category with selective protections---has been adopted in Ontario (Working for Workers Act) and is being considered federally. The evidence from Spain, which mandated employee status for food delivery workers (the ``Riders' Law,'' 2021), is instructive: employment fell somewhat in the formal sector but total platform activity (including informal arrangements) did not disappear. The net welfare effect for workers remains debated.
+
+\textbf{Canadian Context}
+
+The likely path in Canada is continued expansion of the Ontario-style middle category: minimum earnings guarantees, portable accident insurance, transparency requirements, and enhanced dispute resolution---falling short of full employee status but meaningfully expanding worker protections. The federal government may eventually establish a portable benefits system (linked to a worker's social insurance number rather than a specific employer) that allows gig workers to accumulate pension, EI, and benefit contributions across multiple platforms.
+\end{policydebate}
+
+%----------------------------------------------------------
+\section*{Chapter Summary}
+%----------------------------------------------------------
+
+\begin{itemize}
+  \item Labour markets are governed by supply and demand: the equilibrium wage clears the market where labour supply meets labour demand ($MRP_L$). Competitive labour markets are efficient but may not produce desirable distributional outcomes.
+  \item The \textbf{gig economy} involves short-term, platform-mediated work where workers are classified as independent contractors. This provides flexibility but denies workers access to employment insurance, workers' compensation, employer CPP contributions, and minimum wage protections.
+  \item The \textbf{productivity-pay gap} in Canada reflects the divergence between labour productivity growth and real median wage growth since 1980. Causes include: declining labour share of income, sectoral composition shifts, declining unionization, and globalization.
+  \item Canada's \textbf{union density} has declined from approximately 38\% in the early 1980s to approximately 30\% today, with private-sector density falling to approximately 16\%. Declining unionization has contributed to rising wage inequality.
+  \item \textbf{Women's labour force participation} has risen dramatically since 1960 but a gender wage gap (women earn approximately 87--89\% of men's full-time wages) persists. Childcare, occupational segregation, and career interruption are primary contributors.
+  \item Canada's \textbf{aging population} is shrinking the working-age labour force, creating fiscal pressures. Immigration---currently targeted at 500,000 per year---is the primary policy response, though immigrants face initial earnings gaps that close over time.
+  \item \textbf{Northern BC's} resource-sector labour market is characterized by boom-bust cycles, wage premiums in resource jobs, fly-in fly-out employment, and opportunities---and challenges---for Indigenous labour market integration.
+  \item The \textbf{minimum wage} in a competitive model reduces employment by creating a price floor above equilibrium. The \textbf{monopsony model} shows that in markets with employer market power, minimum wages can increase both wages and employment.
+  \item \textbf{Card and Krueger's} 1994 empirical study challenged the simple competitive prediction; subsequent research suggests employment effects of moderate minimum wage increases are small for most workers, with larger effects for specific vulnerable groups.
+  \item The policy debate over \textbf{gig worker protections} involves trade-offs between worker security and flexibility. Ontario's ``third category'' approach provides targeted protections without full employee reclassification.
+\end{itemize}
+
+%----------------------------------------------------------
+\section*{Review Questions}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item \textbf{(Concept)} In the competitive labour market model, what determines the demand for labour? What is the $MRP_L$ and why is it the basis for the labour demand curve? Under what conditions would a firm hire one more worker?
+
+\item \textbf{(Application)} Distinguish frictional, structural, and cyclical unemployment. For each type, identify the most appropriate policy response (e.g., job matching programs, retraining, demand stimulus). Classify the unemployment spike of May 2020 (13.7\%) by type.
+
+\item \textbf{(Critical Thinking)} A ride-sharing driver earns \$22/hour in gross revenue but incurs vehicle depreciation (\$4/hour), fuel (\$2.50/hour), insurance (\$1.50/hour), and additional self-employment taxes (\$1.50/hour). What is the driver's effective net hourly wage? How does this compare to BC's minimum wage of \$17.40/hour? What does this imply about the adequacy of current regulation for gig workers?
+
+\item \textbf{(Concept)} Explain the monopsony model of labour markets. How does it differ from the competitive model? In what circumstances might a minimum wage increase \textit{increase} employment rather than reduce it?
+
+\item \textbf{(Application)} Card and Krueger (1994) found that a minimum wage increase in New Jersey did not reduce employment in fast food. What was their methodology (the ``difference-in-differences'' approach)? Why was this method more convincing than simply comparing New Jersey employment before and after the increase?
+
+\item \textbf{(Application)} Using Figure~\ref{fig:productivity_wages}, describe the productivity-pay gap in Canada. Identify and explain three economic forces that contributed to this divergence since 1980.
+
+\item \textbf{(Policy)} The BC government is considering extending rent-equivalent income support to gig workers (portable benefits tied to total annual platform earnings). Using the economic framework from Section~5.3, evaluate the likely effects of this policy on (a) worker welfare, (b) platform costs, and (c) gig worker supply.
+
+\end{enumerate}
+
+%----------------------------------------------------------
+\section*{Discussion Questions}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item Some labour economists argue that the decline of unions is the most underappreciated cause of rising income inequality in Canada since 1980. Others argue that technological change and globalization are more fundamental. Which explanation do you find more persuasive, and why? Is the distinction between these causes policy-relevant?
+
+\item Canada's immigration targets of 500,000 per year are partly justified by the need to offset an aging workforce. Critics argue that large-scale immigration increases housing demand (as discussed in Chapter~\ref{ch:housing}) and may suppress wages for incumbent workers. Evaluate the overall economic case for Canada's immigration levels from the perspective of labour market economics.
+
+\item Should Canada raise the federal minimum wage to \$20/hour? Consider the effects on employment, poverty reduction, business costs, and regional variation in the cost of living. Under the competitive model and the monopsony model, do your conclusions differ?
+
+\end{enumerate}
+
+%----------------------------------------------------------
+\section*{Exercises}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item \textbf{Labour Market Diagram Exercise.} Draw a supply and demand diagram for the labour market in the Canadian nursing sector. Then show the effect of each of the following, clearly labelling each as a supply or demand shift and stating the direction of the wage and employment effects:
+  \begin{enumerate}[(a)]
+    \item A significant increase in the number of nursing graduates from Canadian universities.
+    \item An aging population that increases the demand for healthcare services.
+    \item Immigration of internationally trained nurses after credential recognition barriers are reduced.
+    \item Provincial governments imposing mandatory minimum nurse-to-patient ratios in hospitals.
+  \end{enumerate}
+
+\item \textbf{Minimum Wage Exercise.} Suppose the competitive equilibrium wage in a local restaurant sector is \$15.00/hour and the minimum wage is raised from \$14.00 to \$17.00/hour. Draw a labour market diagram showing this change.
+  \begin{enumerate}[(a)]
+    \item Identify the number of jobs lost (gap between quantity demanded and equilibrium at \$17.00/hour) qualitatively.
+    \item Now redraw the diagram assuming this is a monopsony labour market. Show the pre-minimum wage equilibrium (below competitive equilibrium), and show how a minimum wage set at the competitive wage can increase both employment and wages.
+    \item Based on the Card-Krueger evidence, which model better describes the fast-food sector?
+  \end{enumerate}
+
+\item \textbf{Data Exercise.} Visit Statistics Canada's Labour Force Survey interactive tool (\url{www.statcan.gc.ca}). Find the most recent monthly data on: (a) the national unemployment rate; (b) the youth (15--24) unemployment rate; (c) the women's labour force participation rate; (d) the employment rate in BC. Compare each to the values in the Data Spotlight (Section~5.2). Identify and explain any significant changes.
+
+\item \textbf{Policy Essay (500 words).} Ontario's Working for Workers Act created a third category for ``digital platform workers'' with minimum earnings floors and accident insurance, without granting full employee status. Evaluate this approach. Does it adequately protect gig workers? Does it preserve the flexibility that makes gig work attractive? Propose one additional protection you think should be included, and justify your choice using economic reasoning.
+
+\end{enumerate}

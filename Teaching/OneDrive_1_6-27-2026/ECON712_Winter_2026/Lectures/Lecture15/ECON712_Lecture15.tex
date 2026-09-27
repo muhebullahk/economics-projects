@@ -1,0 +1,380 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%          Preamble
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[9pt]{beamer}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{amsmath,lmodern,amssymb,bm}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{subfig}
+\usepackage[textfont={scriptsize}]{caption}
+\usepackage{tikz}
+\usetikzlibrary{fit,shapes.misc,arrows.meta,positioning}
+\usepackage{pdflscape}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{epstopdf}
+\usepackage{appendixnumberbeamer}
+\usepackage{bigints}
+\usepackage{booktabs}
+\usepackage{color,soul}
+\usepackage{grffile}
+\usepackage{relsize}
+\usepackage{mathtools}
+\usepackage{tcolorbox}
+ 
+% Colors
+\definecolor{slideblue}{RGB}{0, 102, 153}
+\setbeamercolor{frametitle}{fg=slideblue}
+\setbeamercolor{title}{fg=slideblue}
+\setbeamercolor{structure}{fg=slideblue}
+\setbeamercolor{alerted text}{fg=red}
+ 
+% Itemize markers
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[triangle]
+\beamertemplatenavigationsymbolsempty
+\addtobeamertemplate{frametitle}{\vspace*{0.19cm}}{\vspace*{0cm}}
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\tcbset{colframe=white,colback=white,nobeforeafter}
+ 
+% Tighter itemize spacing
+\setlength{\leftmargini}{1em}
+\setlength{\leftmarginii}{1em}
+ 
+% Topline decorators
+\newcounter{nodemarkers}
+\newcommand{\toplinesmall}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-.9cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-.9cm,xshift=3.6cm]current page.north west);}}
+\newcommand{\toplinemedium}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-.9cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-.9cm,xshift=6.2cm]current page.north west);}}
+\newcommand{\toplinelarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-.9cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-.9cm,xshift=8.9cm]current page.north west);}}
+\newcommand{\toplinexlarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-.9cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-.9cm,xshift=12cm]current page.north west);}}
+ 
+% Footer
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+    \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,left]{author in head/foot}%
+      \usebeamerfont{author in head/foot}\hspace{1em}ECON712
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.34\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+      \usebeamerfont{title in head/foot}Winter 2026
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=.33\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+      \usebeamerfont{date in head/foot}Lecture 15\hspace{1em}
+      \insertframenumber{} / \inserttotalframenumber\hspace{1em}
+    \end{beamercolorbox}}%
+  \vskip0pt%
+}
+ 
+\newtheorem{proposition}[theorem]{Proposition}
+ 
+\title{ECON 712: Applied Econometrics}
+\author{Lecture 15: Panel Data: Introduction}
+\date{}
+\AtBeginSection[]{
+ \begin{frame}<beamer>
+ \tableofcontents[currentsection]
+ \end{frame}
+}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%          Document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\setbeamercovered{transparent}
+ 
+\begin{frame}
+\maketitle
+\end{frame}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Motivation: Panel Data and Unobserved Heterogeneity}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\begin{frame}
+\frametitle{\: \: \: Why Panel Data?}
+\toplinelarge
+\begin{itemize}
+  \item A \textcolor{blue}{panel dataset} observes the same $n$ units (firms, workers, countries) across $T$ time periods
+  \vspace{0.1in}
+  \item Cross-sectional OLS fails when the regressor of interest is correlated with \textcolor{blue}{unobserved, time-invariant} unit characteristics $\alpha_i$
+  \vspace{0.1in}
+  \item Example: estimating the effect of capital on output when unobserved managerial quality $\alpha_i$ is correlated with capital $x_{it}$ and output $y_{it}$
+  \vspace{0.1in}
+  \item With panel data, we can control for $\alpha_i$ \emph{without measuring it} --- by \textcolor{blue}{subtracting it away} using within-unit variation over time
+  \vspace{0.1in}
+  \item Mixtape (Cunningham, 2021): ``Fixed effects is about removing the omitted variable bias caused by unobserved, time-invariant heterogeneity''
+\end{itemize}
+\end{frame}
+ 
+\begin{frame}
+\frametitle{\: \: \: Panel Data Structure}
+\toplinelarge
+\begin{columns}[T]
+\begin{column}{0.42\textwidth}
+  \smallskip
+  \textcolor{blue}{\textbf{Long format}} (stored in Stata/R):
+  \vspace{0.05in}
+  \begin{center}
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{cccc}
+    \toprule
+    $i$ & $t$ & $y_{it}$ & $x_{it}$ \\
+    \midrule
+    $1$ & $1$ & $y_{11}$ & $x_{11}$ \\
+    $1$ & $2$ & $y_{12}$ & $x_{12}$ \\
+    $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
+    $1$ & $T$ & $y_{1T}$ & $x_{1T}$ \\
+    \midrule
+    $2$ & $1$ & $y_{21}$ & $x_{21}$ \\
+    $\vdots$ & $\vdots$ & $\vdots$ & $\vdots$ \\
+    $n$ & $T$ & $y_{nT}$ & $x_{nT}$ \\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+\end{column}
+\begin{column}{0.55\textwidth}
+  \smallskip
+  \textcolor{blue}{\textbf{Matrix view}} (stacked over all $NT$ obs):
+  \vspace{0.05in}
+  \begin{equation*}
+    \underbrace{\bm{y}}_{NT \times 1}
+    \;=\;
+    \underbrace{\bm{X}}_{NT \times K}\,\bm{\beta}
+    \;+\;
+    \bm{\alpha} + \bm{\varepsilon}
+  \end{equation*}
+  where $K$ is the number of exogenous regressors
+  \vspace{0.08in}
+  \begin{itemize}
+    \item $\bm{y}$: $(NT \times 1)$ outcome vector, stacked unit-by-unit
+    \item $\bm{X}$: $(NT \times K)$ matrix of exogenous regressors
+    \item $\bm{\alpha}$: unit fixed effects, eliminated via de-meaning
+    \item \textbf{Balanced panel}: all $NT$ observations present
+  \end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+ 
+\begin{frame}
+\frametitle{\: \: \: Heterogeneity Bias: Why Pooled OLS Fails}
+\toplinexlarge
+\begin{columns}[T]
+\begin{column}{0.36\textwidth}
+  \vspace{0.05in}
+  \begin{itemize}
+    \item True model (with $\alpha_i$ in the error):
+    \begin{equation*}
+      y_{it} = \beta_1 x_{it} + \underbrace{\alpha_i + \varepsilon_{it}}_{u_{it}}
+    \end{equation*}
+    \item Each firm has the \textcolor{red}{same slope} $\beta_1$ but a different intercept $\alpha_i$
+    \vspace{0.05in}
+    \item Firms with higher $x$ also have higher $\alpha_i$ $\Rightarrow$ $\text{Cov}(x_{it},\alpha_i)>0$
+    \vspace{0.05in}
+    \item Pooled OLS (- - -) conflates \textcolor{blue}{between-firm} and \textcolor{blue}{within-firm} variation $\Rightarrow$ \textcolor{blue}{upward bias}
+    \vspace{0.05in}
+    \item FE uses only \emph{within-firm} time variation: recovers true $\beta_1$
+  \end{itemize}
+\end{column}
+\begin{column}{0.62\textwidth}
+\begin{center}
+\begin{tikzpicture}[scale=0.78]
+  % Axes
+  \draw[->,thick] (0,0) -- (6.6,0) node[right,font=\small] {$x$};
+  \draw[->,thick] (0,0) -- (0,7.8) node[above,font=\small] {$y$};
+ 
+  % --- True model lines (slope beta1=0.6) ---
+  % Firm 1: y = 0.5 + 0.6x,  x in [0.4, 1.8]
+  \draw[red,thick] (0.4,0.74) -- (1.8,1.58);
+  \node[red,font=\tiny,right] at (1.8,1.58) {True model: Firm 1};
+  % Firm 2: y = 1.5 + 0.6x,  x in [1.9, 3.2]
+  \draw[red,thick] (1.9,2.64) -- (3.2,3.42);
+  \node[red,font=\tiny,right] at (3.2,3.42) {True model: Firm 2};
+  % Firm 3: y = 2.6 + 0.6x,  x in [3.1, 4.4]
+  \draw[red,thick] (3.1,4.46) -- (4.4,5.24);
+  \node[red,font=\tiny,right] at (4.4,5.24) {True model: Firm 3};
+  % Firm 4: y = 3.6 + 0.6x,  x in [4.3, 5.6]
+  \draw[red,thick] (4.3,6.18) -- (5.6,6.96);
+  \node[red,font=\tiny,right] at (5.6,6.96) {True model: Firm 4};
+ 
+  % beta_1 annotation on Firm 3
+  \node[slideblue,font=\scriptsize] at (3.55,5.05) {$\beta_1$};
+ 
+  % --- Scatter dots ---
+  % Firm 1
+  \filldraw[black] (0.5,0.83) circle (1.4pt);
+  \filldraw[black] (0.8,0.97) circle (1.4pt);
+  \filldraw[black] (1.1,1.18) circle (1.4pt);
+  \filldraw[black] (1.4,1.38) circle (1.4pt);
+  \filldraw[black] (1.7,1.52) circle (1.4pt);
+  % Firm 2
+  \filldraw[black] (2.0,2.73) circle (1.4pt);
+  \filldraw[black] (2.3,2.87) circle (1.4pt);
+  \filldraw[black] (2.6,3.08) circle (1.4pt);
+  \filldraw[black] (2.9,3.22) circle (1.4pt);
+  \filldraw[black] (3.1,3.39) circle (1.4pt);
+  % Firm 3
+  \filldraw[black] (3.2,4.53) circle (1.4pt);
+  \filldraw[black] (3.5,4.68) circle (1.4pt);
+  \filldraw[black] (3.8,4.90) circle (1.4pt);
+  \filldraw[black] (4.1,5.05) circle (1.4pt);
+  \filldraw[black] (4.3,5.21) circle (1.4pt);
+  % Firm 4
+  \filldraw[black] (4.4,6.23) circle (1.4pt);
+  \filldraw[black] (4.7,6.40) circle (1.4pt);
+  \filldraw[black] (5.0,6.58) circle (1.4pt);
+  \filldraw[black] (5.3,6.72) circle (1.4pt);
+  \filldraw[black] (5.5,6.90) circle (1.4pt);
+ 
+  % --- Pooled OLS line: y = -0.30 + 1.38x ---
+  % At x=0.3: y=0.11; at x=5.6: y=7.43
+  \draw[black,dashed,thick] (0.3,0.11) -- (5.55,7.36);
+ 
+ 
+\end{tikzpicture}
+\end{center}
+\end{column}
+\end{columns}
+\end{frame}
+ 
+\begin{frame}
+\frametitle{\: \: \: Panel Data Model}
+\toplinemedium
+\begin{itemize}
+  \item Observe $(y_{it}, \bm{x}_{it})$ for $i=1,\ldots,n$ and $t=1,\ldots,T$
+  \item The workhorse \textcolor{blue}{fixed effects} model is:
+  \begin{equation*}
+    y_{it} = \bm{x}_{it}'\bm{\beta} + \alpha_i + \varepsilon_{it}
+  \end{equation*}
+  where
+  \begin{itemize}
+    \item $\alpha_i$: \textcolor{blue}{unit fixed effect} --- captures all time-invariant differences across units (ability, culture, geography, \ldots)
+    \item $\varepsilon_{it}$: idiosyncratic error, $\mathbb{E}[\varepsilon_{it}|\bm{x}_{i1},\ldots,\bm{x}_{iT},\alpha_i]=0$ (strict exogeneity)
+  \end{itemize}
+  \vspace{0.1in}
+  \item Key: $\alpha_i$ may be \textcolor{blue}{arbitrarily correlated} with $\bm{x}_{it}$ --- this is what distinguishes FE from pooled OLS 
+\end{itemize}
+\end{frame}
+ 
+\begin{frame}
+\frametitle{\: \: \: The Omitted Variable Interpretation}
+\toplinelarge
+\begin{itemize}
+  \item Suppose the true model is $y_{it}=\bm{x}_{it}'\bm{\beta}+\alpha_i+\varepsilon_{it}$
+  \item Pooled OLS treats $\alpha_i$ as part of the composite error: $u_{it}=\alpha_i+\varepsilon_{it}$
+  \item Pooled OLS probability limit:
+  \begin{equation*}
+    \text{plim}\;\hat{\bm{\beta}}^{OLS} = \bm{\beta} + \underbrace{\left(\mathbb{E}[\bm{x}_{it}\bm{x}_{it}']\right)^{-1}\mathbb{E}[\bm{x}_{it}\alpha_i]}_{\text{heterogeneity bias}}
+  \end{equation*}
+  \item The bias term is zero \emph{only} if $\text{Cov}(\bm{x}_{it},\alpha_i)=\bm{0}$ 
+  \vspace{0.1in}
+  \item In the graph on the previous slide: firms with higher $x_{it}$ also have higher $\alpha_i$, so $\mathbb{E}[x_{it}\alpha_i]>0$ and pooled OLS overestimates $\beta$
+  \vspace{0.1in}
+  \item The FE estimator eliminates $\alpha_i$ by exploiting \textcolor{blue}{within-unit} time variation, recovering consistent $\hat{\bm{\beta}}_{FE}$ regardless of $\text{Cov}(\bm{x}_{it},\alpha_i)$
+\end{itemize}
+\end{frame}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{The Within (Fixed Effects) Estimator}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ 
+\begin{frame}
+\frametitle{\: \: \: De-meaning: Subtracting the Individual Average}
+\toplinelarge
+\begin{itemize}
+  \item Starting from $y_{it}=\bm{x}_{it}'\bm{\beta}+\alpha_i+\varepsilon_{it}$, average over time for unit $i$:
+  \begin{equation*}
+    \bar{y}_i = \bar{\bm{x}}_i'\bm{\beta}+\alpha_i+\bar{\varepsilon}_i
+  \end{equation*}
+  where $\bar{y}_i = \frac{1}{T}\sum_{t=1}^{T}y_{it}$, and similarly for $\bar{\bm{x}}_i$, $\bar{\varepsilon}_i$
+  \vspace{0.08in}
+  \item Subtract the time-mean from each observation (\textcolor{blue}{within transformation}):
+  \begin{equation*}
+    \underbrace{y_{it}-\bar{y}_i}_{\ddot{y}_{it}} = \underbrace{(\bm{x}_{it}-\bar{\bm{x}}_i)'}_{\ddot{\bm{x}}_{it}'}\bm{\beta} + \underbrace{(\varepsilon_{it}-\bar{\varepsilon}_i)}_{\ddot{\varepsilon}_{it}}
+  \end{equation*}
+  \item \textcolor{blue}{$\alpha_i$ drops out exactly} because it is time-invariant: $\alpha_i - \bar{\alpha}_i = 0$
+  \vspace{0.08in}
+  \item Strict exogeneity implies $\mathbb{E}[\ddot{\bm{x}}_{it}\ddot{\varepsilon}_{it}]=\bm{0}$, so OLS on the demeaned model is consistent
+\end{itemize}
+\end{frame}
+ 
+\begin{frame}
+\frametitle{\: \: \: The FE Estimator}
+\toplinemedium
+\begin{itemize}
+  \item The \textcolor{blue}{Fixed Effects (Within) estimator} is OLS on the de-meaned data:
+  \begin{equation*}
+    \hat{\bm{\beta}}_{FE} = \left(\sum_{i=1}^{N}\sum_{t=1}^{T}\ddot{\bm{x}}_{it}\ddot{\bm{x}}_{it}'\right)^{-1} \left(\sum_{i=1}^{N}\sum_{t=1}^{T}\ddot{\bm{x}}_{it}\ddot{y}_{it}\right)
+  \end{equation*}
+  \item Equivalently, in matrix notation, define the within-group projector $M_i = I_T - \frac{1}{T}\bm{1}_T\bm{1}_T'$ for each unit block. Then $\hat{\bm{\beta}}_{FE}=(\ddot{\bm{X}}'\ddot{\bm{X}})^{-1}\ddot{\bm{X}}'\ddot{\bm{y}}$
+  \vspace{0.1in}
+  \item Consistency: as $N\to\infty$ with $T$ fixed,
+  \begin{equation*}
+    \hat{\bm{\beta}}_{FE} \xrightarrow{p} \bm{\beta}
+  \end{equation*}
+  provided strict exogeneity holds and $\text{rank}(\sum_{i,t}\ddot{\bm{x}}_{it}\ddot{\bm{x}}_{it}')=k$
+  \vspace{0.1in}
+  \item Time-invariant regressors ($z_i$: race, gender, region) cannot be identified --- they are collinear with $\alpha_i$
+\end{itemize}
+\end{frame}
+ 
+\begin{frame}
+\frametitle{\: \: \: LSDV Representation}
+\toplinemedium
+\begin{itemize}
+  \item An equivalent formulation is the \textcolor{blue}{Least Squares Dummy Variables (LSDV)} estimator:
+  \begin{equation*}
+    y_{it} = \bm{x}_{it}'\bm{\beta} + \sum_{j=1}^{N} \alpha_j \bm{1}[i=j] + \varepsilon_{it}
+  \end{equation*}
+  i.e., include a full set of unit dummies $d_{1i},\ldots,d_{Ni}$
+  \vspace{0.1in}
+  \item By the \textcolor{blue}{Frisch--Waugh--Lovell Theorem}, the OLS estimate of $\bm{\beta}$ in LSDV equals $\hat{\bm{\beta}}_{FE}$:
+  \begin{itemize}
+    \item Partial out unit dummies from $\bm{y}$ and $\bm{X}$ $\Rightarrow$ residuals are $\ddot{y}_{it}$ and $\ddot{\bm{x}}_{it}$
+    \item OLS on the residuals gives the within estimator
+  \end{itemize}
+  \vspace{0.1in}
+  \item LSDV and de-meaning are \emph{numerically identical} for $\hat{\bm{\beta}}$
+  \vspace{0.1in}
+  \item Practical note: LSDV with large $n$ creates $n-1$ dummies-- this requires a lot of RAM; de-meaning is computationally faster (e.g., \texttt{areg} or \texttt{reghdfe} in Stata)
+\end{itemize}
+\end{frame}
+ 
+\begin{frame}
+\frametitle{\: \: \: Panel Data: Additional Details}
+\toplinelarge
+\begin{itemize}
+\item If using demeaned variables, the degrees of freedom needs to be adjusted (nT-n-k)--- \textit{reghdfe} in STATA adjusts the degree of freedoms calculation automatically
+\vspace{0.11in}
+\item \textit{One-way} FE models control for individual time-invariant characteristics that are correlated with the exogenous variable, but it does not control for time-variant characteristics affecting all observations across time
+\begin{itemize}
+\vspace{0.11in}
+\item To control for this we need to use \textcolor{blue}{\textit{two-way}} FE:
+  \begin{equation*}
+    y_{it} = \bm{x}_{it}'\bm{\beta} + \alpha_i +\lambda_t+ \varepsilon_{it}
+  \end{equation*}    
+  \item Identification, unlike in the \textit{one-way} FE case, is given by relative changes across time
+  \vspace{0.11in}
+  \item This is directly related to \textcolor{red}{differences-in-differences}, which is the last topic of the semester
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\end{document}
+ 
+ 

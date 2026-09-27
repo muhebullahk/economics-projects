@@ -1,0 +1,427 @@
+%=============================================================
+% Paper 11: Acemoglu, Akcigit, Alp, Bloom & Kerr (2018), AER
+%=============================================================
+\chapter{Acemoglu, Akcigit, Alp, Bloom \& Kerr (2018)}
+
+\begin{paperbox}{Innovation, Reallocation, and Growth}
+\textbf{Authors:} Daron Acemoglu, Ufuk Akcigit, Harun Alp,
+Nicholas Bloom, William Kerr\\[3pt]
+\textbf{Journal:} \textit{American Economic Review} 108(11): 3450--3491\\[3pt]
+\textbf{Year:} 2018 \quad\textbf{Field:} Macroeconomics; Endogenous growth;
+Applied microeconomics\\[3pt]
+\textbf{Classification:} Structural (endogenous growth model + SMM estimation)
+\end{paperbox}
+
+%------------------------------------------------------------
+\section{Research Question}
+
+What are the implications of different types of industrial policies---R\&D
+subsidies, operating cost subsidies, and entry subsidies---for innovation,
+reallocation, and growth in an economy where firms are heterogeneous in their
+innovative capacity? Can \emph{taxing} the continued operation of incumbents
+improve welfare by freeing skilled labour for R\&D by high-type firms?
+
+%------------------------------------------------------------
+\section{Motivation}
+
+Industrial policies subsidising incumbent firms are pervasive worldwide
+(EU: EUR~1.18 trillion in 2010, or 9.6\% of GDP). Yet existing models
+either lack endogenous exit (and cannot model exit-targeting policies) or
+lack firm heterogeneity in innovative capacity (and cannot model R\&D input
+misallocation). The paper fills this gap: it shows the key market failure is
+the misallocation of \emph{R\&D inputs} (skilled labour) between high- and
+low-type firms, and demonstrates that operation taxes---not R\&D
+subsidies---are the most effective instrument for positive selection.
+
+%------------------------------------------------------------
+\section{Main Contribution}
+
+\begin{enumerate}
+  \item \textbf{Model:} A quality-ladder endogenous growth model with two-type
+    firm heterogeneity ($\theta_h > \theta_l$), endogenous exit via
+    obsolescence, creative destruction, and type transitions
+    (high$\to$low at rate $\nu$). Franchise values solved in closed form.
+
+  \item \textbf{Structural estimation:} 8 parameters estimated by SMM
+    targeting 18 moments from U.S.\ Census microdata on innovative
+    manufacturing firms (LBD, CMF, NSF~R\&D, NBER Patents), 1987--1997.
+    Covers 98\% of U.S.\ industrial R\&D.
+
+  \item \textbf{Policy analysis (Table~12):} Incumbent R\&D subsidy = +0.63\%
+    welfare; operation subsidy = $-$0.20\%; entry subsidy = $-$1.64\%;
+    optimal operation \emph{tax} (69\%) = \textbf{+1.40\%}; social planner = +4.47\%.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Relationship to the Literature}
+
+Extends Klette--Kortum (2004) and Lentz--Mortensen (2008) by adding:
+(i)~endogenous exit via obsolescence; (ii)~two-type firm heterogeneity with
+high-to-low transitions; (iii)~fixed costs of operation. Without (i) there is
+no exit margin to tax; without (ii) all firms are homogeneous and R\&D
+subsidies are not differentially distortionary. Also relates to the
+misallocation literature (Hsieh--Klenow 2009; Restuccia--Rogerson 2008),
+but focuses on misallocation of \emph{R\&D inputs} rather than production
+inputs.
+
+%------------------------------------------------------------
+\section{Theoretical Framework and Economic Mechanism}
+
+\subsection*{Preferences and Technology}
+
+CRRA preferences over a CES consumption aggregate:
+\begin{equation}
+  U_0 = \int_0^\infty e^{-\rho t}\,\frac{C(t)^{1-\vartheta}-1}{1-\vartheta}\,dt,
+  \qquad C(t) = \left(\int_{\mathcal{J}(t)} c_j(t)^{\frac{\varepsilon-1}{\varepsilon}}dj\right)^{\frac{\varepsilon}{\varepsilon-1}}.
+  \label{eq:ace_prefs}
+\end{equation}
+Product~$j$ is produced by its leading-edge monopolist at cost $w_u/\hat{q}_j$
+($\hat{q}_j \equiv q_j/w_u$), generating equilibrium profit:
+\begin{equation}
+  \pi(\hat{q}_j) = \Pi\,\hat{q}_j^{\varepsilon-1}, \qquad
+  \Pi \equiv \frac{1}{\varepsilon-1}\left(\frac{\varepsilon-1}{\varepsilon}\right)^\varepsilon.
+  \label{eq:ace_profit}
+\end{equation}
+
+\subsection*{Firm Type Dynamics}
+
+Entrants draw $\theta=\theta_h$ with probability $\alpha$ and $\theta=\theta_l$
+with probability $1-\alpha$. High-type firms transition to low-type at rate
+$\nu>0$; low-type is absorbing. A type-$k$ firm with $n$ product lines and
+$h$ skilled R\&D workers innovates at flow rate:
+\begin{equation}
+  X_f = \theta_k^\gamma\, n^\gamma\, h^{1-\gamma}, \qquad
+  C(x,n,\theta) = w_s\,n\,G(x,\theta), \quad
+  G(x,\theta) = x^{\frac{1}{1-\gamma}}\,\theta^{-\frac{\gamma}{1-\gamma}}.
+  \label{eq:ace_innovation}
+\end{equation}
+
+\subsection*{Value Functions (Franchise Value Additivity)}
+
+\textbf{Lemma 1:} The firm value is additive across product lines:
+$\tilde{V}_k(\hat{\mathcal{Q}}) = \sum_{\hat{q}\in\hat{\mathcal{Q}}}\Upsilon_k(\hat{q})$,
+where the franchise value $\Upsilon_k(\hat{q})$ satisfies the ODE
+(Lemma~2):
+\begin{equation}
+  (r+\tau+\phi+(\varepsilon-1)g)\,\Upsilon_l(\hat{q})
+  - \frac{\partial\Upsilon_l}{\partial\hat{q}}\frac{\partial\hat{q}}{\partial w_u}\dot{w}_u
+  = \Pi\hat{q}^{\varepsilon-1} - \tilde{w}_s\phi + \Omega_l,
+  \qquad \hat{q}>\hat{q}_{l,\min},
+  \label{eq:ace_bellman_low}
+\end{equation}
+with closed-form solution (Proposition~1). The exit threshold is:
+\begin{equation}
+  \hat{q}_{k,\min} = \left(\frac{\tilde{w}_s\phi - \Omega_k}{\Pi}\right)^{\frac{1}{\varepsilon-1}},
+  \quad k\in\{h,l\}.
+  \label{eq:ace_exit}
+\end{equation}
+
+\subsection*{Growth and Key Market Failure}
+
+Aggregate growth equals $g = \lambda\tau$ (Proposition~2; standard quality
+ladder). The key market failure is the underinvestment in R\&D relative to the
+social optimum: because future innovators build on current quality
+($q_j(t+) = q_j + \lambda\bar{q}$), current innovation creates a positive
+spillover. This underinvestment is especially costly from the perspective of
+high-type firms, whose marginal product of R\&D is higher. The social planner
+wishes to shift skilled labour from low-type firm operations to high-type R\&D.
+
+\textbf{Why operation taxes work and R\&D subsidies fail:}
+\begin{itemize}
+  \item Low-type firms are disproportionately near the obsolescence threshold
+    $\hat{q}_{l,\min}$ (Figure~2 in the paper).
+  \item An operation tax raises $\hat{q}_{k,\min}$, forcing exit of low-type
+    product lines near the margin. This frees skilled labour for R\&D by
+    high-type firms, generating strong positive selection.
+  \item R\&D subsidies raise demand for skilled labour from \emph{both} types,
+    raising the skilled wage and crowding out entrant R\&D without improving
+    the composition of active firms.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Data}
+
+\begin{itemize}
+  \item \textbf{LBD:} Annual employment for all private-sector
+    establishments, 1976--present.
+  \item \textbf{CMF:} Quinquennial detailed plant/firm records; years
+    1987, 1992, 1997.
+  \item \textbf{NSF R\&D Survey (RAD):} Annual/biannual firm-level R\&D
+    expenditures; certainty threshold $>\$1$m R\&D.
+  \item \textbf{NBER Patent Database:} USPTO patents matched to LBD by
+    name/location.
+  \item \textbf{Sample:} ``Continuously innovative'' firms (R\&D or
+    patenting in every CMF period). 17,055 obs.\ from 9,835 firms; 98\%
+    of U.S.\ industrial R\&D; 50\% of manufacturing employment.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Empirical Strategy}
+
+SMM targeting 18 moments (firm exit rates by age/size, size transition
+rates, employment and sales growth by age/size, R\&D intensity,
+5-year entrant employment share, fixed cost/R\&D labour ratio, aggregate
+growth). Aggregate growth is weighted $5\times$ the micro-moments.
+Bootstrap standard errors (1,000 replications, stratified by firm age,
+size, year, industry).
+
+\subsection*{Computational Algorithm}
+
+Solve the stationary equilibrium as a fixed point of six aggregate
+variables:
+\begin{equation}
+  \{\tilde{w}_s,\,\Phi_h,\,\Phi_l,\,\hat{q}^{\,\text{avg}},\,
+  \mathbb{E}[\Upsilon_h(\hat{q}+\lambda\hat{q}^{\,\text{avg}})],\,
+  \mathbb{E}[\Upsilon_l(\hat{q}+\lambda\hat{q}^{\,\text{avg}})]\}.
+  \label{eq:ace_fp}
+\end{equation}
+$2^{17}$ firms simulated for 10,000 periods (each period $= 0.02$ years)
+to generate model-implied moments.
+
+%------------------------------------------------------------
+\section{Identification Strategy}
+
+8 parameters are estimated from 18 moments (overidentified by 10). Each
+parameter is primarily identified by specific moments:
+\begin{itemize}
+  \item $\phi$ (fixed cost): ratio of fixed-cost to R\&D workers.
+  \item $\alpha$, $\nu$: age gradient in exit rates and R\&D intensity
+    (most young firms are high-type; transitions to low-type raise exit
+    rates for older cohorts).
+  \item $\lambda$: aggregate growth rate.
+  \item $\theta_h/\theta_l$: ratio of R\&D intensity between large-old
+    and small-young firms.
+  \item $\phi$ (exogenous exit): exit rates of large-old firms (unlikely
+    to exit endogenously).
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Main Results}
+
+\subsection*{Parameter Estimates (Table~2)}
+
+\begin{center}
+\small
+\begin{tabular}{llc}
+\toprule
+\textbf{Parameter} & \textbf{Description} & \textbf{Value} \\
+\midrule
+$\phi$ & Fixed cost of operation & 0.216 \\
+$\theta_h$ & High-type innovative capacity & 1.751 \\
+$\theta_l$ & Low-type innovative capacity & 1.391 \\
+$\theta_E$ & Entrant innovative capacity & 0.024 \\
+$\alpha$ & P(high-type entrant) & 0.926 \\
+$\nu$ & High$\to$low transition rate & 0.206/year \\
+$\lambda$ & Innovation step size & 0.132 \\
+$\phi$ (exog.\ exit) & Exogenous destruction rate & 0.037 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Key implications: high-type firms are 26\% more innovative than low-type
+($\theta_h/\theta_l\approx 1.26$); 93\% of entrants start as high-type; 21\%/year
+probability of transitioning to low-type --- strong negative selection as firms age.
+
+\subsection*{Baseline Economy (Table~4)}
+
+Equilibrium growth: $g = 2.26\%$; creative destruction: $\tau = 17.2\%$;
+R\&D employment share: $L_{R\&D}/L_S = 19.9\%$; product line shares:
+$\Phi_h = 6.3\%$, $\Phi_l = 55.0\%$, $\Phi_{np} = 38.7\%$ (inactive).
+
+\subsection*{Policy Experiments (Table~12)}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Policy} & \textbf{Growth} & \textbf{Welfare} \\
+\midrule
+Baseline & 2.26\% & 100.00 \\
+Incumbent R\&D subsidy (14\%, 1\% GDP) & 2.34\% & 100.63 \\
+Operation subsidy (4\%, 1\% GDP) & 2.24\% & 99.80 \\
+Entry subsidy (65\%, 1\% GDP) & 2.25\% & 98.36 \\
+\textbf{Optimal operation tax ($-$69\%)} & \textbf{2.54\%} & \textbf{101.40} \\
+Social planner & 2.94\% & 104.47 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Social planner raises low-type exit threshold ($\hat{q}_{l,\min}$: $1.47\to 2.40$),
+lowers high-type threshold ($\hat{q}_{h,\min}$: $1.30\to 0.28$), and raises
+$\Phi_h/\Phi_l$ from 0.11 to 7.93.
+
+%------------------------------------------------------------
+\section{Economic Magnitude and Interpretation}
+
+The welfare gain from the optimal operation tax (+1.40\%) is $2.2\times$ that
+of the incumbent R\&D subsidy (+0.63\%), despite both costing 1\% of GDP.
+The social planner achieves a 4.47\% welfare gain and raises growth by 0.68~pp
+($2.26\to 2.94\%$), showing the equilibrium is substantially inefficient. The
+operation tax is ``the most effective implementable policy'': by targeting firms
+near the exit margin---disproportionately low-type---it achieves selection
+effects that uniform R\&D subsidies cannot.
+
+%------------------------------------------------------------
+\section{Mechanisms}
+
+The central mechanism operates through \textbf{reallocation of skilled labour}:
+\begin{enumerate}
+  \item Too many skilled workers cover fixed costs of low-type firm operations;
+    too few perform R\&D.
+  \item Operation tax raises $\hat{q}_{l,\min}$ $\Rightarrow$ forces exit of
+    low-type product lines near the margin $\Rightarrow$ frees skilled labour.
+  \item Freed skilled labour flows to R\&D by high-type firms (higher marginal
+    product) $\Rightarrow$ positive selection: $\Phi_h/\Phi_l$ rises.
+  \item R\&D subsidies fail because they increase skilled labour demand from
+    \emph{both} types, raising the skilled wage and crowding out entrant R\&D.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Robustness Checks}
+
+\begin{itemize}
+  \item Results replicated with employment-weighted moments (vs.\ unweighted
+    baseline); including non-innovative firms (dropping R\&D moments);
+    excluding mergers and acquisitions.
+  \item Model variants: fixed costs using skilled + unskilled labour; factor
+    reallocation costs; more than two firm types; endogenous skill supply.
+  \item Non-targeted moments: product line distribution (CMF Product
+    Trailers), growth persistence by firm type, management scores from
+    MOPS all closely matched.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Limitations}
+
+\begin{enumerate}
+  \item Sample restricted to continuously innovative manufacturing firms
+    (2\% of firms; 98\% of R\&D); conclusions may not generalise.
+  \item No transitional dynamics between stationary equilibria; welfare
+    gains exclude adjustment costs.
+  \item Closed economy; no trade, multinationals, or international
+    knowledge flows.
+  \item Skilled labour relocates instantaneously; in reality R\&D labour
+    is highly specialised and slow to reallocate.
+  \item Two-type approximation; a richer type space would allow more
+    nuanced policy targeting.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Policy Implications}
+
+\begin{itemize}
+  \item \textbf{R\&D subsidies are relatively ineffective.} +0.63\%
+    welfare for 1\% GDP cost --- less than half the gain from an
+    operation tax.
+  \item \textbf{Taxing incumbent operations is powerful.} A 69\% tax on
+    fixed costs (8\% of revenues on average) raises growth from 2.26\%
+    to 2.54\% and welfare by 1.4\%.
+  \item \textbf{Operation subsidies are harmful.} They increase low-type
+    product line shares and depress R\&D; welfare falls.
+  \item \textbf{Industrial policy should discriminate by exit margin, not
+    by innovation rate.} Policies that target the exit margin achieve
+    positive selection effects that R\&D subsidies cannot.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Overall Assessment}
+
+A technically demanding, ambitious paper that marries endogenous growth theory,
+structural estimation, and policy analysis in a unified framework. The central
+result---operation taxes dominate R\&D subsidies---is counterintuitive,
+well-motivated, and robustly derived. The model is tractable (franchise values
+in closed form), well-estimated (18 moments, strong non-targeted fit), and
+policy analysis is comprehensive.
+
+\textbf{Quality: Excellent. A major contribution to endogenous growth, firm
+dynamics, and policy analysis.}
+
+%------------------------------------------------------------
+\section{Relevance to My Research}
+
+Directly relevant to Canadian RDC research on industrial policy effectiveness.
+The structural SMM approach is applicable to Canadian Innovation Survey data
+linked to LEAP/T2 corporate tax records. The central question---whether SR\&ED
+tax credits disproportionately benefit low-type vs.\ high-type Canadian
+firms---would be a natural application with first-order policy implications.
+
+%------------------------------------------------------------
+\section{Potential Research Extensions}
+
+\begin{itemize}
+  \item Apply the Acemoglu et al.\ framework to Canadian data (LEAP/T2/
+    Innovation Survey); test whether SR\&ED credits disproportionately
+    benefit low-type firms as predicted.
+  \item Extend to a small open economy to capture import competition as a
+    mechanism for forcing low-type firm exit (analogous to the operation tax).
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Research Gaps}
+
+\begin{itemize}
+  \item The political economy of why operation taxes are not observed in
+    practice, despite their welfare superiority, is unmodelled.
+  \item No analysis of heterogeneity in policy effects across industries
+    with different innovation intensities (high-tech vs.\ low-tech).
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Methodological Lessons}
+
+\begin{enumerate}
+  \item The franchise value additivity result (Lemma~1) reduces the state
+    space from the full product portfolio to a scalar per product line,
+    enabling closed-form solutions even in a complex GE environment.
+  \item SMM with 18 moments and 8 parameters is overidentified; matching
+    non-targeted moments provides external validation that goes beyond the
+    targeted moments.
+  \item The policy comparison framework---all interventions costing exactly
+    1\% of GDP---enables clean welfare comparison across fundamentally
+    different policy instruments.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section*{Five-Sentence Summary}
+
+Acemoglu et al.\ (2018) develop a quality-ladder endogenous growth model
+featuring high- and low-type firms (differing in innovative capacity) with
+endogenous exit, creative destruction, and type transitions, estimated by SMM
+on 18 moments from U.S.\ Census Bureau microdata covering 98\% of U.S.\
+industrial R\&D. The model's key market failure is the misallocation of skilled
+labour between low-type firm operations (generating little social value) and
+R\&D by high-type firms (generating large positive spillovers), leading to
+underinvestment in socially valuable innovation. Policy analysis shows that
+incumbent R\&D subsidies are relatively ineffective (+0.63\% welfare for 1\%
+of GDP) because they benefit both firm types indiscriminately, while a 69\%
+operation tax generates a strong positive selection effect (+1.40\% welfare)
+by disproportionately inducing exit among low-type firms and freeing skilled
+labour for high-type R\&D. The social planner, controlling type-specific exit
+thresholds and R\&D rates, achieves +4.47\% welfare and raises growth from
+2.26\% to 2.94\% by dramatically raising the low-type exit threshold and
+redirecting skilled labour to high-type R\&D. The central policy lesson is that
+the standard tool of industrial policy---R\&D subsidies---is not merely
+ineffective but is dominated by policies that accelerate exit of
+low-productivity incumbents.
+
+\vspace{6pt}
+\begin{quickref}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\textbf{Key contribution} &
+  Incumbent operation taxes dominate R\&D subsidies for welfare: taxes fall
+  disproportionately on low-type firms near the exit margin, freeing skilled
+  labour for R\&D by high-type firms with a 1.4\% welfare gain vs.\ 0.6\%
+  from R\&D subsidies. \\[4pt]
+\textbf{Key weakness} &
+  Sample restricted to continuously innovative manufacturing firms (2\% of
+  all firms); no transitional dynamics; closed economy; instantaneous skilled
+  labour reallocation. \\[4pt]
+\textbf{Most interesting gap} &
+  The political economy of why operation taxes are not observed in practice
+  despite their welfare superiority---incumbents lobby against exit-inducing
+  policies even when they reduce aggregate growth. \\[4pt]
+\textbf{Publishable extension} &
+  Apply the framework to Canadian data (LEAP/T2/Innovation Survey); test
+  whether SR\&ED credits disproportionately benefit low-type vs.\ high-type
+  Canadian firms, and estimate the implied welfare cost of the current design.
+\end{tabularx}
+\end{quickref}

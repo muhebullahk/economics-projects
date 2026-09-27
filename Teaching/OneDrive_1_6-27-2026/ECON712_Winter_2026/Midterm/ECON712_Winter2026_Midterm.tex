@@ -1,0 +1,190 @@
+\documentclass[letterpaper,12pt]{article}
+%\usepackage{harvard}
+%\usepackage{subfigure}
+%\usepackage[active]{srcltx}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{grffile}
+\usepackage{enumitem}
+\usepackage{relsize}
+\usepackage{bm}
+\usepackage{tablefootnote}
+\usepackage{footnote}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[multiple]{footmisc}
+\usepackage{appendix}
+\usepackage{times}
+\usepackage{relsize}
+\usepackage{caption}
+\usepackage{newtxtext,newtxmath}
+\usepackage{enumitem}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Title Page Information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace{-1.2in} ECON712: Midterm Exam}
+\author{Leandro Freylejer}
+\date{February 26th 2026}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Double and Single Space Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]{\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{1\defbaselineskip}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\newtheoremstyle{dotlessS}{}{}{\itshape}{}{\color{dg}\bfseries}{}{ }{}
+\theoremstyle{dotlessS}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand\Pitem{%
+  \addtocounter{enumi}{-1}%
+  \renewcommand\theenumi{\arabic{\enumi}'}%
+  \item%
+  \renewcommand\theenumi{\arabic{enumi}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Set Margins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textwidth=6.5in
+\textheight=9in
+\oddsidemargin=0.10in
+\evensidemargin=0.10in
+\topmargin=-0.5in
+%\parskip=3pt
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Actual Document Begins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\pagenumbering{arabic}
+\maketitle
+\vspace{-.2in}
+\noindent There are five questions in this exam for a total of 53 points. Good Luck!!!
+
+\section*{Question I: Linear transformation of variables (8 points)}
+Assume the regression model:
+\begin{eqnarray*}
+\bm{y}=\bm{\iota_n} \: \hat{\gamma} + \bm{X} \: \bm{\hat{\beta}}+\bm{\hat{u}}
+\end{eqnarray*}
+where
+\begin{itemize}
+\item $\bm{y}$ is a $nx1$ vector of dependent variables
+\item $\bm{\iota_n}$ is an $nx1$ vector of ones, 
+\item $\bm{X}$ is a $nxk$ matrix of regressors, 
+\item $\hat{\gamma}$ is a scalar OLS/MM estimate
+\item $\bm{\hat{\beta}}$ is a $kx1$ vector of OLS/MM estimates
+\item $\bm{\hat{u}}$ is a $nx1$ vector of residuals
+\end{itemize}
+Define the following transformed variables:
+\begin{eqnarray*}
+\bm{z}=\bm{y}- \bm{\iota_n} \overline{y}
+\end{eqnarray*}
+and
+\begin{eqnarray*}
+\bm{W}=\bm{X}-\bm{\iota_n} \bm{\overline{x}}^T
+\end{eqnarray*}
+with
+\begin{eqnarray*}
+\begin{array}{lllll}
+\overline{y}=\frac{1}{n}\underset{i=1}{\overset{n}{\sum}}y_{i} &,& \bm{\overline{x}}=\begin{pmatrix} \bar{x}_1 \\ \bar{x}_2 \\ \vdots  \\  \bar{x}_k \end{pmatrix} &,& \bar{x}_j=\frac{1}{n}\underset{i=1}{\overset{n}{\sum}}x_{ij} 
+\end{array}
+\end{eqnarray*}
+Suppose that a researcher uses OLS/MM to estimate the following regression isntead:
+\begin{eqnarray*}
+\bm{z}= \bm{W} \: \bm{\hat{\alpha}}+\bm{\hat{\epsilon}}
+\end{eqnarray*}
+Derive the relationship between $\bm{\hat{\alpha}}$ and $\bm{\hat{\beta}}$. Are the residuals from these two regressions equal? 
+
+
+\section*{Question II: Finite Sample Properties of OLS (8 points)}
+Assume that the model $\bm{y}=\bm{X} \: \bm{\beta}+\bm{u}$ satisfies the Gauss-Markov assumptions (i.e. classical assumptions), where $\bm{X}$ is a $n x k$ matrix and $\bm{y}$ is a $n x 1$ vector of observations. Define a new matrix $\bm{Z}=a \: \bm{X}$, where $a>0$ is a scalar and a new vector $\bm{s}=b \: \bm{y}$, where $b>0$ is a scalar. Suppose a researcher draws a random sample $n$ and run the following regression:
+\begin{eqnarray*}
+\bm{s}=\bm{Z} \bm{\hat{\beta}}+\bm{\hat{u}}
+\end{eqnarray*}
+Prove whether $\bm{\hat{\beta}}$ an unbiased estimator of $\bm{\beta}$? [Hint: you need to consider two separate cases: $a \neq b$ and $a=b$] 
+
+
+
+\section*{Question III: Linear regression and selection bias }
+Suppose potential outcomes are defined as:
+\begin{eqnarray*}
+y_i=y_{0i}+(y_{1i}-y_{0i}) \: D_i,
+\end{eqnarray*}
+where $D_i \in \left\{0,1\right\}$ is a treatment dummy. Assume that the econometrician runs the following \textit{population} regression (i.e. solves for $\beta_0$ and $\beta_1$ using OLS/MM):
+\begin{eqnarray*}
+y_i=\beta_0+\beta_1 \: D_i+u_i
+\end{eqnarray*}
+Using this information answer the following questions:
+\begin{enumerate}[label=(\alph*)]
+\item (5 points) Solve for $\beta_1$ in terms of conditional expectations (show your work)
+\item (5 points) Suppose that there are homogeneous treatment effects: $y_{1i}-y_{0i}=\rho$ , show that $\beta_1$ is equal to the causal effect of the treatment, defined as the potential outcome, plus a term denoting selection bias. 
+\item (5 points) Suppose now that there are heterogeneous treatment effects: $y_{1i}-y_{0i}=\rho_i$ , show that $\beta_1$ is equal to the average treatment effect on all individuals, plus a term that captures the additional effect on treated individuals, plus selection bias [Hint: to answer this question you \textit{only} need to add and subtract $\mathbb{E}[\rho_i]$, and then reorganize terms]
+ 
+\end{enumerate}
+     
+\section*{Question IV: Goodness of Fit (5 points)}
+Using projection matrices the Pythagorean theorem can be expressed as:
+\begin{eqnarray*}
+\|\bm{y}\|^2=\|\bm{P_X \: y}\|^2+\|\bm{M_X \: y}\|^2
+\end{eqnarray*}
+This is the basis from which the following two versions of the $R^2$ are obtained:
+\begin{eqnarray*}
+\begin{array}{lll}
+R_u^2=\frac{\|\bm{P_X \: y}\|^2}{\|\bm{y}\|^2} &, & R_c^2=\frac{\|\bm{P_X \: M_{\iota} \: y}\|^2}{\|\bm{M_{\iota} \:y}\|^2}
+\end{array}
+\end{eqnarray*}
+Assume that $\bm{X}$ includes the constant term. Consider the transformed variable $\bm{z}=\bm{y}-c \: \bm{\iota}$, prove that this transformation changes the $R_u^2$, but leaves  $R_c^2$  
+
+
+\section*{Question V: Conditional Expectation Function }
+
+Suppose that the random variables $Y$ and $X$ only take the value $0$ and $1$ and they have the following joint probability distribution: 
+\begin{table}[H]
+\centering
+\resizebox{.25\textwidth}{!}{%
+\begin{tabular}{|c| c |c|}
+\hline
+         & Y=0 & Y=1 \\
+         \hline
+X=0  & 0.2 & 0.6 \\
+X=1  & 0.1 & 0.1 \\
+\hline
+\end{tabular}}
+\label{tab:three_by_three}
+\end{table}
+
+Using this information, answer the following questions
+\begin{enumerate}[label=(\alph*)]
+\item (7 points) Compute $\mathbb{E}[Y|X=0]$ and $\mathbb{E}[Y|X=1]$
+\item (5 points) Derive the linear conditional expectation function: $m(X)=\mathbb{E}[Y|X]$  
+\item (5 points) Define $u=Y-m(X)$ and show $\mathbb{E}[u|X]=0$. Use the LIE to show that $Cov(X,u)=0$ [Hint: show that $u$ is mean independent]
+\end{enumerate}
+
+
+\end{document}

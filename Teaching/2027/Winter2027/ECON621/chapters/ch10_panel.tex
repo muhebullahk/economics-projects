@@ -1,0 +1,493 @@
+\chapter{Chapter 10: Panel Data and Fixed Effects}
+
+\medskip\hrule\medskip
+
+\section{Chapter Overview}
+
+Panel data --- repeated observations on the same units over time --- are among the most powerful data structures in applied economics. They allow researchers to control for \textbf{unobserved individual heterogeneity}: time-invariant characteristics of individuals, firms, or regions that are correlated with both the treatment variable and the outcome, but that we can never directly observe.
+
+This chapter develops the \textbf{fixed effects (FE)} estimator, shows how it is related to OLS via the Frisch-Waugh-Lovell theorem, and discusses its assumptions, limitations, and extensions.
+
+\medskip\hrule\medskip
+
+\section{Learning Objectives}
+
+After completing this chapter, students will be able to:
+
+\begin{enumerate}
+\item Explain the \textbf{panel data structure} and define key terminology (balanced/unbalanced panels, $N$, $T$).
+\item Explain the \textbf{unobserved heterogeneity problem} and why pooled OLS fails when individual effects are correlated with regressors.
+\item Derive the \textbf{within (fixed effects) estimator} via demeaning.
+\item Show that FE is equivalent to \textbf{LSDV (Least Squares Dummy Variables)}.
+\item State the identifying assumption of FE and explain what it rules out.
+\item Contrast the \textbf{first-differences estimator} with the within estimator.
+\item Discuss the \textbf{random effects estimator} and the \textbf{Hausman test}.
+\item Apply fixed effects to the Card (1995) earnings study.
+\end{enumerate}
+
+\medskip\hrule\medskip
+
+\section{10.1 Why Panel Data? The Unobserved Heterogeneity Problem}
+
+\subsection{10.1.1 The Setup}
+
+Suppose we observe individual $i$ in periods $t = 1, 2, \ldots, T$. The outcome $Y_{it}$ depends on an observed regressor $X_{it}$ and an \textbf{unobserved individual effect} $\alpha_i$:
+
+\[
+Y_{it} = \alpha_i + \beta X_{it} + u_{it} \tag{10.1}
+\]
+
+where:
+\begin{itemize}
+\item $\alpha_i$ is a \textbf{time-invariant} unobserved characteristic of individual $i$ (e.g., innate ability, firm quality, state-specific resources).
+\item $u_{it}$ is an idiosyncratic error term.
+\end{itemize}
+
+\subsection{10.1.2 The Pooled OLS Problem}
+
+If we ignore $\alpha_i$ and run OLS on the stacked dataset:
+
+\[
+Y_{it} = \alpha + \beta X_{it} + v_{it}
+\]
+
+where $v_{it} = \alpha_i - \alpha + u_{it}$, then OLS is biased if $\text{Cov}(X_{it}, \alpha_i) \neq 0$.
+
+\textbf{Example 10.1:} Estimating the return to union membership ($X_{it}$) on wages ($Y_{it}$). $\alpha_i$ might be unobserved worker productivity --- high-productivity workers are both more likely to be unionized and have higher wages independently of union membership. So $\text{Cov}(X_{it}, \alpha_i) > 0$, and pooled OLS overstates the union wage premium.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[scale=0.9,
+    unit/.style={draw=econblue, fill=econblue!10, rounded corners, minimum width=1.5cm, minimum height=0.8cm, align=center, font=\footnotesize},
+    time/.style={draw=gray!50, fill=gray!10, rounded corners, minimum width=1.5cm, minimum height=0.6cm, align=center, font=\footnotesize\bfseries},
+    obs/.style={draw=gray!30, fill=white, minimum width=1.5cm, minimum height=0.8cm, align=center, font=\footnotesize}
+  ]
+    % Time headers
+    \foreach \t/\tname in {1/$t=1$, 2/$t=2$, 3/$t=3$, 4/$t=T$} {
+      \node[time] at (\t*1.8 + 0.6, 0) {\tname};
+    }
+    \node[font=\footnotesize\itshape, gray] at (8.0, 0) {$\cdots$};
+
+    % Unit rows
+    \foreach \i/\iname in {1/$i=1$, 2/$i=2$, 3/$i=N$} {
+      \node[unit] at (0, -\i*1.2) {\iname};
+      \foreach \t in {1,2,3,4} {
+        \node[obs] at (\t*1.8 + 0.6, -\i*1.2) {$(Y_{it},\,X_{it})$};
+      }
+      \node[font=\footnotesize\itshape, gray] at (8.0, -\i*1.2) {$\cdots$};
+    }
+    \node[font=\footnotesize\itshape, gray] at (0, -3.6) {$\vdots$};
+    \foreach \t in {1,2,3,4} {
+      \node[font=\footnotesize\itshape, gray] at (\t*1.8+0.6, -3.6) {$\vdots$};
+    }
+
+    \node[font=\footnotesize, gray, align=center] at (4.5, -5.2) {Balanced panel: $N$ units observed at $T$ time periods $\Rightarrow$ $NT$ observations total};
+  \end{tikzpicture}
+  \caption{Structure of a balanced panel dataset. Each cell $(i,t)$ contains observations on unit $i$ at time $t$. With $N$ units and $T$ periods, there are $NT$ total observations. Panel data allow researchers to control for time-invariant unobserved heterogeneity by exploiting within-unit variation over time.}
+  \label{fig:ch10_panel_structure}
+\end{figure}
+
+\medskip\hrule\medskip
+
+\section{10.2 The Panel Data Model}
+
+\textbf{Definition 10.1 (One-Way Fixed Effects Model):}
+
+\[
+Y_{it} = \alpha_i + \beta X_{it} + u_{it}
+\]
+
+where $i = 1, \ldots, N$ and $t = 1, \ldots, T$.
+
+\textbf{Key assumption (strict exogeneity within the panel):}
+
+\[
+E[u_{it} \mid X_{i1}, X_{i2}, \ldots, X_{iT}, \alpha_i] = 0 \quad \text{for all } t
+\]
+
+This says that, conditional on the individual effect $\alpha_i$, the idiosyncratic error is uncorrelated with regressors in all periods. This is stronger than requiring $E[u_{it} \mid X_{it}, \alpha_i] = 0$.
+
+\textbf{No assumption on $\text{Cov}(X_{it}, \alpha_i)$:} Unlike pooled OLS, we allow the individual effect to be correlated with the regressors.
+
+\medskip\hrule\medskip
+
+\section{10.3 The Within (Fixed Effects) Estimator}
+
+\subsection{10.3.1 Demeaning}
+
+The key insight: \textbf{subtract the individual time-mean} to remove $\alpha_i$.
+
+For individual $i$, the time-mean of equation (10.1) is:
+
+\[
+\bar{Y}_i = \alpha_i + \beta \bar{X}_i + \bar{u}_i
+\]
+
+where $\bar{Y}_i = \frac{1}{T}\sum_{t=1}^T Y_{it}$, etc.
+
+Subtracting from equation (10.1):
+
+\[
+\underbrace{(Y_{it} - \bar{Y}_i)}_{\tilde{Y}_{it}} = \beta \underbrace{(X_{it} - \bar{X}_i)}_{\tilde{X}_{it}} + \underbrace{(u_{it} - \bar{u}_i)}_{\tilde{u}_{it}}
+\]
+
+The individual effect $\alpha_i$ is eliminated. This is called the \textbf{within transformation} or \textbf{demeaning}.
+
+\subsection{10.3.2 The Within (FE) Estimator}
+
+\textbf{Definition 10.2 (Within Estimator):}
+
+\[
+\hat{\beta}^{FE} = \left(\sum_{i=1}^N \sum_{t=1}^T \tilde{X}_{it}^2\right)^{-1} \sum_{i=1}^N \sum_{t=1}^T \tilde{X}_{it} \tilde{Y}_{it}
+\]
+
+In matrix notation: $\hat{\boldsymbol{\beta}}^{FE} = (\tilde{\mathbf{X}}^T\tilde{\mathbf{X}})^{-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{Y}}$, where $\tilde{\mathbf{Y}}$ and $\tilde{\mathbf{X}}$ are the demeaned outcome and regressor matrices.
+
+This is \textbf{OLS on the demeaned (within-individual) data}.
+
+\subsection{10.3.3 Connection to the FWL Theorem}
+
+The within estimator is a special case of the FWL Theorem. Let $\mathbf{X}_1$ be the matrix of individual dummies (one per individual) and $\mathbf{X}_2 = X_{it}$. Then:
+
+\[
+\hat{\beta}^{FE} = \hat{\beta}_2^{FWL} = (\tilde{\mathbf{X}}^T\tilde{\mathbf{X}})^{-1}\tilde{\mathbf{X}}^T\tilde{\mathbf{Y}}
+\]
+
+where $\tilde{\mathbf{X}} = \mathbf{M}_{X_1}\mathbf{X}$ and $\tilde{\mathbf{Y}} = \mathbf{M}_{X_1}\mathbf{Y}$ are the residuals from projecting onto the individual dummy space --- which is exactly demeaning.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=10cm, height=6.5cm,
+      xlabel={$X_{it}$ (e.g., hours worked)},
+      ylabel={$Y_{it}$ (e.g., output)},
+      xmin=0, xmax=7, ymin=0, ymax=6,
+      axis lines=left,
+      tick style={draw=none},
+      xtick=\empty, ytick=\empty,
+      legend style={at={(0.05,0.95)}, anchor=north west, font=\small},
+    ]
+      % Unit 1 observations (low-output firm, low hours)
+      \addplot[only marks, mark=*, mark size=3pt, color=econblue]
+        coordinates {(1.5,1.2)(2.0,1.8)(2.5,2.2)};
+      % Unit 2 observations (mid-output firm)
+      \addplot[only marks, mark=square*, mark size=3pt, color=red!70!black]
+        coordinates {(3.0,3.1)(3.5,3.6)(4.0,4.0)};
+      % Unit 3 observations (high-output firm)
+      \addplot[only marks, mark=triangle*, mark size=3pt, color=green!50!black]
+        coordinates {(4.5,4.5)(5.0,4.9)(5.5,5.4)};
+
+      % OLS (between variation -- misleading slope)
+      \addplot[thick, gray!60, dashed, domain=0.5:6.5] {0.77*x + 0.05};
+
+      % Within-unit slopes (same slope for all units, shifted)
+      \addplot[very thick, econblue, domain=1.0:3.0] {0.5*x + 0.45};
+      \addplot[very thick, red!70!black, domain=2.5:4.5] {0.5*x + 1.55};
+      \addplot[very thick, green!50!black, domain=4.0:6.0] {0.5*x + 2.25};
+
+      \legend{Unit 1, Unit 2, Unit 3, OLS (pooled), Within-unit slope}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{Within vs.\ between variation in panel data. OLS on pooled data (dashed gray) uses both between-unit and within-unit variation, and is biased when unobserved heterogeneity (unit fixed effects) correlates with $X$. Fixed effects estimation uses only within-unit variation (solid colored lines, common slope) to identify the causal effect.}
+  \label{fig:ch10_within_between}
+\end{figure}
+
+\subsection{10.3.4 Identifying Assumption of FE}
+
+\textbf{Assumption 10.1 (No Time-Varying Omitted Variables):}
+
+The FE estimator is consistent if, conditional on the individual effect $\alpha_i$, there are no time-varying confounders correlated with $X_{it}$ in $u_{it}$.
+
+\textbf{What FE controls for:} Any individual-specific, time-invariant unobservable.
+
+\textbf{What FE cannot control for:} Time-varying confounders (variables that vary both across individuals and over time, and are correlated with $X_{it}$).
+
+\textbf{Example of what FE handles:} Studying the effect of union membership on wages. FE removes the effect of permanent individual ability (time-invariant). What remains is the association between changes in union status and changes in wages, within the same individual over time.
+
+\textbf{Example of what FE cannot handle:} Studying the effect of a new employment policy on wages, when individuals self-select into regions that adopt the policy at different times based on their expectations of local economic conditions (time-varying, endogenous selection).
+
+\medskip\hrule\medskip
+
+\section{10.4 The LSDV Representation}
+
+\textbf{Proposition 10.1 (LSDV Equivalence):} The within estimator is algebraically identical to the OLS estimator from a regression of $Y_{it}$ on $X_{it}$ and $N$ individual dummy variables (LSDV = Least Squares Dummy Variables):
+
+\[
+Y_{it} = \sum_{j=1}^N \alpha_j D_{ij} + \beta X_{it} + u_{it}
+\]
+
+where $D_{ij} = 1$ if $j = i$ (individual $i$'s dummy variable).
+
+\textbf{Proof:} By the FWL theorem, the coefficient on $X_{it}$ from the LSDV regression equals the coefficient from regressing $\mathbf{M}_{X_1}\mathbf{Y}$ on $\mathbf{M}_{X_1}\mathbf{X}$, where $\mathbf{X}_1$ is the matrix of individual dummies. Projecting onto individual dummies means subtracting individual means --- which is demeaning. $\square$
+
+\textbf{Practical note:} With large $N$, LSDV is computationally expensive (requires inverting a large matrix). The within estimator is computationally equivalent but much faster.
+
+\medskip\hrule\medskip
+
+\section{10.5 The First-Differences Estimator}
+
+An alternative to demeaning is \textbf{first differencing}: subtract period $t-1$ from period $t$.
+
+\[
+\Delta Y_{it} = \beta \Delta X_{it} + \Delta u_{it}
+\]
+
+where $\Delta Y_{it} = Y_{it} - Y_{i,t-1}$, etc. Individual effects are again eliminated.
+
+\textbf{FD estimator:} OLS on the first-differenced data.
+
+\textbf{When FD $\equiv$ FE:} When $T = 2$.
+
+\textbf{When FD $\neq$ FE (T > 2):}
+\begin{itemize}
+\item Under strict exogeneity, both are consistent.
+\item If $u_{it}$ is serially uncorrelated, FE is more efficient.
+\item If $u_{it}$ follows a random walk ($u_{it} = u_{i,t-1} + \epsilon_{it}$), FD is more efficient.
+\end{itemize}
+
+\medskip\hrule\medskip
+
+\section{10.6 Two-Way Fixed Effects}
+
+In many panel settings, we want to control for both individual effects AND time effects --- for example, macro shocks that affect all individuals simultaneously.
+
+\textbf{Two-way FE model:}
+
+\[
+Y_{it} = \alpha_i + \gamma_t + \beta X_{it} + u_{it}
+\]
+
+where $\gamma_t$ is a \textbf{time fixed effect} (common to all individuals in period $t$).
+
+\textbf{Estimation:} Include individual and time dummies (LSDV) or demean by subtracting both individual means and time means (within transformation in two dimensions).
+
+\textbf{Application:} The two-way FE model is the backbone of the \textbf{Differences-in-Differences} estimator studied in Chapter 11.
+
+\medskip\hrule\medskip
+
+\section{10.7 Random Effects and the Hausman Test}
+
+\subsection{10.7.1 The Random Effects (RE) Model}
+
+\textbf{Definition 10.3 (Random Effects):} The RE model treats $\alpha_i$ as a random variable drawn from a distribution, uncorrelated with $X_{it}$:
+
+\[
+\alpha_i \perp X_{it}
+\]
+
+Under this assumption, OLS on the pooled data is consistent but inefficient (errors within individuals are correlated). The RE estimator uses a GLS transformation to achieve efficiency.
+
+\subsection{10.7.2 FE vs. RE: The Hausman Test}
+
+\textbf{Hausman (1978) Test:}
+
+\begin{itemize}
+\item Under $H_0$: $\text{Cov}(X_{it}, \alpha_i) = 0$ (RE is consistent and efficient; FE is consistent but inefficient).
+\item Under $H_1$: $\text{Cov}(X_{it}, \alpha_i) \neq 0$ (RE is inconsistent; FE is consistent).
+\end{itemize}
+
+The test statistic is:
+
+\[
+H = (\hat{\boldsymbol{\beta}}^{FE} - \hat{\boldsymbol{\beta}}^{RE})^T \left[\text{Var}(\hat{\boldsymbol{\beta}}^{FE}) - \text{Var}(\hat{\boldsymbol{\beta}}^{RE})\right]^{-1} (\hat{\boldsymbol{\beta}}^{FE} - \hat{\boldsymbol{\beta}}^{RE}) \sim \chi^2_k
+\]
+
+If $H$ is large (reject $H_0$), use FE. If not, RE may be preferred.
+
+\textbf{Practical advice:} In applied economics, FE is used far more commonly than RE. The assumption that individual effects are uncorrelated with regressors is strong and often implausible. Use RE only when you have a strong theoretical reason to believe the assumption holds.
+
+\medskip\hrule\medskip
+
+\section{10.8 Empirical Illustration: Returns to Education (Card, 1995)}
+
+Card (1995) uses panel data to study whether the returns to education are different from OLS estimates once unobserved individual ability is controlled for.
+
+\textbf{Data:} National Longitudinal Survey (NLS) following the same workers over time.
+
+\textbf{Key finding:} FE estimates of the return to education are \textit{higher} than OLS estimates --- not lower, as ability bias would predict. This suggests that:
+
+\begin{enumerate}
+\item Men who complete more education may have had \textit{lower} ability (conditional on measured characteristics) --- a negative $\text{Cov}(X_{it}, \alpha_i)$.
+\item Or: OLS ability bias is smaller than typically assumed, while measurement error in education attenuates OLS estimates downward.
+\end{enumerate}
+
+This is a sobering finding: the "obvious" direction of ability bias may not be correct once we look within individuals over time.
+
+\medskip\hrule\medskip
+
+\section{Chapter Summary}
+
+\begin{itemize}
+\item \textbf{Panel data} allow us to control for time-invariant unobserved heterogeneity.
+\item \textbf{Pooled OLS} is biased when individual effects are correlated with regressors.
+\item The \textbf{within (FE) estimator} eliminates individual effects by demeaning; it is equivalent to OLS with individual dummies (LSDV).
+\item FE's identifying assumption is that there are no time-varying confounders; it controls for everything time-invariant but nothing that varies over time.
+\item The \textbf{first-differences estimator} is an alternative to FE; they are equivalent when $T = 2$.
+\item \textbf{Two-way FE} controls for both individual and time effects.
+\item The \textbf{Hausman test} helps choose between FE and RE, but FE is generally preferred in applied economics.
+\item Card (1995) shows FE can produce higher (not lower) estimates of returns to education --- reversing the naive prediction about ability bias.
+\end{itemize}
+
+\medskip\hrule\medskip
+
+\section{Key Terms}
+
+\textbf{Panel data} --- data with multiple observations per unit over time.
+
+\textbf{Individual fixed effect} ($\alpha_i$) --- time-invariant unobserved characteristic of unit $i$.
+
+\textbf{Within transformation (demeaning)} --- subtracting individual time-means.
+
+\textbf{Within (FE) estimator} --- OLS on demeaned data; eliminates individual effects.
+
+\textbf{LSDV} --- Least Squares Dummy Variables; OLS with individual dummies; algebraically equivalent to FE.
+
+\textbf{First-differences (FD) estimator} --- OLS on first-differenced data; also eliminates individual effects.
+
+\textbf{Two-way FE} --- controls for both individual and time effects.
+
+\textbf{Random effects (RE)} --- treats individual effects as random draws uncorrelated with regressors; more efficient but requires stronger assumptions.
+
+\textbf{Hausman test} --- tests whether $\text{Cov}(X_{it}, \alpha_i) = 0$; guides FE vs. RE choice.
+
+\medskip\hrule\medskip
+
+\section{Exercises}
+
+\subsection{Conceptual Questions}
+
+\textbf{10.1} Explain why pooled OLS is biased in the presence of unobserved individual heterogeneity. What is the sign of the bias in the returns-to-union-membership example?
+
+\textbf{10.2} What does FE "control for"? What does it NOT control for? Give an example of a confounder that FE cannot address.
+
+\textbf{10.3} Why is FE equivalent to LSDV? Explain using the FWL theorem.
+
+\textbf{10.4} Compare the FE and FD estimators. When are they equivalent? When do they differ?
+
+\textbf{10.5} Explain the Hausman test. What is its null hypothesis? What should you do if the test rejects?
+
+\subsection{Analytical Questions}
+
+\textbf{10.6} Show formally that the within estimator eliminates the individual fixed effect $\alpha_i$.
+
+\textbf{10.7} In the two-period panel ($T = 2$), show that FD and FE give identical estimates.
+
+\textbf{10.8} Consider the model $Y_{it} = \alpha_i + \beta X_{it} + u_{it}$. Suppose $X_{it} = \alpha_i + \epsilon_{it}$ (the regressor depends on the individual effect). Show that pooled OLS is biased and derive the direction of bias.
+
+\textbf{10.9} Show that including individual dummy variables in a regression and applying OLS gives the same coefficient as the within estimator (LSDV equivalence).
+
+\subsection{Applied Questions}
+
+\textbf{10.10} Using a wages panel dataset in R, estimate: (a) pooled OLS; (b) FE (within estimator); (c) first differences. Compare and interpret the results.
+
+\textbf{10.11} Apply the Hausman test to your estimates. What do you conclude about the appropriate model?
+
+\medskip\hrule\medskip
+
+\section{R Lab 10: Fixed Effects Estimation}
+
+\subsection{Setup}
+
+\begin{lstlisting}
+library(tidyverse)
+library(plm)     # panel data estimation
+library(lmtest)
+library(sandwich)
+
+# Install and load data
+# install.packages("plm")
+data("Wages", package = "plm")
+head(Wages)
+# Variables: id, time, lwage (log wage), ed (education), exp (experience),
+#            union (union status), black, etc.
+\end{lstlisting}
+
+\subsection{Exercise 10.1: Pooled OLS}
+
+\begin{lstlisting}
+# Convert to panel data format
+wages_panel <- pdata.frame(Wages, index = c("id", "time"))
+
+# Pooled OLS
+pool_model <- plm(lwage ~ ed + exp + I(exp^2) + union + black,
+                   data = wages_panel, model = "pooling")
+summary(pool_model)
+\end{lstlisting}
+
+\subsection{Exercise 10.2: Fixed Effects (Within Estimator)}
+
+\begin{lstlisting}
+# Fixed Effects (Within) Model
+fe_model <- plm(lwage ~ ed + exp + I(exp^2) + union + black,
+                 data = wages_panel, model = "within")
+summary(fe_model)
+cat("FE coefficient on union:", round(coef(fe_model)["union"], 4), "\n")
+cat("Pool OLS coefficient on union:", round(coef(pool_model)["union"], 4), "\n")
+\end{lstlisting}
+
+\subsection{Exercise 10.3: First Differences}
+
+\begin{lstlisting}
+# First Differences
+fd_model <- plm(lwage ~ ed + exp + I(exp^2) + union + black,
+                 data = wages_panel, model = "fd")
+summary(fd_model)
+\end{lstlisting}
+
+\subsection{Exercise 10.4: LSDV (verify FE equivalence)}
+
+\begin{lstlisting}
+# LSDV using lm() -- add factor(id) as dummy variables
+# WARNING: this is slow for large N!
+# Use a small subset for illustration
+wages_small <- Wages[Wages$id <= 50, ]
+
+lsdv_model <- lm(lwage ~ ed + exp + I(exp^2) + union + factor(id),
+                   data = wages_small)
+fe_small <- plm(lwage ~ ed + exp + I(exp^2) + union,
+                 data = pdata.frame(wages_small, index = c("id", "time")),
+                 model = "within")
+
+cat("LSDV union coefficient:", round(coef(lsdv_model)["union"], 6), "\n")
+cat("FE union coefficient:  ", round(coef(fe_small)["union"], 6), "\n")
+\end{lstlisting}
+
+\subsection{Exercise 10.5: Random Effects and Hausman Test}
+
+\begin{lstlisting}
+# Random Effects
+re_model <- plm(lwage ~ ed + exp + I(exp^2) + union + black,
+                 data = wages_panel, model = "random")
+summary(re_model)
+
+# Hausman Test
+phtest(fe_model, re_model)
+\end{lstlisting}
+
+\subsection{Exercise 10.6: Two-Way Fixed Effects}
+
+\begin{lstlisting}
+# Two-Way FE (individual + time effects)
+twofe_model <- plm(lwage ~ ed + exp + I(exp^2) + union + black,
+                    data = wages_panel, model = "within", effect = "twoways")
+summary(twofe_model)
+\end{lstlisting}
+
+\medskip\hrule\medskip
+
+\textit{End of Chapter 10}
+
+\medskip\hrule\medskip
+
+\textbf{References}
+
+Card, D. (1995). Using geographic variation in college proximity to estimate the return to schooling. University of Toronto Press.
+
+Wooldridge, J. M. (2019). \textit{Introductory Econometrics}. Chapter 14.
+
+Angrist, J. D., and Pischke, J. (2009). \textit{Mostly Harmless Econometrics}. Chapter 5.
+
+Cunningham, S. (2021). \textit{Causal Inference: The Mixtape}. Chapter on panel data.
+
+Hausman, J. A. (1978). Specification tests in econometrics. \textit{Econometrica}, 46(6), 1251--1271.

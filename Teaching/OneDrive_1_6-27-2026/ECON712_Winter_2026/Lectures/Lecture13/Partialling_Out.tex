@@ -1,0 +1,115 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage[parfill]{parskip}
+
+\geometry{margin=1.2in}
+
+\newtheorem{proposition}{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{%
+  \textbf{Partialling Out and the Propensity Score}\\[6pt]
+  \large Why $\tilde{D}_i = D_i - p(X_i)$\\[4pt]
+  \normalsize ECON 712 --- Supplementary Notes
+}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+%--------------------------------------------------------------------
+\section{Setup}
+%--------------------------------------------------------------------
+
+Let $D_i \in \{0,1\}$ be a binary treatment and $X_i \in \{0,1\}$ a binary
+covariate. Define the propensity score $p(x) = E[D_i \mid X_i = x]$.
+
+We want to show that partialling out $X_i$ from $D_i$ via OLS yields the
+residual $\tilde{D}_i = D_i - p(X_i)$.
+
+%--------------------------------------------------------------------
+\section{Step 1: OLS Fitted Values in the Saturated Regression}
+%--------------------------------------------------------------------
+
+Regress $D_i$ on a constant and $X_i$:
+\[
+  D_i = \alpha + \gamma X_i + \text{residual}.
+\]
+Because $X_i$ is binary this regression is \emph{saturated} --- it has one
+free parameter per cell.  The OLS estimates are exactly the cell means:
+\begin{align*}
+  \hat\alpha &= E[D_i \mid X_i = 0] = p(0), \\
+  \hat\gamma &= E[D_i \mid X_i = 1] - E[D_i \mid X_i = 0] = p(1) - p(0).
+\end{align*}
+The fitted value for observation $i$ is therefore
+\[
+  \hat{D}_i = p(0) + \bigl(p(1)-p(0)\bigr)X_i.
+\]
+
+%--------------------------------------------------------------------
+\section{Step 2: The Fitted Value Equals $p(X_i)$}
+%--------------------------------------------------------------------
+
+Check each cell:
+\begin{align*}
+  X_i = 0: \quad & \hat{D}_i = p(0) + \bigl(p(1)-p(0)\bigr)\cdot 0 = p(0) = p(X_i). \\
+  X_i = 1: \quad & \hat{D}_i = p(0) + \bigl(p(1)-p(0)\bigr)\cdot 1 = p(1) = p(X_i).
+\end{align*}
+In both cells $\hat{D}_i = p(X_i)$, so the two-coefficient saturated regression
+perfectly recovers the propensity score.
+
+%--------------------------------------------------------------------
+\section{Step 3: The Residual is $\tilde{D}_i = D_i - p(X_i)$}
+%--------------------------------------------------------------------
+
+The OLS residual (the partialled-out treatment) is
+\[
+  \tilde{D}_i \;=\; D_i - \hat{D}_i \;=\; D_i - p(X_i).
+\]
+
+%--------------------------------------------------------------------
+\section{Step 4: $\tilde{D}_i$ is Already Demeaned}
+%--------------------------------------------------------------------
+
+We verify $E[\tilde{D}_i] = 0$ using the Law of Iterated Expectations:
+\[
+  E[\tilde{D}_i]
+  = E\!\left[E[D_i - p(X_i) \mid X_i]\right]
+  = E\!\left[E[D_i \mid X_i] - p(X_i)\right]
+  = E\!\left[p(X_i) - p(X_i)\right]
+  = 0.
+\]
+Since $E[\tilde{D}_i] = 0$, it follows immediately that
+\[
+  \tilde{D}_i - E[\tilde{D}_i] \;=\; \tilde{D}_i - 0 \;=\; \tilde{D}_i \;=\; D_i - p(X_i).
+\]
+The partialled-out variable is its own demeaned version.
+
+%--------------------------------------------------------------------
+\section{Summary}
+%--------------------------------------------------------------------
+
+\begin{proposition}
+Let $X_i \in \{0,1\}$ be binary and $p(x) = E[D_i \mid X_i = x]$ be the
+propensity score.  In the saturated OLS regression of $D_i$ on $(1, X_i)$:
+\begin{enumerate}
+  \item The constant and slope equal $p(0)$ and $p(1)-p(0)$ respectively.
+  \item The fitted value equals $p(X_i)$ for every observation.
+  \item The residual (partialled-out treatment) is $\tilde{D}_i = D_i - p(X_i)$.
+  \item $E[\tilde{D}_i] = 0$, so $\tilde{D}_i$ is already mean-zero.
+\end{enumerate}
+\end{proposition}
+
+\begin{remark}
+The same argument extends to a discrete $X_i$ with $K$ cells: a fully saturated
+regression includes a dummy for each cell, the fitted value in each cell is the
+cell mean $p(x)$, and the residual is again $D_i - p(X_i)$.  This is the
+foundation of the Frisch--Waugh--Lovell result used in Angrist (1998).
+\end{remark}
+
+\end{document}

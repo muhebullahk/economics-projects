@@ -1,0 +1,446 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%       								 Preamble				         	                                                        %%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\documentclass[10pt]{beamer}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{amsmath,lmodern}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{fit,shapes.misc}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{epstopdf}
+\usepackage{pdfpages}
+\usepackage{appendixnumberbeamer}
+\usepackage{color,soul}
+\usepackage{grffile}
+\usepackage{float}
+\usepackage{relsize}
+\usepackage{tcolorbox}
+\newcounter{nodemarkers}
+\usepackage{tikz}
+\newcommand{\toplinesmall}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=3.6cm]current page.north west);}}
+             
+\newcommand{\toplinemedium}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=6.2cm]current page.north west);}}
+ 
+ \newcommand{\toplinelarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=8.9cm]current page.north west);}}           
+             
+ \newcommand{\toplinexlarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=12cm]current page.north west);}}                       
+             
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}{\textcolor{blue}{ECON311}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}{\textcolor{blue}{Winter 2026}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}{\textcolor{blue}{Lecture 14 \: \: \: \: \: \: \: }
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newcommand\marktopleft[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-a) at (-0.2,1.2ex) {};%
+}
+\newcommand\markbottomright[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-b) at (0.16,-1ex) {};%
+    \tikz[overlay,remember picture,thick,inner sep=4pt]
+        \node[draw,rectangle,rounded corners, blue, fit=(marker-#1-a.center) (marker-#1-b.center)] {};%
+}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[triangle]
+\tcbset{colframe=white,colback=white,nobeforeafter}
+\beamertemplatenavigationsymbolsempty
+\addtobeamertemplate{frametitle}{\vspace*{0.19cm}}{\vspace*{0cm}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%  									    Define Title									                                       %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\title{ECON 311} 
+\author{Lecture 14: The IS-MP Model, part III}
+\date{}
+\AtBeginSection[]
+{
+ \begin{frame}<beamer>
+ \tableofcontents[currentsection]
+ \end{frame}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%% 						     				Document								                                                %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{document}
+\setbeamercovered{transparent}
+
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+
+
+\section{Goods Market}
+
+\begin{frame}
+\frametitle{\: \: \: IS-curve with new scale}
+\toplinelarge
+\begin{figure}
+\centering
+\caption{IS-curve:$\widetilde{Y}_t=\left[\frac{1}{1-b_c}\right]* \left[\overline{a}-\overline{b}_i (R_t-\overline{r}) \right]-1$, $\overline{a}\left[\frac{1}{1-b_c}\right]=1$}
+\includegraphics[scale=.5]{IS_curve}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Changes in the real interest rate}
+\toplinelarge
+\begin{figure}
+\centering
+\caption{IS-curve:$\widetilde{Y}_t=\left[\frac{1}{1-b_c}\right]* \left[\overline{a}-\overline{b}_i (R_t-\overline{r}) \right]-1$, $\overline{a}\left[\frac{1}{1-b_c}\right]=1$}
+\includegraphics[scale=.5]{IS_curve_interest_rate}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Temporary Aggregate Demand Shock}
+\toplinelarge
+\begin{figure}
+\centering
+\caption{IS-curve:$\widetilde{Y}_t=\left[\frac{1}{1-b_c}\right]* \left[\overline{a}-\overline{b}_i (R_t-\overline{r}) \right]-1$, $\overline{a}\left[\frac{1}{1-b_c}\right]=1$, $\overline{a}'>(1-b_c)$}
+\includegraphics[scale=.39]{aggregate_demand_shock}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Permanent Aggregate Shock}
+\toplinelarge
+\begin{itemize}
+\item Permanent shocks impact potential output and originate from the production side of the economy, which have two effects:
+\begin{enumerate}
+\vspace{.11in}
+\item Permanent shocks affect demand parameters, which affect both long- and short-run output levels potentially equally.
+\vspace{.11in}
+\item Permanent production shocks affect the $MPK$
+\begin{itemize}
+\vspace{.11in}
+\item This has an effect in the long-run because $\overline{r}=MPK$
+\vspace{.16in}
+\item This results in output overshooting in the SR as the economy adjusts to its new potential output.
+\end{itemize}
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: E.g. Permanent TFP shock}
+\toplinelarge
+\begin{figure}
+\centering
+\caption{IS-curve:$\widetilde{Y}_t=\left[\frac{1}{1-b_c}\right]* \left[\overline{a}-\overline{b}_i (R_t-\overline{r}) \right]-1$, $\overline{a}\left[\frac{1}{1-b_c}\right]=1$, $\overline{r}'>\overline{r}$}
+\includegraphics[scale=.39]{permanent_shock}
+\end{figure}
+\end{frame}
+
+
+\section{Monetary Policy}
+
+\begin{frame}
+\frametitle{\: \: \: Monetary Policy}
+\toplinemedium
+\begin{itemize}
+\vspace{.11in}
+\item The BoC currently has three main monetary policy variables at its disposal.
+\begin{enumerate}
+\vspace{.11in}
+\item Overnight rate
+\vspace{.11in}
+\item Open-market operations
+\vspace{.11in}
+\item Reserve requirements
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Overnight rate }
+\toplinemedium
+\begin{itemize}
+\item Overnight rate: The interest rate on very short-term loans between commercial banks.
+\vspace{.11in}
+\begin{itemize}
+\item The BoC can indirectly change the interest rate at which commercial banks lend to each other.
+\end{itemize}
+\vspace{.11in}
+\item When banks lend too much and do not meet the reserve requirement, they are able to borrow short-term from other commercial banks which have excess reserves or from the BoC itself at the overnight rate to meet the requirement.
+\begin{itemize}
+\vspace{.11in}
+\item A high overnight rate encourage banks to lend less.
+\end{itemize}
+\vspace{.11in}
+\item The BoC announces changes in the overnight rate on eight fixed days each year (around every month and a half).
+\end{itemize} 
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Overnight rate }
+\toplinemedium
+\centering
+\includegraphics[scale=.8]{overnight_rate.jpg}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: From nominal to real interest rate}
+\toplinexlarge
+\begin{itemize}
+\item By modifying the overnight rate, the BoC affects the nominal interest rate in the market.
+\begin{itemize}
+\vspace{.11in}
+\item Commercial banks' additional borrowing costs is pass on to borrowers
+\end{itemize}
+\vspace{.11in}
+\item We can study the effect of changes in the nominal interest rate on the real interest rate using the fisher equation:
+\begin{eqnarray*}
+R_t=i_t-\pi_t
+\end{eqnarray*} 
+\begin{itemize}
+\vspace{.11in}
+\item We are going to assume that in the SR, prices are sticky and only change slowly over time.
+\vspace{.11in}
+\item In the SR, $\Delta \pi$ do not completely offset $\Delta i$ (this is different in the long-run).
+\vspace{.11in}
+\item Therefore, in the SR, CB monetary policy has an indirect influence on the real rate return, R.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: The MP curve}
+\toplinemedium 
+\begin{figure}
+\centering
+\includegraphics[scale=.4]{MP}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: The IS-MP model}
+\toplinemedium 
+\begin{itemize}
+\item The \textcolor{blue}{MP curve}
+\begin{itemize}
+\vspace{.11in}
+\item Illustrates the central bank's ability to set the real interest rate at a particular value (horizontal line)
+\end{itemize}
+\vspace{.11in}
+\item The \textcolor{blue}{IS curve}
+\begin{itemize}
+\vspace{.11in}
+\item Illustrates the negative reltionship between short-run output and interest rates (through changes in aggregate expenditure)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: The IS-MP model}
+\toplinemedium  
+\begin{figure}
+\centering
+\includegraphics[scale=.5]{IS_MP}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: The IS-MP model}
+\toplinemedium  
+\begin{figure}
+\centering
+\includegraphics[scale=.46]{IS_MP_interest_rate}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Temporary Negative Demand Shock}
+\toplinexlarge
+\begin{figure}
+\centering
+\includegraphics[scale=.46]{temporary_shock}
+\end{figure}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}
+\frametitle{\: \: \: IS-MP Model}
+\toplinemedium
+\begin{itemize}
+\item In this simple model, the CB can avoid recessions or overheating economies through active monetary policy.
+\begin{itemize}
+\vspace{.11in}
+\item However, in practice there is usually a lagged between shocks and the response of the CB due to two factors:
+\begin{enumerate}
+\vspace{.11in}
+\item It usually takes time for policy makers to understand the extent of the  shocks.
+\vspace{.11in}
+\item It takes time for the policy to affect the economy (between 6-18 months for changes in the interest rate to have substantial effect on economy activity).
+\end{enumerate}
+\vspace{.11in}
+\item Business Cycles are the result of the interaction of shocks and the response of the CB and governments to these shocks.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+\section{The Phillips Curve}
+
+\begin{frame}
+\frametitle{\: \: \: The Phillips Curve}
+\toplinemedium
+\begin{itemize}
+\item Inflation is defined as:
+\begin{eqnarray*}
+\pi_t=\frac{P_{t+1}-P_t}{P_t}
+\end{eqnarray*}
+\item Firms set their prices on the basis of:
+\begin{itemize}
+\vspace{.11in}
+\item Their expectations of the economy-wide inflation rate
+\vspace{.11in}
+\item The state of demand for their product
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: The Phillips Curve}
+\toplinemedium
+\begin{itemize}
+\item Inflation is then determined by the following equation:
+\begin{eqnarray*}
+\pi_t=\pi^e_t+\overline{v}\widetilde{Y}_t
+\end{eqnarray*}
+\item We are going to assume: $\pi^e_t=\pi_{t-1}$
+\begin{itemize}
+\vspace{.11in}
+\item Firms adjust their forecast slowly.
+\vspace{.11in}
+\item This embodies the sticky inflation assumption
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: The Phillips Curve}
+\toplinemedium
+\begin{itemize}
+\item Using the equations:
+\begin{eqnarray*}
+\pi_t=\pi_{t-1}+\overline{v} \widetilde{Y}_t \\[1.4ex]
+\Delta \pi_t=\pi_t-\pi_{t-1}
+\end{eqnarray*}
+\item Therefore, the Phillips curve can be expressed as:
+\begin{eqnarray*}
+\Delta \pi_t=\overline{v}\widetilde{Y}_t
+\end{eqnarray*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: The Phillips Curve}
+\toplinemedium
+\begin{figure}
+\centering
+\includegraphics[scale=.52]{Phillips}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Inflation Shocks}
+\toplinemedium
+\begin{itemize}
+\item In our IS-MP model, we are going to also include inflation shocks (called cost-push inflation)
+\begin{itemize}
+\vspace{.11in}
+\item We are going to include these shocks in our Phillips curve as follows:
+\begin{eqnarray*}
+\Delta \pi_t=\overline{v}\widetilde{Y}_t+\overline{o}
+\end{eqnarray*}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: The Phillips Curve with cost-push inflation}
+\toplinexlarge
+\begin{figure}
+\centering
+\includegraphics[scale=.52]{Phillips_2}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Sticky Inflation}
+\toplinemedium
+\begin{itemize}
+\item The sticky inflation assumption is a very important property of this model
+\begin{itemize}
+\vspace{.11in}
+\item Inflation displays inertia so any change to prices in the present affects inflation in the future
+\vspace{.11in}
+\item Shocks to the Phillips Curve have long memory
+\vspace{.11in}
+\item A one time economic policy affects inflation rates in multiple periods
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+
+\end{document}
+

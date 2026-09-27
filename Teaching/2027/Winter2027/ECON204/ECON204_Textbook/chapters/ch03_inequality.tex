@@ -1,0 +1,647 @@
+%==========================================================
+%  CHAPTER 3: Income Inequality
+%==========================================================
+
+\chapter{Income Inequality}
+\label{ch:inequality}
+
+\begin{learningobjectives}
+\item Measure income inequality using quintile shares, the Lorenz curve, and the Gini coefficient.
+\item Distinguish Canada's three main poverty measures---LICO, LIM, and the Market Basket Measure---and explain why each produces different poverty estimates.
+\item Describe how income inequality has evolved in Canada since 1980 and compare Canada to peer OECD countries.
+\item Evaluate the Kuznets hypothesis and assess its relevance to contemporary advanced economies.
+\item Identify the major economic drivers of rising inequality in Canada and explain the mechanism behind each.
+\item Describe the economic dimensions of Indigenous inequality in Canada and connect them to historical and structural causes.
+\end{learningobjectives}
+
+%----------------------------------------------------------
+\section{Why Inequality Matters}
+%----------------------------------------------------------
+
+Imagine two families in Toronto in 2024. The first family---parents who are a corporate lawyer and a physician---live in a detached home in the Annex worth \$2.1 million. Their children attend private school. They have a defined-benefit pension and an investment portfolio. The second family---a single mother working two minimum-wage jobs---pays \$1,800 a month for a two-bedroom apartment shared with her two children, relies on the school breakfast program, and has no savings.
+
+Both families are part of the same economy, subject to the same inflation rate, the same interest rates, the same labour market conditions. Yet their economic realities are radically different. The gap between them---income inequality---raises fundamental questions about the functioning and fairness of a market economy.
+
+Economists approach inequality with two distinct lenses:
+
+\textbf{The efficiency lens} asks whether inequality affects aggregate economic performance. Extreme inequality may under-invest in human capital (when low-income families cannot afford education), distort political institutions (when wealth translates to policy influence), or suppress demand (when high-income households have higher savings propensities).
+
+\textbf{The equity lens} asks whether the distribution of income is consistent with widely shared social values. This is a normative question---one on which reasonable people disagree---but it is one that democratic societies regularly translate into policy through tax and transfer systems.
+
+This chapter focuses primarily on \textit{measuring and explaining} inequality---the positive economic questions---while the policy debate at the chapter's end engages the normative dimension.
+
+%----------------------------------------------------------
+\section{Measuring the Income Distribution}
+%----------------------------------------------------------
+
+\subsection{Quintile Analysis}
+
+The simplest way to describe an income distribution is to divide the population into five equally sized groups (ranked by income) and report the income share of each group. These groups are called \term{income quintiles}.
+
+\begin{defbox}{Income Quintile}
+An \textbf{income quintile} is one-fifth of the population ranked by income. The first (bottom) quintile contains the lowest-income 20\% of households; the fifth (top) quintile contains the highest-income 20\%.
+
+\textit{Canadian context:} In 2021, Canada's top quintile received approximately 47\% of total after-tax household income, while the bottom quintile received approximately 5\%.
+\end{defbox}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar,
+  bar width=0.7cm,
+  width=11cm, height=7cm,
+  symbolic x coords={Bottom 20\%, Second 20\%, Middle 20\%, Fourth 20\%, Top 20\%},
+  xtick=data,
+  x tick label style={font=\small, rotate=20, anchor=east},
+  ylabel={Share of After-Tax Income (\%)},
+  ylabel style={font=\small},
+  ymin=0, ymax=55,
+  ytick={0,10,20,30,40,50},
+  yticklabel style={font=\small},
+  ymajorgrids=true, grid style={dashed, gray!25},
+  enlarge x limits=0.12,
+  every axis plot/.append style={fill=unbcgreen!65, draw=unbcgreen}
+]
+\addplot coordinates {
+  (Bottom 20\%, 5.2)
+  (Second 20\%, 10.3)
+  (Middle 20\%, 15.8)
+  (Fourth 20\%, 22.7)
+  (Top 20\%, 46.0)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Income Shares by Quintile, Canada, After-Tax Income, 2021. The top quintile
+  receives nearly half of all after-tax income in Canada---more than the combined
+  income share of the bottom three quintiles.}
+\label{fig:quintile_shares}
+\source{Statistics Canada, Survey of Consumer Finances, Table 11-10-0192-01.}
+\end{figure}
+
+\subsection{The Lorenz Curve}
+
+Quintile data can be visualized with a \term{Lorenz curve}---a graphical tool for representing the entire income distribution.
+
+\begin{defbox}{Lorenz Curve}
+The \textbf{Lorenz curve} plots the cumulative share of total income (y-axis) earned by the cumulative share of the population ranked from poorest to richest (x-axis).
+
+\textit{Interpretation:} A point on the Lorenz curve $(x, y)$ means that the bottom $x$\% of the population earns $y$\% of total income. Perfect equality would produce the 45° \textit{line of equality}: the bottom 40\% would earn 40\% of income, the bottom 80\% would earn 80\%, etc. Real-world Lorenz curves bow below this line.
+\end{defbox}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=9.5cm, height=9.5cm,
+  xlabel={Cumulative Share of Population (\%)},
+  ylabel={Cumulative Share of Income (\%)},
+  xlabel style={font=\small},
+  ylabel style={font=\small},
+  xmin=0, xmax=100,
+  ymin=0, ymax=100,
+  xtick={0,20,40,60,80,100},
+  ytick={0,20,40,60,80,100},
+  xticklabel style={font=\small},
+  yticklabel style={font=\small},
+  grid=both, grid style={dashed, gray!20},
+  axis line style={-Stealth},
+  axis lines=left,
+  clip=false
+]
+% Line of perfect equality
+\addplot[thick, dashed, color=chaptergray, domain=0:100] {x}
+  node[right, font=\small, color=chaptergray] {Line of equality};
+% Canada's approximate Lorenz curve
+\addplot[thick, color=unbcgreen, mark=*, mark size=2.5pt]
+  coordinates {(0,0)(20,5.2)(40,15.5)(60,31.3)(80,54.0)(100,100)};
+% U.S. approximate Lorenz curve (more unequal, farther from equality)
+\addplot[thick, color=policyblue, dashed, mark=square*, mark size=2pt]
+  coordinates {(0,0)(20,3.5)(40,11.5)(60,26.0)(80,50.0)(100,100)};
+% Labels
+\node[color=unbcgreen, font=\small] at (axis cs:62,24) {Canada};
+\node[color=policyblue, font=\small] at (axis cs:62,16) {United States};
+% Gini area annotation
+\node[font=\scriptsize, color=chaptergray] at (axis cs:35,67) {Area A};
+\node[font=\scriptsize, color=chaptergray] at (axis cs:55,42) {Area B};
+\node[font=\scriptsize, color=chaptergray] at (axis cs:28,50)
+  {$\text{Gini} = \frac{\text{Area A}}{\text{Area A} + \text{Area B}}$};
+\end{axis}
+\end{tikzpicture}
+\caption{Lorenz Curves for Canada and the United States, Approximate 2021. Canada's
+  Lorenz curve lies closer to the line of equality than the U.S.\ curve, indicating
+  lower income inequality. The Gini coefficient equals the ratio of the area between
+  the line of equality and the Lorenz curve (Area A) to the total area below the
+  line of equality (Area A + Area B).}
+\label{fig:lorenz}
+\source{Statistics Canada; U.S. Census Bureau. Values approximate for illustrative purposes.}
+\end{figure}
+
+\subsection{The Gini Coefficient}
+
+\begin{defbox}{Gini Coefficient}
+The \textbf{Gini coefficient} (or Gini index) is a summary measure of inequality derived from the Lorenz curve. It equals twice the area between the line of perfect equality and the Lorenz curve, and ranges from 0 (perfect equality) to 1 (perfect inequality).
+
+\textit{Interpretation of common values:}
+\begin{itemize}
+  \item $\approx 0.25$: Very equal (Nordic countries)
+  \item $\approx 0.30$--$0.33$: Moderately equal (Germany, Canada, Australia)
+  \item $\approx 0.38$--$0.42$: Moderately unequal (United States, United Kingdom)
+  \item $\approx 0.45$+: Highly unequal (much of Latin America, South Africa)
+\end{itemize}
+
+\textit{Canadian value:} Canada's after-tax Gini coefficient was approximately 0.31 in 2022, lower than the U.S. (0.39) but higher than the Nordic average (about 0.27).
+\end{defbox}
+
+\begin{keytakeaway}
+Canada's after-tax Gini coefficient (approximately 0.31) is significantly lower than its pre-tax Gini (approximately 0.43). The difference of 0.12 Gini points represents the redistributive effect of Canada's tax and transfer system---progressive income taxes, the Canada Child Benefit, GIS for low-income seniors, and Employment Insurance all compress the income distribution. Understanding this gap is crucial: Canada is not naturally equal; it uses policy to achieve its relatively moderate level of inequality.
+\end{keytakeaway}
+
+%----------------------------------------------------------
+\section{Measuring Poverty in Canada}
+%----------------------------------------------------------
+
+\subsection{Absolute vs.\ Relative Poverty}
+
+\begin{defbox}{Absolute Poverty}
+\textbf{Absolute poverty} exists when a household's income falls below a threshold defined by the cost of meeting basic needs (food, shelter, clothing), regardless of what others in society earn.
+
+\textit{Example:} A family unable to afford adequate nutrition is in absolute poverty whether they live in a rich country or a poor one.
+\end{defbox}
+
+\begin{defbox}{Relative Poverty}
+\textbf{Relative poverty} exists when a household's income falls below a fraction (typically 50\% or 60\%) of the median household income in their society.
+
+\textit{Example:} A Canadian family with income below 50\% of the Canadian median income is relatively poor, even if their absolute consumption would seem comfortable in a low-income country.
+
+\textit{Economic intuition:} Relative poverty measures social exclusion---the inability to participate in the norms and activities that the broader society takes for granted.
+\end{defbox}
+
+Canada uses all three types of poverty measures, which produce different (and sometimes confusingly different) poverty rates.
+
+\subsection{Canada's Three Poverty Measures}
+
+\textbf{Low Income Cut-Off (LICO).} Statistics Canada's original measure. A family is below the LICO if it spends more than 20 percentage points above the average share of income on food, shelter, and clothing. Context-specific: varies by family size and community size. The LICO is no longer promoted as an official poverty measure but is still published. Because it is based on spending patterns (not consumption of necessities), it blends absolute and relative elements.
+
+\textbf{Low Income Measure (LIM).} A purely relative measure: income below 50\% of median adjusted household income. The LIM-AT (after-tax version) is the most commonly reported. The LIM is the standard international measure used by the OECD for cross-country comparisons. It does not adjust for regional cost differences.
+
+\textbf{Market Basket Measure (MBM).} Canada's official poverty line since 2019. The MBM calculates the cost of a specific ``basket'' of goods and services---food, clothing, shelter, transportation, and other necessities---needed for a modest but adequate standard of living. The basket is updated periodically. Unlike the LIM, the MBM varies by region (recognizing that shelter costs are dramatically different in Vancouver vs.\ Timmins). The MBM is best understood as an absolute measure with periodic recalibration.
+
+\begin{canexample}{How Measure Choice Affects the Poverty Rate}
+In 2021, using the Market Basket Measure, Canada's official poverty rate was 7.4\%,
+the lowest on record. Using the Low Income Measure (after tax), the poverty rate
+was approximately 11.8\%. The gap---4.4 percentage points---reflects the different
+methodologies. The LIM, being relative, captures relative social exclusion and is
+more sensitive to income growth. The MBM, being need-based, better captures
+whether households can meet a defined minimum consumption standard.
+Neither is ``correct''---they measure different things. Policymakers should be aware
+that choice of measure can substantially change the stated success of anti-poverty programs.
+\end{canexample}
+
+\subsection{Who Is Poor in Canada?}
+
+\begin{databox}{Poverty Rates by Demographic Group, Canada (2021,MBM)}
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+\textbf{Group} & \textbf{Poverty Rate (\%)} \\
+\midrule
+Total population & 7.4 \\
+Children (under 18) & 6.4 \\
+Single-parent families & $\approx$20 \\
+Seniors (65+) & $\approx$6 \\
+Working-age adults (18--64) & 8.0 \\
+Recent immigrants (arrived $\leq$5 years) & $\approx$18 \\
+Persons with disabilities & $\approx$16 \\
+Racialized Canadians & $\approx$14 \\
+Indigenous peoples (off-reserve) & $\approx$20 \\
+Indigenous peoples (on-reserve) & $\approx$40--50 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Poverty is not randomly distributed. Single-parent families, recent immigrants, persons with
+disabilities, and Indigenous peoples face dramatically higher poverty rates than the overall average.
+\source{Statistics Canada, Canadian Income Survey; Institute for Research on Public Policy.}
+\end{databox}
+
+%----------------------------------------------------------
+\section{The Evolution of Inequality in Canada}
+%----------------------------------------------------------
+
+\subsection{Long-Run Trends Since 1980}
+
+Canada's income distribution has become more unequal since the early 1980s, though the story is more nuanced than a simple ``inequality has risen'' narrative:
+
+\begin{itemize}
+  \item \textbf{1980s:} Rising market income inequality driven by technological change and globalization. The Gini coefficient for market income (before taxes and transfers) rose substantially.
+  \item \textbf{1990s:} Cuts to social programs (UI reform, CAP replacement by CHST, welfare rate cuts in Ontario and BC) reduced the redistributive buffering of the transfer system. After-tax inequality rose noticeably.
+  \item \textbf{2000s:} After-tax inequality stabilized somewhat. Strong resource-sector employment in the West offset manufacturing decline in Ontario and Quebec.
+  \item \textbf{2010s:} The Canada Child Benefit (2016) significantly reduced child poverty. After-tax inequality remained roughly flat despite rising market inequality.
+  \item \textbf{COVID era (2020-21):} Emergency transfers (CERB etc.) temporarily boosted low-income households' income more proportionally, reducing measured inequality to record lows. Post-2022 inflation partially reversed these gains.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=13cm, height=7cm,
+  xlabel={Year},
+  ylabel={Gini Coefficient (After-Tax Income)},
+  ylabel style={font=\small},
+  xmin=1979, xmax=2023,
+  ymin=0.24, ymax=0.36,
+  xtick={1980,1985,1990,1995,2000,2005,2010,2015,2020},
+  xticklabel style={font=\small, rotate=30, anchor=east},
+  yticklabel style={font=\small},
+  ymajorgrids=true, grid style={dashed, gray!25},
+  axis line style={color=gray!60}
+]
+\addplot[thick, color=unbcgreen, mark=*, mark size=2pt]
+  coordinates {
+    (1981,0.285)(1984,0.292)(1987,0.294)(1990,0.290)(1993,0.303)
+    (1996,0.310)(1999,0.315)(2002,0.318)(2005,0.317)(2008,0.320)
+    (2011,0.315)(2014,0.313)(2017,0.310)(2019,0.310)(2021,0.295)(2022,0.310)
+  };
+% Annotation for CCB
+\draw[-Stealth, thick, color=dataorange]
+  (axis cs:2016, 0.307) -- (axis cs:2019, 0.311);
+\node[font=\scriptsize, color=dataorange] at (axis cs:2014.5, 0.303)
+  {CCB launched};
+% COVID annotation
+\node[font=\scriptsize, color=policyblue] at (axis cs:2021, 0.288)
+  {COVID transfers};
+\end{axis}
+\end{tikzpicture}
+\caption{Gini Coefficient for After-Tax Income, Canada, 1981--2022. After-tax inequality
+  rose during the 1990s and stabilized in the 2000s. The Canada Child Benefit (2016)
+  contributed to modest declines in subsequent years, and COVID emergency transfers
+  temporarily compressed inequality in 2020--2021.}
+\label{fig:gini_trend}
+\source{Statistics Canada, Survey of Consumer Finances; Canadian Income Survey.}
+\end{figure}
+
+\subsection{The Top 1\% and Capital Income}
+
+One of the most striking features of inequality since 1980 is the surge in top income shares. The top 1\% of Canadian income earners receive approximately 10--12\% of total pre-tax income---a share roughly double what it was in 1980. This concentration is even more pronounced for the top 0.1\% and top 0.01\%.
+
+Capital income (dividends, capital gains, interest, business profits) is far more concentrated among high-income households than labour income. As capital income has grown as a share of total income, the income distribution has shifted. Thomas Piketty's influential work (\textit{Capital in the Twenty-First Century}, 2014) argues that when the return on capital ($r$) persistently exceeds the economic growth rate ($g$), wealth and income inequality will rise over time. The condition $r > g$ has characterized most advanced economies since 1980.
+
+%----------------------------------------------------------
+\section{International Comparisons: Where Does Canada Stand?}
+%----------------------------------------------------------
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  xbar,
+  bar width=0.45cm,
+  width=12cm, height=9cm,
+  symbolic y coords={Finland, Denmark, Sweden, Germany, Canada, Australia, France, UK, USA, Mexico},
+  ytick=data,
+  y tick label style={font=\small},
+  xlabel={Gini Coefficient (After-Tax Income, 2021--2022)},
+  xlabel style={font=\small},
+  xmin=0.22, xmax=0.52,
+  xticklabel style={font=\small},
+  xmajorgrids=true, grid style={dashed, gray!25},
+  every axis plot/.append style={fill=unbcgreen!60, draw=unbcgreen},
+  % Highlight Canada bar
+]
+\addplot coordinates {
+  (0.27,Finland)(0.28,Denmark)(0.27,Sweden)(0.31,Germany)
+  (0.31,Canada)(0.33,Australia)(0.29,France)(0.35,UK)
+  (0.39,USA)(0.45,Mexico)
+};
+% Vertical reference line at Canada's Gini
+\addplot[thick, dashed, color=policyblue] coordinates {(0.31,Finland)(0.31,Mexico)};
+\end{axis}
+\end{tikzpicture}
+\caption{Gini Coefficients for Selected OECD Countries, After-Tax Income, 2021--2022.
+  Canada's Gini of approximately 0.31 places it at the midpoint of the OECD distribution---more
+  equal than the United States, Australia, and the United Kingdom, but less equal than
+  the Nordic countries and France. The vertical dashed line marks Canada's position.}
+\label{fig:gini_oecd}
+\source{OECD Income Distribution Database.}
+\end{figure}
+
+Why are Nordic countries more equal? Several structural factors combine: high union density compresses the wage distribution; universal public services (childcare, post-secondary education, healthcare) reduce the income needed for a decent standard of living; progressive tax structures with fewer avoidances for capital income; and active labour market policies that support displaced workers.
+
+\begin{thinkbox}
+Consider two countries with the same Gini coefficient for \textit{market} income (say, 0.45), but different after-tax Ginis. Country A has an after-tax Gini of 0.30; Country B has an after-tax Gini of 0.42. What does this tell you about their redistribution systems? Now consider: is it more meaningful to compare countries by their market income inequality or their after-tax inequality? What does each measure tell us about economic fairness?
+\end{thinkbox}
+
+%----------------------------------------------------------
+\section{The Kuznets Hypothesis}
+%----------------------------------------------------------
+
+In a landmark 1955 paper, economist Simon Kuznets proposed a theory of how economic development affects income inequality. His \term{Kuznets hypothesis} predicts that inequality follows an inverted-U pattern over the course of economic development.
+
+The logic: In an early-stage agricultural economy, most people earn similar (low) incomes in subsistence farming. As industrialization begins, a relatively small group moves to higher-productivity manufacturing jobs. This \textit{widens} inequality. As industrialization spreads, education improves, and labour markets tighten, wages equalize and inequality eventually \textit{falls}.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=11cm, height=7cm,
+  xlabel={Level of Economic Development (GDP per capita)},
+  ylabel={Income Inequality (Gini Coefficient)},
+  xlabel style={font=\small},
+  ylabel style={font=\small},
+  xmin=0, xmax=10,
+  ymin=0, ymax=10,
+  xtick=\empty, ytick=\empty,
+  axis line style={-Stealth, thick},
+  axis lines=left,
+  clip=false
+]
+% Kuznets inverted-U
+\addplot[thick, color=unbcgreen, domain=0.5:9.5, samples=100]
+  {-0.48*(x-5)^2 + 8};
+% Annotations for stages
+\node[font=\small, color=chaptergray] at (axis cs:1.2, 4.5)
+  {\parbox{2cm}{\centering Pre-industrial\\ (agriculture)}};
+\node[font=\small, color=chaptergray] at (axis cs:5.0, 9.2)
+  {\parbox{2.5cm}{\centering Early\\ industrialization}};
+\node[font=\small, color=chaptergray] at (axis cs:8.8, 4.5)
+  {\parbox{2.5cm}{\centering Advanced\\ economy}};
+% Arrows showing movement
+\draw[-Stealth, thick, color=policyblue] (axis cs:2,4)(axis cs:4.5,7.5);
+\draw[-Stealth, thick, color=policyblue] (axis cs:5.5,7.5)(axis cs:8,4);
+\end{axis}
+\end{tikzpicture}
+\caption{The Kuznets Curve. Kuznets predicted that income inequality rises then falls
+  as an economy develops, tracing an inverted-U. While this pattern was broadly
+  consistent with cross-sectional data in the 1950s, the empirical evidence for
+  advanced economies since the 1980s has been mixed or contradictory.}
+\label{fig:kuznets}
+\end{figure}
+
+\textbf{The modern critique.} The Kuznets hypothesis gained empirical support from cross-sectional comparisons in the 1950s--1970s. However, since 1980, most advanced economies---including Canada---have experienced \textit{rising} inequality despite already being at high income levels. This contradicts the Kuznets prediction. The drivers of this ``second-wave'' rising inequality (skill-biased technological change, globalization, declining unionization, tax policy changes) are not captured in the original agricultural-to-industrial framework.
+
+%----------------------------------------------------------
+\section{Drivers of Rising Inequality in Canada}
+%----------------------------------------------------------
+
+\subsection{Skill-Biased Technological Change}
+
+The computerization of the economy since the 1980s has increased demand for workers who can work effectively \textit{with} computers---typically those with post-secondary education, analytical skills, and cognitive flexibility. Simultaneously, it has reduced demand for workers in routine tasks that computers can perform (data entry, repetitive manufacturing, bookkeeping). This is called \term{skill-biased technological change (SBTC)}.
+
+The consequence: the wage premium for higher education has risen substantially. In Canada, the earnings premium for a university degree over a high school diploma increased from approximately 30\% in 1980 to approximately 50\% by 2020. SBTC explains rising inequality at the top (the college premium) but not the extreme concentration at the very top (the top 1\%), which requires additional explanations involving capital income.
+
+\subsection{Globalization and Trade}
+
+Integration of global markets---including China's entry into the World Trade Organization in 2001---exposed Canadian (and other advanced-economy) workers in manufacturing to low-wage competition. The Heckscher-Ohlin theorem of international trade predicts that trade with labour-abundant countries should reduce the relative wage of labour in capital-abundant countries like Canada. Canadian manufacturing employment declined from approximately 18\% of total employment in 1980 to approximately 10\% by 2020.
+
+This ``China shock'' has been documented extensively for the United States. In Canada, the resource sector partially absorbed some of the adjustment, but workers displaced from manufacturing into service-sector jobs typically experienced wage decreases.
+
+\subsection{The Decline of Unionization}
+
+Union membership compresses the wage distribution in two ways: directly (union wages are typically higher and more equal than non-union wages) and indirectly (unions set wage norms that non-unionized firms partially follow to retain workers). Canada's union density has declined from approximately 38\% in the early 1980s to approximately 30\% today, with the private sector at only about 16\% (versus public sector at approximately 74\%).
+
+The sectors with the largest union density declines---manufacturing, transportation, retail---are precisely those where middle-income workers have experienced the greatest wage stagnation. The connection between unionization decline and wage inequality is among the best-documented findings in labour economics for Canada. This topic is explored further in Chapter~\ref{ch:labour}.
+
+\subsection{Erosion of the Minimum Wage}
+
+After adjusting for inflation, the real minimum wage in most Canadian provinces was lower in 2000 than in 1975. This erosion of the wage floor contributed to widening inequality at the bottom of the distribution. The significant minimum wage increases of the 2010s and 2020s (British Columbia: \$17.40/hour by 2024; Ontario: \$16.55/hour) have partially reversed this trend, but the minimum wage in major cities still falls short of what is required to afford average-priced housing.
+
+\subsection{Tax and Transfer Policy Changes}
+
+Federal top marginal income tax rates in Canada fell from over 65\% (combined federal-provincial) in the 1970s to approximately 50--54\% by the 2020s. Capital gains are taxed at only 50\% of the inclusion rate (though a 2024 budget proposal raised this to 67\% for gains over \$250,000 annually). The disproportionate treatment of capital versus labour income---capital gains taxed more lightly than wages---benefits high-income households whose incomes are more capital-intensive.
+
+%----------------------------------------------------------
+\section{Inequality, Poverty, and Economic Growth}
+%----------------------------------------------------------
+
+Does income inequality harm or help economic growth? This question has generated substantial academic debate. The relationship is theoretically ambiguous:
+
+\textbf{Arguments that inequality harms growth:}
+\begin{itemize}
+  \item \textbf{Human capital under-investment:} When low-income households face credit constraints, they cannot invest optimally in education and health, reducing aggregate human capital accumulation.
+  \item \textbf{Political economy:} High inequality can generate redistribution through the political system; uncertainty about future tax policy discourages investment.
+  \item \textbf{Demand:} High inequality shifts income toward high-saving households, potentially suppressing consumer demand.
+  \item \textbf{Empirical evidence:} IMF economists Ostry, Berg, and Tsangarides (2014) found that higher inequality is associated with shorter and more fragile growth spells; redistribution itself does not appear to harm growth.
+\end{itemize}
+
+\textbf{Arguments that inequality can be growth-neutral or positive:}
+\begin{itemize}
+  \item \textbf{Incentives:} Earnings inequality rewards education, effort, and entrepreneurship.
+  \item \textbf{Capital accumulation:} High-income households save and invest more, potentially funding productive investment.
+  \item \textbf{Schumpeterian dynamics:} Monopoly profits fund research and development.
+\end{itemize}
+
+The current empirical consensus suggests that moderate inequality is growth-neutral, but extreme inequality (Gini above approximately 0.40) tends to harm long-run growth by weakening human capital and institutional quality. Canada's current Gini (approximately 0.31 after-tax) is likely in the range that does not significantly impair growth, though the rising market income inequality trend is worth monitoring.
+
+%----------------------------------------------------------
+\section{Indigenous Economic Inequality in Canada}
+%----------------------------------------------------------
+
+Economic inequality in Canada cannot be fully understood without addressing the distinctive circumstances of Indigenous peoples---First Nations, Métis, and Inuit. This section examines the economic dimensions of Indigenous inequality, situating them in their historical and structural context.
+
+\subsection{Historical Context: Dispossession and the Indian Act}
+
+The economic circumstances of Indigenous Canadians today cannot be separated from the history of colonization and the policies that accompanied it. Key historical factors include:
+
+\textbf{Land dispossession.} Through treaty negotiations (often signed under duress or misrepresentation) and through outright land seizure, Indigenous peoples lost access to the lands and resources that had sustained their economies. Much of present-day British Columbia, including the territories surrounding Prince George where UNBC is located, was taken without treaties.
+
+\textbf{The Indian Act (1876).} This federal legislation imposed a comprehensive system of control over First Nations people: band governments required Ottawa's approval for decisions; reserve land was held in common and could not be mortgaged (eliminating a key mechanism for capital accumulation); economic activities were restricted; and generations of children were removed to residential schools. The last federally operated residential school did not close until 1996. The intergenerational trauma and disruption to communities, families, and knowledge systems continues to shape economic outcomes today.
+
+\textbf{Restricted economic participation.} Through the mid-twentieth century, various provisions of the Indian Act restricted First Nations people from forming political organizations, hiring lawyers to pursue land claims, and leaving reserves without permission. These restrictions on economic and political agency created structural barriers to wealth accumulation and civic participation that still echo in contemporary data.
+
+\begin{canexample}{UNBC and Northern BC Indigenous Communities}
+The University of Northern British Columbia sits on the traditional territory of the
+Lheidli T'enneh Nation, adjacent to the lands of numerous First Nations including the
+Carrier Sekani Tribal Council Nations and the Dakelh-speaking peoples. Northern BC
+is home to dozens of First Nations communities at various stages of treaty negotiation
+and self-government development.
+
+Economic conditions vary substantially across communities. Some have developed significant
+own-source revenue through forestry licences, guide-outfitting operations, and
+resource revenue-sharing agreements. Others face chronic infrastructure deficits,
+high unemployment, and limited economic opportunity. The contrast between communities
+that have achieved self-government and own-source revenue and those that remain under
+the Indian Act is striking---and supports the finding that governance capacity is a
+key determinant of economic outcomes.
+\end{canexample}
+
+\subsection{Income and Poverty Gaps}
+
+The economic gap between Indigenous and non-Indigenous Canadians is substantial and persistent, though it has narrowed modestly over recent decades:
+
+\begin{itemize}
+  \item The employment rate for First Nations people living on reserves is approximately 52--55\%, compared to approximately 65\% for non-Indigenous Canadians.
+  \item Median income of First Nations people is approximately 35\% below the Canadian median.
+  \item On-reserve poverty rates are estimated at 40--50\% in many communities, using the MBM framework.
+  \item Educational attainment: approximately 75\% of First Nations people complete high school, compared to approximately 90\% for non-Indigenous Canadians. Post-secondary completion gaps are similarly large.
+  \item Indigenous peoples are over-represented in the criminal justice system, in child welfare, and in chronic homelessness---outcomes that both reflect and perpetuate economic exclusion.
+\end{itemize}
+
+These gaps are not explained by simple demographic factors. Research controlling for age, geographic location, and family structure still finds substantial Indigenous-non-Indigenous income gaps---indicating that barriers go beyond compositional differences.
+
+\subsection{Land Rights, Treaties, and Economic Development}
+
+Where First Nations have achieved negotiated settlements---land claims, comprehensive treaties, or self-governance agreements---economic outcomes improve. The evidence is reasonably clear: secure property rights and self-governance capacity are associated with higher employment rates, higher incomes, and lower poverty rates.
+
+The Nisga'a Final Agreement (2000,in northwestern BC) is an instructive case. The Nisga'a Nation negotiated treaty rights to land, fisheries, self-government, and a financial transfer. In the years following, the Nisga'a Lisims Government invested in economic development, improved educational institutions, and negotiated resource revenue-sharing agreements. Indicators of economic well-being have improved, though challenges remain.
+
+In contrast, many BC First Nations are still in the BC Treaty Process (begun 1993) without finalized agreements, creating ongoing uncertainty about land rights that constrains both economic development and private investment.
+
+\subsection{UNDRIP and Its Economic Implications}
+
+Canada's federal government endorsed the United Nations Declaration on the Rights of Indigenous Peoples (UNDRIP) in 2016 and passed legislation to align Canadian laws with UNDRIP (Bill C-15, 2021). BC followed with its own UNDRIP Act in 2019---the first sub-national jurisdiction in the world to do so.
+
+The most economically significant provision of UNDRIP is \term{Free, Prior and Informed Consent (FPIC)}: Indigenous peoples have the right to give or withhold consent to resource development on their traditional territories. FPIC has significant implications for resource projects, pipeline approvals, and energy development:
+
+\begin{itemize}
+  \item From a rights perspective, FPIC recognizes Indigenous sovereignty over traditional lands---a principle with profound economic implications for project development timelines and costs.
+  \item From a transaction cost perspective, FPIC increases the cost and complexity of resource project approvals, as developers must genuinely engage Indigenous communities.
+  \item From a development perspective, many First Nations view FPIC as an opportunity to negotiate meaningful revenue-sharing, employment, and environmental protection---converting resource development from an external imposition to a source of community benefit.
+\end{itemize}
+
+\begin{thinkbox}
+The Wet'suwet'en Nation's Hereditary Chiefs opposed the Coastal GasLink Pipeline through their territory. The BC Supreme Court and the National Energy Board approved the project, finding it consistent with relevant requirements. However, the Wet'suwet'en maintained that their consent, consistent with UNDRIP, was not obtained. Analyze this situation using economic reasoning: How should the costs and benefits of the pipeline be evaluated? Who should be counted in the benefit-cost analysis? Does FPIC impose inefficiency, or does it correct a market failure (the failure to account for Indigenous rights as legitimate property claims)?
+\end{thinkbox}
+
+\subsection{Pathways to Indigenous Economic Development}
+
+Economic research and on-the-ground experience point to several conditions associated with improving Indigenous economic outcomes:
+
+\textbf{1. Land and resource rights.} Secure rights to land and resources---through treaties, self-government agreements, or resource revenue sharing---provide the foundation for capital accumulation and investment.
+
+\textbf{2. Self-governance capacity.} First Nations with functioning self-government and professional administrative capacity consistently outperform comparable communities governed primarily under the Indian Act framework.
+
+\textbf{3. Education investment.} First Nations-controlled schools with culturally relevant curricula and language programs have achieved better retention and completion rates than schools under provincial jurisdiction.
+
+\textbf{4. Urban Indigenous economic development.} The growing urban Indigenous population (now the majority of Indigenous people in Canada live in cities) has developed a significant entrepreneurial and professional sector. Organizations like the National Aboriginal Capital Corporations Association (NACCA) provide Indigenous entrepreneurs with access to capital that traditional financial institutions have been reluctant to provide.
+
+\textbf{5. Clean energy and reconciliation.} Numerous Indigenous communities are developing wind, solar, and hydro projects as co-owners and operators, generating own-source revenue while contributing to Canada's clean energy transition. These projects represent a promising convergence of economic development, environmental goals, and self-determination.
+
+%----------------------------------------------------------
+\section{Policy Responses to Inequality}
+%----------------------------------------------------------
+
+Canada's tax and transfer system is the primary policy lever for addressing inequality. Key programs include:
+
+\textbf{Canada Child Benefit (CCB).} Launched in 2016, replacing the previous Universal Child Care Benefit and Canada Child Tax Benefit. The CCB is a non-taxable monthly benefit, fully income-tested, providing up to approximately \$7,437 per child under 6 (2023--24) and declining as income rises. The CCB is credited with lifting approximately 300,000 children from poverty---one of the most significant anti-poverty policy successes in recent Canadian history.
+
+\textbf{GST/HST Credit.} A quarterly refundable tax credit for low- and modest-income Canadians, providing partial relief from the regressive effects of consumption taxes.
+
+\textbf{Old Age Security (OAS) and Guaranteed Income Supplement (GIS).} OAS provides a universal retirement income benefit. The GIS supplements OAS for the lowest-income seniors, effectively providing a floor income in retirement. Together, they have dramatically reduced senior poverty since their introduction.
+
+\textbf{Canada Workers Benefit (CWB).} A refundable tax credit for low-income workers, providing an incentive to employment while supplementing wages. It functions as a partial negative income tax at the bottom of the wage distribution.
+
+\textbf{Employment Insurance (EI).} Provides temporary income replacement for unemployed workers with sufficient insured hours, reducing income volatility for working Canadians.
+
+%----------------------------------------------------------
+\section{Policy Debate}
+%----------------------------------------------------------
+
+\begin{policydebate}{Should Canada Adopt a Wealth Tax?}
+
+\textbf{The Issue}
+
+Wealth is far more unequally distributed than income. The top 1\% of Canadians own approximately 26\% of total household net worth, while the bottom 40\% own approximately 2\%. A \textbf{wealth tax} levies an annual charge on a household's total net worth (assets minus liabilities) above a threshold, unlike income taxes that tax annual flows.
+
+\vspace{8pt}
+\textbf{Side A: Arguments in Favour}
+
+\begin{itemize}
+  \item \textbf{Addresses what income taxes miss:} Much of the wealth of the very rich sits in unrealized capital gains---investment portfolios, private company shares, art---that are never realized (or passed to heirs with a ``step-up'' in cost basis). An income tax cannot reach this wealth; a wealth tax can.
+  \item \textbf{Counters $r > g$:} If the return on capital persistently exceeds growth, wealth concentration will intensify without intervention. A wealth tax is a direct structural response.
+  \item \textbf{Revenue for public investment:} Estimates from Canada's Parliamentary Budget Office suggest a 1\% annual tax on net worth above \$10 million could raise \$5--25 billion annually (with wide uncertainty bands due to behavioural responses).
+  \item \textbf{Social equity:} Those who benefit most from the public goods that enable wealth accumulation (rule of law, property rights, financial regulation, physical infrastructure) should contribute proportionately.
+\end{itemize}
+
+\textbf{Side B: Arguments Against}
+
+\begin{itemize}
+  \item \textbf{Administrative complexity:} Valuing illiquid assets (private businesses, real estate, art collections, agricultural land) annually is technically challenging and costly. Disputes over valuation are likely to multiply.
+  \item \textbf{Capital flight:} Wealth is more mobile than labour. High-net-worth individuals can restructure assets across jurisdictions, establish trusts, or emigrate. France, Sweden, and Germany abolished their wealth taxes partly because of these behavioural responses.
+  \item \textbf{Efficiency costs:} A wealth tax reduces the return on saving and investment, potentially reducing capital formation. Small businesses and farms are often held as family wealth; forcing liquidity to pay annual wealth taxes could trigger inefficient asset sales.
+  \item \textbf{Alternatives may be more efficient:} Taxing capital gains more fully (closing the 50\% inclusion rate preference), strengthening inheritance taxes, or eliminating tax-avoidance vehicles may achieve similar redistribution with lower administrative costs.
+\end{itemize}
+
+\textbf{Evidence from International Experience}
+
+Of twelve OECD countries that had wealth taxes in 1990, most had abolished them by 2020. The primary reasons: high administrative costs, capital flight, and disappointing revenue relative to projections. Norway retains a modest wealth tax (approximately 1\% above a threshold) and continues to collect it, partly due to oil-fuelled sovereign wealth that limits capital flight.
+
+Canada's 2024 federal budget instead raised the capital gains inclusion rate from 50\% to 66.7\% for gains over \$250,000 annually---a more targeted measure affecting capital income rather than wealth stocks.
+
+\textbf{Synthesis}
+
+A well-designed, narrow wealth tax with high thresholds could address extreme wealth concentration with limited efficiency costs. The key design challenges---valuation, avoidance, capital flight---are real but not insurmountable given modern financial reporting requirements. The debate in Canada is likely to focus on capital gains reform and inheritance taxation as pragmatic alternatives, rather than a formal annual wealth tax.
+\end{policydebate}
+
+%----------------------------------------------------------
+\section*{Chapter Summary}
+%----------------------------------------------------------
+
+\begin{itemize}
+  \item The \textbf{income distribution} can be described using quintile shares, the \textbf{Lorenz curve}, and the \textbf{Gini coefficient}. Canada's after-tax Gini of approximately 0.31 is lower than the U.S.\ (0.39) but higher than the Nordic average (about 0.27).
+  \item Canada uses three poverty measures: the \textbf{LICO} (spending-based), the \textbf{LIM} (relative, income-based), and the \textbf{Market Basket Measure} (the official poverty line since 2019). Each produces different poverty rates and measures different dimensions of economic deprivation.
+  \item Canada's \textbf{tax and transfer system} is a major redistributive force: the gap between the pre-tax Gini (approximately 0.43) and the after-tax Gini (approximately 0.31) represents the redistributive contribution of progressive taxes and transfers.
+  \item After-tax inequality in Canada rose during the 1980s--1990s, stabilized in the 2000s, and has been modestly affected by policies like the Canada Child Benefit (2016). COVID transfers temporarily reduced measured inequality in 2020--21.
+  \item The \textbf{Kuznets hypothesis} predicts an inverted-U relationship between development and inequality. While historically influential, it does not adequately explain rising inequality in advanced economies since 1980.
+  \item The main \textbf{drivers of rising inequality} in Canada include skill-biased technological change, globalization (particularly competition from low-wage countries), declining unionization, real minimum wage erosion, and changes in tax policy favouring capital income.
+  \item The relationship between inequality and growth is ambiguous, but empirical evidence suggests extreme inequality harms long-run growth, primarily through human capital under-investment.
+  \item \textbf{Indigenous economic inequality} is substantially larger than aggregate statistics suggest. Historical dispossession, the Indian Act, and residential schools created structural barriers that continue to shape economic outcomes. Land rights, self-governance, and own-source revenue are key to narrowing the gap.
+  \item Canada's primary policy responses to inequality include the \textbf{Canada Child Benefit}, GST/HST credit, OAS/GIS, Employment Insurance, and the Canada Workers Benefit.
+  \item A \textbf{wealth tax} could address wealth concentration not captured by income taxes, but faces significant challenges around administration, valuation, and capital flight.
+\end{itemize}
+
+%----------------------------------------------------------
+\section*{Review Questions}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item \textbf{(Concept)} Explain how the Gini coefficient is derived from the Lorenz curve. Canada's after-tax Gini is approximately 0.31 while its pre-tax Gini is approximately 0.43. What does the difference of 0.12 Gini points tell you about Canada's tax and transfer system?
+
+\item \textbf{(Application)} Canada uses three poverty measures: LICO, LIM, and MBM. For each measure, (a) describe how it is calculated, (b) classify it as absolute or relative, and (c) explain what it is designed to measure. Why might a government prefer the MBM over the LIM as its official poverty line?
+
+\item \textbf{(Critical Thinking)} The top quintile in Canada earns approximately 46\% of total after-tax income. Is this level of inequality economically harmful? Summarize the theoretical arguments on both sides and state what the empirical evidence suggests.
+
+\item \textbf{(Concept)} State the Kuznets hypothesis and draw the Kuznets curve. What was the original rationale for the inverted-U prediction? Why do most economists today consider the hypothesis inadequate for explaining inequality in advanced economies since 1980?
+
+\item \textbf{(Application)} Identify and explain three economic mechanisms through which income inequality has increased in Canada since 1980. For each, describe the economic logic and provide a Canadian example.
+
+\item \textbf{(Policy)} The Canada Child Benefit (CCB) is credited with lifting approximately 300,000 children out of poverty. What design features of the CCB make it effective as an anti-poverty measure? What groups of low-income Canadians might the CCB fail to reach?
+
+\item \textbf{(Critical Thinking)} A commentator argues that ``Indigenous economic inequality is a social problem caused by historical injustice---economics cannot offer solutions.'' Evaluate this claim using evidence from Section~3.9. What economic insights and policy tools does the analysis of Indigenous inequality suggest?
+
+\end{enumerate}
+
+%----------------------------------------------------------
+\section*{Discussion Questions}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item Statistics Canada reports that Canada's after-tax Gini coefficient fell to a record low of approximately 0.295 in 2021, largely due to COVID emergency transfers. Does this mean Canada solved its inequality problem? What does this episode reveal about how policy choices affect measured inequality?
+
+\item Should Canada adopt a universal basic income (UBI)---a regular payment to all Canadians regardless of income or employment status---as a replacement for the current patchwork of targeted transfers? Discuss the economic arguments for and against UBI.
+
+\item The economic analysis in Section~3.9 shows that Indigenous communities with treaties, self-government, and own-source revenue have significantly better economic outcomes than those governed under the Indian Act. Does this mean that the path to Indigenous economic equality is primarily about institutional reform? What other factors matter?
+
+\end{enumerate}
+
+%----------------------------------------------------------
+\section*{Exercises}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item \textbf{Lorenz Curve Exercise.} Using the quintile income share data for Canada (approximately 5\%, 10\%, 16\%, 23\%, 46\%) and a hypothetical country with shares (10\%, 13\%, 18\%, 22\%, 37\%):
+  \begin{enumerate}[(a)]
+    \item Plot both Lorenz curves on the same graph, including the line of perfect equality.
+    \item Which country is more equal? How can you tell from the graph?
+    \item Estimate which country has the higher Gini coefficient (no calculation needed---explain reasoning).
+  \end{enumerate}
+
+\item \textbf{Gini Approximation.} Using the quintile data for Canada (bottom to top: 5.2\%, 10.3\%, 15.8\%, 22.7\%, 46.0\%), calculate the cumulative income shares at the 20th, 40th, 60th, 80th, and 100th percentiles. Use the trapezoidal approximation to estimate the Gini coefficient. Compare your estimate to the published Gini of approximately 0.31. What accounts for any discrepancy?
+
+\item \textbf{Regional Data Exercise.} Use Statistics Canada's Community Data Environment (CDE) or the Indigenous Community Well-Being Index to compare two First Nations communities in Northern BC to the City of Prince George. Report median household income, employment rate, and educational attainment for each. Write a paragraph explaining the economic gaps you find and connecting them to the structural factors discussed in Section~3.9.
+
+\item \textbf{Policy Analysis Essay (500--600 words).} Evaluate the Canada Child Benefit as a response to child poverty in Canada. Your essay should: (a) describe how the CCB works and quantify its impact on child poverty; (b) explain why it has been more effective than the programs it replaced; (c) identify at least two groups of poor children or families that the CCB may not adequately reach; and (d) propose one modification or complementary policy that could address the remaining gaps.
+
+\end{enumerate}

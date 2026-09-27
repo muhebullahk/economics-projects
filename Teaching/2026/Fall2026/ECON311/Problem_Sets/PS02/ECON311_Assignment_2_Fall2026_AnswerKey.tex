@@ -1,0 +1,464 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{grffile}
+\usepackage{relsize}
+\usepackage{tablefootnote}
+\usepackage{footnote}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[multiple]{footmisc}
+\usepackage{appendix}
+\usepackage{times}
+\usepackage{relsize}
+\usepackage{caption}
+\usepackage{newtxtext,newtxmath}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,intersections}
+
+\definecolor{sol}{RGB}{0,80,160}
+\definecolor{emp}{RGB}{180,0,0}
+
+\title{ECON311: Assignment II --- Solutions}
+\author{}
+\date{Fall 2026}
+
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]{\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{1\defbaselineskip}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\textwidth=6.5in
+\textheight=9in
+\oddsidemargin=0.10in
+\evensidemargin=0.10in
+\topmargin=-0.5in
+
+\begin{document}
+\pagenumbering{arabic}
+\maketitle
+\vspace{-.4in}
+
+
+%----------------------------------------------------------------------
+\section*{Question I: Long-Run Growth [12 points]}
+%----------------------------------------------------------------------
+
+\noindent Model: $Y_t = A_t L_{Y_t}$,\quad $A_{t+1} = A_t(1 + \overline{z}\,\overline{\ell}\,\overline{L})$,\quad $L_{A_t} = \overline{\ell}\,\overline{L}$,\quad $L_{Y_t} = (1-\overline{\ell})\,\overline{L}$.
+
+\subsection*{(a) Growth Rate and the R\&D Policy Shock [6 points]}
+
+\noindent\textbf{Deriving $g_y$:}
+
+Output per person: $y_t = Y_t/\overline{L} = A_t(1-\overline{\ell})$.
+
+Since $(1-\overline{\ell})$ is constant, $g_y = g_A$. From the law of motion:
+\[
+\frac{A_{t+1}}{A_t} = 1 + \overline{z}\,\overline{\ell}\,\overline{L} \qquad \Longrightarrow \qquad \textcolor{sol}{g_y = g_A = \overline{z}\,\overline{\ell}\,\overline{L}}
+\]
+
+\noindent\textbf{i. Effect on $g_y$ when $\overline{\ell}$ increases to $\overline{\ell}' > \overline{\ell}$:}
+
+\textcolor{sol}{$g_y' = \overline{z}\,\overline{\ell}'\,\overline{L} > \overline{z}\,\overline{\ell}\,\overline{L} = g_y$.}
+
+The growth rate rises \textbf{immediately and permanently}. This is a \emph{growth rate effect}.
+
+\noindent\textbf{ii. Effect on the level of $y_t$:}
+
+At $t_0$:
+\[
+y_{t_0} = A_{t_0}(1-\overline{\ell}') < A_{t_0}(1-\overline{\ell})
+\]
+Since $\overline{\ell}' > \overline{\ell}$, the level of $y$ \textbf{falls at $t_0$}: fewer workers are now producing goods (more are in R\&D). This is the short-run cost.
+
+In the long run, however, $A_t$ grows at the faster rate $\overline{z}\,\overline{\ell}'\,\overline{L}$, so $y_t$ eventually overtakes the old trajectory and rises above it permanently. There is therefore both a (negative) level effect at $t_0$ and a positive growth rate effect afterward.
+
+\noindent\textbf{iii. Graph on ratio scale ($\ln y_t$ vs.\ time):}
+
+The old balanced growth path (BGP) is a straight line with slope $g_y$. At $t_0$, $\ln y$ \textbf{drops} (discrete downward jump of size $\ln(1-\overline{\ell}') - \ln(1-\overline{\ell}) < 0$). From $t_0$ onward, $\ln y$ rises along a new line with the steeper slope $g_y' > g_y$. The new trajectory starts below the old one but crosses it at some finite time and lies above it thereafter. The graph should clearly label: (1) the level drop at $t_0$, (2) the steeper post-$t_0$ slope, and (3) the eventual upward crossing.
+
+\subsection*{(b) Two Countries with Different $\bar{z}$ [6 points]}
+
+Since $g_y^1 = \overline{z}^1\overline{\ell}\,\overline{L} > \overline{z}^2\overline{\ell}\,\overline{L} = g_y^2$ and both start from the same $\ln y$ in 1980:
+
+\noindent\textbf{i. Graph:} Both lines start at the same point in 1980. Country~1's line has a strictly steeper slope. From 1980 onward, country~1 has higher output per person for all $t > 1980$, with the gap growing over time.
+
+\noindent\textbf{ii. Long-run gap:}
+
+\textcolor{sol}{The gap in log output per person grows without bound:}
+\[
+\ln y_t^1 - \ln y_t^2 = (g_y^1 - g_y^2)\,t \to \infty \text{ as } t \to \infty
+\]
+
+The gap \textbf{widens} over time and never converges.
+
+\textbf{Contrast with Solow model:} The Solow model predicts \emph{conditional convergence} — countries with the same parameters converge to the same steady state. If two Solow economies have the same $\overline{s}$, $\overline{d}$, and $\overline{A}$, income gaps narrow regardless of initial conditions. Here, different $\overline{z}$ leads to permanently different growth rates, so income disparities compound indefinitely. Countries that differ only in their capacity to generate ideas face ever-widening inequality. This is a striking and empirically relevant implication: innovation policy has permanent, compounding consequences for relative living standards.
+
+
+%----------------------------------------------------------------------
+\section*{Question II: The IS-MP Model and the Lower Bound on Interest Rates [10 points]}
+%----------------------------------------------------------------------
+
+\subsection*{(a) The ZLB Constraint [5 points]}
+
+\noindent\textbf{Setting:} IS-MP model with IS: $\widetilde{Y} = \bar{a} - b(R-\bar{r})$ and MP rule: $R = \bar{r} + \bar{m}(\pi-\bar{\pi})$.
+
+Large negative demand shock: $\bar{a}$ falls sharply to $\bar{a}' \ll 0$, shifting IS far to the left.
+
+To restore $\widetilde{Y}=0$, the CB must reduce $R$ to:
+\[
+R^* = \bar{r} + \frac{\bar{a}'}{b} < \bar{r} \quad (\text{since } \bar{a}' < 0)
+\]
+
+If $R^* < R_{\min} = -\pi$, the CB cannot reach the target. At $R = R_{\min}$:
+\[
+\widetilde{Y}_{ZLB} = \bar{a}' - b(R_{\min} - \bar{r}) < 0
+\]
+
+\textbf{IS-MP diagram:} The original IS and MP cross at $(\widetilde{Y}=0,\, R=\bar{r})$. After the shock, IS' lies far to the left. The CB lowers $R$ along the vertical axis until hitting $R_{\min}$ — shown as a horizontal floor on the diagram. The intersection of IS' with the $R_{\min}$ floor is at $\widetilde{Y}_{ZLB} < 0$. The CB \emph{cannot} lower $R$ further to close the remaining gap.
+
+\textbf{Why does the ZLB bind?} Because nominal interest rates are bounded below at zero (lenders will not pay to lend when they can hold cash), real rates face the floor $R \geq -\pi$. When a large recession would require deeply negative real rates to stimulate demand, monetary policy loses its conventional lever.
+
+\textbf{Policy alternatives:} Fiscal policy (government spending, tax cuts), forward guidance (committing to future low rates), quantitative easing (CB purchases long-dated assets to lower long-term rates), or unconventional monetary tools.
+
+\subsection*{(b) Fiscal Policy Effectiveness at the ZLB [5 points]}
+
+At the ZLB, $R = R_{\min}$ is fixed; the CB's rule is non-binding. A fiscal expansion $\Delta\overline{G} > 0$ shifts IS' rightward to IS''.
+
+\textbf{IS-MP diagram:} IS'' lies to the right of IS', intersecting the fixed $R_{\min}$ floor at a higher $\widetilde{Y}$, closer to zero.
+
+\textbf{Why is the fiscal multiplier larger at the ZLB?}
+
+In \textbf{normal times}, the sequence is:
+\[
+\Delta\overline{G} \uparrow \;\to\; \widetilde{Y} \uparrow \;\to\; \pi \uparrow \;\to\; R \uparrow \text{ (CB rule)} \;\to\; I \downarrow \;\to\; \widetilde{Y} \downarrow \text{ (partial crowding out)}
+\]
+The CB's automatic tightening partially offsets the fiscal stimulus. The effective multiplier is \emph{smaller} than the pure Keynesian multiplier.
+
+At the \textbf{ZLB}, the CB cannot raise $R$ (already at the floor). Therefore:
+\[
+\Delta\overline{G} \uparrow \;\to\; \widetilde{Y} \uparrow \;\to\; \pi \uparrow \;\to\; R \text{ is unchanged} \;\to\; \text{no crowding out}
+\]
+The full Keynesian multiplier $1/(1-b_c)$ applies, undiluted by any monetary offset. Formally, from the IS equilibrium at fixed $R$:
+\[
+\widetilde{Y} = \frac{\Delta\overline{G}}{1-b_c} \times \frac{1}{\overline{Y}}
+\]
+versus the normal-times IS-MP combined multiplier, which is strictly smaller. The ZLB therefore makes fiscal policy unusually powerful — a key lesson from the 2008 financial crisis and the 2020 pandemic recession.
+
+
+%----------------------------------------------------------------------
+\section*{Question III: The Investment Accelerator, IS-MP and Automatic Stabilisers [35 points]}
+%----------------------------------------------------------------------
+
+\noindent Model: $C = a_c + b_c(Y-T)$, $T = b_T Y$, $I = a_i + b_a Y - b_i R$, $G = \overline{G}$, $NX = \overline{X}-\overline{M}$.
+
+\subsection*{(a) Goods-Market Equilibrium and Multiplier [4 points]}
+
+Aggregate expenditure:
+\begin{align*}
+E &= a_c + b_c(1-b_T)Y + a_i + b_a Y - b_i R + \overline{G} + \overline{X} - \overline{M} \\
+  &= \underbrace{\bigl[a_c + a_i - b_i R + \overline{G} + \overline{X} - \overline{M}\bigr]}_{\text{autonomous}} + \underbrace{\bigl[b_c(1-b_T) + b_a\bigr]}_{\text{induced}}Y
+\end{align*}
+
+Setting $Y = E$:
+\[
+Y\bigl[1 - b_c(1-b_T) - b_a\bigr] = a_c + a_i - b_i R + \overline{G} + \overline{X} - \overline{M}
+\]
+
+\textcolor{sol}{
+\[
+Y = \frac{a_c + a_i - b_i R + \overline{G} + \overline{X} - \overline{M}}{1 - b_c(1-b_T) - b_a}, \qquad \text{Multiplier} = \frac{1}{1-b_c(1-b_T)-b_a}
+\]
+}
+
+\textbf{Stability condition:} $b_c(1-b_T) + b_a < 1$ (so denominator is positive and finite).
+
+\textbf{Comparison with $b_a = 0$:} Without the accelerator, multiplier $= 1/[1-b_c(1-b_T)]$. With $b_a > 0$, the denominator is smaller $\Rightarrow$ multiplier is \textbf{larger}. The accelerator amplifies each round of spending: higher $Y$ triggers additional investment ($b_a Y$), which raises $Y$ further.
+
+\subsection*{(b) Keynesian Cross with an Investment Shock [6 points]}
+
+An increase of $\Delta a_i$ shifts the expenditure line \textbf{upward by $\Delta a_i$} (parallel shift).
+
+\textbf{With accelerator ($b_a > 0$):} The slope of the expenditure line is $b_c(1-b_T) + b_a$ — steeper than without the accelerator. A given upward shift $\Delta a_i$ produces a larger $\Delta Y$:
+\[
+\Delta Y = \frac{\Delta a_i}{1-b_c(1-b_T)-b_a} > \frac{\Delta a_i}{1-b_c(1-b_T)} = \Delta Y\big|_{b_a=0}
+\]
+
+\textbf{Economic mechanism:} Investment rises by $\Delta a_i$ (impact). This raises $Y$ (round 1). Higher $Y$ induces further investment through the accelerator $b_a \Delta Y$ (round 2). This raises $Y$ again, inducing yet more investment (round 3). Each round is smaller, and the process converges if the stability condition holds.
+
+\textbf{Keynesian Cross diagram:} Expenditure line has slope $b_c(1-b_T)+b_a$ (steep) for the accelerator case and slope $b_c(1-b_T)$ (flatter) for the no-accelerator case. Both shift up by $\Delta a_i$ from the same initial equilibrium. The new $Y$ is higher under the accelerator, as the intersection with the 45° line is further to the right.
+
+\subsection*{(c) The IS Curve [5 points]}
+
+At potential output $\overline{Y}$ (with $R = \overline{r}$):
+\[
+\overline{Y} = \frac{a_c + a_i - b_i\overline{r} + \overline{G} + \overline{X}-\overline{M}}{1-b_c(1-b_T)-b_a}
+\]
+
+For general $R$:
+\[
+\widetilde{Y} = Y - \overline{Y} = \frac{-b_i(R-\overline{r})}{1-b_c(1-b_T)-b_a} \equiv -\tilde{b}(R-\overline{r})
+\]
+
+\textcolor{sol}{
+\[
+\text{IS curve:} \quad \widetilde{Y} = -\tilde{b}(R-\overline{r}), \qquad \tilde{b} \equiv \frac{b_i}{1-b_c(1-b_T)-b_a}
+\]
+}
+
+\textbf{Effect of higher $b_a$:} Since $1-b_c(1-b_T)-b_a < 1-b_c(1-b_T)$, we have $\tilde{b} > b_i/[1-b_c(1-b_T)]$. The IS curve is \textbf{flatter} (a given $\Delta R$ produces a larger $\Delta\widetilde{Y}$). Economic interpretation: higher $R$ reduces $I$ directly; through the accelerator, this fall in $I$ reduces $Y$, which further reduces $I$, amplifying the effect of the interest rate change.
+
+\subsection*{(d) IS-MP-PC Dynamics after an Investment Boom [9 points]}
+
+Let $t$ and $t+1$ be the two periods of the boom ($a_i$ elevated), and $t+2$ onward the return to normal ($a_i$ at original level). Start at LR equilibrium: $\widetilde{Y}=0$, $\pi=0.03$, $R=\overline{r}$.
+
+\noindent\textbf{Period $t$:} IS shifts right. $\widetilde{Y}_t > 0$.
+\[
+\pi_t = \pi_{t-1} + \overline{v}\,\widetilde{Y}_t = 0.03 + \overline{v}\,\widetilde{Y}_t > 0.03
+\]
+CB raises $R_t$ in response to rising $\pi_t$ (MP rule).
+
+\noindent\textbf{Period $t+1$:} IS still shifted right (boom continues). Higher $\pi_t$ has induced the CB to raise $R$ above $\overline{r}$, partially restraining the boom. $\widetilde{Y}_{t+1} > 0$ but smaller than $\widetilde{Y}_t$ (since $R$ is higher). Inflation rises further: $\pi_{t+1} > \pi_t > 0.03$.
+
+\noindent\textbf{Period $t+2$:} Boom ends; IS returns to original position. Inflation is now elevated above target. The CB, following its rule, keeps $R > \overline{r}$ because $\pi > \overline{\pi}$. This pushes $\widetilde{Y}_{t+2} < 0$ (mild recession).
+\[
+\pi_{t+2} = \pi_{t+1} + \overline{v}\,\widetilde{Y}_{t+2} < \pi_{t+1}
+\]
+
+\noindent\textbf{Subsequent periods:} The negative output gap gradually pulls inflation back toward 0.03\%. As $\pi$ falls toward $\overline{\pi}$, $R$ falls toward $\overline{r}$, $\widetilde{Y}$ returns toward 0. Economy converges back to LR equilibrium.
+
+\noindent\textbf{Summary of time paths:}
+\begin{itemize}
+  \item $\widetilde{Y}$: rises to positive during boom, falls below zero after boom ends, converges back to 0.
+  \item $\pi$: rises above 3\% during boom, continues rising as $\widetilde{Y}>0$; slowly falls back to 3\% as $\widetilde{Y}<0$ during the post-boom correction.
+\end{itemize}
+
+\noindent\textbf{IS-MP diagram:} IS shifts right in $t$, $t+1$ (economy moves up and right on the MP curve); returns to original in $t+2$ (economy moves back down, then below, the original intersection).
+
+\noindent\textbf{Phillips Curve diagram:} The PC shifts up each period that $\widetilde{Y}>0$ (since $\pi_{t-1}$ increases). When $\widetilde{Y}<0$ the PC shifts back down. The economy traces a clockwise loop: up the initial PC, then left along shifted PCs, then back down.
+
+\subsection*{(e) Numerical Computation [5 points]}
+
+Given: $b_c = 0.6$, $b_T = 0.25$, $b_a = 0.1$, $b_i = 400$.
+
+First: $b_c(1-b_T) = 0.6 \times 0.75 = 0.45$.
+
+\textbf{Multiplier:}
+\[
+\text{With accelerator:}\quad \frac{1}{1-0.45-0.1} = \frac{1}{0.45} = \textcolor{sol}{\tfrac{20}{9} \approx 2.22}
+\]
+\[
+\text{Without accelerator ($b_a=0$):}\quad \frac{1}{1-0.45} = \frac{1}{0.55} = \textcolor{sol}{\tfrac{20}{11} \approx 1.82}
+\]
+
+\textbf{Change in $Y$ for $\Delta R = 0.02$:}
+\[
+\text{With accelerator:}\quad \Delta Y = \frac{-b_i\,\Delta R}{1-b_c(1-b_T)-b_a} = \frac{-400 \times 0.02}{0.45} = \frac{-8}{0.45} = \textcolor{sol}{-\tfrac{160}{9} \approx -\$17.78\text{ billion}}
+\]
+\[
+\text{Without accelerator:}\quad \Delta Y = \frac{-8}{0.55} = \textcolor{sol}{-\tfrac{160}{11} \approx -\$14.55\text{ billion}}
+\]
+
+\textbf{Conclusion:} The accelerator amplifies the interest rate's effect on output. A 2 percentage-point rise in $R$ reduces output by approximately \$3.23 billion more when $b_a = 0.1$ than when $b_a = 0$. This occurs because higher $R$ lowers $I$ directly, which lowers $Y$, which lowers $I$ further through the accelerator ($b_a \Delta Y$), which lowers $Y$ again. Each round of this feedback loop amplifies the total output contraction.
+
+\subsection*{(f) Automatic Fiscal Stabilisers [6 points]}
+
+\noindent\textbf{(i) Primary fiscal balance:}
+
+Define $PB_t = b_T Y_t - \overline{G}$. At potential ($Y_t = \overline{Y}$), the budget is balanced: $\overline{G} = b_T\overline{Y}$, so:
+\[
+PB_t = b_T Y_t - b_T\overline{Y} = \textcolor{sol}{b_T(Y_t - \overline{Y})}
+\]
+
+Let $\hat{Y}_t \equiv Y_t - \overline{Y}$ denote the level output gap. Then $PB_t = b_T \hat{Y}_t$.
+
+During a boom ($Y_t > \overline{Y}$, $\hat{Y}_t > 0$): $PB_t > 0$ — \textbf{the government runs a surplus}. Tax revenues rise automatically with income, while spending $\overline{G}$ is unchanged.
+
+During a recession ($Y_t < \overline{Y}$, $\hat{Y}_t < 0$): $PB_t < 0$ — \textbf{the government runs a deficit}.
+
+\noindent\textbf{(ii) Time path of $PB_t$:}
+
+Since $PB_t = b_T(Y_t - \overline{Y})$, the fiscal balance mirrors the output gap scaled by $b_T$.
+
+\begin{itemize}
+  \item Periods $t$ and $t+1$ (boom, $\hat{Y} > 0$): $PB > 0$ — surplus, rising as the boom peaks.
+  \item Period $t+2$ onward (correction, $\hat{Y} < 0$): $PB < 0$ — deficit, gradually recovering toward zero as $\hat{Y} \to 0$.
+  \item Long run: $PB \to 0$ as $Y_t \to \overline{Y}$.
+\end{itemize}
+
+\noindent\textbf{Economic intuition:} Without any deliberate legislative change, the tax system automatically ``leans against'' the business cycle. During a boom, rising incomes push up tax revenues ($b_T Y_t$ rises) while government purchases remain at $\overline{G}$: the resulting surplus drains purchasing power and dampens the expansion. During a recession, falling incomes erode revenues while spending is unchanged: the deficit injects purchasing power and cushions the contraction. A higher marginal tax rate $b_T$ strengthens the automatic stabiliser (the $PB$ swings are larger relative to the output gap), smoothing cycles more effectively.
+
+
+%----------------------------------------------------------------------
+\section*{Question IV: The Phillips Curve and Credibility [15 points]}
+%----------------------------------------------------------------------
+
+\noindent Hybrid PC: $\pi_t = \lambda\overline{\pi} + (1-\lambda)\pi_{t-1} + \overline{v}\,\widetilde{Y}_t + \overline{o}_t$.
+
+\noindent Rewrite as an inflation-gap equation: $(\pi_t - \overline{\pi}) = (1-\lambda)(\pi_{t-1}-\overline{\pi}) + \overline{v}\,\widetilde{Y}_t + \overline{o}_t$.
+
+\subsection*{(a) One-Time Supply Shock [10 points]}
+
+\noindent Starting at LR equilibrium: $\pi_{t-1} = \overline{\pi}$, $\widetilde{Y} = 0$. Shock at period $t$: $\overline{o}_t = \overline{o} > 0$; $\overline{o}_{t+s} = 0$ for $s \geq 1$. CB holds $\widetilde{Y} = 0$ for all periods.
+
+\noindent\textbf{i. Closed-form expression for $(\pi_{t+s} - \overline{\pi})$:}
+
+\textbf{Period $t$:}
+\[
+\pi_t - \overline{\pi} = (1-\lambda)\underbrace{(\pi_{t-1}-\overline{\pi})}_{=0} + \overline{v}\cdot 0 + \overline{o} = \overline{o}
+\quad \text{(same for all } \lambda\text{)}
+\]
+
+\textbf{Period $t+s$} ($s \geq 1$, $\overline{o} = 0$, $\widetilde{Y} = 0$):
+\[
+\pi_{t+s} - \overline{\pi} = (1-\lambda)(\pi_{t+s-1} - \overline{\pi})
+\]
+
+Solving the recursion: $\quad \textcolor{sol}{\pi_{t+s} - \overline{\pi} = (1-\lambda)^s\,\overline{o}}$
+
+As $s \to \infty$:
+\begin{itemize}
+  \item $\lambda = 0$: $(1-\lambda)^s = 1$ for all $s \Rightarrow$ inflation gap stays at $\overline{o}$ forever. Inflation is \textbf{permanently} stuck above target.
+  \item $\lambda = 1$: $(1-\lambda)^s = 0$ for $s \geq 1 \Rightarrow$ inflation returns to $\overline{\pi}$ \textbf{immediately} in period $t+1$.
+  \item $0 < \lambda < 1$: $(1-\lambda)^s \to 0$ exponentially. Inflation decays back to $\overline{\pi}$ at rate $(1-\lambda)$ per period.
+\end{itemize}
+
+\noindent\textbf{ii. Graph (time path of inflation):}
+
+All three cases start at $\overline{\pi} + \overline{o}$ in period $t$.
+
+\begin{itemize}
+  \item $\lambda = 1$: drops back to $\overline{\pi}$ immediately in $t+1$ (one-period blip).
+  \item $0 < \lambda < 1$: decays smoothly and monotonically toward $\overline{\pi}$ (exponential decay).
+  \item $\lambda = 0$: remains flat at $\overline{\pi} + \overline{o}$ forever (horizontal line above target).
+\end{itemize}
+
+\textbf{Key qualitative difference:} When $\lambda > 0$, the shock is self-correcting --- inflation returns to target automatically even without any CB action or output gap. When $\lambda = 0$, the shock is permanently embedded in expectations and can only be undone through a deliberate disinflation (engineering $\widetilde{Y} < 0$), which is costly in terms of output.
+
+\subsection*{(b) Credibility [5 points]}
+
+In the model, $\lambda$ measures the fraction of agents whose inflation expectations are anchored to the announced target $\overline{\pi}$, rather than formed adaptively from past inflation. A high $\lambda$ is the quantitative expression of \textbf{credibility}: agents believe the Bank of Canada will return inflation to 2\% and therefore set wages and prices consistent with that belief.
+
+\textbf{Why credibility matters:} When $\lambda$ is high, a supply shock such as higher oil prices or supply chain disruptions causes only a temporary spike in inflation. Workers do not demand large wage increases because they expect the price shock to dissipate; firms do not permanently raise prices for the same reason. The shock's inflationary effect self-corrects without requiring the CB to engineer a recession. When $\lambda$ is low, every shock becomes embedded in wage and price expectations, requiring painful tightening to reverse.
+
+\textbf{Factors that lower $\lambda$:}
+\begin{itemize}
+  \item Past episodes of high inflation or missed targets (history undermines credibility).
+  \item Political pressure on the central bank or perceived lack of independence.
+  \item Changing or ambiguous inflation objectives.
+  \item Central banks with a short institutional track record.
+\end{itemize}
+
+\textbf{How to raise $\lambda$:}
+\begin{itemize}
+  \item Formal inflation targeting mandates (explicitly committing to a numerical target, as the Bank of Canada does with its 1--3\% band).
+  \item CB independence protected by legislation.
+  \item Transparent communication (publishing forecasts, meeting minutes).
+  \item A consistent track record of meeting targets over many years.
+\end{itemize}
+
+
+%----------------------------------------------------------------------
+\section*{Question V: The AS-AD Model and Monetary Policy Trade-offs [15 points]}
+%----------------------------------------------------------------------
+
+\noindent Model: $\widetilde{Y} = \bar{a} - \tilde{b}(R-\overline{r})$ (IS), $R - \overline{r} = \overline{m}(\pi_t - \overline{\pi})$ (MP), $\pi_t = \pi^e_t + \overline{v}\,\widetilde{Y}_t + \overline{o}_t$ (PC), with $\pi^e_t = \pi_{t-1}$.
+
+\subsection*{(a) The AD Curve [5 points]}
+
+Substitute the MP rule into the IS curve:
+\[
+\widetilde{Y}_t = \bar{a} - \tilde{b}\,\overline{m}(\pi_t - \overline{\pi})
+\]
+
+\textcolor{sol}{
+\[
+\textbf{AD curve:} \quad \widetilde{Y}_t = \bar{a} - \tilde{b}\,\overline{m}\,(\pi_t - \overline{\pi})
+\]
+}
+
+where $\tilde{b} = b_i/(1-b_c)$ and $\bar{a} = 0$ at long-run equilibrium (we allow $\bar{a} \neq 0$ when there are demand shocks). This is a downward-sloping relationship between $\widetilde{Y}$ and $\pi$.
+
+\textbf{Why negative slope:} Higher inflation $\pi_t$ triggers the CB to raise $R$ (MP rule). Higher $R$ reduces investment and hence output $\widetilde{Y}$ (IS curve). Therefore, higher $\pi$ is associated with lower $\widetilde{Y}$: the AD curve slopes downward.
+
+\subsection*{(b) Supply Shock with Three Policy Responses [10 points]}
+
+\noindent Starting at LR equilibrium: $\widetilde{Y}=0$, $\pi = \overline{\pi}$.
+
+\noindent AS at period $t$: $\pi_t = \pi_{t-1} + \overline{v}\,\widetilde{Y}_t + \overline{o} = \overline{\pi} + \overline{v}\,\widetilde{Y}_t + \overline{o}$ (shifted \textbf{up} by $\overline{o}$).
+
+\noindent AD (baseline): $\widetilde{Y}_t = -\tilde{b}\,\overline{m}\,(\pi_t - \overline{\pi})$.
+
+\medskip
+\noindent\textbf{Response (i) --- Follow the rule:} AD unchanged.
+
+Solving AS and AD simultaneously:
+\begin{align*}
+\pi_t - \overline{\pi} &= \overline{v}\,\widetilde{Y}_t + \overline{o} \\
+\widetilde{Y}_t &= -\tilde{b}\,\overline{m}\,(\pi_t - \overline{\pi})
+\end{align*}
+Substituting: $(\pi_t - \overline{\pi})\bigl(1 + \overline{v}\tilde{b}\overline{m}\bigr) = \overline{o}$
+
+\textcolor{sol}{
+\[
+\pi_t - \overline{\pi} = \frac{\overline{o}}{1 + \overline{v}\tilde{b}\overline{m}} > 0, \qquad \widetilde{Y}_t = \frac{-\tilde{b}\,\overline{m}\,\overline{o}}{1 + \overline{v}\tilde{b}\overline{m}} < 0
+\]
+}
+
+Result (i): $\widetilde{Y}_t < 0$ and $\pi_t > \overline{\pi}$ --- \textbf{stagflation}: recession \emph{and} above-target inflation simultaneously.
+
+\medskip
+\noindent\textbf{Response (ii) --- Tighten to peg $\pi_t = \overline{\pi}$:}
+
+From AS: $\overline{\pi} = \overline{\pi} + \overline{v}\,\widetilde{Y}_t + \overline{o} \Rightarrow \widetilde{Y}_t = -\overline{o}/\overline{v}$.
+
+\textcolor{sol}{$\widetilde{Y}_t = -\overline{o}/\overline{v} < \widetilde{Y}_t^{(i)} < 0$, $\quad \pi_t = \overline{\pi}$.}
+
+The CB achieves price stability but at the cost of a \textbf{deeper recession} than response~(i). The CB must shift AD leftward (raise $R$ aggressively beyond the rule) to force the economy up the new AS curve to the point $(\pi = \overline{\pi})$.
+
+\medskip
+\noindent\textbf{Response (iii) --- Ease to peg $\widetilde{Y}_t = 0$:}
+
+From AS: $\pi_t = \overline{\pi} + \overline{o}$.
+
+\textcolor{sol}{$\widetilde{Y}_t = 0$, $\quad \pi_t = \overline{\pi} + \overline{o} > \pi_t^{(i)} > \overline{\pi}$.}
+
+The CB achieves output stability but accepts \textbf{higher inflation} than response~(i). The CB shifts AD rightward (cuts $R$ below the rule) to force the economy up the new AS curve to the point $(\widetilde{Y} = 0)$.
+
+\medskip
+\noindent\textbf{AS-AD diagram with all three outcomes:}
+
+In the AS-AD space (horizontal axis $\widetilde{Y}$, vertical axis $\pi$): the AS curve shifts up by $\overline{o}$ (parallel shift). The three responses correspond to three different AD positions:
+\begin{itemize}
+  \item[(i)] Original AD (follows rule): equilibrium point $A_i = (\widetilde{Y}_i, \pi_i)$ with $\widetilde{Y}_i < 0$ and $\pi_i \in (\overline{\pi}, \overline{\pi}+\overline{o})$.
+  \item[(ii)] AD shifts left (tighter): equilibrium point $A_{ii} = (-\overline{o}/\overline{v},\, \overline{\pi})$, further left on the new AS curve.
+  \item[(iii)] AD shifts right (looser): equilibrium point $A_{iii} = (0,\, \overline{\pi}+\overline{o})$, at the top of the visible range on the new AS curve.
+\end{itemize}
+
+All three points lie on the \textbf{same shifted AS curve}. This is the key geometric insight: no AD position places the economy at $(\widetilde{Y}=0, \pi=\overline{\pi})$ because that point lies on the \emph{original} AS curve, not the shifted one. The CB faces a genuine trade-off.
+
+\medskip
+\noindent\textbf{Contrast with a demand shock:}
+
+Suppose aggregate demand fell temporarily (IS shifted left). Under the CB's standard rule, the economy would settle at $(\widetilde{Y} < 0, \pi < \overline{\pi})$. By adjusting $R$ downward (shifting AD right), the CB can simultaneously restore $\widetilde{Y} = 0$ \emph{and} $\pi = \overline{\pi}$: the desired point $(\widetilde{Y}=0, \pi=\overline{\pi})$ lies on the AS curve (which has not shifted). A single policy action closes both gaps.
+
+The supply shock destroys this ``free lunch.'' The shifted AS curve has moved the AS-AD equilibrium locus: there is no AD position consistent with both full employment and price stability. Any policy choice forces the CB to accept either a recession (to stabilise prices) or above-target inflation (to stabilise output). This is the fundamental challenge of \textbf{stagflation}.
+
+The term for the simultaneous occurrence of a recession and above-target inflation is \textbf{stagflation} (stagnation + inflation).
+
+\end{document}

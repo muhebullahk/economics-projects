@@ -1,0 +1,416 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{grffile}
+\usepackage{relsize}
+\usepackage{tablefootnote}
+\usepackage{footnote}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[multiple]{footmisc}
+\usepackage{appendix}
+\usepackage{times}
+\usepackage{relsize}
+\usepackage{newtxtext,newtxmath}
+\usepackage{enumitem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Title Page Information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace{-.5in} ECON712: Problem Set 2}
+\author{Leandro Freylejer}
+\date{Due date: March 31st, 2026}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Double and Single Space Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]{\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{1\defbaselineskip}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Set Margins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textwidth=6.5in
+\textheight=9in
+\oddsidemargin=0.10in
+\evensidemargin=0.10in
+\topmargin=-0.5in
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Actual Document Begins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\pagenumbering{arabic}
+
+\maketitle
+\vspace{-.3in}
+\textbf{Instructions:} There are $4$ questions. Answer all questions. To receive full marks, write your answers as completely and clearly as possible, providing all intermediate steps and stating any assumptions invoked.
+
+
+\section*{Question I: Potential Outcomes and Instrumental Variables}
+Suppose that, in Argentina, the public school system is severely underfunded and it is currently not delivering a good education for its students. Alongside public education, there is a private education system that it is thought to be better at educating students. Students attending private schools are not subsidized by the government and must pay a fee, that is prohibitively expensive for many households. As an education consultant, you were hire to estimate the causal effect of attending a private over a public elementary school on academic achievement in mathematics. To do this, you were given the following table with information on the results of the seventh grade national math exam for a sample of students who attended each system broken down by the education of their parents:      
+
+\begin{table}[H]
+\begin{center}
+\caption{Average Score on National Math Test (out of 100)}
+\label{table:main_shock_effect}
+\resizebox{.82\textwidth}{!}{%
+\begin{tabular}{lll}
+\hline
+\hline
+Parents' education attaintment (x)   &  Public School        &  Private School  \\
+\hline
+Post-Graduate Degree                  & 78.5 (80)                     & 88.9  (140) \\
+Undergraduate Degree                         &  77 (32)                      &86.5 (56)  \\
+Finish High-School                     & 66.7 (60)                 & 76.5 (50)  \\
+Did not finish High-School               & 64 (30)                 & 70.8   (25)  \\
+\hline
+\hline
+\end{tabular}}
+\end{center}
+\captionsetup{font={scriptsize}}
+\captionsetup{width=0.80\textwidth}
+\captionsetup{skip=0pt}
+\caption*{Notes: Sample sizes are given in brackets}
+\end{table}
+Using the information in this table, answer the following questions:
+\begin{enumerate}[label=(\alph*)]
+\item (8 points) Suppose that you solve for the following coefficients estimates using OLS:
+\begin{eqnarray*}
+y_i=\hat{\beta}_0+\hat{\beta}_1 \: D_i+\hat{\epsilon}_i
+\end{eqnarray*}
+where $y_i$ is the score of individual $i$ and 
+\begin{eqnarray*}
+D_i=\begin{cases}
+		1 & \text{if person $i$ attends private school} \\
+             0 & \text{if person $i$ attends public school} 
+\end{cases}
+\end{eqnarray*}	
+Solve for $\hat{\beta}_1$ using the information from Table 1. Is $\hat{\beta}_1$ a consistent estimator of the $ATE$ of attending private school over public school? Carefully explain the difference between selection bias and treatment effect heterogeneity bias. In addition, explain the potential sources of these two types of biases in this example. \\
+\textbf{Answer:}\\
+Since $D_i$ is binary and the regression includes only a constant and $D_i$, the OLS estimator satisfies:
+
+$$\hat{\beta}_1 = \bar{y}_{private} - \bar{y}_{public}$$
+
+$$\bar{y}_{public} = \frac{78.5(80) + 77(32) + 66.7(60) + 64(30)}{202} \approx 72.60$$
+
+$$\bar{y}_{private} = \frac{88.9(140) + 86.5(56) + 76.5(50) + 70.8(25)}{271}  \approx 84.45$$
+
+$$\hat{\beta}_1 = 84.45 - 72.60 \approx 11.84$$
+
+**Is $\hat{\beta}_1$ consistent for the ATE?**
+
+No. $\hat{\beta}_1$ is not a consistent estimator of the ATE due to two sources of bias:
+
+**1. Selection Bias.** Students self-select into school type based on unobservable characteristics (family wealth, parental involvement) that also affect test scores. Families choosing private school are not a random draw from the population — those with post-graduate parents are overrepresented among private school attendees. This creates a systematic difference in the counterfactual baseline $\mathbb{E}[y_i(0)|D_i=1] \neq \mathbb{E}[y_i(0)|D_i=0]$: private school students would have scored higher even had they attended public school. In this example, the high share of post-graduate families in private school ($140/271 \approx 52\%$) versus public school ($80/202 \approx 40\%$) inflates $\bar{y}_{private}$ upward.
+
+**2. Heterogeneous Treatment Effect Bias.** Even absent selection bias, the difference-in-means recovers the ATT (treatment effect weighted by the treated distribution), not the ATE (population-weighted average). If treatment effects differ across parental education groups  and if the distribution of $x$ in the treated group differs from the population distribution, then $\hat{\beta}_1 \neq ATE$. Private schools enroll relatively more high-education-background students, who also exhibit larger gains, further inflating the estimate.
+
+
+\item (8 points) Assume that the CIA property: $y(0),y(1) \perp D|x$ holds, calculate $ATE$ and $ATT$. \\
+\textbf{Answer:}\\
+
+**ATE** (weighted by population shares $P(x) = n(x)/N$):
+
+$$ATE =  \frac{10.4(220) + 9.5(88) + 9.8(110) + 6.8(55)}{473}$$
+
+$$= \frac{2288 + 836 + 1078 + 374}{473} = \frac{4576}{473} \approx \boxed{9.67}$$
+
+**ATT** (weighted by the distribution among the treated, $P(x\mid D=1) = n_1(x)/n_1$):
+
+$$ATT = \frac{10.4(140) + 9.5(56) + 9.8(50) + 6.8(25)}{271}$$
+
+$$= \frac{1456 + 532 + 490 + 170}{271} = \frac{2648}{271} \approx \boxed{9.77}$$
+
+The ATT ($9.77$) slightly exceeds the ATE ($9.67$) because private school students are disproportionately drawn from the post-graduate stratum, where the treatment effect is largest ($10.4$).
+
+\item (8 points) Suppose now that the CIA property \textbf{does not} hold, but that you are given the \textbf{magical} gift to observe counter-factual scenarios. Table 2 below shows the average math tests for the counter-factual scenarios in which the same students attended the other type of school.  
+\begin{table}[H]
+\begin{center}
+\caption{\textbf{Counterfactuals} Average Score on National Math Test (out of 100)}
+\label{table:main_shock_effect}
+\resizebox{.82\textwidth}{!}{%
+\begin{tabular}{lll}
+\hline
+\hline
+Parents' education attainment (x)   &  Public School        &  Private School  \\
+\hline
+Post-Graduate Degree                   & 80.25  (140)         &     85.4 (80) \\
+College-Educated                         &  79.5 (56)            &     81.7 (32)    \\
+Finish High-School                        &  70 (50)              &     74.7 (60)    \\
+Did not finish High-School              &  69.8   (25)         &      69 (30)       \\
+\hline
+\hline
+\end{tabular}}
+\end{center}
+\captionsetup{font={scriptsize}}
+\captionsetup{width=0.80\textwidth}
+\captionsetup{skip=0pt}
+\caption*{Notes: Sample sizes are given in brackets}
+\end{table}
+Use Table 1 and Table 2 to calculate the ATE. Relate your result to the estimate of $\hat{\beta}_1$ in part (a) by indicating the magnitude of the selection bias and the magnitude of the heterogeneous treatment effect bias.  \\
+\textbf{Answer:}\\
+
+By the LIE, the ATE can be written as a weighted average of the ATT and ATU, with weights equal to the shares of treated and untreated in the population ($\Pi = n_1/N = 271/473$):
+
+$$ATE = \Pi \cdot \mathbb{E}[y(1)-y(0)\mid D=1] + (1-\Pi) \cdot \mathbb{E}[y(1)-y(0)\mid D=0]$$
+
+$$= \frac{271}{473} \times 7.21 + \frac{202}{473} \times 6.60 = 0.573 \times 7.21 + 0.427 \times 6.60$$
+
+$$= 4.13 + 2.82 = \boxed{6.95}$$
+
+**Decomposing $\hat{\beta}_1 = 11.84$ into bias components:**
+
+$$\underbrace{\bar{y}_{D=1} - \bar{y}_{D=0}}_{\hat{\beta}_1} = \underbrace{ATE}_{\text{causal}} + \underbrace{\mathbb{E}[y(0)\mid D=1] - \mathbb{E}[y(0)\mid D=0]}_{\text{Selection Bias}} + \underbrace{(ATT - ATE) \cdot P(D=0)}_{\text{Heterogeneous TE Bias}}$$
+
+**Selection Bias:**:
+
+$$\mathbb{E}[y(0)\mid D=1] = \frac{80.25(140) + 79.5(56) + 70.0(50) + 69.8(25)}{271} = \frac{20{,}932}{271} \approx 77.24$$
+
+$$\mathbb{E}[y(0)\mid D=0] = \bar{y}_{public} \approx 72.60$$
+
+$$\boxed{\text{Selection Bias} = 77.24 - 72.60 = 4.64}$$
+
+
+**ATT from counterfactual data:**
+
+$$ATT = \bar{y}_{D=1} - \mathbb{E}[y(0)\mid D=1] = 84.45 - 77.24 = 7.21$$
+To calculate $ATU$, we use $$ATE=\Pi \times ATT+(1-\Pi) \times ATU \Rightarrow ATU=6.6$$
+
+$$\boxed{\text{Heterogeneous TE Bias} =P(D=0) \times ( ATT - ATE) = \frac{202}{473} (7.21 - 6.6) = 0.26}$$
+\item (8 points) Suppose now that you observe the score of individual students and whether they attended private or public school only (you do not observe any other individual characteristic). Assume that the Argentinian government run a lottery among the entire population of kids in which lottery winners are able to send their kids to private school for free and that you observe who in your data has won the lottery. Carefully discuss how you will use this random experiment to estimate the causal effect of attending private schools over public schools on academic achievement (discuss assumptions, estimators and interpretation of estimates relative to the treatment effect estimated in (d) when there is treatment effect heterogeneity). \\
+\textbf{Answer:}\\
+
+**Setup.** A government lottery randomly assigns winners ($Z_i = 1$) the ability to attend private school for free, while non-winners ($Z_i = 0$) face the original tuition costs. We observe only $y_i$ (test score), $D_i$ (school type), and $Z_i$ (lottery outcome).
+
+**Using $Z_i$ as an IV for $D_i$:**
+
+Define potential treatment takeup: $D_i(z)$ = school attended if lottery outcome is $z$. The lottery generates four latent types:
+- **Always-takers:** $D_i(1) = D_i(0) = 1$ (attend private regardless — already wealthy)
+- **Never-takers:** $D_i(1) = D_i(0) = 0$ (don't attend private regardless)
+- **Compliers:** $D_i(0) = 0$, $D_i(1) = 1$ (switch to private only if they win — the target group)
+- **Defiers:** $D_i(0) = 1$, $D_i(1) = 0$ (ruled out by monotonicity)
+
+**Required assumptions:**
+
+1. **Relevance:** $\mathbb{E}[D_i \mid Z_i=1] \neq \mathbb{E}[D_i \mid Z_i=0]$. The lottery must actually induce some students to switch schools. Plausible: free tuition removes the key barrier.
+
+2. **Independence (Instrument Exogeneity):** $Z_i \perp (y_i(0), y_i(1), D_i(0), D_i(1))$. Since the lottery is randomized across the population, lottery status is orthogonal to all potential outcomes and potential school choices. This is the key advantage of the lottery over observational variation.
+
+3. **Exclusion Restriction:** $Z_i$ affects $y_i$ *only through* $D_i$. The lottery result itself has no direct effect on test scores — it only affects the school attended. This would fail if, e.g., knowing you won the lottery boosted motivation regardless of school enrollment.
+
+4. **Monotonicity:** $D_i(1) \geq D_i(0)$ for all $i$. Winning the lottery weakly increases private school attendance — no one is made less likely to attend private school by winning free tuition.
+
+**Estimator.** Under these assumptions, the IV (Wald) estimator is:
+
+$$\hat{\beta}^{IV} = \frac{\bar{y}_{Z=1} - \bar{y}_{Z=0}}{\bar{D}_{Z=1} - \bar{D}_{Z=0}} = \frac{\text{Reduced Form}}{\text{First Stage}}$$
+
+This can be implemented as 2SLS: regress $D_i$ on $Z_i$ (first stage) and then regress $y_i$ on $\hat{D}_i$ (second stage).
+
+**Interpretation under treatment effect heterogeneity.** Under heterogeneous treatment effects, the IV estimator does **not** recover the ATE or ATT estimated in parts (b)–(c), but instead recovers the **Local Average Treatment Effect (LATE)**:
+
+$$LATE = \mathbb{E}[y_i(1) - y_i(0) \mid \text{compliers}]$$
+
+Compliers are families who would choose private school only if they win the lottery. These are likely lower-to-middle income families with moderate parental education — not the wealthy post-graduate families already attending private school (always-takers). 
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Question II: Asymptotic Theory of OLS}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Consider the linear regression model $y_i = \mathbf{X}_i^\top \boldsymbol{\beta} + u_i$, where $\{(y_i, \mathbf{X}_i)\}_{i=1}^n$ is an i.i.d.\ sample.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item (6 points) State the condition under which the OLS estimator $\hat{\boldsymbol{\beta}}^{ols}$ is consistent. Using the probability limit decomposition
+\[
+\underset{n\to\infty}{\mathrm{plim}}\;\hat{\boldsymbol{\beta}}^{ols}
+= \boldsymbol{\beta}
++ \left(\frac{1}{n}\mathbf{X}^\top\mathbf{X}\right)^{-1}
+  \left(\frac{1}{n}\mathbf{X}^\top\mathbf{u}\right),
+\]
+provide a formal proof of consistency. Why is pre-determinedness $\left(\mathbb{E}[u_i|\mathbf{X}_i]=0\right)$ sufficient here, while strict exogeneity $\left(\mathbb{E}[\mathbf{u}|\mathbf{X}]=\mathbf{0}\right)$ is required for unbiasedness?
+
+**Proof.** Write the OLS estimator as:
+
+$$\hat{\boldsymbol{\beta}}^{OLS} = \boldsymbol{\beta} + \left(\frac{1}{n}\mathbf{X}^\top\mathbf{X}\right)^{-1}\left(\frac{1}{n}\mathbf{X}^\top\mathbf{u}\right)$$
+
+By the **Law of Large Numbers** (applied to the i.i.d. sequence $\{\mathbf{X}_i\mathbf{X}_i^\top\}$):
+
+$$\frac{1}{n}\mathbf{X}^\top\mathbf{X} = \frac{1}{n}\sum_{i=1}^n \mathbf{X}_i\mathbf{X}_i^\top \xrightarrow{p} \mathbb{E}[\mathbf{X}_i\mathbf{X}_i^\top] \equiv S_{X^\top X}$$
+
+which is assumed positive definite (full rank). So, (there is an implicit assumption here called the Continuous Mapping Theorem, but you do not need to mention it as it was not discussed in class) $\left(\frac{1}{n}\mathbf{X}^\top\mathbf{X}\right)^{-1} \xrightarrow{p} S_{X^\top X}^{-1}$.
+
+By the **LLN** (applied to $\{\mathbf{X}_i u_i\}$, i.i.d. with $\mathbb{E}[\mathbf{X}_i u_i] = \mathbf{0}$):
+
+$$\frac{1}{n}\mathbf{X}^\top\mathbf{u} = \frac{1}{n}\sum_{i=1}^n \mathbf{X}_i u_i \xrightarrow{p} \mathbb{E}[\mathbf{X}_i u_i] = \mathbf{0}$$
+
+By **Slutsky's theorem** (product of a sequence converging in probability and a sequence converging in probability converges to the product of the limits):
+
+$$\underset{n\to\infty}{\mathrm{plim}}\;\hat{\boldsymbol{\beta}}^{OLS} = \boldsymbol{\beta} + S_{X^\top X}^{-1} \cdot \mathbf{0} = \boldsymbol{\beta} $$
+
+**Predeterminedness vs. Strict Exogeneity.** Strict exogeneity requires $\mathbb{E}[u_i \mid \mathbf{X}] = 0$ — i.e., the error of observation $i$ is mean-independent of the regressors of *all* observations. This ensures:
+
+$$\mathbb{E}\left[\hat{\boldsymbol{\beta}}^{OLS} \mid \mathbf{X}\right] = \boldsymbol{\beta} + \left(\mathbf{X}^\top\mathbf{X}\right)^{-1}\mathbf{X}^\top \underbrace{\mathbb{E}[\mathbf{u}\mid\mathbf{X}]}_{=\mathbf{0}} = \boldsymbol{\beta}$$
+
+so unbiasedness is an exact, finite-sample statement that requires conditioning on the *full* matrix $\mathbf{X}$.
+
+Predeterminedness only requires $\mathbb{E}[u_i \mid \mathbf{X}_i] = 0$ — the error is mean-independent of *own* regressors. This is weaker. Predeterminedness gives $\mathbb{E}[\mathbf{X}_i u_i] = \mathbf{0}$, which is sufficient for the LLN to deliver $\frac{1}{n}\mathbf{X}^\top\mathbf{u} \xrightarrow{p} \mathbf{0}$ and hence consistency, but it does not pin down $\mathbb{E}[\mathbf{u}\mid\mathbf{X}]$, so unbiasedness fails.
+
+
+\item (6 points) Show that, under i.i.d.\ errors and $\mathbb{E}[\mathbf{X}_i u_i]=\mathbf{0}$, the asymptotic distribution of the OLS estimator is
+\[
+\sqrt{n}\left(\hat{\boldsymbol{\beta}}^{ols}-\boldsymbol{\beta}\right)
+\xrightarrow{d}
+N\!\left(\mathbf{0},\; S_{X^\top X}^{-1}\,\Omega\, S_{X^\top X}^{-1}\right),
+\]
+where $\Omega = \mathbb{E}[u_i^2\, \mathbf{X}_i\mathbf{X}_i^\top]$. State clearly which law (LLN or CLT) justifies each step of the argument, and identify the role of Slutsky's theorem.
+
+**Starting point.** From the consistency proof:
+
+$$\sqrt{n}\left(\hat{\boldsymbol{\beta}}^{OLS} - \boldsymbol{\beta}\right) = \left(\frac{1}{n}\sum_i \mathbf{X}_i\mathbf{X}_i^\top\right)^{-1} \cdot \frac{1}{\sqrt{n}}\sum_i \mathbf{X}_i u_i$$
+
+**Step 1 — LLN for the first factor.** Since $\{\mathbf{X}_i\mathbf{X}_i^\top\}$ is i.i.d. with finite second moments, by the **LLN**:
+
+$$\frac{1}{n}\sum_i \mathbf{X}_i\mathbf{X}_i^\top \xrightarrow{p} \mathbb{E}[\mathbf{X}_i\mathbf{X}_i^\top] = S_{X^\top X}$$
+
+The inverse converges: $\left(\frac{1}{n}\sum_i \mathbf{X}_i\mathbf{X}_i^\top\right)^{-1} \xrightarrow{p} S_{X^\top X}^{-1}$.
+
+**Step 2 — CLT for the second factor.** The random vectors $\{\mathbf{X}_i u_i\}$ are i.i.d. with:
+- Mean: $\mathbb{E}[\mathbf{X}_i u_i] = \mathbf{0}$ (given)
+- Variance: $\mathrm{Var}(\mathbf{X}_i u_i) = \mathbb{E}[u_i^2 \mathbf{X}_i\mathbf{X}_i^\top] = \Omega$ (finite by assumption)
+
+By the CLT (i.i.d., mean zero, finite variance):
+
+$$\frac{1}{\sqrt{n}}\sum_i \mathbf{X}_i u_i \xrightarrow{d} N(\mathbf{0},\, \Omega)$$
+
+**Step 3 — Slutsky's Theorem.** Combining a sequence converging in probability ($S_{X^\top X}^{-1}$) with a sequence converging in distribution ($\frac{1}{\sqrt{n}}\sum \mathbf{X}_i u_i$), **Slutsky's theorem** gives:
+
+
+$$\boxed{\sqrt{n}\left(\hat{\boldsymbol{\beta}}^{OLS} - \boldsymbol{\beta}\right) \xrightarrow{d} N\!\left(\mathbf{0},\; S_{X^\top X}^{-1}\,\Omega\, S_{X^\top X}^{-1}\right)}$$
+
+\item (6 points) Under conditional homoskedasticity, $\mathbb{E}[u_i^2|\mathbf{X}_i]=\sigma^2$, show that $\Omega = \sigma^2 S_{X^\top X}$, and hence that the sandwich variance $S_{X^\top X}^{-1}\Omega S_{X^\top X}^{-1}$ reduces to the classical formula $\sigma^2 S_{X^\top X}^{-1}$. What assumption justifies the use of heteroscedasticity-robust (sandwich) standard errors when this condition fails? Why is plugging in $\hat{\bm{\Sigma}}_u = \mathrm{diag}(\hat{u}_i^2)$ directly \textit{not} a consistent estimator of $\Omega$?
+
+**Simplification under homoskedasticity.** If $\mathbb{E}[u_i^2 \mid \mathbf{X}_i] = \sigma^2$, then by the **Law of Iterated Expectations**:
+
+$$\Omega = \mathbb{E}[u_i^2\, \mathbf{X}_i\mathbf{X}_i^\top] = \mathbb{E}\!\left[\mathbb{E}[u_i^2 \mid \mathbf{X}_i]\, \mathbf{X}_i\mathbf{X}_i^\top\right] = \mathbb{E}\!\left[\sigma^2 \mathbf{X}_i\mathbf{X}_i^\top\right] = \sigma^2 S_{X^\top X}$$
+
+Substituting into the sandwich:
+
+$$S_{X^\top X}^{-1}\,\Omega\, S_{X^\top X}^{-1} = S_{X^\top X}^{-1}\,(\sigma^2 S_{X^\top X})\, S_{X^\top X}^{-1} = \sigma^2 S_{X^\top X}^{-1}  $$
+
+
+
+When $\mathbb{E}[u_i^2 \mid \mathbf{X}_i] \neq \sigma^2$ (heteroskedasticity), the formula $\sigma^2 S_{X^\top X}^{-1}$ is misspecified. The sandwich form $S_{X^\top X}^{-1}\,\Omega\, S_{X^\top X}^{-1}$ remains valid under the weaker assumption $\mathbb{E}[\mathbf{X}_i u_i] = \mathbf{0}$ alone, without any restriction on the conditional variance. We estimate $\Omega$ consistently with $\hat{\Omega} = \frac{1}{n}\sum_i \hat{u}_i^2\, \mathbf{X}_i\mathbf{X}_i^\top$, which converges to $\Omega$ by the LLN (the average of i.i.d. terms with mean $\Omega$). \\
+
+$\hat{\boldsymbol{\Sigma}}_u$ is an $n \times n$ matrix with $n$ free parameters — one $\hat{u}_i^2$ per observation. Each diagonal entry $\hat{u}_i^2$ is an estimator of $\sigma_i^2 = \mathbb{E}[u_i^2 \mid \mathbf{X}_i]$ based on a *single* observation: there is no averaging, and $\hat{u}_i^2$ does not converge to $\sigma_i^2$ as $n \to \infty$. The dimension of the object being estimated grows with the sample size, so standard LLN arguments do not apply. In other words, you are trying to estimate $n$ individual variances with $n$ observations — the ratio of parameters to data never shrinks. This is an incidental parameters-type problem.
+
+What converge is the fixed-dimensional matrix $\Omega = \mathbb{E}[u_i^2 \mathbf{X}_i \mathbf{X}_i^\top]$, estimated by $\hat{\Omega} = \frac{1}{n}\mathbf{X}^\top \hat{\boldsymbol{\Sigma}}_u \mathbf{X} = \frac{1}{n}\sum_i \hat{u}_i^2 \mathbf{X}_i\mathbf{X}_i^\top$, which averages over many observations and is consistent by the LLN.
+
+
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Question III: The CEF and Linear Regression}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Let $(y_i, \mathbf{X}_i)$ be a random vector, and define the Conditional Expectation Function (CEF) as $m(\mathbf{X}_i)\equiv\mathbb{E}[y_i|\mathbf{X}_i]$.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item (6 points) State the CEF Decomposition Theorem. Using it, show that when the CEF is linear, $m(\mathbf{X}_i)=\mathbf{X}_i^\top\boldsymbol{\beta}^*$, the population OLS coefficient satisfies
+\[
+\boldsymbol{\beta}^* = \mathbb{E}[\mathbf{X}_i\mathbf{X}_i^\top]^{-1}\mathbb{E}[\mathbf{X}_i y_i] = \boldsymbol{\beta}^{OLS}.
+\]
+What does this imply about the relationship between OLS and the CEF when linearity holds?
+
+$$y_i =m(\mathbf{X}_i) + \varepsilon_i$$
+
+where $\varepsilon_i \equiv y_i - m(\mathbf{X}_i)$ satisfies: $\mathbb{E}[\varepsilon_i \mid \mathbf{X}_i] = 0$ (by construction of the conditional expectation)
+
+
+**Implication for OLS when the CEF is linear.** Suppose $m(\mathbf{X}_i) = \mathbf{X}_i^\top\boldsymbol{\beta}^*$. The population OLS coefficient minimizes the expected squared error:
+
+$$\boldsymbol{\beta}^{OLS} = \arg\min_{\boldsymbol{\beta}} \mathbb{E}\!\left[(y_i - \mathbf{X}_i^\top\boldsymbol{\beta})^2\right]$$
+
+The first-order condition gives:
+
+$$\mathbb{E}[\mathbf{X}_i(y_i - \mathbf{X}_i^\top\boldsymbol{\beta}^{OLS})] = \mathbf{0} \implies \boldsymbol{\beta}^{OLS} = \mathbb{E}[\mathbf{X}_i\mathbf{X}_i^\top]^{-1}\mathbb{E}[\mathbf{X}_i y_i]$$
+
+Now substitute $y_i = \mathbf{X}_i^\top\boldsymbol{\beta}^* + \varepsilon_i$:
+
+$$\mathbb{E}[\mathbf{X}_i y_i] = \mathbb{E}[\mathbf{X}_i\mathbf{X}_i^\top]\boldsymbol{\beta}^* + \mathbb{E}[\mathbf{X}_i\varepsilon_i]$$
+
+By the CEF Decomposition, $\mathbb{E}[\mathbf{X}_i\varepsilon_i] = \mathbf{0}$. Therefore:
+
+$$\boldsymbol{\beta}^{OLS} = \mathbb{E}[\mathbf{X}_i\mathbf{X}_i^\top]^{-1}\mathbb{E}[\mathbf{X}_i\mathbf{X}_i^\top]\boldsymbol{\beta}^* = \boldsymbol{\beta}^* $$
+
+When the CEF is linear OLS exactly recovers the CEF parameter. There is no approximation error: the OLS fit equals the conditional expectation function everywhere.
+
+\item (6 points) What are the implications of parts (a) for the interpretation of OLS estimates when the true CEF is nonlinear? Does OLS remain \textit{unbiased} in finite samples?
+
+ When $m(\mathbf{X}_i)$ is nonlinear, the population OLS coefficient solves:
+
+$$\boldsymbol{\beta}^{OLS} = \arg\min_{\boldsymbol{\beta}} \mathbb{E}\!\left[(m(\mathbf{X}_i) - \mathbf{X}_i^\top\boldsymbol{\beta})^2\right]$$
+
+This is the Best Linear Predictor of $y_i$ given $\mathbf{X}_i$.
+
+OLS is not unbiased in finite samples. Unbiasedness requires that the conditional error term of the linear regression is mean independence. However, $\mathbb{E}[\mathbf{u} \mid \mathbf{X}] \neq \mathbf{0}$ when the true CEF is non-linear.
+
+
+
+
+\end{enumerate}
+
+
+\section*{Question IV}
+Consider the Titanic subclassification exercise described on page 183 of the Mixtape. For this question, I suggest that you annotate your code by providing detailed explanation to each line of code. Please submit the STATA log file obtained after running your code, which will contain your annotated code as well as all your output.
+\begin{enumerate}[label=(\alph*)] 
+\item (8 points) Replicate the Titanic subclassification exercise using the code provided in the textbook. Explain the steps of this process and what the code is doing in each step.\\
+\textbf{Answer:} \\
+See Log File 
+\item (5 points)  Discuss how this method of subclassification changes our results, what this means, and how this relates to the ATE and issues of self-selection and heterogeneous treatment effects?\\
+\textbf{Answer:}  When we compare differences in mean between the treatment and control groups and interpret the difference as the ATE, there are two potential sources of bias:
+\begin{itemize}
+\item \textbf{Selection Bias:} $E[y_i(0)|D_i=1] \neq E[y_i(0)|D_i=0]$
+\item \textbf{Heterogeneous treatment Effect Bias: } $E[y_i(1)-y_i(0)|D_i=0]  \neq  E[y_i(1)-y_i(0)|D_i=1]$
+\end{itemize}
+Both of these identification issues are resolved by using subclassification, if we assume: $y(0),y(1) \perp D|\bm{x}$. To understand Heterogeneous treatment Effect Bias, suppose that there is a group that benefits more from the treatment and there is a higher share of people from that group receiving treatment than from other groups. However, given the conditional independence assumption, selection to treatment within groups is independent of treatment effect.  \\
+\\
+To understand Selection Bias, suppose that there is a higher share of people from a group receiving treatment with a particular characteristic that correlates with the outcome variable than from other groups. However, given the conditional independence assumption, treatment within group is randomly assigned.    
+  
+
+\item (5 points) Use the linear probability model to provide an alternative estimate of the ATE (do not forget to use standard errors that are robust to heteroscedasticity). \\
+\textbf{Answer:} \\
+See Log File 
+
+\item (8 points) Suppose that you are interested in estimating whether the probability of survival of a female passenger in first class relative to a male passenger in first class was larger than the probability of survival of a female passenger not in first class relative to a male passenger not in first class. That is, you want to test whether, given the space in boats assigned to each class, a disproportionally larger amount of seats went to women than men in the first class compared to the non-first classes. In other words, you want to know whether the gender survival gap was larger in the first class section. How would you modify your regression equation from part (c) to estimate this parameter? Carefully explain under which circumstance you would still need to control for the age variable. Estimate this parameter using STATA. \\
+\textbf{Answer:} \\
+We want to know:
+\begin{eqnarray*}
+\begin{array}{ll}
+\delta=&\left(E[s_i|d_i=1,female=1, age]-E[s_i|d_i=1,female=0, age]\right)- \\
+		  &\left(E[s_i|d_i=0,female=1, age]-E[s_i|d_i=0,female=0, age]\right)    
+\end{array}
+\end{eqnarray*}
+There is the need to control for age if the proportion of female that are children relative to male that are children is different between first class and other classes. See Log File for solution
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,589 @@
+\documentclass[aspectratio=169]{beamer}
+
+% ---------- ENCODING & FONTS ----------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% ---------- THEME & LOOK ----------
+\usetheme{Madrid}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercovered{transparent}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+\setlength{\parskip}{0.25em}
+
+% ---------- COLORS ----------
+\definecolor{UNBCGreen}{RGB}{0,102,51}
+\definecolor{UNBCDark}{RGB}{0,74,37}
+\definecolor{UNBCGold}{RGB}{189,155,96}
+\definecolor{SoftCream}{RGB}{249,247,242}
+\definecolor{SoftGray}{RGB}{244,246,248}
+\definecolor{AccentBlue}{RGB}{41,98,255}
+\definecolor{AccentOrange}{RGB}{230,126,34}
+\definecolor{AccentTeal}{RGB}{0,150,136}
+\definecolor{AccentRed}{RGB}{192,57,43}
+% legacy aliases kept for in-slide content
+\definecolor{accent}{RGB}{0,102,51}
+\definecolor{soft}{RGB}{244,246,248}
+\definecolor{canadared}{RGB}{196,30,58}
+\definecolor{leafgreen}{RGB}{0,130,80}
+\definecolor{goldenrod}{RGB}{189,155,96}
+\definecolor{deeporange}{RGB}{220,90,20}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{structure}{fg=UNBCDark}
+\setbeamercolor{title}{fg=white,bg=UNBCDark}
+\setbeamercolor{subtitle}{fg=UNBCGold}
+\setbeamercolor{frametitle}{fg=white,bg=UNBCDark}
+\setbeamercolor{block title}{fg=white,bg=UNBCDark}
+\setbeamercolor{block body}{fg=black,bg=SoftGray}
+\setbeamercolor{block title alerted}{fg=white,bg=AccentRed}
+\setbeamercolor{block body alerted}{fg=black,bg=SoftGray}
+\setbeamercolor{item}{fg=UNBCDark}
+\setbeamercolor{section in toc}{fg=UNBCDark}
+\setbeamercolor{alerted text}{fg=AccentRed}
+\setbeamercolor{author in head/foot}{fg=white,bg=UNBCDark}
+\setbeamercolor{date in head/foot}{fg=white,bg=UNBCDark}
+
+% ---------- PACKAGES ----------
+\usepackage{booktabs}
+\usepackage{amsmath, amssymb}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{tikz}
+\hypersetup{colorlinks=true,linkcolor=UNBCDark,urlcolor=UNBCDark}
+
+% ---------- SAFE TRANSITION FALLBACK ----------
+\makeatletter
+\@ifundefined{transfade}{\newcommand{\transfade}[1][]{}}{}
+\makeatother
+
+% ---------- UNBC BRANDING ----------
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{tcolorbox}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.78\paperwidth,ht=2.8ex,dp=1.2ex,leftskip=1em]{author in head/foot}%
+  \color{white}\textbf{ECON 101} \hspace{0.5em} \textcolor{UNBCGold}{|} \hspace{0.5em} Macroeconomics%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.8ex,dp=1.2ex,rightskip=1em plus1fil]{date in head/foot}%
+  \color{white}\insertframenumber/\inserttotalframenumber%
+  \end{beamercolorbox}}%
+}
+
+\newtcolorbox{mybox}[2][]{
+  colback=#2!8,
+  colframe=#2,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  #1
+}
+
+\newcommand{\topbanner}[1]{%
+\begin{tikzpicture}[remember picture,overlay]
+\fill[UNBCGold] ([yshift=-0.65cm]current page.north west) rectangle ([yshift=-0.48cm]current page.north east);
+\node[anchor=north west,font=\small\bfseries,text=UNBCDark] at ([xshift=0.35cm,yshift=-0.78cm]current page.north west) {#1};
+\end{tikzpicture}%
+}
+
+
+% ---------- TITLE ----------
+\title{\textbf{Welcome to ECON 101}}
+\subtitle{{\large Macroeconomics}}
+\author{Muhebullah Karimzada}
+\institute{School of Economics \\ University of Northern British Columbia}
+\date{September 9, 2026}
+
+% ============================================================
+\begin{document}
+% ============================================================
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% ============================================================
+\begin{frame}{Today's Agenda}
+\transfade
+\begin{itemize}
+  \item Course overview
+  \item Instructor \& contact information
+  \item Assessments and grading
+  \item Course policies
+  \item RISE modules
+  \item Student resources
+  \item \textbf{Introduction: What is Economics?}
+  \item \textbf{Microeconomics vs.\ Macroeconomics}
+  \item \textbf{Key macroeconomic questions}
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\section{Course Overview}
+% ============================================================
+
+\begin{frame}{About Your Instructor}
+\transfade
+\begin{columns}
+  \begin{column}{0.55\textwidth}
+    \begin{block}{Contact Information}
+      \begin{itemize}
+        \item \textbf{Instructor:} Muhebullah Karimzada
+        \item \textbf{Email:} karimzada@unbc.ca
+        \item \textbf{Office:} Room 10-4522
+      \end{itemize}
+    \end{block}
+    \vspace{0.4em}
+    \begin{block}{Office Hours}
+      \begin{itemize}
+        \item \textbf{Tuesday:} 1:00 pm -- 2:30 pm
+        \item \textbf{Wednesday:} 11:30 am -- 1:00 pm
+        \item \textbf{Thursday:} 1:00 pm -- 2:00 pm
+        \item Or by appointment
+      \end{itemize}
+    \end{block}
+  \end{column}
+  \begin{column}{0.42\textwidth}
+    \begin{alertblock}{Teaching Assistant}
+      \centering TBA
+    \end{alertblock}
+    \vspace{0.4em}
+    \begin{block}{Lectures}
+      \begin{itemize}
+        \item Mon \& Wed
+        \item 10:00 am -- 11:20 am
+        \item Room 7-212
+      \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+\end{frame}
+
+% ============================================================
+\begin{frame}{What is This Course About?}
+\transfade
+\begin{block}{Course Description}
+  This course offers an in-depth understanding of the key concepts, theories, and principles that drive the functioning of modern economies at the \textbf{macroeconomic level}.
+\end{block}
+\vspace{0.5em}
+\textbf{Topics explored include:}
+\begin{columns}
+  \begin{column}{0.48\textwidth}
+    \begin{itemize}
+      \item Market forces of supply and demand
+      \item National income determination
+      \item Economic growth
+      \item International trade
+      \item Savings and investment
+    \end{itemize}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \begin{itemize}
+      \item Unemployment and inflation
+      \item Monetary and banking systems
+      \item Fiscal and monetary policies
+      \item Short-term economic fluctuations
+    \end{itemize}
+  \end{column}
+\end{columns}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Required Textbook \& Resources}
+\transfade
+\begin{block}{Required Text}
+  \textbf{Macroeconomics}, 4th Canadian Edition \\
+  \textit{Hubbard et al.}
+\end{block}
+\vspace{0.5em}
+\begin{block}{Additional Resources}
+  \begin{itemize}
+    \item Lecture slides, practice problem sets posted on \textbf{Moodle}
+    \item Students are responsible for downloading and saving all course material from Moodle before access is shut off at semester end
+  \end{itemize}
+\end{block}
+\vspace{0.3em}
+\begin{alertblock}{Important}
+  Keep up with the readings \textit{before} each lecture for best results.
+\end{alertblock}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Course Schedule at a Glance}
+\transfade
+\footnotesize
+\begin{tabular}{@{}cll@{}}
+  \toprule
+  \textbf{Week} & \textbf{Dates} & \textbf{Topic} \\
+  \midrule
+  1  & Sep 9             & \textbf{Introduction to Economics} \\
+  2  & Sep 14 \& 16      & Ch.1 Foundations and Models; Ch.2 Trade-offs \& Comparative Advantage \\
+  3  & Sep 21 \& 23      & Ch.3 Supply and Demand \\
+  4  & Sep 28 \& 30      & Ch.4 GDP: Measuring Total Production and Income \\
+  5  & Oct 5 \& 7        & Ch.5 Unemployment and Inflation \\
+  6  & Oct 14            & Ch.6 Economic Growth, Financial System, Business Cycles \\
+  7  & Oct 19 \& 21      & Ch.7 Long-run Economic Growth \\
+  8  & Oct 26 \& 28      & Ch.8 Aggregate Expenditure and Output \\
+  9  & Nov 2 \& 4        & Ch.9 Aggregate Demand and Supply Analysis \\
+  --  & Nov 9--13        & \textit{UNBC Mid-Semester Break} \\
+  10 & Nov 16 \& 18      & Ch.10 Money, Banks, and the Bank of Canada \\
+  11 & Nov 23 \& 25      & Ch.11 Monetary Policy \\
+  12 & Nov 30 \& Dec 2   & Ch.12 Fiscal Policy \\
+  13 & Dec 6 \& 8        & Final Exam Review \\
+  \bottomrule
+\end{tabular}
+\end{frame}
+
+% ============================================================
+\section{Assessments \& Grading}
+% ============================================================
+
+\begin{frame}{Assessments \& Grading}
+\transfade
+\begin{columns}
+  \begin{column}{0.52\textwidth}
+    \begin{block}{Grade Breakdown}
+      \begin{tabular}{@{}lcc@{}}
+        \toprule
+        \textbf{Assessment} & \textbf{Weight} & \textbf{Date} \\
+        \midrule
+        In-class Quizzes (4 of 5) & 10\%  & Various \\
+        Midterm Exam 1            & 25\%  & Oct 19 \\
+        Midterm Exam 2            & 25\%  & Nov 18 \\
+        Final Exam                & 40\%  & TBA \\
+        \midrule
+        \textbf{Total}            & \textbf{100\%} & \\
+        \bottomrule
+      \end{tabular}
+    \end{block}
+  \end{column}
+  \begin{column}{0.45\textwidth}
+    \begin{block}{Quiz Dates}
+      \begin{itemize}
+        \item Quiz 1: Sep 28 (Ch.2--3)
+        \item Quiz 2: Oct 7 (Ch.4)
+        \item Quiz 3: Oct 14 (Ch.5)
+        \item Quiz 4: Oct 28 (Ch.8)
+        \item Quiz 5: Dec 2 (Ch.10--11)
+      \end{itemize}
+    \end{block}
+    \begin{alertblock}{Bonus}
+      RISE Bonus Modules: up to \textbf{+5\%}
+    \end{alertblock}
+  \end{column}
+\end{columns}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Grading Scale}
+\transfade
+\begin{columns}
+  \begin{column}{0.48\textwidth}
+    \begin{tabular}{@{}ccc@{}}
+      \toprule
+      \textbf{Letter} & \textbf{GPA} & \textbf{Percentage} \\
+      \midrule
+      A+  & 4.33 & 90--100\% \\
+      A   & 4.00 & 85--89.9\% \\
+      A-  & 3.67 & 80--84.9\% \\
+      B+  & 3.33 & 77--79.9\% \\
+      B   & 3.00 & 73--76.9\% \\
+      B-  & 2.67 & 70--72.9\% \\
+      \bottomrule
+    \end{tabular}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \begin{tabular}{@{}ccc@{}}
+      \toprule
+      \textbf{Letter} & \textbf{GPA} & \textbf{Percentage} \\
+      \midrule
+      C+  & 2.33 & 67--69.9\% \\
+      C   & 2.00 & 63--66.9\% \\
+      C-  & 1.67 & 60--62.9\% \\
+      D+  & 1.33 & 57--59.9\% \\
+      D   & 1.00 & 53--56.9\% \\
+      F   & 0.00 & 0--49.9\%  \\
+      \bottomrule
+    \end{tabular}
+  \end{column}
+\end{columns}
+\end{frame}
+
+% ============================================================
+\section{Course Policies}
+% ============================================================
+
+\begin{frame}{Important Course Policies}
+\transfade
+\begin{columns}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Quizzes}
+      \begin{itemize}
+        \item Held in last 30 min of lecture
+        \item Top \textbf{4 of 5} scores count
+        \item One free pass --- missed quiz counts as the free pass
+        \item \textbf{No make-up quizzes}
+      \end{itemize}
+    \end{block}
+    \vspace{0.3em}
+    \begin{block}{Midterms}
+      \begin{itemize}
+        \item \textbf{No make-up midterms}
+        \item Missed midterm (with documentation): 50\% weight $\to$ other midterm; 50\% $\to$ final
+        \item Must write \textbf{at least one} midterm
+      \end{itemize}
+    \end{block}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{All Assessments}
+      \begin{itemize}
+        \item Strictly \textbf{individual}
+        \item \textbf{Closed book}
+        \item Mix of: short answer, analytical, numerical, true/false, MCQ, fill-in-the-blank
+      \end{itemize}
+    \end{block}
+    \vspace{0.3em}
+    \begin{alertblock}{Generative AI Policy}
+      Use of generative AI is \textbf{NOT allowed} in this course unless specifically authorized by the instructor.
+    \end{alertblock}
+  \end{column}
+\end{columns}
+\end{frame}
+
+% ============================================================
+\begin{frame}{RISE Modules}
+\transfade
+\begin{block}{What is FY RISE?}
+  The First-Year RISE Program helps you develop practical study and learning skills for success at UNBC.
+\end{block}
+\vspace{0.3em}
+\begin{columns}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Required Modules \textnormal{(due Sep 25, 2026)}}
+      \begin{itemize}
+        \item Time Management
+        \item Academic Reading
+        \item Effective Studying
+      \end{itemize}
+      \textbf{Required to write quizzes and exams.}
+    \end{block}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Bonus Modules \textnormal{(due Nov 1, 2026)}}
+      \begin{itemize}
+        \item Academic Habits of Mind
+        \item Generative AI in University
+      \end{itemize}
+      \textbf{+2.5\% per module (max +5\%)}
+    \end{block}
+  \end{column}
+\end{columns}
+\vspace{0.3em}
+\begin{alertblock}{Already completed a required module?}
+  Email your RISE badge number to \texttt{karimzada@unbc.ca} --- no need to redo it.
+\end{alertblock}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Student Resources at UNBC}
+\transfade
+\begin{columns}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Academic Support}
+      \begin{itemize}
+        \item \textbf{Academic Success Centre (ASC)} --- free tutoring, study skills \\ Room 5-139 $|$ asc@unbc.ca
+        \item \textbf{Academic Advising} --- course load, degree requirements \\ Room 7-702 $|$ advising@unbc.ca
+        \item \textbf{Access Resource Centre (ARC)} --- academic accommodations \\ arc@unbc.ca
+      \end{itemize}
+    \end{block}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Wellbeing \& Safety}
+      \begin{itemize}
+        \item \textbf{UNBC Counselling Services} \\ wellness@unbc.ca
+        \item \textbf{Crisis Centre Northern BC (24/7)} \\ 1-888-562-1214
+        \item \textbf{UNBC SAFE App} --- emergency contacts \& safety tips
+        \item \textbf{NUGSS Food Bank} --- Building 6, open to all students
+      \end{itemize}
+    \end{block}
+  \end{column}
+\end{columns}
+\end{frame}
+
+% ============================================================
+\section{Introduction to Economics}
+% ============================================================
+
+\begin{frame}{What is Economics?}
+
+\begin{block}{Definition}
+  \textbf{Economics} is the study of how individuals, businesses, governments, and societies make choices to allocate \textit{scarce} resources to satisfy their \textit{unlimited} wants and needs.
+\end{block}
+\vspace{0.4em}
+\begin{itemize}
+  \item \textbf{Scarcity} is the fundamental economic problem --- resources are limited, but wants are not
+  \item Every choice involves a \textbf{trade-off}: choosing one thing means giving up something else
+  \item The value of the next best alternative forgone is the \textbf{opportunity cost}
+  \item Economics helps us understand \textit{how} decisions are made and \textit{what} their consequences are
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Two Branches of Economics}
+\transfade
+\begin{columns}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Microeconomics}
+      Studies the decisions of \textbf{individual} agents:
+      \begin{itemize}
+        \item Households and consumers
+        \item Firms and producers
+        \item Individual markets
+      \end{itemize}
+      \vspace{0.3em}
+      \textit{Example: How does a rise in coffee prices affect consumer demand?}
+    \end{block}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Macroeconomics}
+      Studies the economy as a \textbf{whole}:
+      \begin{itemize}
+        \item National output (GDP)
+        \item Unemployment rates
+        \item Inflation and price levels
+        \item Government policy
+      \end{itemize}
+      \vspace{0.3em}
+      \textit{Example: Why does Canada's unemployment rate rise during a recession?}
+    \end{block}
+  \end{column}
+\end{columns}
+\vspace{0.4em}
+\centering \textcolor{accent}{\textbf{In ECON 101, we focus on Macroeconomics.}}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Why Study Macroeconomics?}
+
+\begin{itemize}
+  \item \textbf{It affects your daily life} --- interest rates on loans, job prospects, prices of goods
+  \item \textbf{It shapes government decisions} --- taxes, spending, monetary policy
+  \item \textbf{It explains news headlines} --- recessions, inflation, central bank rate decisions
+  \item \textbf{It matters for business} --- firms plan hiring, investment, and pricing based on economic conditions
+  \item \textbf{It informs your citizenship} --- understanding policy debates makes you a more informed voter and participant in society
+\end{itemize}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Key Macroeconomic Questions}
+\transfade
+\begin{block}{The Big Questions We Will Answer This Semester}
+  \begin{enumerate}
+    \item What determines the total output and income of an economy?
+    \item Why do economies grow over time --- and why do some grow faster than others?
+    \item What causes unemployment, and what can be done about it?
+    \item What causes inflation, and how is it controlled?
+    \item How do banks and the Bank of Canada influence the economy?
+    \item What role should government play through fiscal and monetary policy?
+    \item How are economies around the world connected through trade and finance?
+  \end{enumerate}
+\end{block}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Positive vs.\ Normative Economics}
+
+\begin{columns}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Positive Economics}
+      Describes \textit{what is} --- objective statements about the world that can be tested with data.
+      \vspace{0.3em}
+
+      \textit{``A 1\% increase in the unemployment rate reduces GDP growth by approximately 2\%.''} (Okun's Law)
+    \end{block}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Normative Economics}
+      Prescribes \textit{what ought to be} --- value judgments about economic outcomes or policies.
+      \vspace{0.3em}
+
+      \textit{``The government should increase the minimum wage to reduce income inequality.''}
+    \end{block}
+  \end{column}
+\end{columns}
+\vspace{0.5em}
+\begin{alertblock}{Key Takeaway}
+  Economists try to be \textbf{positive} in their analysis, but policy debates are often \textbf{normative}. Knowing the difference matters.
+\end{alertblock}
+\end{frame}
+
+% ============================================================
+\begin{frame}{Economic Models}
+
+\begin{block}{What is an Economic Model?}
+  A \textbf{model} is a simplified representation of reality used to analyze economic behaviour and make predictions.
+\end{block}
+\vspace{0.3em}
+\begin{itemize}
+  \item Models \textit{deliberately} leave out details to focus on what matters most
+  \item A map is a good analogy --- it simplifies the world but is still useful for navigation
+  \item We will use models involving \textbf{graphs}, \textbf{equations}, and \textbf{tables}
+  \item The \textbf{ceteris paribus} assumption (``all else equal'') is central to most models --- we change one variable at a time
+\end{itemize}
+\vspace{0.3em}
+\begin{block}{Examples We Will Use}
+  Supply \& Demand model, GDP expenditure model, AD--AS model, money market model
+\end{block}
+\end{frame}
+
+% ============================================================
+\begin{frame}{What to Expect This Semester}
+\transfade
+\begin{columns}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{To Succeed in This Course}
+      \begin{itemize}
+        \item Attend \textbf{all lectures} and take notes
+        \item Read the textbook \textit{before} class
+        \item Complete \textbf{RISE modules} by Sep 25
+        \item Practice with problem sets on Moodle
+        \item Visit office hours early --- don't wait until before exams
+        \item Review material \textbf{regularly}, not just before tests
+      \end{itemize}
+    \end{block}
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \begin{block}{Upcoming Deadlines}
+      \begin{itemize}
+        \item \textbf{Sep 25:} RISE Required Modules due
+        \item \textbf{Sep 28:} Quiz 1 (Ch.2--3)
+        \item \textbf{Oct 7:} Quiz 2 (Ch.4)
+        \item \textbf{Oct 14:} Quiz 3 (Ch.5)
+        \item \textbf{Oct 19:} \textbf{Midterm 1}
+      \end{itemize}
+    \end{block}
+
+  \end{column}
+\end{columns}
+\end{frame}
+
+% ============================================================
+\begin{frame}[plain]
+\transfade
+  \begin{center}
+    \vspace{2em}
+    {\Large \textbf{Questions?}}\\[1em]
+    {\normalsize karimzada@unbc.ca}\\[0.5em]
+    {\normalsize Office: Room 10-4522}\\[0.5em]
+    {\normalsize Office Hours: Tue 1--2:30pm $\cdot$ Wed 11:30am--1pm $\cdot$ Thu 1--2pm}\\[1.5em]
+    \textcolor{accent}{\rule{0.6\textwidth}{0.4pt}}\\[1em]
+    {\small See you Monday, September 14\textsuperscript{th}!}\\
+    {\small Read Chapters 1 and 2 for next week.}
+  \end{center}
+\end{frame}
+
+% ============================================================
+\end{document}

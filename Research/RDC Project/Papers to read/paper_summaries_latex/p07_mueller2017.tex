@@ -1,0 +1,392 @@
+%=============================================================
+% Paper 7: Mueller (2017), AER
+%=============================================================
+\chapter{Mueller (2017)}
+
+\begin{paperbox}{Separations, Sorting, and Cyclical Unemployment}
+\textbf{Author:} Andreas I.\ Mueller (Columbia GSB)\\[3pt]
+\textbf{Journal:} \textit{American Economic Review} 107(7): 2081--2107\\[3pt]
+\textbf{Year:} 2017 \quad\textbf{Field:} Labour economics; Macroeconomics\\[3pt]
+\textbf{Classification:} Empirical + structural (calibration)
+\end{paperbox}
+
+%------------------------------------------------------------
+\section{Research Question}
+
+Does the composition of the pool of unemployed workers shift systematically
+over the business cycle, and in which direction---toward higher- or lower-wage
+workers? What drives this compositional shift---separations or job-finding
+rates? Can standard or modified theories of unemployment account for the
+observed pattern?
+
+%------------------------------------------------------------
+\section{Motivation}
+
+It has long been known that the pool of \emph{employed} workers shifts toward
+higher-wage workers in recessions (Solon, Barsky, Parker 1994), because
+low-wage workers are more likely to lose jobs. One might expect the
+\emph{unemployed} pool to shift toward lower-wage workers. Mueller documents
+that this intuition is wrong: the unemployed pool shifts toward
+\emph{high}-wage workers in recessions. The finding has profound implications
+for hiring incentives (compositional changes affect the average productivity
+of job applicants), for policy evaluation (ALMP participants are higher-quality
+in recessions), and for the unemployment volatility puzzle (Shimer 2005).
+
+%------------------------------------------------------------
+\section{Main Contribution}
+
+\begin{enumerate}
+  \item \textbf{A new empirical fact:} The pre-displacement wage of unemployed
+    workers rises strongly in recessions. A 1~pp increase in the unemployment
+    rate is associated with a 1.5~pp increase in the average wage \emph{rank}
+    of the unemployed ($\rho=0.67$, CPS~ORG; 0.73, March~CPS). This holds
+    for raw wages, wage ranks, and Mincer residuals, and appears in every
+    recession since 1962.
+  \item \textbf{Mechanism:} The shift is driven almost entirely by
+    \emph{separations}---high-wage workers have substantially more cyclical
+    separation rates; job-finding rate cyclicality is similar across wage
+    groups.
+  \item \textbf{Theory evaluation:} Standard DMP models fail. Two extensions
+    succeed: (i)~lower variance of match productivity for high-ability workers;
+    (ii)~credit cash-flow constraints in recessions.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Relationship to the Literature}
+
+Extends Solon--Barsky--Parker (1994) to the unemployed pool, showing both
+pools can shift in the \emph{same} direction (high-wage) in recessions. Challenges
+Pries (2008) who assumes the unemployed pool shifts toward low-ability workers.
+Adds a new challenge to the unemployment volatility puzzle (Shimer 2005): the
+high-ability unemployed raise vacancy returns, \emph{dampening} the aggregate
+hiring response to adverse shocks.
+
+%------------------------------------------------------------
+\section{Theoretical Framework and Economic Mechanism}
+
+\subsection*{Accounting Framework}
+
+The fraction of group~$i$ in the unemployed pool satisfies:
+\begin{equation}
+  \phi^U_{it} = \phi^L_{it}\,\frac{U_{it}}{U_t},
+  \label{eq:mueller_phi}
+\end{equation}
+where $\phi^L_{it}$ is group $i$'s labour force share and $U_{it}$ is group
+$i$'s unemployment rate. Using the Elsby--Michaels--Solon (2009) flow
+decomposition, compositional changes in the unemployed pool decompose
+(approximately) as:
+\begin{equation}
+  d\phi^U_{it} \approx \phi^U_{it}(1-\phi^U_{it})\,\bigl[
+    (1-U^{ss}_{it})(d\ln s_{it}-d\ln f_{it})
+    - (1-U^{ss}_{jt})(d\ln s_{jt}-d\ln f_{jt})
+  \bigr],
+  \label{eq:mueller_decomp}
+\end{equation}
+where $s_{it}$ and $f_{it}$ are group-$i$ separation and job-finding rates.
+This shows compositional changes are driven by the \emph{relative} log changes
+in flow rates, weighted by steady-state employment rates.
+
+\subsection*{Why Standard Models Fail}
+
+In the baseline DMP model, low-wage workers are more likely to be near the
+separation threshold, so an adverse aggregate shock pushes more low-wage
+workers into unemployment---opposite to the data.
+
+\subsection*{Extension 1: Lower Match Variance for High-Ability Workers}
+
+If the variance of match-specific productivity shocks is lower for high-ability
+workers, the density of matches at the separation threshold is
+\emph{higher} for high-ability workers (their matches are more tightly
+clustered near the threshold). Aggregate shocks that shift the threshold
+cause a larger mass of high-ability matches to cross it, generating higher
+cyclicality of high-wage separations. Critically, this calibration also
+preserves near-equal cyclicality of job-finding rates across groups.
+
+\subsection*{Extension 2: Credit Cash-Flow Constraints}
+
+Firms facing cash-flow constraints in recessions may separate from workers
+whose current match productivity is negative even if the NPV of the match is
+positive. Marginal matches with high-ability workers generate more negative
+current cash flows (workers paid above current productivity in anticipation
+of future returns), making them more sensitive to credit tightening.
+
+%------------------------------------------------------------
+\section{Data}
+
+\begin{itemize}
+  \item \textbf{CPS Outgoing Rotation Groups (ORG):} Private-sector workers
+    aged 16--64, 1980--2012; $N=1{,}203{,}543$; 79,463 experienced $\geq$1
+    month of unemployment in interview months 5--8.
+  \item \textbf{CPS March Supplement:} 1962--2012 (backward-looking wages;
+    full 50-year coverage; no attrition issues).
+  \item \textbf{Monthly CPS:} 1978--2012 (demographic composition of
+    unemployed; no wage data).
+  \item \textbf{NLSY79:} 1979--2012; $N=6{,}923$; 193,467 yearly labour
+    force status observations; used to distinguish permanent vs.\ transitory
+    wage components.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Empirical Strategy}
+
+\begin{enumerate}
+  \item Compute average log previous wage, wage rank (ordinal), and Mincer
+    residual for the unemployed pool in each year. HP-filter ($\lambda=100$)
+    and correlate with the HP-filtered aggregate unemployment rate.
+  \item Decompose compositional shifts into components by predicted wage
+    (experience, education, gender, marital status, race, state, industry,
+    occupation) using OLS regressions (Table~1).
+  \item Estimate group-specific $(s_{it}, f_{it})$ from matched CPS panels
+    and apply the decomposition in equation~(\ref{eq:mueller_decomp}) to
+    isolate the separation vs.\ job-finding margin.
+  \item Calibrate baseline and extended DMP models to match average separation
+    rates by wage group; compare predicted compositional shifts to data.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Identification Strategy}
+
+\textbf{The main empirical claim is correlational, not causal.} The paper
+documents a robust pattern across multiple data sources and specifications.
+The Mincer residual specification (controlling for demographics, industry,
+occupation, year) attempts to isolate the residual component. The NLSY79
+analysis provides evidence that compositional changes are associated with
+\emph{permanent} worker fixed effects rather than transitory match quality
+effects.
+
+Key identification challenge: the composition of workers who lose their jobs
+could reflect true changes in separation behaviour \emph{or} changes in the
+composition of at-risk workers. The paper addresses this through the wage rank
+specification (immune to wage compression) and the Mincer residual (controlling
+for observables), but cannot fully rule out unobservable worker selection into
+high-wage jobs.
+
+%------------------------------------------------------------
+\section{Main Results}
+
+\subsection*{New Empirical Fact (Figures 3--4, Table~1)}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Wage measure} & \textbf{CPS ORG} & \textbf{March CPS} \\
+\midrule
+$\rho$: avg log previous wage $\times$ unemp.\ rate & 0.60 & 0.59 \\
+$\rho$: avg wage \emph{rank} $\times$ unemp.\ rate & 0.67 & 0.73 \\
+$\rho$: avg Mincer residual $\times$ unemp.\ rate & 0.44 & 0.60 \\
+\midrule
+1~pp $\uparrow$ unemp.\ rate $\Rightarrow$ $\Delta$ avg log wage & $+2.77\%$ & $+2.59\%$ \\
+1~pp $\uparrow$ unemp.\ rate $\Rightarrow$ $\Delta$ avg wage rank & $+1.5$~pp & $+1.1$~pp \\
+1~pp $\uparrow$ unemp.\ rate $\Rightarrow$ $\Delta$ avg Mincer residual & $+0.75\%$ & $+0.95\%$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The pattern appears in \emph{every recession since 1962} and is robust to all
+specifications.
+
+\subsection*{Observable Drivers (Table~1)}
+
+All observable components shift in the same direction: the unemployed in
+recessions are more experienced, more educated, more likely to be male,
+married, white, and from high-wage industries and occupations. Industry
+accounts for $\approx$25\% of total compositional shift.
+
+\subsection*{Separation vs.\ Job-Finding}
+
+The compositional shift is \emph{almost entirely driven by separations}.
+High-wage workers have substantially more cyclical log separation rates;
+the cyclicality of log job-finding rates is similar across wage groups.
+
+\subsection*{Model Results}
+
+\begin{itemize}
+  \item \textbf{Standard DMP:} Generates shifts toward \emph{low}-ability
+    workers---wrong direction.
+  \item \textbf{Extension~1 (lower match variance):} Generates shifts toward
+    high-ability workers; correct direction for all moments.
+  \item \textbf{Extension~2 (credit constraints):} Correct direction for
+    recessions with financial stress; internally inconsistent for recessions
+    without credit disruption.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Economic Magnitude and Interpretation}
+
+A 1~pp rise in unemployment shifts the average unemployed worker from (say)
+the 50th to the 51.5th percentile of the wage distribution. Over a typical
+recession ($\approx$3~pp unemployment rise), the average unemployed worker
+is at about the 54.5th percentile. The estimated dampening of aggregate
+hiring responses due to this compositional shift is up to $3.6\times$ the
+steady-state elasticity (Online Appendix~G.1)---a quantitatively important
+challenge for the unemployment volatility puzzle.
+
+%------------------------------------------------------------
+\section{Mechanisms}
+
+The preferred explanation is \textbf{lower variance of match-specific
+productivity for high-ability workers}:
+\begin{itemize}
+  \item High-ability workers have matches clustered more tightly near the
+    separation threshold.
+  \item Aggregate shocks that shift the threshold by a given amount cause
+    a larger mass of high-ability matches to cross it.
+  \item This generates higher cyclicality of separations without asymmetric
+    cyclicality of job-finding rates.
+\end{itemize}
+
+The \textbf{credit constraint} mechanism is plausible but has internal
+consistency problems: it predicts no compositional shift in recessions without
+clear financial market disruption (e.g.\ 1970--71), but the data show the
+shift in every recession back to 1962.
+
+%------------------------------------------------------------
+\section{Robustness Checks}
+
+\begin{itemize}
+  \item Three CPS data sources (ORG, March, monthly) and NLSY79 give
+    consistent results.
+  \item Robust to: wage rank (immune to wage compression); Mincer residual
+    (controls for observables); exclusion of long-term unemployed.
+  \item NLSY79 distinguishes permanent worker effects from transitory match
+    effects: shift is associated with permanent quality.
+  \item Pattern holds in every recession 1962--2012.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Limitations}
+
+\begin{enumerate}
+  \item \textbf{Long-term unemployment exclusion:} CPS ORG excludes $>$12
+    months unemployed; becomes substantial post-2008 (up to 31.2\%).
+  \item \textbf{Indirect mechanism test:} Cannot directly test whether
+    match productivity variance differs across worker types---a maintained
+    calibration assumption.
+  \item \textbf{Credit constraint test indirect:} Chodorow-Reich (2014)-based
+    test is promising but not definitive.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Policy Implications}
+
+\begin{itemize}
+  \item \textbf{ALMP evaluation:} Higher-ability unemployed in recessions
+    $\Rightarrow$ programmes more effective in recessions (Card, Kluve,
+    Weber 2015).
+  \item \textbf{UI design:} Cyclical shift toward high-wage unemployed
+    means UI benefits (fixed fraction of prior wage) are \emph{larger in
+    absolute terms} during recessions---an automatic stabiliser amplification.
+  \item \textbf{Hiring incentives:} High-ability unemployed raise returns
+    to vacancy posting $\Rightarrow$ partial automatic stabiliser on the
+    hiring side (dampens vacancy collapse).
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Overall Assessment}
+
+Mueller (2017) is a clean, careful, and important empirical paper establishing
+a new stylised fact with exemplary robustness: three data sources, 50 years
+of data, multiple specifications, and a clear accounting framework. The theory
+section is more provisional but usefully narrows the space of viable
+explanations. The most important contribution is the implication for the
+unemployment volatility puzzle: compositional shifts toward high-ability
+workers in recessions \emph{dampen} aggregate hiring responses.
+
+\textbf{Quality: Very good. Important new fact, careful empirics, sound
+theoretical interpretation.}
+
+%------------------------------------------------------------
+\section{Relevance to My Research}
+
+Relevant for any RDC project studying worker heterogeneity in unemployment
+dynamics. For Canadian work: LEED or matched LFS-style data could be used to
+test whether the Canadian unemployed pool also shifts toward high-wage workers
+in recessions, and whether this effect is amplified in resource provinces
+during commodity busts (where separated workers are predominantly from
+high-wage extraction jobs).
+
+%------------------------------------------------------------
+\section{Potential Research Extensions}
+
+\begin{itemize}
+  \item Test the Mueller fact for Canada using matched LFS data; does the
+    Canadian unemployed pool shift toward high-wage workers, and is this
+    amplified in resource provinces during commodity busts?
+  \item COVID-19 (primarily destroying low-wage service jobs) likely produced
+    the \emph{opposite} compositional shift---a natural out-of-sample test
+    of the mechanism's asymmetry.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Research Gaps}
+
+\begin{itemize}
+  \item Cannot distinguish the credit constraint from the lower match-variance
+    mechanism; a firm-level test using credit supply shocks (e.g.\ bank
+    failures) would be needed.
+  \item COVID-19 provides an obvious out-of-sample test of whether the
+    Mueller mechanism operates symmetrically---the composition of unemployment
+    should shift toward \emph{low}-wage workers.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Methodological Lessons}
+
+\begin{enumerate}
+  \item Equation~(\ref{eq:mueller_phi}) is essential: changes in the share of
+    a group among the unemployed depend on \emph{relative} unemployment rate
+    changes (not absolute levels), so the higher-volatility unemployment of
+    low-wage workers does \emph{not} imply the unemployed pool shifts toward
+    low-wage workers.
+  \item Wage \emph{ranks} (ordinal) are more informative than levels because
+    they are immune to wage compression as an alternative explanation.
+  \item The Elsby--Michaels--Solon flow decomposition (equation
+    \ref{eq:mueller_decomp}) cleanly attributes compositional shifts to
+    separations vs.\ job-finding, using log rates (not levels) to account
+    for different average flow rates across groups.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section*{Five-Sentence Summary}
+
+Mueller (2017) documents a new fact using 50 years of CPS data: in recessions,
+the pool of unemployed shifts toward workers with \emph{higher} pre-displacement
+wages, with a 1~percentage-point rise in unemployment associated with a 1.5~pp
+increase in the average wage rank of the unemployed---a pattern that holds in
+every recession since 1962, for raw wages, wage ranks, and Mincer residuals.
+The compositional shift is almost entirely driven by \emph{separations}: high-
+wage workers have substantially more cyclical separation rates, while job-
+finding rate cyclicality is similar across wage groups. Standard DMP models
+generate shifts in the \emph{opposite} direction; two extensions succeed---
+lower variance of match productivity for high-ability workers and credit cash-
+flow constraints---with the former being the more broadly applicable
+explanation. The finding implies that the unemployed pool is higher quality in
+recessions, raising returns to vacancy posting and potentially \emph{dampening}
+the aggregate hiring response to adverse shocks---an additional challenge for
+the unemployment volatility puzzle. Compositional changes in the unemployed
+pool are substantially larger in magnitude than the corresponding changes in
+the employed pool, implying standard composition-bias corrections are
+insufficient for statistics related to the unemployed.
+
+\vspace{6pt}
+\begin{quickref}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\textbf{Key contribution} &
+  New empirical fact (robust across 3 data sources, 50 years): unemployed
+  pool shifts toward high-wage workers in recessions, driven almost entirely
+  by the higher cyclicality of separations for high-wage workers. \\[4pt]
+\textbf{Key weakness} &
+  The two successful theoretical extensions cannot be empirically
+  distinguished; the credit constraint mechanism is internally inconsistent
+  for recessions without financial stress. \\[4pt]
+\textbf{Most interesting gap} &
+  COVID-19 likely produced the \emph{opposite} compositional shift (low-wage
+  service workers primarily displaced)---a natural out-of-sample test of
+  whether the Mueller mechanism is asymmetric. \\[4pt]
+\textbf{Publishable extension} &
+  Replicate Mueller's decomposition for Canada using matched LFS data; test
+  whether the shift toward high-wage unemployed is amplified in resource
+  provinces during commodity busts, and assess whether it dampens hiring
+  responses in those regions.
+\end{tabularx}
+\end{quickref}

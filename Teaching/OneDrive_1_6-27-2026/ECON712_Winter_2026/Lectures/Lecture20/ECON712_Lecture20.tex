@@ -1,0 +1,764 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%          Preamble
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[9pt]{beamer}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{amsmath,lmodern}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{bm}
+\usepackage{subfig}
+\usepackage[textfont={scriptsize}]{caption}
+\usepackage{tikz}
+\usetikzlibrary{fit,shapes.misc,arrows.meta,positioning}
+\usepackage{pdflscape}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{appendixnumberbeamer}
+\usepackage{bigints}
+\usepackage{booktabs}
+\usepackage{color,soul}
+\usepackage{relsize}
+
+% Colors
+\definecolor{slideblue}{RGB}{0, 102, 153}
+\setbeamercolor{frametitle}{fg=slideblue}
+\setbeamercolor{title}{fg=slideblue}
+\setbeamercolor{structure}{fg=slideblue}
+\setbeamercolor{alerted text}{fg=red}
+
+% Tighter itemize spacing
+\setlength{\leftmargini}{1em}
+\setlength{\leftmarginii}{1em}
+
+\newcounter{nodemarkers}
+
+\newcommand{\toplinesmall}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-.9cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-.9cm,xshift=3.6cm]current page.north west);}}
+
+\newcommand{\toplinemedium}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-.9cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-.9cm,xshift=6.2cm]current page.north west);}}
+
+\newcommand{\toplinelarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-.9cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-.9cm,xshift=8.9cm]current page.north west);}}
+
+\newcommand{\toplinexlarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-.9cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-.9cm,xshift=12cm]current page.north west);}}
+
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}{\textcolor{blue}{ECON712}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}{\textcolor{blue}{Winter 2026}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}{\textcolor{blue}{Lecture 20 \: \: \: \: \: \: \: }
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newcommand\marktopleft[1]{%
+    \tikz[overlay,remember picture]
+        \node (marker-#1-a) at (-0.2,1.2ex) {};}
+\newcommand\markbottomright[1]{%
+    \tikz[overlay,remember picture]
+        \node (marker-#1-b) at (0.16,-1ex) {};
+    \tikz[overlay,remember picture,thick,inner sep=4pt]
+        \node[draw,rectangle,rounded corners, blue, fit=(marker-#1-a.center) (marker-#1-b.center)] {};}
+
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[triangle]
+\beamertemplatenavigationsymbolsempty
+\addtobeamertemplate{frametitle}{\vspace*{0.19cm}}{\vspace*{0cm}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%              Define Title
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{ECON 712: Applied Econometrics}
+\author{Lecture 20: Instrumental Variables, Part V --- LATE}
+\date{}
+\AtBeginSection[]
+{
+ \begin{frame}<beamer>
+ \tableofcontents[currentsection]
+ \end{frame}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%              Document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\setbeamercovered{transparent}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+%-----------------------------------------------------------------------
+\section{From Constant to Heterogeneous Treatment Effects}
+%-----------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{\: \: \: Limitations of the Constant-Effects Model}
+\toplinexlarge
+\begin{itemize}
+\item So far we assumed: $y_i = \alpha + \rho D_i + \eta_i$, where $\rho$ is the \textbf{same} for everyone
+\vspace{0.11in}
+\item This rules out that individuals respond differently to treatment --- a strong assumption
+\vspace{0.11in}
+\item In reality, treatment effects are \textcolor{blue}{heterogeneous}:
+\begin{itemize}
+\vspace{0.08in}
+\item Education raises wages more for some people than others
+\vspace{0.08in}
+\item Military service affects earnings differently across individuals
+\vspace{0.08in}
+\item Health insurance has different effects on different patients
+\end{itemize}
+\vspace{0.11in}
+\item With heterogeneous effects, \textbf{which} average treatment effect does IV estimate?
+\vspace{0.11in}
+\item Answer (Imbens \& Angrist, 1994): the \textcolor{blue}{Local Average Treatment Effect (LATE)} --- the average effect \textit{for the subpopulation whose treatment status is changed by the instrument}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Potential Outcomes Framework}
+\toplinelarge
+\begin{itemize}
+\item Each individual $i$ has two \textcolor{blue}{potential outcomes}:
+\begin{eqnarray*}
+\begin{array}{ll}
+Y_{1i} & \text{outcome if treated } (D_i=1) \\
+Y_{0i} & \text{outcome if not treated } (D_i=0)
+\end{array}
+\end{eqnarray*}
+\item The \textbf{observed} outcome is:
+\begin{eqnarray*}
+Y_i = Y_{0i} + (Y_{1i} - Y_{0i}) D_i
+\end{eqnarray*}
+\item The \textcolor{blue}{individual treatment effect} is $\delta_i = Y_{1i} - Y_{0i}$
+\vspace{0.11in}
+\item Key estimands:
+\begin{eqnarray*}
+\begin{array}{lll}
+\text{ATE}  &=& E[Y_{1i} - Y_{0i}] \\[4pt]
+\text{ATT}  &=& E[Y_{1i}-Y_{0i}\mid D_i=1] \\[4pt]
+\text{LATE} &=& E[Y_{1i}-Y_{0i} \mid \text{complier}] \quad \text{(defined below)}
+\end{array}
+\end{eqnarray*}
+\item The \textbf{fundamental problem of causal inference}: we never observe both $Y_{1i}$ and $Y_{0i}$ for the same person
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: SUTVA}
+\toplinesmall
+\begin{itemize}
+\item \textcolor{blue}{Stable Unit Treatment Value Assumption (SUTVA)} requires:
+\vspace{0.11in}
+\begin{enumerate}
+\item \textbf{No interference:} individual $i$'s potential outcomes do not depend on the treatment status of others
+\begin{eqnarray*}
+Y_i = Y_i(D_i) \qquad \text{not } \qquad Y_i = Y_i(D_1, D_2, \ldots, D_n)
+\end{eqnarray*}
+\item \textbf{No hidden versions of treatment:} there is only one version of $D_i=1$
+\end{enumerate}
+\vspace{0.11in}
+\item SUTVA rules out \textbf{general equilibrium} and \textbf{spillover} effects
+\vspace{0.11in}
+\item Example violations:
+\begin{itemize}
+\vspace{0.08in}
+\item Herd immunity: your vaccination affects my health outcomes
+\vspace{0.08in}
+\item Education and wages: if many people get degrees, the wage premium changes
+\end{itemize}
+\vspace{0.11in}
+\item Under SUTVA the potential outcome notation is well-defined
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Introducing the Instrument}
+\toplinelarge
+\begin{itemize}
+\item Let $Z_i \in \{0,1\}$ be a binary instrument that \textbf{encourages} treatment but does not determine it
+\vspace{0.11in}
+\item Define \textcolor{blue}{potential treatment} as a function of the instrument:
+\begin{eqnarray*}
+\begin{array}{ll}
+D_{1i} & \text{treatment status of } i \text{ if } Z_i = 1 \\
+D_{0i} & \text{treatment status of } i \text{ if } Z_i = 0
+\end{array}
+\end{eqnarray*}
+\item The \textbf{observed} treatment is:
+\begin{eqnarray*}
+D_i = D_{0i} + (D_{1i} - D_{0i})Z_i
+\end{eqnarray*}
+\item Similarly define potential outcomes indexed by both treatment $d$ and instrument $z$:
+\begin{eqnarray*}
+Y_{dzi} \quad d \in \{0,1\},\; z \in \{0,1\}
+\end{eqnarray*}
+\item The \textcolor{blue}{exclusion restriction} collapses this to $Y_{di}$ only --- the instrument has no direct effect
+\end{itemize}
+\end{frame}
+
+%-----------------------------------------------------------------------
+\section{Compliance Types and LATE Assumptions}
+%-----------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{\: \: \: Four Compliance Types}
+\toplinemedium
+\begin{itemize}
+\item Based on $(D_{1i}, D_{0i})$, every individual belongs to one of four groups:
+\end{itemize}
+\vspace{0.1in}
+\begin{center}
+\begin{tabular}{lccl}
+\toprule
+\textbf{Type} & $D_{1i}$ & $D_{0i}$ & \textbf{Behaviour} \\
+\midrule
+\textcolor{blue}{Complier}   & 1 & 0 & Treated iff $Z_i=1$; responds to encouragement \\
+Always-taker                 & 1 & 1 & Always treated regardless of $Z_i$ \\
+Never-taker                  & 0 & 0 & Never treated regardless of $Z_i$ \\
+\alert{Defier}               & 0 & 1 & Does the opposite of assignment \\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{0.1in}
+\begin{itemize}
+\item We cannot observe compliance type --- only $(Y_i, D_i, Z_i)$ are observed
+\vspace{0.11in}
+\item \textbf{Monotonicity} rules out defiers
+\vspace{0.11in}
+\item LATE is the average treatment effect \textbf{for compliers only}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: LATE Assumption 1: Independence}
+\toplinelarge
+\begin{itemize}
+\item \textcolor{blue}{Independence (Instrument Exogeneity):}
+\begin{eqnarray*}
+\{Y_{0i},\; Y_{1i},\; D_{0i},\; D_{1i}\} \;\perp\!\!\!\perp\; Z_i
+\end{eqnarray*}
+\item The instrument is \textbf{as good as randomly assigned}
+\vspace{0.11in}
+\item Stronger than standard IV exogeneity: requires independence of all potential outcomes and potential treatments, not just zero correlation with the error term
+\vspace{0.11in}
+\item In practice it often comes from \textbf{randomization}:
+\begin{itemize}
+\vspace{0.08in}
+\item Draft lottery numbers (Angrist, 1990): random assignment ensures $Z_i \perp (Y_{0i},Y_{1i},D_{0i},D_{1i})$
+\vspace{0.08in}
+\item Quarter of birth (Angrist \& Krueger, 1991): arguably random conditional on covariates
+\vspace{0.08in}
+\item Geographic distance to college (Card, 1995)
+\end{itemize}
+\vspace{0.11in}
+\item When randomization holds only conditional on $X_i$: replace with conditional independence $(Y_{di},D_{zi}) \perp Z_i \mid X_i$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: LATE Assumption 2: Exclusion Restriction}
+\toplinelarge
+\begin{itemize}
+\item \textcolor{blue}{Exclusion Restriction:}
+\begin{eqnarray*}
+Y_{dzi} = Y_{di} \quad \text{for } d = 0,1 \text{ and all } z
+\end{eqnarray*}
+\item The instrument affects outcomes \textbf{only through} its effect on treatment $D_i$; it has no direct effect on $Y_i$
+\vspace{0.11in}
+\item This collapses $Y_{dzi}$ to $Y_{di}$, so observed outcomes can be written:
+\begin{eqnarray*}
+Y_i = Y_{0i} + (Y_{1i} - Y_{0i})D_i
+\end{eqnarray*}
+\item \textbf{Example:} in the draft lottery,
+\begin{itemize}
+\vspace{0.08in}
+\item $Z_i = 1$ if lottery number was low (eligible for draft)
+\vspace{0.08in}
+\item Exclusion: having a low lottery number affects earnings \textit{only} through military service; lottery number itself has no direct effect on wages
+\end{itemize}
+\vspace{0.11in}
+\item Often the most debatable assumption in practice --- requires institutional knowledge and cannot be tested directly
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: LATE Assumption 3: First Stage}
+\toplinelarge
+\begin{itemize}
+\item \textcolor{blue}{First Stage (Relevance):}
+\begin{eqnarray*}
+E[D_{1i} - D_{0i}] \neq 0 \quad \Longleftrightarrow \quad E[D_i \mid Z_i = 1] \neq E[D_i \mid Z_i = 0]
+\end{eqnarray*}
+\item The instrument has a non-zero average effect on treatment --- there must be a non-trivial proportion of \textbf{compliers}
+\vspace{0.11in}
+\item This is the standard IV relevance condition: $\text{Cov}(Z_i, D_i) \neq 0$
+\vspace{0.11in}
+\item In practice: tested with first-stage $F$-statistic
+\begin{itemize}
+\vspace{0.08in}
+\item Rule of thumb: $F > 10$ (Staiger \& Stock, 1997)
+\vspace{0.08in}
+\item Weak first stage $\Rightarrow$ IV estimator is nearly undefined: small denominator amplifies any bias in the numerator
+\vspace{0.08in}
+\item Weak instrument robust inference: Anderson-Rubin test, conditional likelihood ratio
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: LATE Assumption 4: Monotonicity}
+\toplinemedium
+\begin{itemize}
+\item \textcolor{blue}{Monotonicity (No Defiers):}
+\begin{eqnarray*}
+D_{1i} \geq D_{0i} \quad \text{for all } i
+\end{eqnarray*}
+\item The instrument weakly \textbf{increases} everyone's probability of treatment --- no one is discouraged from treatment by a higher $Z_i$
+\vspace{0.11in}
+\item Rules out \textbf{defiers}: individuals who do the opposite of what the instrument encourages
+\vspace{0.11in}
+\item This is a restriction on \textit{heterogeneity in compliance}, not a restriction on unobservables
+\vspace{0.11in}
+\item Often plausible when $Z_i$ is an encouragement or offer:
+\begin{itemize}
+\vspace{0.08in}
+\item Being offered a voucher weakly increases program participation
+\vspace{0.08in}
+\item Having a low draft number weakly increases military service
+\end{itemize}
+\vspace{0.11in}
+\item Under monotonicity, the four types reduce to three: \textcolor{blue}{compliers}, always-takers, and never-takers --- defiers are ruled out
+\end{itemize}
+\end{frame}
+
+%-----------------------------------------------------------------------
+\section{The LATE Theorem}
+%-----------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{\: \: \: The LATE Theorem (Imbens \& Angrist, 1994)}
+\toplinelarge
+\begin{proposition}[LATE Theorem]
+Under independence, exclusion restriction, first stage, and monotonicity:
+\begin{eqnarray*}
+\frac{E[Y_i \mid Z_i=1]-E[Y_i \mid Z_i=0]}{E[D_i \mid Z_i=1]-E[D_i \mid Z_i=0]}
+= E\!\left[\,Y_{1i}-Y_{0i}\;\big|\; D_{1i}>D_{0i}\,\right]
+\end{eqnarray*}
+\end{proposition}
+\vspace{0.1in}
+\begin{itemize}
+\item The left-hand side is the \textbf{Wald estimator} --- the IV ratio with a binary instrument
+\vspace{0.11in}
+\item The right-hand side is the \textcolor{blue}{Local Average Treatment Effect}: the average causal effect \textbf{for compliers}
+\vspace{0.11in}
+\item IV does \textbf{not} identify ATE or ATT in general --- only LATE
+\vspace{0.11in}
+\item The word ``local'' means the estimate is local to the complier subpopulation \textit{defined by this instrument} --- it changes with the instrument
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Proof of LATE --- Numerator}
+\toplinemedium
+\textbf{Step 1 --- Reduced Form (Numerator):}
+\begin{eqnarray*}
+E[Y_i \mid Z_i=1] - E[Y_i \mid Z_i=0]
+\end{eqnarray*}
+By \textbf{independence} ($Z_i \perp (Y_{0i},Y_{1i},D_{0i},D_{1i})$):
+\begin{eqnarray*}
+= E\bigl[Y_{0i}+(Y_{1i}-Y_{0i})D_{1i}\bigr] - E\bigl[Y_{0i}+(Y_{1i}-Y_{0i})D_{0i}\bigr]
+\end{eqnarray*}
+By \textbf{exclusion restriction} ($Y_i = Y_{0i}+(Y_{1i}-Y_{0i})D_i$), this simplifies to:
+\begin{eqnarray*}
+= E\bigl[(Y_{1i}-Y_{0i})(D_{1i}-D_{0i})\bigr]
+\end{eqnarray*}
+By \textbf{monotonicity} ($D_{1i}-D_{0i} \geq 0$) and the law of total expectation:
+\begin{eqnarray*}
+= E[Y_{1i}-Y_{0i} \mid D_{1i}>D_{0i}] \cdot P(D_{1i}>D_{0i})
+\end{eqnarray*}
+
+\vspace{0.05in}
+\textbf{Step 2 --- First Stage (Denominator):}
+\begin{eqnarray*}
+E[D_i \mid Z_i=1]-E[D_i \mid Z_i=0] \stackrel{\text{indep}}{=} E[D_{1i}]-E[D_{0i}] \stackrel{\text{mono}}{=} P(D_{1i}>D_{0i})
+\end{eqnarray*}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Proof of LATE --- Conclusion}
+\toplinemedium
+\textbf{Step 3 --- Taking the Ratio:}
+\begin{eqnarray*}
+\frac{E[Y_i \mid Z_i=1]-E[Y_i \mid Z_i=0]}{E[D_i \mid Z_i=1]-E[D_i \mid Z_i=0]}
+= \frac{E[Y_{1i}-Y_{0i} \mid D_{1i}>D_{0i}] \cdot P(D_{1i}>D_{0i})}{P(D_{1i}>D_{0i})}\\[8pt]
+= E[Y_{1i}-Y_{0i} \mid D_{1i}>D_{0i}] \quad \blacksquare
+\end{eqnarray*}
+\vspace{0.1in}
+\textbf{Role of each assumption:}
+\begin{enumerate}
+\vspace{0.08in}
+\item \textbf{Independence}: replaced $D_i \mid Z_i=z$ with $D_{zi}$, and similarly for $Y_i$
+\vspace{0.08in}
+\item \textbf{Exclusion}: collapsed $Y_{dzi}$ to $Y_{di}$; removed the direct effect of $Z$ on $Y$
+\vspace{0.08in}
+\item \textbf{Monotonicity}: ensured $E[(Y_{1i}-Y_{0i})(D_{1i}-D_{0i})]$ only involves compliers; without it, the numerator would mix complier and defier effects, and the ratio would not be interpretable as a treatment effect
+\end{enumerate}
+\end{frame}
+
+%-----------------------------------------------------------------------
+\section{Interpreting LATE}
+%-----------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{\: \: \: What Population Does LATE Describe?}
+\toplinelarge
+\begin{itemize}
+\item LATE describes the treatment effect for \textbf{compliers} --- those whose treatment status is switched by the instrument
+\vspace{0.11in}
+\item The complier share is identified from observables:
+\begin{eqnarray*}
+P(\text{complier}) = E[D_i \mid Z_i=1] - E[D_i \mid Z_i=0]
+\end{eqnarray*}
+\item What we \textbf{cannot} identify:
+\begin{itemize}
+\vspace{0.08in}
+\item ATE: requires identifying effects for always-takers and never-takers too
+\vspace{0.08in}
+\item ATT: requires identifying effects for always-takers too
+\end{itemize}
+\vspace{0.11in}
+\item LATE $=$ ATE iff treatment effects are \textbf{homogeneous} ($\delta_i = \delta$ for all $i$)
+\vspace{0.11in}
+\item LATE $=$ ATT iff there are \textbf{no always-takers}: $P(D_{0i}=1)=0$
+\vspace{0.11in}
+\item LATE depends on the instrument: two valid instruments may give different LATE estimates because they define different complier populations
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: LATE, ATE, and ATT}
+\toplinelarge
+\begin{center}
+\begin{tabular}{llll}
+\toprule
+\textbf{Estimand} & \textbf{Population} & \textbf{Typical estimator} & \textbf{Requires}\\
+\midrule
+ATE  & All $i$ & Experiment & Full randomisation \\
+ATT  & Treated $i$ & DiD, matching & CIA or parallel trends \\
+\textcolor{blue}{LATE} & \textcolor{blue}{Compliers} & \textcolor{blue}{IV/2SLS} & \textcolor{blue}{4 LATE assumptions} \\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{0.15in}
+\begin{itemize}
+\item \textbf{External validity:} LATE may not generalise beyond the specific complier group defined by the instrument used
+\vspace{0.11in}
+\item \textbf{Policy relevance:} if the policy works through the same compliance mechanism as the instrument (e.g.\ a voucher program), LATE is the \textit{right} estimand
+\vspace{0.11in}
+\item \textbf{Instrument comparison:} two valid instruments giving different 2SLS estimates are both correct --- for different complier groups
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Characterising Compliers}
+\toplinemedium
+\begin{itemize}
+\item We cannot identify individual compliers, but we can describe the \textbf{complier population} using observable covariates $X_i$
+\vspace{0.11in}
+\item The relative likelihood of characteristic $x$ among compliers (Angrist \& Pischke, MHE eq.\ 4.4.9):
+\begin{eqnarray*}
+\frac{P(X_i=x \mid \text{complier})}{P(X_i=x)} = \frac{E[D_{1i}-D_{0i}\mid X_i=x]}{E[D_{1i}-D_{0i}]}
+\end{eqnarray*}
+\item Estimated by running the first stage separately for $X_i=x$:
+\begin{eqnarray*}
+\frac{E[D_i \mid Z_i=1, X_i=x]-E[D_i \mid Z_i=0, X_i=x]}{E[D_i \mid Z_i=1]-E[D_i \mid Z_i=0]}
+\end{eqnarray*}
+\item Ratios $>1$: characteristic $x$ over-represented among compliers
+\vspace{0.11in}
+\item This allows researchers to say \textit{who} the compliers are, which is essential for judging external validity (Abadie, 2003)
+\end{itemize}
+\end{frame}
+
+%-----------------------------------------------------------------------
+\section{LATE and 2SLS}
+%-----------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{\: \: \: From Wald Estimator to 2SLS}
+\toplinelarge
+\begin{itemize}
+\item With a binary instrument and no covariates:
+\begin{eqnarray*}
+\hat{\delta}^{IV} = \frac{\overline{Y}_{Z=1}-\overline{Y}_{Z=0}}{\overline{D}_{Z=1}-\overline{D}_{Z=0}}
+\end{eqnarray*}
+\item With covariates $X_i$: 2SLS estimates a \textbf{covariate-weighted average} of conditional LATEs, weighting by the complier share in each cell
+\vspace{0.11in}
+\item With multiple instruments $Z_{1i}, \ldots, Z_{ji}$: 2SLS estimates a \textbf{precision-weighted average} of instrument-specific LATEs:
+\begin{eqnarray*}
+\hat{\delta}^{2SLS} \approx \sum_{k=1}^{j} \omega_k \cdot \text{LATE}_k
+\end{eqnarray*}
+where $\omega_k \propto$ first-stage $F$-statistic of instrument $k$
+\vspace{0.11in}
+\item Instruments with stronger first stages receive higher weight --- they identify LATE for their compliers more precisely
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: IV with Covariates and Conditional LATE}
+\toplinelarge
+\begin{itemize}
+\item When independence holds only conditional on covariates $X_i$:
+\begin{eqnarray*}
+\{Y_{0i}, Y_{1i}, D_{0i}, D_{1i}\} \;\perp\!\!\!\perp\; Z_i \;\big|\; X_i
+\end{eqnarray*}
+\item The 2SLS estimator identifies a weighted average of \textcolor{blue}{conditional LATEs}:
+\begin{eqnarray*}
+\delta^{LATE} = \sum_x E[Y_{1i}-Y_{0i} \mid D_{1i}>D_{0i}, X_i=x] \cdot \omega(x)
+\end{eqnarray*}
+where $\omega(x) \propto P(D_{1i}>D_{0i} \mid X_i=x) \cdot P(X_i=x)$
+\vspace{0.11in}
+\item \textbf{Practical implementation}:
+\begin{enumerate}
+\vspace{0.08in}
+\item First stage: regress $D_i$ on $Z_i$ and $X_i$, obtain $\hat{D}_i$
+\vspace{0.08in}
+\item Second stage: regress $Y_i$ on $\hat{D}_i$ and $X_i$
+\vspace{0.08in}
+\item Compute SE using \textbf{structural residuals} $\hat{e}_i = Y_i - X_i'\hat{\gamma} - D_i\hat{\delta}$, not second-stage residuals
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+%-----------------------------------------------------------------------
+\section{Applications}
+%-----------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{\: \: \: Application 1: Draft Lottery and Earnings (Angrist, 1990)}
+\toplinexlarge
+\begin{itemize}
+\item \textbf{Question:} What is the causal effect of military service on earnings?
+\vspace{0.11in}
+\item \textbf{Problem:} Selection bias --- those who serve may differ systematically from non-servers
+\vspace{0.11in}
+\item \textbf{Instrument:} Vietnam-era draft lottery number ($Z_i \in \{1,\ldots,365\}$, randomly assigned)
+\begin{itemize}
+\vspace{0.08in}
+\item \textit{Independence}: lottery numbers randomly assigned $\Rightarrow$ exogenous
+\vspace{0.08in}
+\item \textit{Exclusion}: lottery number affects earnings only through military service
+\vspace{0.08in}
+\item \textit{Monotonicity}: low lottery number weakly increases probability of service
+\end{itemize}
+\vspace{0.11in}
+\item \textbf{Compliance types:}
+\begin{itemize}
+\vspace{0.08in}
+\item \textit{Compliers}: serve only because of low lottery number (draft-induced)
+\vspace{0.08in}
+\item \textit{Always-takers}: volunteers --- serve regardless of lottery number
+\vspace{0.08in}
+\item \textit{Never-takers}: avoid service regardless (deferments, health exemptions)
+\end{itemize}
+\vspace{0.11in}
+\item \textbf{LATE:} effect of military service on earnings for \textit{draft compliers}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Application 1: Draft Lottery (cont'd)}
+\toplinelarge
+\begin{itemize}
+\item \textbf{Wald estimator} (low number $=Z_i=1$, high number $=Z_i=0$):
+\begin{eqnarray*}
+\hat{\delta}^{LATE} = \frac{E[\text{Earnings}_i \mid Z_i=1] - E[\text{Earnings}_i \mid Z_i=0]}{E[D_i \mid Z_i=1] - E[D_i \mid Z_i=0]}
+\end{eqnarray*}
+\item \textbf{Results:} White veterans earned $\approx 15\%$ less than non-veterans; effect for non-whites smaller in magnitude
+\vspace{0.11in}
+\item \textbf{LATE interpretation:} this is the earnings effect for \textit{draft compliers} --- men who served because of their lottery number but would not have volunteered
+\vspace{0.11in}
+\item \textbf{External validity:} does this estimate apply to volunteers (always-takers)?
+\begin{itemize}
+\vspace{0.08in}
+\item Not necessarily --- volunteers self-select for reasons potentially correlated with earnings
+\vspace{0.08in}
+\item LATE makes this limitation \textit{explicit} and forces the researcher to be clear about which population is identified
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Application 2: Compulsory Schooling (Angrist \& Krueger, 1991)}
+\toplinexlarge
+\begin{itemize}
+\item \textbf{Question:} What is the causal return to an additional year of schooling?
+\vspace{0.11in}
+\item \textbf{Problem:} ability bias --- more able individuals get more schooling \textit{and} earn more
+\vspace{0.11in}
+\item \textbf{Instrument:} quarter of birth $Z_i$
+\begin{itemize}
+\vspace{0.08in}
+\item US compulsory schooling: must stay until age 16; school entry cutoff Jan 1
+\vspace{0.08in}
+\item Q1 births enter school oldest $\Rightarrow$ can drop out with \textbf{less} schooling than Q4 births
+\vspace{0.08in}
+\item Quarter of birth is (arguably) randomly determined relative to ability
+\end{itemize}
+\vspace{0.11in}
+\item \textbf{Compliance types:}
+\begin{itemize}
+\vspace{0.08in}
+\item \textit{Compliers}: marginal students who drop out at 16 --- constrained by the compulsory schooling law
+\vspace{0.08in}
+\item \textit{Always-takers}: complete more schooling regardless of birth quarter
+\vspace{0.08in}
+\item \textit{Never-takers}: drop out regardless of birth quarter
+\end{itemize}
+\vspace{0.11in}
+\item \textbf{LATE:} return to schooling for \textit{compulsory-schooling compliers} --- those at the margin of dropping out
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Application 2: Compulsory Schooling (cont'd)}
+\toplinelarge
+\begin{itemize}
+\item \textbf{Structural equation:}
+\begin{eqnarray*}
+\log(w_i) = \mu + \rho\, s_i + X_i'\gamma + \varepsilon_i
+\end{eqnarray*}
+\item \textbf{First stage:} $s_i = X_i'\pi + \sum_{j} \alpha_j Z_{ij} + \eta_i$, where $Z_{ij}$ are quarter-of-birth dummies
+\vspace{0.11in}
+\item \textbf{Exclusion restriction:} quarter of birth affects wages only through years of schooling
+\begin{itemize}
+\vspace{0.08in}
+\item Contested: Q1 births may differ in school maturity, parental age, season-of-birth health effects
+\end{itemize}
+\vspace{0.11in}
+\item \textbf{Results:} return to schooling $\approx 7$--$10\%$ per year
+\vspace{0.11in}
+\item \textbf{LATE interpretation:} this is the return for \textit{marginal students} bound by compulsory schooling
+\begin{itemize}
+\vspace{0.08in}
+\item These are students with the \textit{lowest} desired schooling --- potentially lower ability
+\vspace{0.08in}
+\item Diminishing returns would suggest LATE $<$ ATE for these students --- yet estimates are similar to OLS, suggesting ability bias in OLS may be modest
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+%-----------------------------------------------------------------------
+\section{Extensions}
+%-----------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{\: \: \: LATE with a Continuous Instrument}
+\toplinelarge
+\begin{itemize}
+\item With a continuous instrument $Z_i$ (e.g.\ distance to college, alcohol taxes), IV still has a LATE interpretation
+\vspace{0.11in}
+\item \textbf{Angrist \& Imbens (1995)}: with a multi-valued instrument, 2SLS estimates a weighted average of \textbf{pairwise LATEs}:
+\begin{eqnarray*}
+\delta^{IV} = \sum_{z > z'} w_{zz'} \cdot E[Y_{1i}-Y_{0i} \mid D_{zi} > D_{z'i}]
+\end{eqnarray*}
+\item \textbf{Marginal Treatment Effect (MTE)} provides the most general framework (Heckman \& Vytlacil, 2005):
+\begin{eqnarray*}
+\text{MTE}(u) = E[Y_{1i}-Y_{0i} \mid U_i = u]
+\end{eqnarray*}
+where $U_i$ is resistance to treatment
+\vspace{0.11in}
+\item ATE, ATT, LATE, and 2SLS can all be written as:
+\begin{eqnarray*}
+\delta^* = \int_0^1 \text{MTE}(u) \cdot \omega^*(u)\, du
+\end{eqnarray*}
+with different weight functions $\omega^*$ --- this unifies all estimands
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Partial Compliance and Fuzzy RDD}
+\toplinelarge
+\begin{itemize}
+\item The LATE framework applies beyond binary instruments --- it is the foundation for \textcolor{blue}{fuzzy regression discontinuity designs (fuzzy RDD)}
+\vspace{0.11in}
+\item In a fuzzy RDD:
+\begin{eqnarray*}
+Z_i = \mathbf{1}[X_i \geq c] \quad \text{(instrument: being above the threshold)}
+\end{eqnarray*}
+\begin{itemize}
+\vspace{0.08in}
+\item Treatment probability jumps discontinuously at threshold $c$ but does not jump to 1
+\vspace{0.08in}
+\item Not everyone above the threshold takes treatment (partial compliance)
+\end{itemize}
+\vspace{0.11in}
+\item The fuzzy RDD estimator is a Wald ratio at the threshold:
+\begin{eqnarray*}
+\hat{\delta}^{RDD} = \frac{\lim_{x \downarrow c} E[Y_i \mid X_i=x] - \lim_{x \uparrow c} E[Y_i \mid X_i=x]}{\lim_{x \downarrow c} E[D_i \mid X_i=x] - \lim_{x \uparrow c} E[D_i \mid X_i=x]}
+\end{eqnarray*}
+\item Under the LATE assumptions (with independence replaced by local continuity), this identifies LATE \textbf{at the threshold} for local compliers
+\end{itemize}
+\end{frame}
+
+%-----------------------------------------------------------------------
+\section{Summary}
+%-----------------------------------------------------------------------
+
+\begin{frame}
+\frametitle{\: \: \: Summary}
+\toplinesmall
+\begin{itemize}
+\item With \textbf{heterogeneous treatment effects}, IV does not estimate ATE or ATT
+\vspace{0.08in}
+\item Under four assumptions (independence, exclusion, first stage, monotonicity), IV identifies the \textcolor{blue}{Local Average Treatment Effect}:
+\begin{eqnarray*}
+\frac{E[Y_i|Z_i=1]-E[Y_i|Z_i=0]}{E[D_i|Z_i=1]-E[D_i|Z_i=0]} = E[Y_{1i}-Y_{0i} \mid D_{1i}>D_{0i}]
+\end{eqnarray*}
+\item Key takeaways:
+\begin{itemize}
+\vspace{0.08in}
+\item LATE is the average effect \textbf{for compliers} --- those switched by the instrument
+\vspace{0.08in}
+\item Different instruments identify LATE for \textit{different} complier populations
+\vspace{0.08in}
+\item LATE raises external validity concerns but is often the policy-relevant estimand
+\vspace{0.08in}
+\item 2SLS with multiple instruments gives a precision-weighted average of LATEs
+\vspace{0.08in}
+\item Complier characteristics can be partially identified from the data
+\vspace{0.08in}
+\item LATE is also the foundation for fuzzy RDD
+\end{itemize}
+\vspace{0.08in}
+\item \textbf{Reference:} Angrist \& Pischke, \textit{Mostly Harmless Econometrics}, Chapter 4
+\end{itemize}
+\end{frame}
+
+\end{document}

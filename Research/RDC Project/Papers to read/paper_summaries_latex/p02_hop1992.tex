@@ -1,0 +1,420 @@
+%=============================================================
+% Paper 2: Hopenhayn (1992), Econometrica
+%=============================================================
+\chapter{Hopenhayn (1992)}
+
+\begin{paperbox}{Entry, Exit, and Firm Dynamics in Long Run Equilibrium}
+\textbf{Author:} Hugo A.\ Hopenhayn\\[3pt]
+\textbf{Journal:} \textit{Econometrica} 60(5): 1127--1150\\[3pt]
+\textbf{Year:} 1992 \quad\textbf{Field:} Applied microeconomics; Industrial
+organisation; Macroeconomics\\[3pt]
+\textbf{Classification:} Theoretical
+\end{paperbox}
+
+%------------------------------------------------------------
+\section{Research Question}
+
+What determines the rates of firm entry, exit, and the stationary distribution
+of firm size and profits in a competitive industry subject to idiosyncratic
+productivity shocks, and how do changes in industry parameters (entry costs,
+fixed costs, demand) affect these equilibrium outcomes?
+
+%------------------------------------------------------------
+\section{Motivation}
+
+By the late 1980s, empirical work (Davis--Haltiwanger 1991; Dunne, Roberts,
+Samuelson 1989) had documented two striking facts: (i) firm-specific
+idiosyncratic uncertainty dominates firm-size dynamics; and (ii) industry-level
+entry and exit rates are highly correlated, with large, persistent
+cross-industry differences. Existing theoretical models either lacked firm
+heterogeneity, lacked entry/exit in steady state, or were computationally
+intractable dynamical systems. Hopenhayn builds a tractable equilibrium model
+that generates ongoing entry and exit in the steady state, accommodates
+idiosyncratic productivity shocks, admits closed-form comparative statics, and
+can be connected to the growing empirical literature on firm heterogeneity.
+
+%------------------------------------------------------------
+\section{Main Contribution}
+
+\begin{enumerate}
+  \item \textbf{Stationary equilibrium concept:} Extends long-run competitive
+    industry equilibrium to a setting with idiosyncratic shocks, firm
+    heterogeneity, and simultaneous entry and exit in steady state. Proves
+    existence and uniqueness under standard conditions (Theorems 2, 3, 4).
+
+  \item \textbf{Comparative statics:} Derives clean predictions for how entry
+    costs, fixed costs, and demand changes affect the exit threshold, firm
+    turnover rate, and the stationary size distribution---including the
+    counterintuitive result that higher entry costs \emph{protect incumbents}
+    and \emph{reduce} turnover.
+
+  \item \textbf{Lifecycle implications:} Shows that under monotone conditional
+    dominance (mcd) ordering of the Markov transition, the distribution of
+    firms' productivity shocks is stochastically increasing in cohort
+    age---consistent with declining hazard rates, larger average size, and
+    higher average profits for older cohorts (Propositions 3--5, 7--9).
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Relationship to the Literature}
+
+The paper extends and synthesises three strands:
+\begin{itemize}
+  \item \textbf{Jovanovic (1982):} passive learning model has no stationary
+    equilibrium with entry/exit (the stopping time has positive probability at
+    infinity). Hopenhayn's recurrence assumption (A.4) rules this out.
+  \item \textbf{Lucas--Prescott (1971):} competitive equilibrium theory but
+    with homogeneous firms and no entry/exit.
+  \item \textbf{Ericson--Pakes (1989):} rich active-learning model but
+    computationally intractable for analytical work.
+\end{itemize}
+
+The paper directly motivates Hopenhayn--Rogerson (1993) on firing costs,
+Melitz (2003) on trade with heterogeneous firms, Asplund--Nocke (2006) on
+imperfect competition, and Acemoglu et al.\ (2018) on innovation and
+reallocation.
+
+%------------------------------------------------------------
+\section{Theoretical Framework and Economic Mechanism}
+
+\subsection*{Industry Structure}
+
+A continuum of firms produce a homogeneous good. Output market is given by
+inverse demand $D(Q)$; input market (labour) by supply schedule $W(N)$.
+Firms face a fixed cost $c_f$ per period and entry cost $c_e$ (sunk).
+Individual firm output is $q=f(\varphi,n)$, where $\varphi \in [0,1]$ is an
+idiosyncratic productivity shock evolving as a Markov process
+$F(\varphi'|\varphi)$ satisfying first-order stochastic dominance in $\varphi$
+(Assumption A.3(b)).
+
+\subsection*{Firm's Bellman Equation}
+
+The value of an incumbent firm with productivity $\varphi$ in a market with
+distribution $\mu$ of active firms satisfies:
+\begin{equation}
+  v(\varphi,\mu) = \pi(\varphi,\mu)
+    + \max\!\left\{0,\; \beta\int v(\varphi',\mu)\,F(d\varphi'|\varphi)\right\},
+  \label{eq:hop_bellman}
+\end{equation}
+where $\pi(\varphi,\mu)$ is current-period profit (net of fixed cost $c_f$).
+Because $v$ is strictly increasing in $\varphi$ (Proposition~3(i)), the
+optimal exit rule is a reservation rule: exit if and only if
+$\varphi < x^{*}$.
+
+\subsection*{Equilibrium Conditions}
+
+\textbf{Exit condition:}
+\begin{equation}
+  \int v(\varphi',\mu^*)\,F(d\varphi'|x^*) = 0.
+  \label{eq:hop_exit}
+\end{equation}
+\textbf{Free entry condition:}
+\begin{equation}
+  \int v(\varphi,\mu^*)\,\nu(d\varphi) = c_e,
+  \label{eq:hop_entry}
+\end{equation}
+where $\nu$ is the initial distribution from which entrants draw their
+first productivity shock.
+
+\textbf{Invariant measure:}
+\begin{equation}
+  \mu^* = P_x\,\mu^* + M^*\,\nu,
+  \label{eq:hop_invariant}
+\end{equation}
+where $P_x$ is the transition operator conditional on survival ($\varphi \geq
+x^*$) and $M^*$ is the equilibrium mass of entrants. The existence proof
+constructs two curves $M_1(x)$ (exit-consistent entry mass) and $M_2(x)$
+(entry-consistent entry mass) and establishes their intersection corresponds
+to a stationary equilibrium with positive entry and exit (Theorem~3).
+
+\subsection*{Lifecycle Mechanism}
+
+As cohorts age, the worst-performing firms ($\varphi < x^*$) are continuously
+removed by the exit rule. Under the mcd ordering of $F$, the distribution
+$\mu_t$ of cohort-$t$ firms is stochastically increasing over time (Proposition~4),
+delivering declining hazard rates, rising average size, and rising average
+profits---all consistent with the empirical record.
+
+%------------------------------------------------------------
+\section{Data}
+
+No empirical data. The paper is purely theoretical. Empirical facts motivating
+the framework (approximately one-third of manufacturing jobs and over 40\% of
+firms disappear over five-year periods) are drawn from Davis--Haltiwanger
+(1991) and Dunne, Roberts, Samuelson (1989). A numerical example in Section~5
+illustrates the comparative statics for the effect of fixed costs on the exit
+threshold.
+
+%------------------------------------------------------------
+\section{Empirical Strategy}
+
+Not applicable. The model's cross-sectional implications (declining hazard
+rates with age, increasing average size with age, regression to the mean) are
+compared informally to empirical evidence from Dunne, Roberts, and Samuelson.
+No formal estimation or hypothesis testing is performed.
+
+%------------------------------------------------------------
+\section{Identification Strategy}
+
+Not applicable in a causal sense. The paper's key analytical tool is the
+algorithmic existence proof: showing that $x^*$ and $M^*$ are solutions to
+the $M_1(x)$--$M_2(x)$ crossing, and that this crossing is unique under
+Condition U.1 (price-taking in input markets) or U.2 (profit function
+separable in $\varphi$ and prices). The proof is constructive and provides a
+computational roadmap for numerical implementation.
+
+%------------------------------------------------------------
+\section{Main Results}
+
+\subsection*{Existence and Uniqueness}
+
+\begin{itemize}
+  \item \textbf{Theorem 2:} A stationary competitive equilibrium always exists.
+  \item \textbf{Theorem 3:} A stationary equilibrium with positive entry and
+    exit exists if and only if $c_e < c^*$ for some threshold $c^*$.
+  \item \textbf{Theorem 4:} Under Condition U.1 or U.2, the equilibrium is
+    unique.
+\end{itemize}
+
+\subsection*{Lifecycle Properties}
+
+Under the mcd ordering of $F$:
+\begin{itemize}
+  \item The age-cohort distributions $\{\mu_t\}$ are stochastically increasing
+    in $t$ (Proposition~4).
+  \item Hazard rates are declining in both age and current productivity
+    (Proposition~5).
+  \item Conditional on survival, older and larger firms have higher expected
+    productivity, profits, and value.
+\end{itemize}
+
+\subsection*{Comparative Statics}
+
+\begin{center}
+\small
+\begin{tabular}{p{3.5cm}p{3.5cm}p{3.5cm}p{2.5cm}}
+\toprule
+\textbf{Parameter change} & \textbf{Effect on $x^*$} &
+\textbf{Effect on turnover rate} & \textbf{Condition} \\
+\midrule
+$\uparrow c_e$ & $\downarrow$ (less selection) & $\downarrow$ & Always \\
+$\uparrow c_f$ & $\uparrow$ (more selection) & $\uparrow$ &
+  Under U.2; can reverse under U.1 \\
+Mean-preserving spread of $\nu$ & $\uparrow$ & $\uparrow$ &
+  Under convexity of $v$ \\
+$\uparrow$ Demand (elastic supply) & No effect & No effect &
+  Under U.1 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Profit and Value Bounds}
+
+\textbf{Proposition 7:} Average industry profit satisfies
+$\bar{\pi}(\mu^*) \geq \rho\, c_e$, where $\rho = M^*/\mu^*(S)$ is the
+turnover rate. Turnover measures the minimum required average profit to
+sustain the entry incentive.
+
+\textbf{Proposition 8:} Average firm value $\bar{V}(\mu^*)=\bar{\pi}(\mu^*)/(1-\beta)
+- \beta\rho c_e/(1-\beta)$, providing a formula for measuring implicit sunk
+entry costs from observed value and profit data.
+
+%------------------------------------------------------------
+\section{Economic Magnitude and Interpretation}
+
+The paper is analytical; magnitudes are structural rather than calibrated. The
+key economic insight about magnitudes is the profit lower bound: an industry
+with a 20\% annual turnover rate ($\rho=0.2$) and entry cost equal to one
+year's revenue requires average annual profits of at least 20\% of entry cost
+to sustain equilibrium entry. The numerical example in Section~5 illustrates
+that the effect of higher fixed costs on the exit threshold can \emph{reverse
+sign} depending on whether the technology features sufficiently high elasticity
+of profits with respect to productivity---a subtle but important caveat on the
+comparative statics.
+
+%------------------------------------------------------------
+\section{Mechanisms}
+
+The central mechanism is \textbf{selection through exit}: the industry is in
+a constant process of creative destruction. Each period, the worst-performing
+firms ($\varphi < x^*$) exit, their resources are freed, and new entrants draw
+from $\nu$. Three secondary mechanisms are worth noting:
+
+\begin{itemize}
+  \item \textbf{Option value of staying:} An incumbent with $\varphi$ slightly
+    below $x^*$ may remain if the continuation value from potential future
+    productivity improvement exceeds current negative profit. This is why
+    $x^* < \varphi_{\max}$ and why even slightly unprofitable firms survive
+    temporarily.
+  \item \textbf{Selection amplification by age:} As cohorts age, selection
+    removes the worst performers, leaving an increasingly productive and stable
+    surviving set---consistent with empirically documented declining hazard rates.
+  \item \textbf{Competition via entry and prices:} Higher entry rates drive
+    down prices, raising the exit threshold and accelerating exit of less
+    productive incumbents. This general equilibrium price mechanism is absent
+    from partial equilibrium analyses.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Robustness Checks}
+
+As a theoretical paper, robustness is assessed through:
+\begin{itemize}
+  \item Proof of existence under broad conditions (Assumptions A.1--A.5 only).
+  \item Sufficient conditions for uniqueness (U.1 or U.2, both widely
+    satisfied by standard functional forms including CES and Cobb--Douglas).
+  \item A numerical example demonstrating that the fixed-cost comparative
+    static can reverse under U.1, providing an important caveat.
+  \item Extension to multidimensional state spaces (CES production with
+    multiple productivity parameters) shown to satisfy U.2.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Limitations}
+
+\begin{enumerate}
+  \item \textbf{No dynamics:} Focuses entirely on stationary equilibria.
+    Transitional dynamics---how the industry responds to a parameter change
+    before reaching the new stationary state---are not analysed.
+  \item \textbf{Competitive markets only:} Extension to imperfect competition
+    requires Asplund--Nocke (2006); price-competition effects are absent.
+  \item \textbf{No aggregate shocks:} All aggregate variables (price, output,
+    employment) are deterministic in the stationary state. There are no
+    business cycles.
+  \item \textbf{Passive productivity process:} $\varphi$ evolves exogenously.
+    Firms cannot invest to change their position in the productivity
+    distribution (handled by Ericson--Pakes and Acemoglu et al.).
+  \item \textbf{No worker side:} Labour is supplied elastically at price
+    $W(N)$. Labour market frictions, search, or matching are outside the model.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Policy Implications}
+
+\begin{itemize}
+  \item \textbf{Entry barriers reduce turnover and protect incumbents:} Higher
+    $c_e$ reduces $x^*$, enabling less productive firms to survive. Entry
+    barriers impose a double welfare cost: fewer entrants and a less efficient
+    incumbent stock.
+  \item \textbf{Fixed costs and selection:} Higher fixed production costs
+    raise $x^*$, increasing average productivity by forcing exit of less
+    productive firms. This provides a theoretical basis for why fixed-cost
+    regulation can have ambiguous welfare effects.
+  \item \textbf{Firing cost policies:} The paper (final remarks) notes that
+    a version of the model is used in Hopenhayn--Rogerson (1993) to study
+    firing costs. By raising effective fixed costs and reducing selection,
+    firing costs reduce long-run productivity.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Overall Assessment}
+
+Hopenhayn (1992) is one of the most important theory papers in industrial
+organisation and macroeconomics of the last four decades. Its significance
+lies not in the complexity of the model---which is deliberately
+parsimonious---but in the analytical tractability it achieves while
+incorporating heterogeneity, entry, and exit simultaneously. The existence--
+uniqueness results, comparative statics, and lifecycle propositions have all
+become standard ingredients in quantitative macro models. Direct descendants
+include Melitz (2003), Hopenhayn--Rogerson (1993), and Acemoglu et al.\
+(2018). The paper's limitations are largely features: by keeping the model
+simple, Hopenhayn made it usable.
+
+\textbf{Quality: Essential. A must-read for anyone working on firm dynamics,
+industrial policy, or models with heterogeneous agents.}
+
+%------------------------------------------------------------
+\section{Relevance to My Research}
+
+Directly relevant as the theoretical foundation for any RDC project on firm
+entry, exit, and dynamics. The comparative statics on entry costs and fixed
+costs provide testable predictions for Canadian data: industries with lower
+entry barriers should show higher turnover rates and higher productivity
+distributions. The profit bound $\bar{\pi} \geq \rho\, c_e$ provides a
+formula evaluable with Canadian firm-level data (T2 corporate tax records).
+
+%------------------------------------------------------------
+\section{Potential Research Extensions}
+
+\begin{itemize}
+  \item Estimate the model structurally using Canadian firm-level data to
+    recover $c_e$, $c_f$, and the Markov process $F(\varphi'|\varphi)$.
+  \item Exploit provincial variation in effective entry costs (regulatory
+    burden indices) to test the comparative statics predictions on firm
+    turnover and productivity distributions.
+  \item Embed in a GE model with labour market search to study the interaction
+    between firm exit rates and unemployment duration.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Research Gaps}
+
+\begin{itemize}
+  \item \textbf{Transitional dynamics:} Policy reform evaluations require
+    knowing the transition path, which the stationary analysis cannot provide.
+  \item \textbf{Worker heterogeneity:} Workers are homogeneous; a natural
+    extension would allow differential matching with firm types, generating
+    wage variation driven by firm productivity heterogeneity.
+  \item \textbf{Financial constraints:} Introducing credit constraints could
+    generate amplification---firms below the exit threshold that would survive
+    absent the constraint, but cannot access external finance.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Methodological Lessons}
+
+\begin{enumerate}
+  \item The stationary equilibrium concept---requiring that the invariant
+    measure $\mu^*$ equals the measure generated by entry/exit rules and
+    entry distribution---is the right way to think about long-run industry
+    equilibria with heterogeneous firms.
+  \item The algorithmic existence proof (constructing $M_1(x)$ and $M_2(x)$
+    curves) provides a computational roadmap for numerical implementation---
+    a rare feature of analytical theory papers.
+  \item The mcd (monotone conditional dominance) ordering is stronger than
+    FOSD but weaker than likelihood ratio ordering, and survives the truncation
+    from the exit threshold---a useful technical tool for dynamic selection
+    models.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section*{Five-Sentence Summary}
+
+Hopenhayn (1992) develops a tractable dynamic stochastic model of a
+competitive industry in which firms face idiosyncratic productivity shocks and
+choose optimally when to exit, with free entry driving expected profits to the
+entry cost. The concept of stationary competitive equilibrium---a steady-state
+where entry and exit rates are equal and the distribution of active firms is
+time-invariant---is introduced and shown to exist and be unique under broad
+conditions. Comparative statics demonstrate that higher entry costs reduce
+turnover by protecting less productive incumbents, while higher fixed costs
+(under separability) raise the exit threshold and improve average firm
+productivity through selection. Under monotone conditional dominance of the
+productivity process, the model implies that older cohorts of firms are
+stochastically larger, have lower hazard rates, and earn higher average
+profits---all consistent with the empirical evidence from Dunne, Roberts, and
+Samuelson. The paper provides the canonical theoretical framework for all
+subsequent quantitative work on firm dynamics, entry, exit, and the long-run
+effects of industrial policy on productivity and resource allocation.
+
+\vspace{6pt}
+\begin{quickref}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\textbf{Key contribution} &
+  Tractable, analytically characterised stationary equilibrium with
+  simultaneous entry and exit driven by idiosyncratic productivity; clean
+  comparative statics on entry/fixed costs and demand. \\[4pt]
+\textbf{Key weakness} &
+  No aggregate shocks (no business cycle); no transitional dynamics;
+  perfectly competitive markets only; no investment in productivity. \\[4pt]
+\textbf{Most interesting gap} &
+  Transitional dynamics after policy changes---a reform that reduces entry
+  costs generates extended transitional dynamics that the stationary analysis
+  cannot characterise. \\[4pt]
+\textbf{Publishable extension} &
+  Structural estimation of the Hopenhayn model using Canadian T2 tax data,
+  exploiting variation in effective provincial entry costs (regulatory burden
+  indices) to identify the entry cost parameter and test comparative statics
+  predictions on firm turnover and productivity distributions.
+\end{tabularx}
+\end{quickref}

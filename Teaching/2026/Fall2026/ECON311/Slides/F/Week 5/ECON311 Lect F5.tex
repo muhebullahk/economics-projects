@@ -1,0 +1,555 @@
+% !TeX spellcheck = en_US
+\documentclass[aspectratio=1610]{beamer}
+\usetheme{Madrid}
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+\makeatletter
+\define@key{beamerframe}{wide}[10pt]{%
+	\def\beamer@cramped{\itemsep #1\topsep0.5pt\relax}}
+\makeatother
+	
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{booktabs}
+
+\title[Fall - Lecture 5] % (optional, use only with long paper titles)
+{Intermediate Macroeconomics: Lecture  5 (Ch. 4)}
+\subtitle{ECON 311 -- Intermediate Macroeconomics}
+
+\author{Muhebullah Karimzada}
+\institute{School of Economics \\\ University of Northern British Columbia}
+\date{Fall 2026}
+
+
+% ---------- UNBC COLORS ----------
+\usepackage{xcolor}
+\definecolor{UNBCGreen}{RGB}{0,102,51}
+\definecolor{UNBCDark}{RGB}{0,74,37}
+\definecolor{UNBCGold}{RGB}{189,155,96}
+\definecolor{SoftCream}{RGB}{249,247,242}
+\definecolor{SoftGray}{RGB}{244,246,248}
+\definecolor{AccentBlue}{RGB}{41,98,255}
+\definecolor{AccentOrange}{RGB}{230,126,34}
+\definecolor{AccentTeal}{RGB}{0,150,136}
+\definecolor{AccentRed}{RGB}{192,57,43}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{structure}{fg=UNBCDark}
+\setbeamercolor{title}{fg=white,bg=UNBCDark}
+\setbeamercolor{subtitle}{fg=UNBCGold}
+\setbeamercolor{frametitle}{fg=white,bg=UNBCDark}
+\setbeamercolor{block title}{fg=white,bg=UNBCDark}
+\setbeamercolor{block body}{fg=black,bg=SoftGray}
+\setbeamercolor{block title alerted}{fg=white,bg=AccentRed}
+\setbeamercolor{block body alerted}{fg=black,bg=SoftGray}
+\setbeamercolor{item}{fg=UNBCDark}
+\setbeamercolor{section in toc}{fg=UNBCDark}
+\setbeamercolor{alerted text}{fg=AccentRed}
+\setbeamercolor{author in head/foot}{fg=white,bg=UNBCDark}
+\setbeamercolor{date in head/foot}{fg=white,bg=UNBCDark}
+% ---------- UNBC BRANDING ----------
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.78\paperwidth,ht=2.8ex,dp=1.2ex,leftskip=1em]{author in head/foot}%
+  \color{white}\textbf{ECON 311} \hspace{0.5em} \textcolor{UNBCGold}{|} \hspace{0.5em} Intermediate Macroeconomics%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.8ex,dp=1.2ex,rightskip=1em plus1fil]{date in head/foot}%
+  \color{white}\insertframenumber/\inserttotalframenumber%
+  \end{beamercolorbox}}%
+}
+
+\newtcolorbox{mybox}[2][]{
+  colback=#2!8,
+  colframe=#2,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  #1
+}
+
+\newcommand{\topbanner}[1]{%
+\begin{tikzpicture}[remember picture,overlay]
+\fill[UNBCGold] ([yshift=-0.65cm]current page.north west) rectangle ([yshift=-0.48cm]current page.north east);
+\node[anchor=north west,font=\small\bfseries,text=UNBCDark] at ([xshift=0.35cm,yshift=-0.78cm]current page.north west) {#1};
+\end{tikzpicture}%
+}
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}[wide]{Firm's Problem}
+	\begin{itemize}
+		\item 	Firms decide how many workers and machines to use in production
+		\[Y = F(K,L)\]
+		\begin{itemize}
+			\item  Choose K and L to maximize Profits = Revenue - Cost
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Firm's Problem}
+	\begin{itemize}
+		\item Profit is defined as total revenue minus total costs:
+		\[\max_{K,L} \pi = F(K,L) - rK - wL\]
+		where $\pi$ is the profit, $r$ is the rental rate of capital, and $w$ is the wage rate
+		
+		\begin{itemize}
+			\item The term 	$rK$ is the price per unit of capital multiplied by the number of capital inputs used (total cost of all capital)
+			\item wL is the price of labour multiplied by the number of labour inputs used (total cost of all labour)
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Firm's Problem}
+	\begin{itemize}
+		\item Assuming a perfectly competitive market
+		\item Firms take rental rate $r$ and wage rate $w$ as given
+		\vspace{2mm}
+		\begin{itemize}
+			\item No firm has control to change input prices
+			\item No matter how much or how little L or K a firm uses, the prices won’t change
+		\end{itemize}
+		\item Input prices will change only as the result of an exogenous force in the market for K or L
+		\item  For simplicity, the price of the output is normalized to one
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Firm's Problem}
+	\begin{itemize}
+		\item The rental rate and wage rate are taken as given under perfect competition
+		\begin{itemize}
+			\item Hire capital until $MPK = r$
+			\item Hire labour until $MPL = w$
+			\item If $MPL > w$, the amount of output produced by an additional worker is greater than w
+			\item Profits increase, this will continue until the cost of hiring a worker is equal to the amount of extra output the worker produces
+			\item The same reasoning holds for capital
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Marginal Products}
+	\begin{itemize}
+		\item Using the Codd-Douglas production function: $Y=AK^{1/3} L^{2/3}$
+		\item 	The marginal product of labour (MPL) is the additional output that is produced when one unit of labour is added, holding all other inputs constant:
+		\[MPL = \frac{2}{3}A \left(\frac{K}{L}\right)^{1/3} = \left(\frac{2}{3}\right) \left(\frac{Y}{L}\right)\]
+		\item The marginal product of capital (MPK) is the additional output that is produced when one unit of capital is added, holding all other inputs constant:
+		\[MPK = \frac{1}{3} A \left(\frac{L}{K}\right)^{2/3} = \left(\frac{1}{3}\right)\left(\frac{Y}{K}\right)\]
+		\item In a Cobb-Douglas production function, the marginal product of an input is equal to the product of the factor’s exponent times the average amount that each unit of the factor produces
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Diminishing Marginal Product of Capital in Production}
+	\begin{itemize}
+		\item When labour input is held constant, Each additional unit of K increases output by less and less
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\linewidth]{"Figures/Diminishing Marginal Product of Capital in Production"}
+	\end{figure}
+
+\end{frame}
+
+\begin{frame}[wide]{Diminishing Returns}
+	\begin{itemize}
+		\item Formally, 
+		\[\frac{\partial^2 F  }{\partial K^2}<0 \text{ and } \frac{\partial^2 F }{\partial L^2} <0\]		
+		\item For example, suppose we have five computers
+		\begin{itemize}
+			\item  The first five people we hire are very productive
+			\item But as we add more and more workers, there is less for them to do with only five computers among them
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Solving the Model: General Equilibrium}
+	\begin{itemize}
+		\item In general equilibrium, we solve for not only one signle market but both market of labour and capital
+		\item Assume Number of perfectly competitive firms = 1, we could have more firms if we wished and nothing would change since our model features constant returns to scale
+		\item Demand for capital (labour) by our representative firm = aggregate quantity of capital  (labour) in the economy		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Solving the Model: General Equilibrium}
+	\begin{itemize}
+		\item Five endogenous variables
+		\begin{itemize}
+			\item Output (Y)
+			\item The amount of capital (K)
+			\item The amount of labour (L)
+			\item The wage (w)
+			\item The rental price of capital (r)
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Solving the Model: General Equilibrium}
+	\begin{itemize}
+		\item Five equations
+		\begin{itemize}
+			\item The production function
+			\[Y=AK^{1/3}L^{2/3}\]
+			\item The rule for hiring capital
+			\[\frac{1}{3}\frac{Y}{K} = r\]
+			\item The rule for hiring labour
+			\[\frac{2}{3}\frac{Y}{L} = w\]
+			\item Supply equals the demand for labour
+			\[L = \bar{L}\]
+			\item Supply equals the demand for capital
+			\[K = \bar{K}\]
+		\end{itemize}
+	\item The supply of labour and capital are assumed to be perfectly inelastic, the economy will supply $\bar{L}$ around of labour and $\bar{K}$ amount of capital regardless of the price
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Solving the Model: Solution}
+	\begin{itemize}
+		\item 	A solution to the model
+		\begin{itemize}
+			\item A new set of equations that express the five unknowns in terms of the parameters and exogenous variables
+			\item There should be five of them as we have five endogenous variables
+			\item Endogenous variables are on the left side, and the parameters and exogenous variables that describe market behavior in equilibrium are on the right side.
+			
+		\end{itemize}
+		\item General equilibrium
+		\begin{itemize}
+			\item Solution to the model when more than a single market clears
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Supply and Demand in the Capital and labour Markets}
+	\begin{itemize}
+		\item 	The solution easiest to see graphically (supply and demand for K and L)
+		\item The supplies of K and L exogenously given (vertical lines)
+		\item The demand curves for capital and labour are based on the hiring rules
+		\begin{itemize}
+			\item They trace out exactly the marginal product schedules for K and L
+		\end{itemize}
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.65\linewidth]{"Figures/Supply and Demand in the Capital and labor Markets"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{In This Model…}
+	\begin{itemize}
+		\item 	The solution implies that
+		\begin{itemize}
+			\item Firms employ all the supplied capital and labour in the economy
+			\item The production function is evaluated with the given supply of inputs: 
+			\[Y^* = F(\bar{K},\bar{L}) = \bar{A}\bar{K}^\alpha \bar{L}^{1-\alpha}\]
+			\item $w = MPL$ evaluated at the equilibrium values of Y, K, and L
+			\item $r = MPK$ evaluated at the equilibrium values of Y, K, and L
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Interpreting the Solution}
+	\begin{itemize}
+		\item The equilibrium wage is proportional to output per worker: 	Output per worker = (Y/L)
+		\item The equilibrium rental rate is proportional to output per capital:	Output per capital = (Y/K)
+		\item In the United States, empirical evidence shows:
+		\[\frac{w^*L^*}{Y^*} =\frac{2}{3}  \text{  and  } \frac{r^*K^*}{Y^*} =\frac{1}{3}\]
+		\item The factor shares of the payments are equal to the exponents on the inputs in the Cobb-Douglas function
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Equilibrium}
+	All income is paid to capital or labour
+	\begin{itemize}
+		\item Verifies the assumption of perfect competition
+		\item One of the implications of perfect competition is zero profits
+			\[\pi = Y^* - r^*K^* - w^*L^* = 0\]
+		\item Also verifies that production equals spending equals income
+			\[w^*L^* + r^* K^* = Y^*\]
+			\[\text{Income} = \text{production}\]
+		\item This is one of the fundamental relationships of national income accounting.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Analyzing the Production Model}
+	Development accounting:
+	\begin{itemize}
+		\item The use of a model to explain differences in incomes across countries
+			\[y^* = \bar{A} \bar{k}^{1/3}\]
+		\item For now, setting the productivity parameter = 1
+			\[y^* = \bar{k}^{1/3}\]
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Empirical Fit of the Production Function }
+	\begin{itemize}
+		\item By using different countries' GDP per capita and capital per capita, we can check the empirical fit of the production function
+		\item If the productivity parameter is 1, the model overpredicts GDP per capita
+		\begin{itemize}
+			\item Assuming that the productivity parameter is constant across countries, and does not vary over time
+		\end{itemize}
+		\item Capital per person varies tremendously across countries ranging from a low in Burundi of less than 1 percent of the U.S. value to a high in Switzerland of about 30 percent greater
+
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Model’s Prediction for Per Capita GDP (United States = 1)}
+	\begin{itemize}
+		\item 	The predicted value is simply $y=(0.93)^{1/3} = 0.976$ for Japan
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\linewidth]{"Figures/The Model’s Prediction for Per Capita GDP"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{The Empirical Fit of the Production Function }
+	\begin{itemize}
+		\item 	With no difference in productivity ($\bar{A} = 1$), the model predicts smaller differences in income across countries than we observe
+		\item Diminishing returns to capital implies that
+		\begin{itemize}
+			\item countries with low K will have a high MPK
+			\item countries with a lot of K will have a low MPK, and cannot raise GDP per capita by much through more capital accumulation
+			
+		\end{itemize}
+		\item Differences in capital per person translate into much smaller differences in GDP because of diminishing MPK
+		\item Therefore, gaps in income between rich and poor countries are predicted to be smaller than they are
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Predicted Per Capita GDP in the Production Model}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\linewidth]{"Figures/Predicted Per Capita GDP in the Production Model"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{The Model’s Prediction for Per Capita GDP}
+	\begin{itemize}
+		\item If the model were successful in explaining incomes, countries should lie close to the solid 45-degree line
+		\item Instead, the model predicts that most countries should be substantially richer than they are		
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{"Figures/The Model’s Prediction for Per Capita GDP_figure"}
+	\end{figure}
+	
+\end{frame}
+
+%\begin{frame}[wide]{Case Study: Why Doesn't Capital Flow from Rich to Poor Countries?}
+%	If MPK is higher in poor countries with low K, why doesn't capital flow to those countries?
+%	\begin{itemize}
+%		\item Caselli and Feyrer use data on GDP, K, and the shape of the production function to measure the MPK directly for many countries around the world
+%		\item They find that MPK is quite similar across a range of countries
+%		\begin{itemize}
+%			\item MPK in rich countries is slightly greater than MPK in poor countries.
+%			\item 8.4 percent in rich countries versus 6.9 percent in poor
+%		\end{itemize}
+%		\item The puzzle, then, is not why capital fails to flow to poor countries
+%		\item The puzzle is, rather, why the MPK in poor countries is not much higher, given that they have so little capital (e.g., economic policy, education, misallocation, etc)
+%	
+%		
+%	\end{itemize}
+%\end{frame}
+
+\begin{frame}[wide]{Productivity Differences: Improving the Fit of the Model}
+	\begin{itemize}
+		\item 	The productivity parameter measures how efficiently countries are using their factor inputs -- Total factor productivity (TFP)
+		\begin{itemize}
+			\item A lower level of TFP implies that workers produce less output for any given level of capital per person
+		\end{itemize}
+		\item If TFP is not equal to one for every countries, it would lead to a better model
+		\item But, we have data limitation in that there is no real direct measure of TFP
+		\item We have to exploit the fact that we have data on every term in the equation other than TFP
+		\begin{itemize}
+			\item That's why TFP is sometime refer as Solow's residual
+		\end{itemize}
+		\item Therefore, we can calculate the level of TFP for each country that would be needed to make the equation hold exactly 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Measuring TFP so the Model Fits Exactly}
+	\begin{itemize}
+		\item 	In order for our model to match the data,	poor countries must be very inefficient in production, or 	they must have low TFP
+		\item For example, 	$\text{Italy} = \frac{y}{k^{1/3}} = 0.68/0.93 = 0.731 $
+		
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\linewidth]{"Figures/Measuring TFP so the Model Fits Exactly"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{Measuring TFP so the Model Fits Exactly}
+	\begin{itemize}
+		\item Notice that TFP and per capita GDP are highly correlated
+		\item Also, TFP varies substantially across countries
+		\item This is the motivation for examining economic growth and understanding differences between rich and poor countries
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{"Figures/Measuring TFP so the Model Fits Exactly—2"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{Understanding TFP Differences}
+	Based on the simple production function:
+	\vspace{2mm}
+	\begin{itemize}
+		\item 	Output differences between the richest and poorest countries?
+		\begin{itemize}
+			\item Differences in capital per person explain about one-third of the difference
+			\item TFP explains the remaining two-thirds
+		\end{itemize}
+		\item Thus, rich countries are rich because
+		\begin{itemize}
+			\item they have more capital per person
+			\item more importantly, they use labour and capital more efficiently
+		\end{itemize}
+		\item Why are some countries more efficient at using capital and labour?
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Understanding TFP Differences - Human Capital}
+	\begin{itemize}
+		\item Human Capital: the stock of knowledge and skills that make people more productive members of society
+		\begin{itemize}
+			\item e.g., Education, training, health, etc
+		\end{itemize}		
+		\item A lot of time researchers measure it through \textit{returns to education}: the value of the increase in wages from additional schooling
+		\item There are significant returns to education within a country
+		\begin{itemize}
+			\item In the United States each year of education seems to increase future wages by 7 percent
+			\begin{itemize}
+				\item A four-year education may raise wages by about 28 percent (over entire lifetime)
+			\end{itemize}
+			\item In developing countries, returns can be even higher—up to 10 percent or even 13 percent per year
+			\item The typical student learning the basic skills associated with literacy and arithmetic may have higher returns than a college education.
+		\end{itemize}
+		\item Accounting for human capital can reduces the residual 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Understanding TFP Differences - Technology}
+	\begin{itemize}
+		\item 	Richer countries may use more modern and efficient technologies than poor countries
+		\begin{itemize}
+			\item Increases productivity parameter
+		\end{itemize}
+		\item But, how does the technology diffuse across countries?
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Understanding TFP Differences - Institutions}
+	\begin{itemize}
+		\item Well-defined institutions and laws create a climate for economic growth
+		\item Institutions are in place to foster human capital and technological growth
+		\begin{itemize}
+			\item Property rights
+			\item The rule of law
+			\item Government systems
+			\item Contract enforcement
+		\end{itemize}
+		\item At the time of the collapse of the Berlin Wall in 1989, the standards of living in East and West Germany were substantially different
+		\item Difference between Civil law and Common law can lead to difference in economic development
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Understanding TFP Differences - Misallocation}
+	\begin{itemize}
+		\item Misallocation
+		\begin{itemize}
+			\item Resources not being put to their best use
+		\end{itemize}
+		\item Examples
+		\begin{itemize}
+			\item Inefficiency of state-run resources
+			\item Political interference
+		\end{itemize}
+		\item Inefficient land policy: small land size -> farm cannot be mechanize 
+%		\begin{itemize}
+%			\item Restuccia has made significant contribution to the resource allocations literature
+%		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Evaluating the Production Model}
+	\begin{itemize}
+		\item Per capita GDP is higher if capital per person is higher and if factors are used more efficiently.
+		\item Constant returns to scale imply that output per person can be written as a function of capital per person
+		\item Capital per person is subject to strong diminishing returns because the exponent is much less than one
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Weaknesses of the Model}
+	\begin{itemize}
+		\item The production model has partial empirical success
+		\item In the absence of TFP, the production model predicts only a small differences in income
+		\item The model provided little explanation for why countries exhibit different TFP levels and different capital
+		\item Why do economies grow over time?
+		\item This is what we explore in the next two chapters
+	\end{itemize}
+\end{frame}
+
+
+%\begin{frame}[wide]{Measuring the State of the Economy}
+%	\begin{columns} 
+%		% Column 1
+%		\begin{column}{.5\textwidth}
+%			\begin{table}[htbp]
+%				\centering
+%				\begin{tabular}{lrrrr}
+%					& 2005  & 2006  & 2007  & 2008 \\
+%					\hline
+%					GDP   & 12.6  & 13.4  & 14.0    & 14.3 \\
+%					(in trillions of \$) &       &       &       &  \\
+%					Growth rate GDP &       & 0.063 & 0.045 & 0.021 \\
+%					\hline
+%				\end{tabular}%
+%				\label{tab:addlabel}%
+%			\end{table}%
+%		\end{column}
+%		% Column 2    
+%		\begin{column}{.5\textwidth}			
+%
+%			
+%		\end{column}%
+%	\end{columns}
+%\end{frame}
+
+\begin{frame}[wide]{Next Lecture}
+	\begin{itemize}
+		\item Next lecture will start Ch.5
+%		\item Group assignment is available on Crowdmark 
+%		\begin{itemize}
+%			\item Group up to four students
+%			\item Once you started, you will have only 3 hours to complete the assignment
+%			\item Leave enough time for pdf/image upload
+%		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\end{document}

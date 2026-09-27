@@ -1,0 +1,435 @@
+% !TeX spellcheck = en_US
+\documentclass[aspectratio=1610]{beamer}
+\usetheme{Madrid}
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+\makeatletter
+\define@key{beamerframe}{wide}[10pt]{%
+	\def\beamer@cramped{\itemsep #1\topsep0.5pt\relax}}
+\makeatother
+	
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{booktabs}
+
+\title[Fall - Lecture 4] % (optional, use only with long paper titles)
+{Intermediate Macroeconomics: Lecture  4 (Ch.3 and Ch. 4)}
+\subtitle{ECON 311 -- Intermediate Macroeconomics}
+
+\author{Muhebullah Karimzada}
+\institute{School of Economics \\\ University of Northern British Columbia}
+\date{Fall 2026}
+
+
+% ---------- UNBC COLORS ----------
+\usepackage{xcolor}
+\definecolor{UNBCGreen}{RGB}{0,102,51}
+\definecolor{UNBCDark}{RGB}{0,74,37}
+\definecolor{UNBCGold}{RGB}{189,155,96}
+\definecolor{SoftCream}{RGB}{249,247,242}
+\definecolor{SoftGray}{RGB}{244,246,248}
+\definecolor{AccentBlue}{RGB}{41,98,255}
+\definecolor{AccentOrange}{RGB}{230,126,34}
+\definecolor{AccentTeal}{RGB}{0,150,136}
+\definecolor{AccentRed}{RGB}{192,57,43}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{structure}{fg=UNBCDark}
+\setbeamercolor{title}{fg=white,bg=UNBCDark}
+\setbeamercolor{subtitle}{fg=UNBCGold}
+\setbeamercolor{frametitle}{fg=white,bg=UNBCDark}
+\setbeamercolor{block title}{fg=white,bg=UNBCDark}
+\setbeamercolor{block body}{fg=black,bg=SoftGray}
+\setbeamercolor{block title alerted}{fg=white,bg=AccentRed}
+\setbeamercolor{block body alerted}{fg=black,bg=SoftGray}
+\setbeamercolor{item}{fg=UNBCDark}
+\setbeamercolor{section in toc}{fg=UNBCDark}
+\setbeamercolor{alerted text}{fg=AccentRed}
+\setbeamercolor{author in head/foot}{fg=white,bg=UNBCDark}
+\setbeamercolor{date in head/foot}{fg=white,bg=UNBCDark}
+% ---------- UNBC BRANDING ----------
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.78\paperwidth,ht=2.8ex,dp=1.2ex,leftskip=1em]{author in head/foot}%
+  \color{white}\textbf{ECON 311} \hspace{0.5em} \textcolor{UNBCGold}{|} \hspace{0.5em} Intermediate Macroeconomics%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.8ex,dp=1.2ex,rightskip=1em plus1fil]{date in head/foot}%
+  \color{white}\insertframenumber/\inserttotalframenumber%
+  \end{beamercolorbox}}%
+}
+
+\newtcolorbox{mybox}[2][]{
+  colback=#2!8,
+  colframe=#2,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  #1
+}
+
+\newcommand{\topbanner}[1]{%
+\begin{tikzpicture}[remember picture,overlay]
+\fill[UNBCGold] ([yshift=-0.65cm]current page.north west) rectangle ([yshift=-0.48cm]current page.north east);
+\node[anchor=north west,font=\small\bfseries,text=UNBCDark] at ([xshift=0.35cm,yshift=-0.78cm]current page.north west) {#1};
+\end{tikzpicture}%
+}
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+
+\begin{frame}[wide]{The Rule of 70}
+	\begin{itemize}
+		\item The Rule of 70: If $y$ grows at a rate of $g$ percent per year, then the number of years it takes y to double is approximately equal to $70/g$
+		\item In the other word, it tells us that an economy growing at a constant rate will double every 70/g years
+		\begin{itemize}
+			\item If a country’s income grows at 1 percent per year, it will take about 70 years for income to double
+			\item If growth is at 2 percent per year,	income doubles every 35 = (70/2) years
+			\item Seemingly small differences in growth rates can lead to vastly different outcomes when compounded over time
+		\end{itemize}
+		\item A handy way to calculate when you do not have a calculator, but approximation error
+		\item The time it takes to double only depends on the growth rate and not on the initial value
+		\item The time it takes for income to double depends only on the growth rate, if it is constant, not on the current level of income
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Rule of 70: Derivation}
+	\begin{itemize}
+		\item If income begins at level $y_0$, then we want to know how many years until
+		\[y_t=2\times y_0\]
+		\item Using the constant growth rule
+		\[y_0(1+\bar{g})^t =2\times y_0 \implies (1+\bar{g})^t =2  \]
+		\item Take $\ln$ on both side
+		\[ \ln\left((1+\bar{g})^t\right) =\ln2 \implies t\ln\left(1+\bar{g}\right) =\ln2\]
+		\item Take the approximation that $\ln\left(1+\bar{g}\right) \approx \bar{g}$ and $\ln2 \approx 0.7$, we have
+		\[t\bar{g} = 0.7 \implies t = \frac{0.7}{\bar{g}}\]
+		or, in percentage form,
+		$t = \frac{70}{\bar{g}}$
+	\end{itemize}
+\end{frame}
+
+
+
+
+
+
+\begin{frame}[wide]{Modern Growth around the World}
+	\begin{itemize}
+		\item In the late nineteenth century, the United Kingdom was the richest country in the world, but then it started to grow  much slower than the United States in the 20th century
+		\item After World War II, growth in Germany and Japan were similar, in that they both accelerated
+		\item Argentina had accelerated growth until 1980 and then slowed considerably
+		\item China, Vietnam and India have start ``converging'' recently
+		\item \textbf{Convergence}:
+		\begin{itemize}
+			\item Poorer countries will grow faster to “catch up” to the level of income in richer countries
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{A Broad Sample of Countries}
+	\begin{itemize}
+		\item Over the period 1960--2017:
+		\begin{itemize}
+			\item Some countries have displayed negative growth rates.
+			\item Other countries have maintained growth rates of nearly 7\%.
+			\item Most countries have maintained approximately 2\% growth rates.
+			\item Small variances in growth rates lead to significant differences in standards of living.
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Levels and Growth Rates of Per Capita GDP}
+	\begin{itemize}
+		\item From 1960 to 2017, growth rates ranged from -2 percent to +7 percent per year
+		\item South Korea, Singapore, Botswana, and Japan grew the fastest over this period
+		\item Central African Republic, the Democratic Republic of the Congo, Niger, and Guinea all had negative average growth
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.6\linewidth]{"../Week 4/Figures/Levels and Growth Rates of Per Capita GDP"}
+		\end{figure}
+		
+	\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}[wide]{Some Useful Properties of Growth Rates}
+	\begin{itemize}
+		\item A lot of time we have economic variables express in term of some mathematical combination of other variables (e.g., GDP per Capita)
+		\item Growth rates of ratios, products, and powers follow several (approx.) simple rules
+		\item Suppose two variables $x$, $y$ and $z$ have average annual growth rates of $g_x$, $g_y$ and $z$, respectively. Then
+		\vspace{1mm}
+		\[\text{If } z=x/y \text{, then  } g_z=g_x-g_y\]
+		\vspace{1mm}
+		\[\text{If } z=x\times y \text{, then  } g_z=g_x+g_y\]
+		\vspace{1mm}
+		\[\text{If } z=x^a \text{, then  } g_z=a \times g_x\]
+		\item We can combine these rules 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Examples of Growth Rate Calculations}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{"../Week 4/Figures/Examples of Growth Rate"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{U.S. Population, GDP, and Per Capita GDP}
+	\begin{itemize}
+		\item Total GDP = GDP per capita $\times$ number of workers,
+		\item Growth rate of total GDP = growth rate of per capita GDP + the growth rate of the population
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.5\linewidth]{"../Week 4/Figures/U.S. Population, GDP, and Per Capita GDP"}
+		\end{figure}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Example: Growth Rules with Cobb Douglas Production Function}
+	\begin{itemize}
+		\item Applying rules of growth rates to a Cobb Douglas production function (see Ch.4):
+		\[Y_t = A_t K_t^{1/3} L_t^{2/3}\]
+		\item It says the output depends on the levels of technology, capital, and labor. Its growth rate of output can be decomposed into growth rate of a productivity term A,	contributions to growth from capital K, and labor L
+		\item Using $\text{If } z=x\times y \text{, then  } g_z=g_x+g_y$,
+		\[g(y) = g(A) + g(K^{1/3}) + g(L^{2/3})\]
+		\item Then, use $\text{If } z=x^a \text{, then  } g_z=a \times g_x$, 
+		\[g(y) = g(A) + \frac{1}{3}g(K) + \frac{2}{3} g(L)\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Benefits and Costs of Economic Growth}
+	\begin{itemize}
+		\item The benefits of economic growth:
+		\begin{itemize}
+			\item Improvements in health
+			\item Higher incomes
+			\item Increase in the variety of goods and services
+		\end{itemize}
+		\item Costs of economic growth include:
+		\begin{itemize}
+			\item Environmental problems
+			\item Income inequality across and within countries
+			\item Loss of certain types of jobs
+		\end{itemize}
+		\item	Economists generally have a consensus that the benefits of economic growth outweigh the costs.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{What are You Going to Learn (ch. 4)}
+	\begin{itemize}
+		\item How to set up and solve a macroeconomic model
+		\item The purpose of a production function and its use for understanding differences in GDP per capita across countries
+		\item The role of capital per person and technology in explaining differences in economic growth
+		\item The relevance of “returns to scale” and “diminishing marginal products.”
+		\item How to look at economic data through the lens of a macroeconomic model
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Introduction}
+	\begin{itemize}
+		\item Recalling that a model:
+		\begin{itemize}
+			\item is a mathematical representation of a hypothetical world that we use to study economic phenomena
+			\item consists of equations and unknowns with real-world interpretations
+			\begin{itemize}
+				\item Mathematically, a model is no more than a set of equations
+			\end{itemize}
+		\end{itemize}
+		\item Economists ...
+		\begin{itemize}
+			\item Document facts
+			\item Build a model to understand the facts
+			\item Examine the model to see how effective it is
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{A Model of Production}
+	\begin{itemize}
+		\item Even though Model is only a simplifications of the real world, a good model can still  provide important insights
+		\item Consider the following model:
+		\begin{itemize}
+			\item Single, closed economy
+			\item One consumption good
+		\end{itemize}
+		\item Inputs in the production process: Labor ($L$) and Capital ($K$)
+		\item Production function: how much output ($Y$) can be produced given any number of inputs		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Setting Up the Model – Cobb-Douglas  Production Function}
+	\[Y=F(K,L) = \bar{A} K^{\alpha}L^{\beta}\]
+	\begin{itemize}
+		\item The $F$ notation states that \textit{output} ($Y$) is a function of \textit{inputs} ($K$ and $L$) - a general functional form
+		\item The production function describes how any amounts of capital and labor can be combined to generate output, not just the particular amount that our toy economy possesses
+		\item $\bar{A}$ represents the productivity parameter
+		\begin{itemize}
+			\item Letters with a bar over them denote parameters that are fixed and exogenously given in the model. These variables stand in for some fixed constant
+		\end{itemize}
+		\item A higher value of $\bar{A}$ means the firm produces more of the output good with the same amount of inputs
+		\begin{itemize}
+			\item The bigger the value of the productivity parameter, the more productive the firm.
+		\end{itemize}
+
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Model}
+	\[Y=F(K,L) = \bar{A} K^{\alpha}L^{\beta}\]
+	\begin{itemize}
+		\item Output growth corresponds to changes in $Y$
+		\item There are three ways that $Y$ can change:
+		\begin{itemize}
+			\item Capital stock (K) changes
+			\item Labor force (L) changes
+			\item Ability to produce goods with given resources (K,L) changes
+			\begin{itemize}
+				\item Technological advances occur (changes in A)
+				\item is assumed to be exogenous in the Solow model (a type of growth model)
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Total Factor Productivity (TFP)}
+	\begin{itemize}
+		\item Total factor productivity (TFP or Solow residual)
+		\item Refers to all inputs that affect output (Y ) except labor and capital
+		\item This is the unexplained part of the production function, for example, human capital, energy, land
+		\begin{itemize}
+			\item It is unexplained in the sense that it is not part of the function or be able to observed directly in the data
+		\end{itemize}
+		\item An important assumption of the Solow model is that TFP is exogenous
+		\item The model makes no effort to explain why TFP equals a particular value
+		\begin{itemize}
+			\item This is reasonable if we believe that neither policy nor the choices of agents in the model affect its value
+			\item However, later we will discuss reasons this is likely a faulty assumption
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{More on Cobb-Douglas Production Function}
+	\[Y=F(K,L) = \bar{A} K^{\alpha}L^{\beta}\]
+	\begin{itemize}
+		\item The parameter $\alpha$ and $\beta$ determine the output elasticities of capital and labor
+		\item In an usual setup, it also determine the share of labour input and capital output
+		\begin{itemize}
+			\item The $\alpha$ is usually assume to be 1/3
+			\item Recall that the labour income share is roughly 2/3
+		\end{itemize}
+		\item $F(K,L)$ is increasing in $K$ and $L$
+		\begin{itemize}
+			\item More inputs yield more output
+			\item Formally, $\frac{\partial F}{\partial K} >0 $ and $\frac{\partial F}{\partial L}>0$
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Constant Returns to Scale (CRS)}
+	\begin{itemize}
+		\item A production function exhibits constant returns to scale if doubling each input exactly doubles output
+		\item In the other word, if both $K$ and $L$ increase by $a\%$, then $Y$ also increase by $a\%$
+		\item Mathematically,
+		\[F(aK,aL) = aF(K,L)\]
+		i.e., Homogeneous function (of degree 1)
+		\item Usually, we want the production function to be CRS. To do that we restrict the parameter to
+		\[\beta = 1-\alpha \text{   and  } 0<\alpha <1\]
+		\item The production function became
+		\[Y= A K^\alpha L^{1-\alpha}\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Constant Returns to Scale (CRS)}
+	\begin{itemize}
+		\item There are other form of return to scale
+		\begin{itemize}
+			\item If $\alpha +\beta >1$, the function is increasing return to scale
+			\item If $\alpha +\beta =1$, the function is constant return to scale
+			\item If $\alpha +\beta <1$, the function is decreasing return to scale
+		\end{itemize}
+		\item Constant returns to scale guarantee that as you increase the units of labor or capital required to produce your products, you maintain a consistent level of growth (more on that in later chapters)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Output per Person (Intensive Form)}
+	\begin{itemize}
+		\item Divide output by the number of workers
+		\[\frac{Y}{L} = F\left(\frac{K}{L},\frac{L}{L}\right) = F\left(\frac{K}{L},1\right)\]
+		\item In this model, we assume the number of person = number of worker
+		\item Lowercase letters denote per capita
+		\[y = f(k)\]
+		where
+		\[y = Y/L\]
+		\[k= K/L\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Output per Person (Intensive Form)}
+	\begin{itemize}
+		\item Plot of $y=f(k)=k^{1/3}$, where $y =0$ when $k=0$
+		\item Growth models tend to explain deviations in output using changes in K or k
+		\item Increasing and features diminishing marginal returns to capital
+		\item Production function that is CRS can have diminishing marginal returns in K (or k)
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.45\linewidth]{"Figures/Typical Production Function"}
+		\end{figure}
+		
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}[wide]{Measuring the State of the Economy}
+%	\begin{columns} 
+%		% Column 1
+%		\begin{column}{.5\textwidth}
+%			\begin{table}[htbp]
+%				\centering
+%				\begin{tabular}{lrrrr}
+%					& 2005  & 2006  & 2007  & 2008 \\
+%					\hline
+%					GDP   & 12.6  & 13.4  & 14.0    & 14.3 \\
+%					(in trillions of \$) &       &       &       &  \\
+%					Growth rate GDP &       & 0.063 & 0.045 & 0.021 \\
+%					\hline
+%				\end{tabular}%
+%				\label{tab:addlabel}%
+%			\end{table}%
+%		\end{column}
+%		% Column 2    
+%		\begin{column}{.5\textwidth}			
+%
+%			
+%		\end{column}%
+%	\end{columns}
+%\end{frame}
+
+\begin{frame}[wide]{Next Lecture}
+	\begin{itemize}
+		\item Next lecture will finish covering Ch.4 
+
+
+	\end{itemize}
+\end{frame}
+
+\end{document}

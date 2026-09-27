@@ -1,0 +1,288 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%       								 Preamble				         	                                                        %%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\documentclass[10pt]{beamer}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{amsmath,lmodern}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{fit,shapes.misc}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{epstopdf}
+\usepackage{pdfpages}
+\usepackage{bm}
+\usepackage{appendixnumberbeamer}
+\usepackage{color,soul}
+\usepackage{grffile}
+\usepackage{float}
+\usepackage{relsize}
+\usepackage{tcolorbox}
+\newcounter{nodemarkers}
+\usepackage{tikz}
+\newcommand{\toplinesmall}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=3.6cm]current page.north west);}}
+             
+\newcommand{\toplinemedium}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=6.2cm]current page.north west);}}
+ 
+ \newcommand{\toplinelarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=8.9cm]current page.north west);}}           
+             
+ \newcommand{\toplinexlarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=12cm]current page.north west);}}                       
+             
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}{\textcolor{blue}{ECON712}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}{\textcolor{blue}{Winter 2026}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}{\textcolor{blue}{Lecture 7, 8 \: \: \: \: \: \: \: }
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newcommand\marktopleft[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-a) at (-0.2,1.2ex) {};%
+}
+\newcommand\markbottomright[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-b) at (0.16,-1ex) {};%
+    \tikz[overlay,remember picture,thick,inner sep=4pt]
+        \node[draw,rectangle,rounded corners, blue, fit=(marker-#1-a.center) (marker-#1-b.center)] {};%
+}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[triangle]
+\tcbset{colframe=white,colback=white,nobeforeafter}
+\beamertemplatenavigationsymbolsempty
+\addtobeamertemplate{frametitle}{\vspace*{0.19cm}}{\vspace*{0cm}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%  									    Define Title									                                       %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\title{ECON 712: Applied Econometrics} 
+\author{Lecture 7,8: Linear Regression using Vector Spaces, part III}
+\date{}
+\AtBeginSection[]
+{
+ \begin{frame}<beamer>
+ \tableofcontents[currentsection]
+ \end{frame}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%% 						     				Document								                                                %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{document}
+\setbeamercovered{transparent}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Linear Regression} 
+\toplinemedium
+\begin{itemize}
+\item The concept of a dropping a perpendicular is formalized by an orthogonal projection:
+\begin{eqnarray*}
+\begin{array}{lll}
+\bm{P_X}=\bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T &, & \bm{X}\bm{\hat{\beta}}=\bm{P_X \: y} 
+\end{array}
+\end{eqnarray*}
+\begin{itemize}
+\item An orthogonal projection is a matrix that projects any vector to a point in the subspace $\mathcal{S}(\bm{X})$ that it is closest to it
+\vspace{0.11in}
+\item $\mathcal{S}(\bm{X})$ is called the invariant subspace of $\bm{P_X}$ because the projection of any vector in $\mathcal{S}(\bm{X})$ using $\bm{P_X}$ leaves that vector unchanged
+\end{itemize}
+\vspace{0.11in}
+\item We are also going to use a projection onto the orthogonal subspace of $\mathcal{S}(\bm{X})$, $\mathcal{S}^\perp$
+\begin{eqnarray*}
+\begin{array}{lll}
+\bm{M_X}=\bm{I}-\bm{P_X} &, & \bm{\hat{u}}=\bm{M_X \: y}
+\end{array}
+\end{eqnarray*}
+\end{itemize}
+\end{frame}   
+
+\begin{frame}
+\frametitle{\: \: \: Linear Regression} 
+\toplinemedium
+\begin{itemize}
+\item Important properties of the projection matrices:
+\begin{enumerate}
+\item Idempotent: 
+\begin{eqnarray*}
+\begin{array}{ll}
+\bm{P_X} \: \bm{P_X}&=\bm{P_X} \\[2ex]
+\bm{M_X} \: \bm{M_X}&=\bm{M_X}\\[2ex]
+\end{array}
+\end{eqnarray*}
+\item Annihilation: $\bm{P_X} \: \bm{M_X}=\bm{M_X} \: \bm{P_X}=\bm{0}$ 
+\end{enumerate}
+\vspace{0.11in}
+\item Also, by Pythagorean Theorem (Sum Squares):
+\begin{eqnarray*}
+\|\bm{y}\|^2=\|\bm{P_X \: y}\|^2+\|\bm{M_X \: y}\|^2
+\end{eqnarray*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Linear Transformations} 
+\toplinelarge
+\begin{itemize}
+\item Let $\bm{A}$ be a $kxk$ matrix with full rank, and define $\bm{Z}=\bm{X \: A}$ then :
+\begin{eqnarray*}
+\bm{A}\bm{\hat{\alpha}}=\bm{\hat{\beta}}
+\end{eqnarray*}
+where $\bm{X}\bm{\hat{\beta}}=\bm{P_X \: y}$, $\bm{Z}\bm{\hat{\alpha}}=\bm{P_Z \: y}$
+\vspace{0.11in}
+\item There are two cases (can be combined as in the Celsius/Fahrenheit example in ETM):
+\begin{enumerate}
+\vspace{0.11in}
+\item When the regressors are multiplied by a constant (e.g. change of units from cm to meters)
+\vspace{0.11in}
+\item When a constant is added/subtracted from regressors
+\end{enumerate} 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Linear Transformations} 
+\toplinelarge
+\begin{itemize}
+\item Subtracting a constant $\bm{\iota}c$ from regressors when the constant term is included
+\end{itemize}
+\begin{figure}
+\includegraphics[scale=0.54]{constant.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Linear Transformations} 
+\toplinelarge
+\begin{itemize}
+\item Subtracting a constant $\bm{\iota}\bar{x}$ from regressors when the constant term is included
+\end{itemize}
+\begin{figure}
+\includegraphics[scale=0.55]{average.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Linear Transformations} 
+\toplinelarge
+\begin{itemize}
+\item For a general regression where regressors are partitioned: $\bm{X}=[\bm{X_1} \: \bm{X_2}]$, $\bm{X_1}$ is an $nxk_1$, $\bm{X_2}$ is an $nxk_2$ ; $\bm{\beta_1}$ is $k_1x1$, $\bm{\beta_2}$ is $k_2x1$, and $k_1+k_2=k$
+\begin{eqnarray*}
+\bm{y}=\bm{X_1} \bm{\beta_1}+\bm{X_2} \bm{\beta_2} +u
+\end{eqnarray*}
+the OLS/MM estimator has the following properties:
+\begin{eqnarray*}
+\begin{array}{ll}
+\bm{\hat{y}}=\bm{X_1} \bm{\hat{\beta}_1}+\bm{X_2} \bm{\hat{\beta}_2} \\[1.4ex]
+\bm{\hat{y}}=\bm{X_1} \bm{\hat{\alpha}_1}+\bm{Z} \bm{\hat{\beta}_2} \\[1.4ex]
+\end{array}
+\end{eqnarray*} 
+where $\bm{Z}=\bm{X_2}-\bm{X_1} \: \bm{A}$ and $\bm{A}$ is a $k_1xk_1$ matrix
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Linear Transformations} 
+\toplinelarge
+\begin{itemize}
+\item In addition, if the transformation results in:
+\begin{eqnarray*}
+ \langle \bm{X_1},\bm{Z} \rangle =\bm{X_1}^{T} \: \bm{Z}=\bm{0}
+ \end{eqnarray*}
+ then,
+ \begin{eqnarray*}
+\bm{\hat{y}}=\bm{Z} \bm{\hat{\beta}_2} 
+\end{eqnarray*}
+\item This is the basis of the FWL theorem we studied in ECON 312:
+\begin{itemize}
+\vspace{0.11in}
+\item Let $\bm{Z}=\bm{X_2}-\bm{P_{X_1}}\bm{X_2}=\bm{M_{X_1} \: X_2}$, then
+ \begin{eqnarray*}
+\bm{P_Z}\bm{y}=\bm{Z} \bm{\hat{\beta}_2} 
+\end{eqnarray*}
+\end{itemize}
+\item Note that residuals of this regression are not the same as the residuals of the original regression
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: FWL-- with vector algebra} 
+\toplinelarge
+\begin{itemize}
+\item Suppose that the OLS/MM estimator results in:
+\begin{eqnarray*}
+\bm{y}=\bm{X_1} \bm{\hat{\beta}_1}+\bm{X_2} \bm{\hat{\beta}_2}+\bm{\hat{u}}
+\end{eqnarray*}
+and define $\bm{Z}=\bm{M_{X_1} \: X_2}$, $\bm{\widetilde{y}}=\bm{M_{X_1} \: y}$, then:
+\begin{eqnarray*}
+\begin{array}{ll}
+\bm{P_Z} \: \bm{\widetilde{y}}=\bm{Z}  &\text{ , and} \\[1.2ex]
+\bm{M_Z}\: \bm{\widetilde{y}}=\bm{\hat{u}}
+\end{array}
+\end{eqnarray*}
+\item This yields the following equation, where $\bm{\hat{\beta}_2}$ denotes the OLS/MM estimator:
+\begin{eqnarray*}
+\bm{\widetilde{y}}=\bm{Z} \bm{\hat{\beta}_2}+\bm{\hat{u}}
+\end{eqnarray*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Goodness of Fit} 
+\toplinemedium
+\begin{itemize}
+\item Recall that, by Pythagoras' Theorem:  
+\begin{eqnarray*}
+TSS=\|\bm{y}\|^2=\|\bm{P_X \: y}\|^2+\|\bm{M_X \: y}\|^2=ESS+SSR
+\end{eqnarray*}
+\vspace{0.11in}
+\item We use this result to obtain two goodness of fit measures:
+\begin{eqnarray*}
+R_u^2= \frac{\|\bm{P_X \: y}\|^2}{\|\bm{y}\|^2} \\[1.4ex]
+R_c^2= \frac{\|\bm{P_X \: M_{\iota} \: y}\|^2}{\|\bm{ M_{\iota} \: y}\|^2} 
+\end{eqnarray*}
+\item Note that the $R^2$-centered is preferred, but it can only be interpreted when the constant term is included in the regression
+\end{itemize}
+\end{frame}
+\end{document}

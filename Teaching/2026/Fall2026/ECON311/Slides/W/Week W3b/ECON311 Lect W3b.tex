@@ -1,0 +1,345 @@
+% !TeX spellcheck = en_US
+\documentclass[aspectratio=1610]{beamer}
+\usetheme{Madrid}
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+\makeatletter
+\define@key{beamerframe}{wide}[10pt]{%
+	\def\beamer@cramped{\itemsep #1\topsep0.5pt\relax}}
+\makeatother
+	
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{booktabs}
+
+\title[Winter - Lecture 3b] % (optional, use only with long paper titles)
+{Intermediate Macroeconomics: Lecture  W3b }
+\subtitle{ECON 311 -- Intermediate Macroeconomics}
+
+\author{Muhebullah Karimzada}
+\institute{School of Economics \\\ University of Northern British Columbia}
+\date{Fall 2026}
+
+
+% ---------- UNBC COLORS ----------
+\usepackage{xcolor}
+\definecolor{UNBCGreen}{RGB}{0,102,51}
+\definecolor{UNBCDark}{RGB}{0,74,37}
+\definecolor{UNBCGold}{RGB}{189,155,96}
+\definecolor{SoftCream}{RGB}{249,247,242}
+\definecolor{SoftGray}{RGB}{244,246,248}
+\definecolor{AccentBlue}{RGB}{41,98,255}
+\definecolor{AccentOrange}{RGB}{230,126,34}
+\definecolor{AccentTeal}{RGB}{0,150,136}
+\definecolor{AccentRed}{RGB}{192,57,43}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{structure}{fg=UNBCDark}
+\setbeamercolor{title}{fg=white,bg=UNBCDark}
+\setbeamercolor{subtitle}{fg=UNBCGold}
+\setbeamercolor{frametitle}{fg=white,bg=UNBCDark}
+\setbeamercolor{block title}{fg=white,bg=UNBCDark}
+\setbeamercolor{block body}{fg=black,bg=SoftGray}
+\setbeamercolor{block title alerted}{fg=white,bg=AccentRed}
+\setbeamercolor{block body alerted}{fg=black,bg=SoftGray}
+\setbeamercolor{item}{fg=UNBCDark}
+\setbeamercolor{section in toc}{fg=UNBCDark}
+\setbeamercolor{alerted text}{fg=AccentRed}
+\setbeamercolor{author in head/foot}{fg=white,bg=UNBCDark}
+\setbeamercolor{date in head/foot}{fg=white,bg=UNBCDark}
+% ---------- UNBC BRANDING ----------
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.78\paperwidth,ht=2.8ex,dp=1.2ex,leftskip=1em]{author in head/foot}%
+  \color{white}\textbf{ECON 311} \hspace{0.5em} \textcolor{UNBCGold}{|} \hspace{0.5em} Intermediate Macroeconomics%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.8ex,dp=1.2ex,rightskip=1em plus1fil]{date in head/foot}%
+  \color{white}\insertframenumber/\inserttotalframenumber%
+  \end{beamercolorbox}}%
+}
+
+\newtcolorbox{mybox}[2][]{
+  colback=#2!8,
+  colframe=#2,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  #1
+}
+
+\newcommand{\topbanner}[1]{%
+\begin{tikzpicture}[remember picture,overlay]
+\fill[UNBCGold] ([yshift=-0.65cm]current page.north west) rectangle ([yshift=-0.48cm]current page.north east);
+\node[anchor=north west,font=\small\bfseries,text=UNBCDark] at ([xshift=0.35cm,yshift=-0.78cm]current page.north west) {#1};
+\end{tikzpicture}%
+}
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}[wide]{What are You Going to Learn }
+	\begin{itemize}
+		\item Proximate the output trends/potential output
+		\item Calculate moving average
+		\item Introduce Hamilton Filter
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Moving Averages (MA)}
+	\begin{itemize}
+		\item Calculating the average of fixed number of the most recent observations in a rolling window
+		\vspace{2mm}
+		\begin{itemize}
+			\item e.g., MA of 3 quarters for 2001Q1 can be the average of 2000Q3, 2000Q4 and 2001Q1
+			\item Then, we move to 2001Q2, the MA includes 2000Q4, 2001Q1 and 2001Q2
+			\item Continue like this for the whole data series
+		\end{itemize}
+		\item The goal is to smooths out short-term fluctuations
+		\item Highlights longer-term trends or cycles
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Trailing and Centered Moving Averages}
+	\begin{itemize}
+		\item \textit{Trailing MA (Causal MA)}: Uses only past data points up to the current time.
+		\begin{itemize}
+			\item Example: A 5-period trailing MA at time \( t \) is:  
+		\[
+		MA_t = \frac{1}{5} \sum_{i=t-4}^{t} X_i
+		\]
+		\end{itemize}
+		\item \textit{Centered MA (Symmetric MA)}: Averages data from both past and future points.
+		\begin{itemize}
+			\item Example: A 5-period centered MA at time \( t \) is:
+		\[
+		MA_t = \frac{1}{5} \sum_{i=t-2}^{t+2} X_i
+		\]
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Leading Moving Average}
+	\begin{itemize}
+		\item \textit{Leading MA (Forward MA)}: Uses only future data points, which is uncommon in real-world applications.
+		\vspace{1mm}
+		\begin{itemize}
+			\item Example: A 5-period leading MA at time \( t \) is:
+		\[
+		MA_t = \frac{1}{5} \sum_{i=t}^{t+4} X_i
+		\]
+		\end{itemize}
+		\vspace{3mm}
+		\item Most macroeconomics time series data would use Trailing MA, because economic agent at a specific time would not have any exact information about the future 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Simple Moving Average (SMA)}
+	\begin{itemize}
+		\item Basic form of moving average
+		\item This is what we have been showing so far, for Trailing MA, 
+		\[
+		SMA_t = \frac{1}{N} \sum_{i=t-N+1}^{t} X_i
+		\]
+		\item Equal weights for all observations (the weight is $1/N$)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Simple Moving Average (SMA): Example}
+	\begin{itemize}
+		\item Suppose we have stock prices for the past 5 days:
+	\end{itemize}
+	\[
+	X_{1} = 100, \quad X_{2} = 102, \quad X_{3} = 104, \quad X_{4} = 103, \quad X_5 = 105
+	\]
+	\begin{itemize}
+		\item The 3-day SMA at time \( 3 \) is:
+		\[
+		SMA_{3} = \frac{100 + 102 + 104 }{3} = 102
+		\]
+		\item The 3-day SMA at time \( 4 \) is:
+		\[
+		SMA_4 = \frac{102 + 104 + 103 }{3} = 103
+		\]
+		\item The 3-day SMA at time \( 5 \) is:
+		\[
+		SMA_5 = \frac{104 + 103 + 105}{3} = 104
+		\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Weighted Moving Average (WMA)}
+	\begin{itemize}
+		\item Assigns different weights to observations (e.g., giving more importance to recent data)
+		\item Unlike the Simple Moving Average (SMA), where all points are equally weighted, WMA emphasizes more recent values
+		\item The formula for WMA over a window size \( N \) is:
+		\[
+		WMA_t = \frac{\sum_{i=t-N+1}^{t} w_{i-t} X_i}{\sum_{i=t-N+1}^{t} w_{i-t}}
+		\]
+		where \( w_{i-t} \) represents the assigned weight for each observation (e.g., $w_{-1}$ is the weight on the $X$ that is one period lag, $w_{-2}$ is the weight on the variable that is 2 period lag)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Drawbacks of Moving Averages}
+	\begin{itemize}
+		\item \textit{End-Point Problems}: 
+		\vspace{1mm}
+		\begin{itemize}
+			\item At the start and end of the data series, fewer past or future values are available, leading to missing or biased estimates
+		\end{itemize}
+		\item \textit{Lag in Identifying Turning Points}: 
+		\vspace{1mm}
+		\begin{itemize}
+			\item Since moving averages rely on past data, they respond slowly to sudden changes, delaying trend identification
+		\end{itemize}
+		\item 
+		\textit{May Miss Structural Breaks}: 
+		\vspace{1mm}
+		\begin{itemize}
+			\item Moving averages smooth out fluctuations, which may cause important shifts, such as economic crises or policy changes, to be overlooked
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Drawbacks of Moving Averages}
+	\begin{itemize}
+		\item \textit{Arbitrary Selection of Weights}:
+		\vspace{1mm}
+		\begin{itemize}
+			\item In weighted moving averages, the choice of weights is subjective and may not always reflect true data dynamics
+		\end{itemize}
+		\item \textit{Sensitivity to Window Length Selection}: 
+		\vspace{1mm}
+		\begin{itemize}
+			\item A short window reacts quickly but may capture too much noise, while a long window smooths better but introduces more lag
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Introduction to Hamilton Filter}
+	\begin{itemize}
+		\item Developed by James Hamilton from UCSD (Hamilton, 2018)
+		\item The original paper shows it is an alternative to another popular smoothing method Hodrick-Prescott filter (we won't go into detail on the HP filter)
+		\item Based on regression framework which provide more basic statistical properties
+		\item Addresses traditional filter limitations
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Hamilton Filter: Basic Concept}
+	\begin{itemize}
+		\item Projects future values based on recent past
+		\item Focuses on $h$-period ahead prediction
+		\item Uses linear regression methodology (more specifically, time series econometric)
+		%\item Calculates trend deviations systematically
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Hamilton Filter Mathematics}
+	\begin{itemize}
+		\item \textit{Basic Equation:} 
+		\[
+		y_{t+h} = \beta_0 + \beta_1 y_t + \beta_2 y_{t-1} + \beta_3 y_{t-2} + \beta_4 y_{t-3} + v_{t+h}
+		\]
+		The equation uses lagged values of \( y \) to predict \( y_{t+h} \), where \( v_{t+h} \) captures the cycle component (deviations from trend)
+		
+		\item \textit{Cycle Component:} 
+		\[
+		v_{t+h} = y_{t+h} - \text{predicted value}
+		\]
+		This isolates the cyclical component by subtracting the predicted trend value from the observed value
+		
+		\item \textit{Preserves Time Series Properties:} Unlike other filters, the Hamilton Filter does not require detrending or smoothing assumptions, retaining the original properties of the time series
+
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[wide]{Why 4 Lags and \( h = 8 \)?}
+	\begin{itemize}
+		\item \textit{Choice of 4 Lags:}
+		\begin{itemize}
+			\item Quarterly data often exhibit seasonal patterns 
+			\item Using 4 lags captures one full year of quarterly dynamics, accounting for both seasonal effects
+			\item Ensure the residual term is stationary -- i.e., bound up and down around zero (you will learn more in time series econometric)
+		\end{itemize}
+		
+		\item \textit{Choice of \( h = 8 \):}
+		\begin{itemize}
+			\item \( h = 8 \) corresponds to a 2-year horizon for quarterly data, which is long enough to separate trends from short-term cycles
+			\item This choice avoids blending cyclical movements with longer-term trends, ensuring clear distinction between the two
+
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Advantages of the Hamilton Filter}
+	\begin{itemize}
+		\item \textit{Theoretically Well-Founded:}
+		\begin{itemize}
+			\item Based on standard regression principles, it uses lagged observations to model trends and cycles.
+			\item This avoids arbitrary smoothing parameters and is grounded in economic theory.
+			\item Sometime refer as 
+		\end{itemize}
+		\vspace{4mm}
+		\item \textit{More Reliable in Real-Time:}
+		\begin{itemize}
+			\item Because it uses only past data (causal filtering), it provides realistic estimates for real-time decision-making.
+			\item No need for future data, making it ideal for forecasting and policy applications.
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[wide]{Advantages of the Hamilton Filter}
+	\begin{itemize}
+		\item \textit{Preserves Basic Time Series Properties:}
+		\begin{itemize}
+			\item Does not distort key properties like stationarity, seasonality, or autocorrelation.
+			\item Ensures that filtered data aligns closely with the original series.
+		\end{itemize}
+		\vspace{4mm}
+		\item \textit{Robust to Different Data Frequencies:}
+		\begin{itemize}
+			\item Performs well with quarterly, monthly, or annual data, making it highly versatile.
+			\item Recommended horizon \( h \) can be adjusted for different data frequencies (e.g., \( h = 8 \) for quarterly, \( h = 24 \) for monthly).
+		\end{itemize}
+		
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Applying MA or Hamilton Filter}
+	\begin{itemize}
+		\item Recall the output decomposition formula:
+		\vspace{4mm}
+		\[
+		Y_t = \bar{Y}_t + \bar{Y}_t \tilde{Y}_t
+		\]
+		\item The term \( \beta_0 + \beta_1 y_t + \beta_2 y_{t-1} + \beta_3 y_{t-2} + \beta_4 y_{t-3} \) can be interpreted as the potential output component (\( \bar{Y}_t \))
+		\item The term \( v_{t+h} \) corresponds to the cyclical component (\( \bar{Y}_t \tilde{Y}_t \))
+		\item To improve statistical properties and simplify analysis, GDP is often transformed by taking its logarithm
+	\end{itemize}
+\end{frame}
+
+
+
+
+
+\end{document}

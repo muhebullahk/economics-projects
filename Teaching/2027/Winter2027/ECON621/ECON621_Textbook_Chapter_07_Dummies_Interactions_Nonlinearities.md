@@ -1,0 +1,357 @@
+# Chapter 7: Regression with Special Regressors: Dummies, Interactions, and Non-linearities
+
+---
+
+## Chapter Overview
+
+Real economic relationships rarely look like straight lines. This chapter extends the linear regression toolkit to handle discrete and categorical variables, interactions between variables, polynomial terms, and logarithmic transformations. We also discuss heterogeneous treatment effects and weighted regression. These tools are essential for applied work and appear in virtually every empirical paper.
+
+---
+
+## Learning Objectives
+
+After completing this chapter, students will be able to:
+
+1. Use **binary dummy variables** to capture discrete categories.
+2. Avoid the **dummy variable trap** (perfect multicollinearity with the intercept).
+3. Include **interaction terms** to allow effects to vary across groups.
+4. Interpret **log-linear**, **log-log**, and **linear-log** regression specifications.
+5. Use **polynomial regression** to capture non-linear relationships.
+6. Interpret **regression with saturated specifications** as estimating the CEF exactly.
+7. Understand how heterogeneous treatment effects are reflected in regression.
+8. Apply **weighted least squares (WLS)** when error variances are known.
+
+---
+
+## 7.1 Binary and Categorical Variables
+
+### 7.1.1 The Binary Dummy Variable
+
+A **binary (dummy) variable** $D_i \in \{0, 1\}$ captures membership in a category:
+
+$$D_i = \begin{cases} 1 & \text{if condition holds} \\ 0 & \text{otherwise} \end{cases}$$
+
+Examples: employed/unemployed, male/female, urban/rural, treated/not treated.
+
+**Regression with a single dummy:**
+
+$$y_i = \alpha + \rho D_i + u_i$$
+
+Interpretation:
+- $\alpha = E[y_i \mid D_i = 0]$ = mean outcome for the reference group.
+- $\rho = E[y_i \mid D_i = 1] - E[y_i \mid D_i = 0]$ = difference in mean outcomes between the two groups.
+
+The OLS estimate $\hat{\rho}$ is simply the difference in sample means: $\bar{y}_1 - \bar{y}_0$.
+
+### 7.1.2 Categorical Variables with $J$ Categories
+
+For a variable with $J$ categories (e.g., education levels: less than high school, high school, some college, college, graduate), create $J-1$ dummy variables, omitting one **reference category**:
+
+$$y_i = \alpha + \sum_{j=2}^{J} \rho_j D_{ij} + u_i$$
+
+where $D_{ij} = 1$ if individual $i$ is in category $j$.
+
+**Interpretation:** Each $\rho_j$ is the mean difference in $y$ between category $j$ and the reference category (category 1), conditional on other controls.
+
+**The Dummy Variable Trap:** Including $J$ dummies plus an intercept creates perfect multicollinearity: $\sum_{j=1}^J D_{ij} = 1 = $ intercept. Always omit one category.
+
+**Example 7.1 (Education and Wages):** Create dummies for education groups:
+- $D_{\text{HS},i}$ = 1 if high school graduate (reference category: less than HS)
+- $D_{\text{SC},i}$ = 1 if some college
+- $D_{\text{BA},i}$ = 1 if bachelor's degree
+- $D_{\text{MA},i}$ = 1 if graduate degree
+
+Coefficients $\hat{\rho}_{\text{HS}}, \hat{\rho}_{\text{SC}}, \hat{\rho}_{\text{BA}}, \hat{\rho}_{\text{MA}}$ are the wage premia for each group relative to those with less than a high school diploma.
+
+---
+
+## 7.2 Interaction Terms
+
+### 7.2.1 Why Interactions?
+
+An **interaction term** allows the effect of one variable to depend on the value of another. Without interactions, we impose that the slope coefficient on $x$ is the same for all individuals. This is often too restrictive.
+
+### 7.2.2 Interaction Between Two Dummy Variables
+
+$$y_i = \alpha + \beta_1 D_{1i} + \beta_2 D_{2i} + \beta_3 (D_{1i} \times D_{2i}) + u_i$$
+
+The expected value of $y_i$ for each combination:
+
+| $D_1$ | $D_2$ | $E[y_i]$ |
+|---|---|---|
+| 0 | 0 | $\alpha$ |
+| 1 | 0 | $\alpha + \beta_1$ |
+| 0 | 1 | $\alpha + \beta_2$ |
+| 1 | 1 | $\alpha + \beta_1 + \beta_2 + \beta_3$ |
+
+The interaction coefficient $\beta_3$ is the **additional effect** of having both $D_1 = 1$ and $D_2 = 1$ beyond the sum of their individual effects.
+
+**Example 7.2:** Regress wages on a female dummy ($D_1$), a college dummy ($D_2$), and their interaction. The interaction coefficient captures whether the college wage premium is different for women than for men.
+
+### 7.2.3 Interaction Between a Dummy and a Continuous Variable
+
+$$y_i = \alpha + \beta_1 D_i + \beta_2 x_i + \beta_3 (D_i \times x_i) + u_i$$
+
+Interpretation:
+- When $D_i = 0$: $E[y_i \mid x_i, D_i=0] = \alpha + \beta_2 x_i$ (slope = $\beta_2$).
+- When $D_i = 1$: $E[y_i \mid x_i, D_i=1] = (\alpha + \beta_1) + (\beta_2 + \beta_3) x_i$ (slope = $\beta_2 + \beta_3$).
+
+The interaction allows for different slopes in the two groups. $\beta_3$ is the **differential slope** for the group with $D_i = 1$.
+
+**Example 7.3:** Allow the return to education to differ by gender. Regress log wages on education, a female dummy, and the education × female interaction. The interaction coefficient gives the female-male difference in returns to education.
+
+### 7.2.4 The Saturated Regression Model
+
+A **saturated** model includes a separate indicator for every possible combination of the categorical variables. For two binary variables $D_1$ and $D_2$:
+
+$$y_i = \alpha + \beta_1 D_{1i} + \beta_2 D_{2i} + \beta_3 (D_{1i} \times D_{2i}) + u_i$$
+
+This is saturated for two binary variables. The OLS estimates of $E[y \mid D_1, D_2]$ for each cell are exactly the sample cell means. **The saturated model estimates the CEF exactly** (for discrete regressors).
+
+---
+
+## 7.3 Polynomial and Logarithmic Transformations
+
+### 7.3.1 Polynomial Regression
+
+To capture non-linearities in a continuous variable, include higher-order polynomial terms:
+
+$$y_i = \beta_0 + \beta_1 x_i + \beta_2 x_i^2 + \cdots + \beta_p x_i^p + u_i$$
+
+This is still a **linear** regression (linear in the parameters), so OLS applies directly.
+
+**Application: Experience-Earnings Profile**
+
+In the labour economics literature, the relationship between experience and wages is typically hump-shaped — wages rise rapidly at first, then more slowly, eventually declining near retirement. A quadratic specification captures this:
+
+$$\log(\text{wage}_i) = \beta_0 + \beta_1 \text{exp}_i + \beta_2 \text{exp}_i^2 + \ldots$$
+
+The peak of the experience-earnings profile occurs at:
+
+$$\text{exp}^* = -\frac{\hat{\beta}_1}{2\hat{\beta}_2}$$
+
+**Example 7.4:** Typical estimates: $\hat{\beta}_1 \approx 0.04$, $\hat{\beta}_2 \approx -0.0007$. Peak at $\text{exp}^* \approx 0.04/(2 \times 0.0007) \approx 28$ years of experience.
+
+### 7.3.2 Logarithmic Transformations
+
+Logarithmic transformations are ubiquitous in economics. They:
+- Reduce skewness in right-tailed distributions (wages, income, firm size).
+- Allow interpretation of coefficients as **percentage changes**.
+- Provide a natural way to estimate **elasticities**.
+
+**Three standard specifications:**
+
+| Model | Equation | Interpretation of $\hat{\beta}$ |
+|---|---|---|
+| **Log-linear** | $\log(y_i) = \beta_0 + \beta_1 x_i + u_i$ | 1-unit ↑ in $x$ → $100\hat{\beta}_1$% change in $y$ |
+| **Linear-log** | $y_i = \beta_0 + \beta_1 \log(x_i) + u_i$ | 1% ↑ in $x$ → $\hat{\beta}_1/100$ unit change in $y$ |
+| **Log-log** | $\log(y_i) = \beta_0 + \beta_1 \log(x_i) + u_i$ | 1% ↑ in $x$ → $\hat{\beta}_1$% change in $y$ (elasticity) |
+
+**Example 7.5 (Mincer Earnings Equation):** The classic Mincer (1974) equation uses a log-linear specification:
+
+$$\log(\text{wage}_i) = \beta_0 + \beta_1 \cdot \text{schooling}_i + \beta_2 \cdot \text{exp}_i + \beta_3 \cdot \text{exp}_i^2 + u_i$$
+
+The coefficient $\hat{\beta}_1 \approx 0.10$ implies each additional year of schooling raises wages by approximately 10%.
+
+**Approximation note:** $\log(y_1) - \log(y_0) \approx (y_1 - y_0)/y_0$ for small changes. For large changes (>20%), the approximation becomes less accurate and we should use $\exp(\hat{\beta}_1) - 1$ for the exact percentage change.
+
+---
+
+## 7.4 Heterogeneous Treatment Effects and Regression
+
+### 7.4.1 What Regression Recovers with Heterogeneous Effects
+
+In Chapter 1, we assumed constant treatment effects: $Y_{1i} - Y_{0i} = \rho$ for all $i$. In reality, treatment effects vary across individuals. What does OLS estimate in this case?
+
+Consider:
+
+$$Y_i = \alpha + \rho_i D_i + \eta_i$$
+
+where $\rho_i = Y_{1i} - Y_{0i}$ is the individual treatment effect and $\eta_i = Y_{0i} - E[Y_{0i}]$.
+
+If $D_i$ is randomly assigned, one can show that OLS estimates:
+
+$$\hat{\rho}^{OLS} \xrightarrow{p} E[\rho_i] + \frac{\text{Cov}(\rho_i, D_i(1-D_i))}{E[D_i(1-D_i)]}$$
+
+Under random assignment ($D_i$ independent of $\rho_i$), this simplifies to:
+
+$$\hat{\rho}^{OLS} \xrightarrow{p} E[\rho_i] = \text{ATE}$$
+
+OLS recovers the ATE under random assignment, even with heterogeneous effects.
+
+### 7.4.2 Regression Weighted Average of Effects
+
+More generally, Angrist (1998) shows that with heterogeneous effects and a continuous treatment, OLS computes a **variance-weighted average** of causal effects:
+
+$$\hat{\beta}^{OLS} \xrightarrow{p} \frac{E[\omega_i \cdot \beta_i]}{E[\omega_i]}$$
+
+where $\omega_i = (x_i - E[x_i])^2$ and $\beta_i$ is the individual-specific treatment effect. Observations with more variation in $x_i$ receive higher weight.
+
+**Implication:** OLS gives greater weight to the treatment effect for individuals whose $x_i$ is far from the mean. This is not necessarily the same as the average effect for the typical individual.
+
+---
+
+## 7.5 Weighting and Weighted Least Squares
+
+### 7.5.1 When to Weight?
+
+Weighted regression assigns observation $i$ weight $w_i > 0$ and minimizes:
+
+$$\sum_{i=1}^n w_i (y_i - \mathbf{x}_i^T \boldsymbol{\beta})^2$$
+
+The WLS estimator is:
+
+$$\hat{\boldsymbol{\beta}}^{WLS} = (\mathbf{X}^T \mathbf{W} \mathbf{X})^{-1} \mathbf{X}^T \mathbf{W} \mathbf{y}$$
+
+where $\mathbf{W} = \text{diag}(w_1, \ldots, w_n)$.
+
+**Two main justifications for weighting:**
+
+1. **Known heteroskedasticity:** If $V(u_i) = \sigma^2/w_i$, then WLS with weights $w_i$ is equivalent to OLS on a transformed model with homoskedastic errors, making WLS the efficient estimator (BLUE under heteroskedasticity).
+
+2. **Survey weights:** Complex surveys oversample certain groups. Survey weights adjust for differential sampling probabilities to ensure estimates are representative of the population.
+
+**Example 7.6:** Suppose $V(u_i) = \sigma^2 x_i$ (variance proportional to $x_i$). Use WLS with $w_i = 1/x_i$. This makes the transformed errors homoskedastic: $u_i^* = u_i/\sqrt{x_i}$ has constant variance $\sigma^2$.
+
+### 7.5.2 Debate on Weighting in Applied Work
+
+A subtle issue (Solon, Haider, and Wooldridge, 2015): survey weights adjust for sampling design. But should we use them to estimate conditional means?
+
+- If the model is **correctly specified** (CEF is truly linear with the same coefficients for all groups), weighting is unnecessary — unweighted OLS is more efficient.
+- If the model is **misspecified** (the CEF is non-linear or slopes vary across groups), weighted estimates may better describe the population-representative effect.
+
+There is no universal answer. Practical guidance: report both weighted and unweighted estimates; if they differ substantially, investigate why.
+
+---
+
+## Chapter Summary
+
+- **Dummy variables** capture categorical distinctions; always omit one reference category to avoid the dummy variable trap.
+- **Interaction terms** allow effects to vary across groups or with the level of another variable.
+- The **saturated model** (full set of interactions for discrete regressors) estimates the CEF exactly at each cell.
+- **Polynomial terms** capture non-linearities; logarithmic transformations facilitate elasticity interpretation.
+- With heterogeneous treatment effects, OLS estimates a **variance-weighted average** of effects.
+- **Weighted least squares (WLS)** is appropriate under known heteroskedasticity or with survey weights.
+
+---
+
+## Key Terms
+
+**Dummy variable** — a binary $\{0,1\}$ variable indicating group membership.
+
+**Reference category** — the omitted category in a set of dummy variables.
+
+**Dummy variable trap** — perfect multicollinearity from including all category dummies with an intercept.
+
+**Interaction term** — the product of two regressors, allowing the effect of one to vary with the other.
+
+**Saturated model** — a model that includes all possible combinations of categorical variables, estimating the CEF exactly.
+
+**Log-linear model** — $\log(y) = \mathbf{x}^T\boldsymbol{\beta} + u$; coefficients are approximate percentage changes.
+
+**Elasticity** — coefficient from a log-log model; measures percentage change in $y$ per 1% change in $x$.
+
+**Mincer earnings equation** — the classic log-linear wage regression with schooling and a quadratic in experience.
+
+**Weighted Least Squares (WLS)** — minimizes a weighted sum of squared residuals.
+
+---
+
+## Exercises
+
+### Conceptual Questions
+
+**7.1** You include a gender dummy (1 = female) in a wage regression. The coefficient is −0.15. Interpret this coefficient. What does it mean? What doesn't it tell you?
+
+**7.2** Explain the dummy variable trap. Why is it a problem? How do you avoid it?
+
+**7.3** A researcher runs: $\log(\text{wage}) = \beta_0 + \beta_1 \text{educ} + \beta_2 \text{female} + \beta_3 (\text{educ} \times \text{female}) + u$. Interpret each coefficient.
+
+**7.4** In the quadratic experience-earnings model, derive the formula for the experience level at which predicted wages are maximized.
+
+**7.5** "A log-log regression coefficient is the elasticity of $y$ with respect to $x$." Is this exactly correct? When is it an approximation?
+
+### Analytical Questions
+
+**7.6** Suppose $y_i = \alpha + \beta_1 D_{1i} + \beta_2 D_{2i} + \beta_3 (D_{1i} \times D_{2i}) + u_i$ where $D_1$ = male (0=female), $D_2$ = college (0=no college). 
+
+Write the expected value of $y$ for each of the four groups: (female, no college), (female, college), (male, no college), (male, college). Express each in terms of $\alpha, \beta_1, \beta_2, \beta_3$.
+
+**7.7** Show that the OLS estimator for WLS with weights $w_i$ solves $\hat{\boldsymbol{\beta}}^{WLS} = (\mathbf{X}^T\mathbf{W}\mathbf{X})^{-1}\mathbf{X}^T\mathbf{W}\mathbf{y}$.
+
+**7.8** Prove that the saturated model with two binary regressors produces fitted values equal to the sample cell means.
+
+### Applied Questions
+
+**7.9** Using CPS data, estimate the Mincer earnings equation. Report: (a) the return to education; (b) the return to experience at 5, 15, and 25 years; (c) the peak experience level.
+
+**7.10** Add an interaction between education and ethnicity. Does the return to education differ significantly by ethnicity?
+
+---
+
+## R Lab 7: Dummies, Interactions, and Non-linearities
+
+```r
+library(tidyverse)
+library(AER)
+data("CPS1988")
+CPS1988 <- CPS1988 %>%
+  mutate(log_wage = log(wage),
+         ethnicity_dummy = as.integer(ethnicity == "afam"))
+
+# 7.1: Mincer earnings equation
+mincer <- lm(log_wage ~ education + experience + I(experience^2), data = CPS1988)
+summary(mincer)
+
+# Peak experience
+beta_exp  <- coef(mincer)["experience"]
+beta_exp2 <- coef(mincer)["I(experience^2)"]
+peak_exp  <- -beta_exp / (2 * beta_exp2)
+cat("Peak experience:", round(peak_exp, 1), "years\n")
+
+# 7.2: Interaction with ethnicity dummy
+mincer_int <- lm(log_wage ~ education * ethnicity + experience + I(experience^2),
+                  data = CPS1988)
+summary(mincer_int)
+
+# 7.3: Plot experience-earnings profile
+exp_grid <- seq(0, 45, by = 1)
+# Predicted log wages at mean education, varying experience
+newdata <- data.frame(
+  education = mean(CPS1988$education),
+  experience = exp_grid,
+  ethnicity = "cauc"
+)
+newdata$pred <- predict(mincer_int, newdata = newdata)
+
+ggplot(newdata, aes(x = experience, y = pred)) +
+  geom_line(color = "steelblue", linewidth = 1.2) +
+  labs(
+    title = "Experience-Earnings Profile",
+    subtitle = "Quadratic specification at mean education",
+    x = "Years of Experience",
+    y = "Predicted Log Wage"
+  ) +
+  theme_minimal()
+
+# 7.4: Log-log regression for wage elasticity w.r.t. education
+log_log <- lm(log_wage ~ log(education) + experience + I(experience^2), data = CPS1988)
+summary(log_log)
+cat("Elasticity of wage w.r.t. education:", round(coef(log_log)["log(education)"], 3), "\n")
+```
+
+---
+
+*End of Chapter 7*
+
+---
+
+**References**
+
+Angrist, J. D. (1998). Estimating the labor market impact of voluntary military service using social security data on military applicants. *Econometrica*, 66(2), 249–288.
+
+Mincer, J. (1974). *Schooling, Experience, and Earnings*. NBER.
+
+Solon, G., Haider, S. J., and Wooldridge, J. M. (2015). What are we weighting for? *Journal of Human Resources*, 50(2), 301–316.
+
+Wooldridge, J. M. (2019). *Introductory Econometrics*. Chapter 6.

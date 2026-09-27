@@ -1,0 +1,194 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{grffile}
+\usepackage{relsize}
+\usepackage{tablefootnote}
+\usepackage{footnote}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[multiple]{footmisc}
+\usepackage{appendix}
+\usepackage{times}
+\usepackage{relsize}
+\usepackage{newtxtext,newtxmath}
+\usepackage{enumitem}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Title Page Information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace{-.5in} ECON712: Problem Set 2}
+\author{Leandro Freylejer}
+\date{Due date: March 31st, 2026}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Double and Single Space Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]{\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{1\defbaselineskip}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Set Margins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textwidth=6.5in
+\textheight=9in
+\oddsidemargin=0.10in
+\evensidemargin=0.10in
+\topmargin=-0.5in
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Actual Document Begins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\pagenumbering{arabic}
+
+\maketitle
+\vspace{-.3in}
+\textbf{Instructions:} There are $4$ questions. Answer all questions. To receive full marks, write your answers as completely and clearly as possible, providing all intermediate steps and stating any assumptions invoked.
+
+
+\section*{Question I: Potential Outcomes and Instrumental Variables}
+Suppose that, in Argentina, the public school system is severely underfunded and it is currently not delivering a good education for its students. Alongside public education, there is a private education system that it is thought to be better at educating students. Students attending private schools are not subsidized by the government and must pay a fee, that is prohibitively expensive for many households. As an education consultant, you were hire to estimate the causal effect of attending a private over a public elementary school on academic achievement in mathematics. To do this, you were given the following table with information on the results of the seventh grade national math exam for a sample of students who attended each system broken down by the education of their parents:      
+
+\begin{table}[H]
+\begin{center}
+\caption{Average Score on National Math Test (out of 100)}
+\label{table:main_shock_effect}
+\resizebox{.82\textwidth}{!}{%
+\begin{tabular}{lll}
+\hline
+\hline
+Parents' education attaintment (x)   &  Public School        &  Private School  \\
+\hline
+Post-Graduate Degree                  & 78.5 (80)                     & 88.9  (140) \\
+Undergraduate Degree                         &  77 (32)                      &86.5 (56)  \\
+Finish High-School                     & 66.7 (60)                 & 76.5 (50)  \\
+Did not finish High-School               & 64 (30)                 & 70.8   (25)  \\
+\hline
+\hline
+\end{tabular}}
+\end{center}
+\captionsetup{font={scriptsize}}
+\captionsetup{width=0.80\textwidth}
+\captionsetup{skip=0pt}
+\caption*{Notes: Sample sizes are given in brackets}
+\end{table}
+Using the information in this table, answer the following questions:
+\begin{enumerate}[label=(\alph*)]
+\item (8 points) Suppose that you solve for the following coefficients estimates using OLS:
+\begin{eqnarray*}
+y_i=\hat{\beta}_0+\hat{\beta}_1 \: D_i+\hat{\epsilon}_i
+\end{eqnarray*}
+where $y_i$ is the score of individual $i$ and 
+\begin{eqnarray*}
+D_i=\begin{cases}
+		1 & \text{if person $i$ attends private school} \\
+             0 & \text{if person $i$ attends public school} 
+\end{cases}
+\end{eqnarray*}	
+Solve for $\hat{\beta}_1$ using the information from Table 1. Is $\hat{\beta}_1$ a consistent estimator of the $ATE$ of attending private school over public school? Carefully explain the difference between selection bias and treatment effect heterogeneity bias. In addition, explain the potential sources of these two types of biases in this example.
+\item (8 points) Assume that the CIA property: $y(0),y(1) \perp D|x$ holds, calculate $ATE$ and $ATT$. 
+\item (8 points) Suppose now that the CIA property \textbf{does not} hold, but that you are given the \textbf{magical} gift to observe counter-factual scenarios. Table 2 below shows the average math tests for the counter-factual scenarios in which the same students attended the other type of school.  
+\begin{table}[H]
+\begin{center}
+\caption{\textbf{Counterfactuals} Average Score on National Math Test (out of 100)}
+\label{table:main_shock_effect}
+\resizebox{.82\textwidth}{!}{%
+\begin{tabular}{lll}
+\hline
+\hline
+Parents' education attainment (x)   &  Public School        &  Private School  \\
+\hline
+Post-Graduate Degree                   & 80.25  (140)         &     85.4 (80) \\
+College-Educated                         &  79.5 (56)            &     81.7 (32)    \\
+Finish High-School                        &  70 (50)              &     74.7 (60)    \\
+Did not finish High-School              &  69.8   (25)         &      69 (30)       \\
+\hline
+\hline
+\end{tabular}}
+\end{center}
+\captionsetup{font={scriptsize}}
+\captionsetup{width=0.80\textwidth}
+\captionsetup{skip=0pt}
+\caption*{Notes: Sample sizes are given in brackets}
+\end{table}
+Use Table 1 and Table 2 to calculate the ATE. Relate your result to the estimate of $\hat{\beta}_1$ in part (a) by indicating the magnitude of the selection bias and the magnitude of the heterogeneous treatment effect bias.  
+\item (8 points) Suppose now that you observe the score of individual students and whether they attended private or public school only (you do not observe any other individual characteristic). Assume that the Argentinian government run a lottery among the entire population of kids in which lottery winners are able to send their kids to private school for free and that you observe who in your data has won the lottery. Carefully discuss how you will use this random experiment to estimate the causal effect of attending private schools over public schools on academic achievement (discuss assumptions, estimators and interpretation of estimates relative to the treatment effect estimated in (d) when there is treatment effect heterogeneity). 
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Question II: Asymptotic Theory of OLS}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Consider the linear regression model $y_i = \mathbf{X}_i^\top \boldsymbol{\beta} + u_i$, where $\{(y_i, \mathbf{X}_i)\}_{i=1}^n$ is an i.i.d.\ sample.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item (6 points) State the condition under which the OLS estimator $\hat{\boldsymbol{\beta}}^{ols}$ is consistent. Using the probability limit decomposition
+\[
+\underset{n\to\infty}{\mathrm{plim}}\;\hat{\boldsymbol{\beta}}^{ols}
+= \boldsymbol{\beta}
++ \left(\frac{1}{n}\mathbf{X}^\top\mathbf{X}\right)^{-1}
+  \left(\frac{1}{n}\mathbf{X}^\top\mathbf{u}\right),
+\]
+provide a formal proof of consistency. Why is pre-determinedness $\left(\mathbb{E}[u_i|\mathbf{X}_i]=0\right)$ sufficient here, while strict exogeneity $\left(\mathbb{E}[\mathbf{u}|\mathbf{X}]=\mathbf{0}\right)$ is required for unbiasedness?
+
+\item (6 points) Show that, under i.i.d.\ errors and $\mathbb{E}[\mathbf{X}_i u_i]=\mathbf{0}$, the asymptotic distribution of the OLS estimator is
+\[
+\sqrt{n}\left(\hat{\boldsymbol{\beta}}^{ols}-\boldsymbol{\beta}\right)
+\xrightarrow{d}
+N\!\left(\mathbf{0},\; S_{X^\top X}^{-1}\,\Omega\, S_{X^\top X}^{-1}\right),
+\]
+where $\Omega = \mathbb{E}[u_i^2\, \mathbf{X}_i\mathbf{X}_i^\top]$. State clearly which law (LLN or CLT) justifies each step of the argument, and identify the role of Slutsky's theorem.
+
+\item (6 points) Under conditional homoskedasticity, $\mathbb{E}[u_i^2|\mathbf{X}_i]=\sigma^2$, show that $\Omega = \sigma^2 S_{X^\top X}$, and hence that the sandwich variance $S_{X^\top X}^{-1}\Omega S_{X^\top X}^{-1}$ reduces to the classical formula $\sigma^2 S_{X^\top X}^{-1}$. What assumption justifies the use of heteroscedasticity-robust (sandwich) standard errors when this condition fails? Why is plugging in $\hat{\bm{\Sigma}}_u = \mathrm{diag}(\hat{u}_i^2)$ directly \textit{not} a consistent estimator of $\Omega$?
+
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Question III: The CEF and Linear Regression}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Let $(y_i, \mathbf{X}_i)$ be a random vector, and define the Conditional Expectation Function (CEF) as $m(\mathbf{X}_i)\equiv\mathbb{E}[y_i|\mathbf{X}_i]$.
+
+\begin{enumerate}[label=(\alph*)]
+
+\item (6 points) State the CEF Decomposition Theorem. Using it, show that when the CEF is linear, $m(\mathbf{X}_i)=\mathbf{X}_i^\top\boldsymbol{\beta}^*$, the population OLS coefficient satisfies
+\[
+\boldsymbol{\beta}^* = \mathbb{E}[\mathbf{X}_i\mathbf{X}_i^\top]^{-1}\mathbb{E}[\mathbf{X}_i y_i] = \boldsymbol{\beta}^{OLS}.
+\]
+What does this imply about the relationship between OLS and the CEF when linearity holds?
+
+\item (6 points) What are the implications of parts (a) for the interpretation of OLS estimates when the true CEF is nonlinear? Does OLS remain \textit{unbiased} in finite samples?
+
+\end{enumerate}
+
+
+\section*{Question IV}
+Consider the Titanic subclassification exercise described on page 183 of the Mixtape. For this question, I suggest that you annotate your code by providing detailed explanation to each line of code. Please submit the STATA log file obtained after running your code, which will contain your annotated code as well as all your output.
+\begin{enumerate}[label=(\alph*)] 
+\item (8 points) Replicate the Titanic subclassification exercise using the code provided in the textbook. Explain the steps of this process and what the code is doing in each step.
+\item (5 points)  Discuss how this method of subclassification changes our results, what this means, and how this relates to the ATE and issues of self-selection and heterogeneous treatment effects?
+\item (5 points) Use the linear probability model to provide an alternative estimate of the ATE (do not forget to use standard errors that are robust to heteroscedasticity).
+\item (8 points) Suppose that you are interested in estimating whether the probability of survival of a female passenger in first class relative to a male passenger in first class was larger than the probability of survival of a female passenger not in first class relative to a male passenger not in first class. That is, you want to test whether, given the space in boats assigned to each class, a disproportionally larger amount of seats went to women than men in the first class compared to the non-first classes. In other words, you want to know whether the gender survival gap was larger in the first class section. How would you modify your regression equation from part (c) to estimate this parameter? Carefully explain under which circumstance you would still need to control for the age variable. Estimate this parameter using STATA.     
+
+\end{enumerate}
+
+\end{document}

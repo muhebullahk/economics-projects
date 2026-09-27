@@ -1,0 +1,470 @@
+% !TeX spellcheck = en_US
+\documentclass[aspectratio=1610]{beamer}
+\usetheme{Madrid}
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+\makeatletter
+\define@key{beamerframe}{wide}[10pt]{%
+	\def\beamer@cramped{\itemsep #1\topsep0.5pt\relax}}
+\makeatother
+	
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{booktabs}
+
+\title[Fall - Lecture 9] % (optional, use only with long paper titles)
+{Intermediate Macroeconomics: Lecture  9 (Ch.6)}
+\subtitle{ECON 311 -- Intermediate Macroeconomics}
+
+\author{Muhebullah Karimzada}
+\institute{School of Economics \\\ University of Northern British Columbia}
+\date{Fall 2026}
+
+
+% ---------- UNBC COLORS ----------
+\usepackage{xcolor}
+\definecolor{UNBCGreen}{RGB}{0,102,51}
+\definecolor{UNBCDark}{RGB}{0,74,37}
+\definecolor{UNBCGold}{RGB}{189,155,96}
+\definecolor{SoftCream}{RGB}{249,247,242}
+\definecolor{SoftGray}{RGB}{244,246,248}
+\definecolor{AccentBlue}{RGB}{41,98,255}
+\definecolor{AccentOrange}{RGB}{230,126,34}
+\definecolor{AccentTeal}{RGB}{0,150,136}
+\definecolor{AccentRed}{RGB}{192,57,43}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{structure}{fg=UNBCDark}
+\setbeamercolor{title}{fg=white,bg=UNBCDark}
+\setbeamercolor{subtitle}{fg=UNBCGold}
+\setbeamercolor{frametitle}{fg=white,bg=UNBCDark}
+\setbeamercolor{block title}{fg=white,bg=UNBCDark}
+\setbeamercolor{block body}{fg=black,bg=SoftGray}
+\setbeamercolor{block title alerted}{fg=white,bg=AccentRed}
+\setbeamercolor{block body alerted}{fg=black,bg=SoftGray}
+\setbeamercolor{item}{fg=UNBCDark}
+\setbeamercolor{section in toc}{fg=UNBCDark}
+\setbeamercolor{alerted text}{fg=AccentRed}
+\setbeamercolor{author in head/foot}{fg=white,bg=UNBCDark}
+\setbeamercolor{date in head/foot}{fg=white,bg=UNBCDark}
+% ---------- UNBC BRANDING ----------
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.78\paperwidth,ht=2.8ex,dp=1.2ex,leftskip=1em]{author in head/foot}%
+  \color{white}\textbf{ECON 311} \hspace{0.5em} \textcolor{UNBCGold}{|} \hspace{0.5em} Intermediate Macroeconomics%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.8ex,dp=1.2ex,rightskip=1em plus1fil]{date in head/foot}%
+  \color{white}\insertframenumber/\inserttotalframenumber%
+  \end{beamercolorbox}}%
+}
+
+\newtcolorbox{mybox}[2][]{
+  colback=#2!8,
+  colframe=#2,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  #1
+}
+
+\newcommand{\topbanner}[1]{%
+\begin{tikzpicture}[remember picture,overlay]
+\fill[UNBCGold] ([yshift=-0.65cm]current page.north west) rectangle ([yshift=-0.48cm]current page.north east);
+\node[anchor=north west,font=\small\bfseries,text=UNBCDark] at ([xshift=0.35cm,yshift=-0.78cm]current page.north west) {#1};
+\end{tikzpicture}%
+}
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}[wide]{Experiment 2: An Increase in Research Share }
+	\begin{itemize}
+		\item An Increase in Research Share, $\bar{\ell}$, has two effect to the growth rate
+		\begin{itemize}
+			\item More researcher producing ideas
+			\item Less labour producing output
+		\end{itemize}
+		\[y_t^* = \left(\frac{1}{\bar{n}}\right)^\gamma \bar{z}^\gamma  (1-\textcolor{blue}{\bar{\ell}}) \left( \textcolor{blue}{L_{a,t}}\right)^\gamma = \left(\frac{1}{\bar{n}}\right)^\gamma \bar{z}^\gamma  (1-\textcolor{blue}{\bar{\ell}}) \left(  \textcolor{blue}{\ell} N_t \right)^\gamma \]
+		\[	g_y^* = \gamma \bar{n} \]
+		\item In BGP, the growth rate would not change
+		\item There are two opposite effect on the output per capita
+		\item Increasing the research share thus involves a tradeoff: current output declines but more idea created which may increase the output in the long run
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Experiment 2: An Increase in Research Share }
+	In transition, 
+	\begin{itemize}
+		\item The level of output per capita decreases initially
+		\begin{itemize}
+			\item The number of worker in production sector drop
+			\item New ideas have not created
+		\end{itemize}
+		\item From $t+1$ onward, more idea will be created and increase the output as would in transition dynamic
+		\item For total output, it could still increase if $\bar{n}$ is relatively high 
+		\begin{itemize}
+			\item Recall the total output function: $Y_t=A_tL_{y,t} = A_t (1-\ell) N_t$
+			\item That is, if the positive effect from an increase in $N_t$ is more than negative effect from an increase in $\ell$
+			\item We have all the number to measure the changes, the results on total output is ambiguous
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Experiment 2: An Increase in Research Share }
+	\begin{figure}
+		\centering
+		% [Figure not available] \includegraphics[width=0.6\linewidth]{"Figures/MACRO6_FIG06.04"}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[wide]{Experiment 3: A Permanent Rise in Research Productivity}
+	\[y_t^* = \left(\frac{1}{\bar{n}}\right)^\gamma \textcolor{blue}{\bar{z}}^\gamma  (1-\bar{\ell}) \left( L_{a,t}\right)^\gamma = \left(\frac{1}{\bar{n}}\right)^\gamma \textcolor{blue}{\bar{z}}^\gamma  (1-\bar{\ell}) \left(  \ell N_t \right)^\gamma \]
+	\[	g_y^* = \gamma \bar{n} \]
+	\begin{itemize}
+		\item In BGP, the growth rate would not change. But, the long-run level of output will be higher as If research is more productive
+		\item In transition, there would be no change in the initial period since the $A_t$ would not change until in period $t+1$
+		\item The $A$ would grow faster but as the stock of $A$ get larger, $g_A$ would converge to the BGP
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Experiment 3: A Permanent Rise in Research Productivity}
+	\begin{figure}
+		\centering
+		% [Figure not available] \includegraphics[width=0.6\linewidth]{"Figures/MACRO6_FIG06.03"}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[wide]{Growth Accounting}
+	\begin{itemize}
+		\item Growth accounting analyze the sources of growth in an economy and how they may change over time
+		\item The approach is similar to development accounting but we will focus on growth
+		\item Consider following production function 
+		\[Y_t= A_t K_t^{1/3}L_{y,t}^{2/3}\]
+		\item Here all variables can grow
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Growth Accounting}
+	\[Y_t= A_t K_t^{\textcolor{red}{1/3}}L_{y,t}^{\textcolor{red}{2/3}}\]
+	\begin{itemize}
+		\item Apply growth rate rules to the production function
+		\[g_{Y_t}= g_{A_t} + g(K_t^{1/3}) + g(L_{y,t}^{2/3})\]
+		\[g_{Y_t}= g_{A_t} + \textcolor{red}{\frac{1}{3}}g_{K_t} + \textcolor{red}{\frac{2}{3}}g_{L_{y,t}}\]
+		\item The growth rate of output is the sum of the growth rate of each input weighted by its exponent
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Growth Accounting}
+	\begin{itemize}
+		\item We want to adjust growth rates by labour hours to account for structural change (e.g., rise in female labour participation) and business cycle
+		\vspace{2mm}
+		\begin{itemize}
+			\item 	When the economy is booming, people may work more hours per week
+			\item When the economy is in a recession, people may work fewer hours per week
+		\end{itemize}
+		\vspace{2mm}
+		\item In actual applications of growth accounting, the second term can include increases in education or changes in the age distribution of the workforce. In general, we call it “labour composition''
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Growth Accounting}
+	\begin{itemize}
+		\item Growth rate of output per hour, $Y /L$, over a time period is the sum of three terms:
+		\[g_{Yt} - g_{Lt} = \frac{1}{3}(g_{K_t} - g_{L_t}) + \frac{2}{3}(g_{L_{yt}} - g_{Lt}) + g_{At}\]
+		
+		\vspace{4mm}
+		\item Except for $g_{At}$, we can measure all the other terms. We can measure the unobserved TFP growth by backing out the term using our equation
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Growth Accounting in the United States}
+	Output per hour grew at an average annual rate of 2.3 percent between 1948 and 2017
+	\begin{itemize}
+		\item 	0.9 percentage points were due to an increase in the capital labour ratio, K /L
+		\item 0.2 percentage points came from changes in the composition of the labour force, including increased years of education
+		\item TFP growth accounted for the majority of growth, at 1.2 percentage points
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{"Figures/Growth Accounting in the United States"}
+	\end{figure}	
+\end{frame}
+
+\begin{frame}[wide]{Growth Accounting in the United States}
+	\begin{itemize}
+		\item The period 1948 to 1973 featured the fastest growth in output per hour, at 3.3 percent per year
+		\item The years 1973 to 1995 saw output per hour grow less than half as fast, at 1.6 percent per year
+		\begin{itemize}
+			\item Known as the productivity slowdown
+		\end{itemize}
+		\item In the years 1995–2003, output grew nearly as rapidly as before 1973–1995 (3.2\%)
+		\begin{itemize}
+			\item Known as the new economy 
+		\end{itemize}
+		\item In recent year, the growth has slow down again
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Growth Accounting in the United States after 1995}
+	\begin{itemize}
+		\item During this time was the emergence of the World Wide Web and the dot-com boom in the stock market, followed by the sharp decline in stock prices in 2001
+		\item Growth accounting tells us this should be roughly equal parts by capital accumulation and TFP
+		\item The contribution of capital rose from 0.8 percent to 1.4 percent
+		\item TFP growth increased from 0.5 percent to 1.5 percent
+		\item Economists studying this productivity boom generally conclude that at least half of it can be explained by purchases of computers and by rapid growth in the sectors that produce information technology
+		\item That is, there is a link between the new economy and information technology
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Combining Solow and Romer: Overview}
+	\begin{itemize}
+		\item Solow endogenized capital accumulation and found that capital could not provide the engine of economic growth
+		\item However, he went further in postulating that exogenous improvements in technology could explain growth
+		\item The limitation of this approach, however, is that the growth was simply assumed rather than explained within the model
+		\item Solow intuited that growth must be related to technological improvements, but he took these to be exogenous, like rain falling from the sky
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Combining Solow and Romer: Overview}
+	\begin{itemize}
+		\item Simplifying assumption in the Romer model that there was no capital
+		\item But, it would be important to include capital accumulation into the model
+		\item Nonrivalry of ideas results in long-run growth along a balanced growth path
+		\item With capital, the model exhibits transition dynamics if economy is not on its balanced growth path in the Solow model sense
+		\vspace{1mm}
+		\begin{itemize}
+			\item For short periods of time, countries can grow at different rates
+			\item In the long run, countries grow at the same rate if all parameters are the same
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Combining Solow and Romer}
+	\begin{itemize}
+		\item Compare to the Solow model, productivity level $\bar{A}$ is no longer a constant parameter
+		\vspace{2mm}
+		\begin{itemize}
+			\item Now, the $\bar{A}$ is replaced by $A_t$, which grow continuously
+		\end{itemize}
+		\vspace{4mm}
+		\item In a Solow diagram, this would show up as the $\bar{s}y_t = \bar{s}A_t k^\alpha_t$ curve shifting upward each period, leading the capital stock to increase each period as new investment exceeded depreciation
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Setting Up the Combined Model}
+	\begin{itemize}
+		\item Six equations:
+		\[Y_t = A_t K_t^{\alpha} L_{yt}^{1-\alpha}\]
+		\[\Delta K_{t+1}  = \bar{s} Y_t - \delta K_t\]
+		\[\Delta A_{t+1} = \bar{z} L_{at}\]
+		\[L_{yt} + L_{at} = N_t\]
+		\[L_{at} = \bar{\ell} \bar{L}\]
+		\[\frac{\Delta N_{t+1}}{N_t} = \bar{n}\]
+		\vspace{3mm}
+		\item  we have 6 unknowns ($Y_t$, $K_t$, $A_t$, $L_{yt}$, $N_t$ and $L_{at}$) in each period $t$
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[wide]{Setting Up the Combined Model}
+	\begin{itemize}
+		\item Convert the per capita production function ($y_t = A^\gamma_t k^\alpha_t (1-\ell)^{1-\alpha}$) into growth rate
+		\[g_{yt} = \gamma g_{At} + \alpha g_{kt} \]
+		\vspace{1mm}
+		\item The change in the capital per capita is investment minus depreciation and population growth:
+		\[g_{kt} = \frac{\Delta k_{t+1}}{k_t} = \bar{s} \frac{y_t}{k_t} - \delta - \bar{n}\]
+		\vspace{1mm}
+		\item Researchers are used to produce new ideas:
+		
+		\[g_{At} = \frac{\Delta A_{t+1}}{A_t} = \bar{n}\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Setting Up the Combined Model}
+	\begin{itemize}
+		\item This equation still has two endogenous variables on the right side, so it’s not yet a solution
+		\[g_{kt} = \frac{\Delta k_{t+1}}{k_t} = \bar{s} \textcolor{red}{\frac{y_t}{k_t} }- \delta -\bar{n}\]
+		\item For $g_{kt}$ to grow at constant rate, it must be the case that the right hand side is also a constant
+		\item Given $\bar{n}$, $\bar{s}$ and $\delta$ is constant, $\frac{y_t}{k_t}$ must be constant
+		\item It can only be possible if $y_t$ and $k_t$ is growing at the same rate
+		\begin{itemize}
+			\item If $y_t$ or $k_t$ is growing at a faster rate, each period the ratio $\frac{y_t}{k_t}$ would grow bigger or smaller
+		\end{itemize}
+		\item Therefore, $g_k^* = g_y^*$ along the balanced growth path
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Setting Up the Combined Model}
+	\begin{itemize}
+		\item Plug in $g_{At}=\bar{n}$, $g_k^* = g_y^*$ into $g_{yt} = \gamma g_{At} + \alpha g_{kt} $,
+		\[g_{y}^* = \gamma\bar{n} + \alpha g_{y}^* \]
+		\vspace{2mm}
+		\item Rearrange it, we have 
+		\[g_{y}^* = \frac{\gamma\bar{n}}{1-\alpha} \]
+		\vspace{2mm}
+		\item For the long-run combined model, this equation pins down the growth rate of output per person
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Setting Up the Combined Model}
+	\begin{itemize}
+		\item The growth rate of output is even larger in the combined model than in the Romer model (the extra term, $\frac{1}{1-\alpha} > 1$)
+		\vspace{1mm}
+		\item Output is higher in this model because ideas have a direct and an indirect effect
+		\begin{itemize}
+			\item Increasing productivity raises output because productivity has increased
+			\item Higher productivity results in a higher capital stock
+		\end{itemize}
+		\vspace{1mm}
+		\item While capital cannot itself serve as an engine of long run economic growth, it helps to amplify the underlying growth in knowledge 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Setting Up the Combined Model}
+	\begin{itemize}
+		\item Now, we know that $g_Y^*$ is a constant along a balanced growth path (It would have an extra of $(1-\alpha)\bar{n}$). This implies
+		\[\frac{k^*_t}{y^*_t} = \frac{K^*_t}{Y^*_t} = \frac{\bar{s}}{g_Y^* + \delta}\]
+		\item Substitute $k^* = \frac{\bar{s}}{g_Y^* + \delta} y^*$ into the production function:
+		\begin{align*}
+			y^*_t &= A^\gamma \left(\frac{\bar{s}}{g_Y^* + \delta} y^*\right)^\alpha (1-\ell)^{1-\alpha} \\
+			\implies y^{*(1-\alpha)}_t &= A^\gamma \left(\frac{\bar{s}}{g_Y^* + \delta} \right)^\alpha  (1-\ell)^{1-\alpha} \\
+			\implies y^* &= A^{*\frac{\gamma}{1-\alpha}}_t  \left(\frac{\bar{s}}{g_Y^* +\delta }\right)^{\frac{\alpha}{1-\alpha}} (1-\bar{\ell}) \\
+			\implies y^* &= A^{*\frac{\gamma}{1-\alpha}}_t  \left(\frac{\bar{s}}{g_y^* +\delta +\bar{n} }\right)^{\frac{\alpha}{1-\alpha}} (1-\bar{\ell})
+		\end{align*}
+		\item Here, $\bar{s}$ would lead to higher $y$ as in Solow model
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Combined Model - Transition Dynamic}
+	\begin{itemize}
+		\item The Solow model and the combined model both have diminishing returns to capital
+		\vspace{1mm}
+		\item Transition dynamics applies in both models
+		\vspace{1mm}
+		\item In the combined model,
+		\vspace{1mm}
+		\begin{itemize}
+			\item the further below its balanced growth path an economy is, the faster the economy will grow
+			\item the further above its balanced growth path an economy is, the slower the economy will grow
+		\end{itemize}
+		\vspace{1mm}
+		\item Note that the $K/Y$ is not equal to $\frac{\bar{s}}{g_Y^* + \delta}$ when it is not on the balanced growth path
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Combined Model - Transition Dynamic}
+	\begin{itemize}
+		\item A permanent increase in the investment rate $\bar{s}$ in the combined model implies that
+		\vspace{2mm}
+		\begin{itemize}
+			\item The balanced growth path of income is higher (parallel shift)
+			\item Current income is unchanged, which implies The economy is now below the new balanced growth path
+			\item The growth rate of income per capita is immediately higher (transition dyanamic)
+			\item The slope of the output path is steeper than the balanced growth path and get flatter overtime until it reach the balance growth path
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Combined Model - Transition Dynamic}
+	\begin{itemize}
+		\item The economy begins on a balanced growth path. Then, in the year 2030, there is a permanent increase in the investment rate, s, which raises the balanced growth path. 
+		\item Since the economy is now below its new balanced growth path, the principle of transition dynamics says that the economy will grow rapidly. 
+		\item Notice that $y_t$ is plotted on a ratio scale, so the slope of the path is the growth rate
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.4\linewidth]{"Figures/transition dynamic"}
+	\end{figure}
+	
+\end{frame}
+
+
+\begin{frame}[wide]{Combined Model - Transition Dynamic}
+	\begin{itemize}
+		\item The principle of transition dynamics played a crucial role in explaining variations in growth rates among countries in the Solow model in the short run
+		\item The combined model presents a theory of long-run growth driven by the global discovery of new ideas, alongside a theory explaining differences in growth rates among countries based on transition dynamics
+		\item The model predicts that, in the long run, all countries should grow at the same rate, denoted by $\bar{g}$, representing the world knowledge growth rate, 
+		\item However, within any specific time frame, differences in growth rates among countries may be observed due to varying distances from their balanced growth paths
+		\item Alterations in policies impacting model parameters, such as the investment rate, can consequently lead to divergent growth rates over extended periods
+	\end{itemize}
+\end{frame}
+
+
+
+%\begin{frame}[wide]{An Increase in the Investment Rate}
+%	\begin{columns} 
+%			% Column 1
+%			\begin{column}{.5\textwidth}
+%				\begin{itemize}
+%					\item Suppose the investment rate increases permanently for exogenous reasons ($s'>s$)
+%					\begin{itemize}
+%						\item The investment curve rotates upward ($\bar{s}'\bar{A}  \bar{L}^{1-\alpha} K_t^\alpha > \bar{s}\bar{A}  \bar{L}^{1-\alpha} K_t^\alpha$)
+%						\item The depreciation curve remains unchanged ($\delta K_t$)
+%						\item The capital stock increases by transition dynamics to reach the new steady state
+%						\begin{itemize}
+%							\item This happens because investment exceeds depreciation ($sY_t>\delta K_t$)
+%						\end{itemize}
+%						\item The new steady state is located to the right
+%					\end{itemize}
+%				\end{itemize}
+%			\end{column}
+%			% Column 2    
+%			\begin{column}{.5\textwidth}			
+%				\begin{figure}
+%					\centering
+%					\includegraphics[width=1\linewidth]{"Figures/An Increase in the Investment Rate"}
+%				\end{figure}
+%			\end{column}%
+%		\end{columns}
+%\end{frame}
+
+%\begin{frame}[wide]{Measuring the State of the Economy}
+%	\begin{columns} 
+%		% Column 1
+%		\begin{column}{.5\textwidth}
+%			\begin{table}[htbp]
+%				\centering
+%				\begin{tabular}{lrrrr}
+%					& 2005  & 2006  & 2007  & 2008 \\
+%					\hline
+%					GDP   & 12.6  & 13.4  & 14.0    & 14.3 \\
+%					(in trillions of \$) &       &       &       &  \\
+%					Growth rate GDP &       & 0.063 & 0.045 & 0.021 \\
+%					\hline
+%				\end{tabular}%
+%				\label{tab:addlabel}%
+%			\end{table}%
+%		\end{column}
+%		% Column 2    
+%		\begin{column}{.5\textwidth}			
+%			
+%			
+%		\end{column}%
+%	\end{columns}
+%\end{frame}
+
+%\begin{frame}[wide]{Next Lecture}
+%	\begin{itemize}
+%		\item 
+%	\end{itemize}
+%\end{frame}
+
+\end{document}

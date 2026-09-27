@@ -1,0 +1,579 @@
+%==========================================================
+%  Contemporary Economic Issues: A Canadian Perspective
+%  ECON 204 / INTS 211 — University of Northern British Columbia
+%  Muhebullah Karimzada — Winter 2027
+%==========================================================
+
+\documentclass[12pt,twoside,openright]{book}
+
+%----------------------------------------------------------
+% ENCODING & FONTS
+%----------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{palatino}
+
+%----------------------------------------------------------
+% PAGE GEOMETRY
+%----------------------------------------------------------
+\usepackage[
+  top=1in,
+  bottom=1.1in,
+  inner=1.25in,
+  outer=0.875in,
+  headheight=15pt
+]{geometry}
+
+%----------------------------------------------------------
+% MATHEMATICS
+%----------------------------------------------------------
+\usepackage{amsmath,amssymb,amsthm}
+
+%----------------------------------------------------------
+% COLORS  (UNBC green: RGB 0,122,51)
+%----------------------------------------------------------
+\usepackage[dvipsnames]{xcolor}
+\definecolor{unbcgreen}{RGB}{0,122,51}
+\definecolor{unbcgreenlight}{RGB}{228,244,234}
+\definecolor{unbcgreenmid}{RGB}{178,222,194}
+\definecolor{policyblue}{RGB}{0,60,120}
+\definecolor{policyblulight}{RGB}{224,234,248}
+\definecolor{exampleteal}{RGB}{0,118,115}
+\definecolor{exampleteallight}{RGB}{222,244,242}
+\definecolor{thinkpurple}{RGB}{88,20,138}
+\definecolor{thinkpurplelight}{RGB}{238,226,252}
+\definecolor{dataorange}{RGB}{172,84,0}
+\definecolor{dataorangelight}{RGB}{255,237,216}
+\definecolor{chaptergray}{RGB}{75,75,75}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{casered}{RGB}{120,20,40}
+\definecolor{caseredlight}{RGB}{248,224,228}
+\definecolor{everygold}{RGB}{148,96,0}
+\definecolor{everygoldlight}{RGB}{255,248,220}
+
+%----------------------------------------------------------
+% GRAPHICS & TIKZ
+%----------------------------------------------------------
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+\usetikzlibrary{
+  arrows.meta,
+  positioning,
+  shapes.geometric,
+  shapes.misc,
+  calc,
+  patterns,
+  decorations.pathreplacing,
+  decorations.markings,
+  fit,
+  backgrounds,
+  shadows
+}
+
+%----------------------------------------------------------
+% TABLES
+%----------------------------------------------------------
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{longtable}
+\renewcommand{\arraystretch}{1.35}
+
+%----------------------------------------------------------
+% LISTS
+%----------------------------------------------------------
+\usepackage[shortlabels]{enumitem}
+\setlist[itemize]{leftmargin=*,topsep=4pt,itemsep=2pt}
+\setlist[enumerate]{leftmargin=*,topsep=4pt,itemsep=2pt}
+
+%----------------------------------------------------------
+% HEADERS & FOOTERS
+%----------------------------------------------------------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\thepage\quad\textcolor{unbcgreen}{\textit{\leftmark}}}
+\fancyhead[RO]{\textcolor{unbcgreen}{\textit{\rightmark}}\quad\small\thepage}
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0.5pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{unbcgreen}\leaders\hrule height \headrulewidth\hfill}}
+
+%----------------------------------------------------------
+% CHAPTER & SECTION FORMATTING
+%----------------------------------------------------------
+\usepackage{titlesec}
+
+\titleformat{\chapter}[display]
+  {\normalfont\bfseries\color{unbcgreen}}
+  {\large\MakeUppercase{\chaptertitlename}\ \thechapter}
+  {8pt}
+  {\Huge}
+  [\vspace{6pt}\color{unbcgreen}\titlerule]
+
+\titlespacing*{\chapter}{0pt}{-20pt}{32pt}
+
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{unbcgreen!85!black}}
+  {\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{chaptergray}}
+  {\thesubsection}{1em}{}
+
+\titleformat{\subsubsection}
+  {\normalfont\normalsize\bfseries\itshape\color{chaptergray}}
+  {\thesubsubsection}{1em}{}
+
+%----------------------------------------------------------
+% CAPTIONS
+%----------------------------------------------------------
+\usepackage{caption}
+\captionsetup{
+  font=small,
+  labelfont={bf,color=unbcgreen},
+  labelsep=period,
+  margin=12pt,
+  justification=justified
+}
+
+%----------------------------------------------------------
+% FLOATS
+%----------------------------------------------------------
+\usepackage{float}
+\usepackage[section]{placeins}
+
+%----------------------------------------------------------
+% FOOTNOTES
+%----------------------------------------------------------
+\usepackage{footmisc}
+
+%----------------------------------------------------------
+% SPACING
+%----------------------------------------------------------
+\usepackage{setspace}
+\onehalfspacing
+
+%----------------------------------------------------------
+% HYPERLINKS
+%----------------------------------------------------------
+\usepackage[
+  colorlinks=true,
+  linkcolor=unbcgreen,
+  citecolor=policyblue,
+  urlcolor=policyblue,
+  pdftitle={Contemporary Economic Issues: A Canadian Perspective},
+  pdfauthor={Muhebullah Karimzada},
+  pdfsubject={ECON 204 / INTS 211, UNBC, Winter 2027},
+  bookmarks=true,
+  bookmarksopen=true
+]{hyperref}
+
+%----------------------------------------------------------
+% TCOLORBOX ENVIRONMENTS
+%----------------------------------------------------------
+\usepackage[most]{tcolorbox}
+
+%--- Learning Objectives (green, chapter opener) ----------
+\newtcolorbox{learningobjectives}{
+  enhanced,
+  colback=unbcgreenlight,
+  colframe=unbcgreen,
+  colbacktitle=unbcgreen,
+  coltitle=white,
+  fonttitle=\bfseries\large,
+  title={Learning Objectives},
+  arc=4pt,
+  boxrule=1pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt,
+  attach boxed title to top left={yshift=-2mm,xshift=8mm},
+  boxed title style={arc=3pt},
+  before upper={\begin{itemize}[leftmargin=1.2em,topsep=2pt,itemsep=3pt,parsep=0pt]},
+  after upper={\end{itemize}}
+}
+
+%--- Definition Box (gray) --------------------------------
+\newtcolorbox{defbox}[1]{
+  enhanced,
+  colback=lightgray,
+  colframe=gray!55,
+  colbacktitle=gray!30,
+  coltitle=black,
+  fonttitle=\bfseries,
+  title={Definition: #1},
+  arc=3pt,
+  boxrule=0.7pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+%--- Canadian Example Box (teal) -------------------------
+\newtcolorbox{canexample}[1]{
+  enhanced,
+  colback=exampleteallight,
+  colframe=exampleteal,
+  colbacktitle=exampleteal,
+  coltitle=white,
+  fonttitle=\bfseries,
+  title={Canadian Example: #1},
+  arc=3pt,
+  boxrule=1pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+%--- Think Like an Economist (purple) --------------------
+\newtcolorbox{thinkbox}{
+  enhanced,
+  colback=thinkpurplelight,
+  colframe=thinkpurple,
+  colbacktitle=thinkpurple,
+  coltitle=white,
+  fonttitle=\bfseries,
+  title={Think Like an Economist},
+  arc=3pt,
+  boxrule=1pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+%--- Policy Debate (blue) --------------------------------
+\newtcolorbox{policydebate}[1]{
+  enhanced,
+  breakable,
+  colback=policyblulight,
+  colframe=policyblue,
+  colbacktitle=policyblue,
+  coltitle=white,
+  fonttitle=\bfseries\large,
+  title={Policy Debate: #1},
+  arc=4pt,
+  boxrule=1pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt
+}
+
+%--- Case Study (dark red) --------------------------------
+\newtcolorbox{casestudy}[1]{
+  enhanced,
+  breakable,
+  colback=caseredlight,
+  colframe=casered,
+  colbacktitle=casered,
+  coltitle=white,
+  fonttitle=\bfseries\large,
+  title={Case Study: #1},
+  arc=4pt,
+  boxrule=1pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt
+}
+
+%--- Economics in Everyday Life (gold) -------------------
+\newtcolorbox{everydaylife}[1]{
+  enhanced,
+  breakable,
+  colback=everygoldlight,
+  colframe=everygold,
+  colbacktitle=everygold,
+  coltitle=white,
+  fonttitle=\bfseries\large,
+  title={Economics in Everyday Life: #1},
+  arc=4pt,
+  boxrule=1pt,
+  left=10pt, right=10pt, top=8pt, bottom=8pt
+}
+
+%--- Key Takeaway (green) --------------------------------
+\newtcolorbox{keytakeaway}{
+  enhanced,
+  colback=unbcgreenlight,
+  colframe=unbcgreen,
+  colbacktitle=unbcgreen,
+  coltitle=white,
+  fonttitle=\bfseries,
+  title={Key Takeaway},
+  arc=3pt,
+  boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+%--- Data Spotlight (orange) -----------------------------
+\newtcolorbox{databox}[1]{
+  enhanced,
+  colback=dataorangelight,
+  colframe=dataorange,
+  colbacktitle=dataorange,
+  coltitle=white,
+  fonttitle=\bfseries,
+  title={Data Spotlight: #1},
+  arc=3pt,
+  boxrule=0.8pt,
+  left=8pt, right=8pt, top=6pt, bottom=6pt
+}
+
+%----------------------------------------------------------
+% THEOREM-LIKE ENVIRONMENTS
+%----------------------------------------------------------
+\theoremstyle{definition}
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{example}{Example}[chapter]
+
+%----------------------------------------------------------
+% CUSTOM COMMANDS
+%----------------------------------------------------------
+\newcommand{\term}[1]{\textbf{\textit{#1}}}
+\newcommand{\source}[1]{\par\vspace{4pt}\noindent\footnotesize\textit{Source: #1}}
+\newcommand{\figexplain}[1]{\par\vspace{4pt}\noindent\footnotesize #1}
+\newcommand{\dollar}{\$}
+\newcommand{\percent}{\%}
+
+%----------------------------------------------------------
+% BIBLIOGRAPHY
+%----------------------------------------------------------
+\usepackage[authoryear,round,sort]{natbib}
+\bibliographystyle{apalike}
+
+%==========================================================
+\begin{document}
+%==========================================================
+
+%----------------------------------------------------------
+% FRONT MATTER
+%----------------------------------------------------------
+\frontmatter
+\pagestyle{empty}
+
+%--- TITLE PAGE -------------------------------------------
+\begin{titlepage}
+\begin{tikzpicture}[remember picture,overlay]
+  % Top green bar
+  \fill[unbcgreen] (current page.north west) rectangle
+    ([yshift=-3.5cm]current page.north east);
+  % Bottom green bar
+  \fill[unbcgreen!30] (current page.south west) rectangle
+    ([yshift=1.5cm]current page.south east);
+\end{tikzpicture}
+
+\vspace*{2.2cm}
+
+\begin{center}
+  {\color{white}\fontsize{28}{34}\selectfont\bfseries
+    Contemporary Economic Issues:\\[6pt]
+    A Canadian Perspective}
+
+  \vspace{1cm}
+  \color{unbcgreen}
+  \rule{0.85\textwidth}{1.5pt}
+
+  \vspace{1cm}
+  {\Large\bfseries\color{black} Muhebullah Karimzada}\\[6pt]
+  {\large\color{chaptergray} School of Economics}\\[4pt]
+  {\large\color{chaptergray} University of Northern British Columbia}
+
+  \vspace{1.5cm}
+  {\normalsize\color{chaptergray}
+    Prepared for \textbf{ECON 204 / INTS 211}\\
+    \textit{Contemporary Economic Issues}\\[4pt]
+    Winter 2027}
+
+  \vfill
+  {\small\color{chaptergray}
+    University of Northern British Columbia\\
+    Prince George, British Columbia, Canada}
+\end{center}
+\end{titlepage}
+
+%--- COPYRIGHT PAGE ---------------------------------------
+\newpage
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{small}
+\noindent\textcopyright\ 2027 Muhebullah Karimzada. University of Northern British Columbia.
+
+\vspace{8pt}
+\noindent This textbook is prepared for use in ECON 204 / INTS 211 at UNBC. All rights reserved.
+No part of this publication may be reproduced or distributed without the written permission
+of the author.
+
+\vspace{8pt}
+\noindent\textbf{Suggested Citation:}\\
+Karimzada, M. (2027). \textit{Contemporary Economic Issues: A Canadian Perspective}.
+University of Northern British Columbia.
+
+\vspace{8pt}
+\noindent Data sources cited throughout this textbook include Statistics Canada, the Bank of Canada,
+the Organisation for Economic Co-operation and Development (OECD), the International Monetary
+Fund (IMF), and the World Bank. All data are for illustrative and educational purposes.
+
+\vspace{8pt}
+\noindent Printed and distributed at Prince George, British Columbia, Canada.
+\end{small}
+\vspace*{\fill}
+
+%--- PREFACE ----------------------------------------------
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+\markboth{Preface}{Preface}
+
+\noindent This textbook was written to fill a gap that became apparent in teaching ECON 204 at the University
+of Northern British Columbia: most available economics textbooks treat contemporary issues through
+an American or generic international lens, leaving Canadian students without a primary reference
+that speaks directly to their economy, their institutions, and their policy debates.
+
+The Canadian economy has its own character. It is deeply integrated with the United States yet
+markedly different in its institutional architecture---universal healthcare, a federal carbon price,
+a publicly owned central bank with an explicit inflation target, and a tradition of provincially
+diverse labour markets. Housing affordability in Vancouver and Toronto is not the same problem
+as in Houston. Canada's experience with post-COVID inflation, while similar in some dimensions
+to the American experience, has its own drivers, timeline, and policy response. Understanding
+these differences requires a textbook that takes Canada seriously as its own economic case study.
+
+\vspace{10pt}
+\noindent\textbf{Who This Book Is For}
+
+This textbook is written for second-year undergraduate students in economics or related social
+science disciplines who have completed introductory microeconomics and macroeconomics. It
+assumes you know what supply and demand curves are, understand the basics of GDP, and have
+been introduced to the concepts of inflation and unemployment. It does not assume you have
+studied advanced mathematics or econometrics.
+
+The goal is to help you move from understanding basic economic concepts to using them as
+analytical tools for reasoning about real, complex, messy issues---the kind you read about in
+the news every day.
+
+\vspace{10pt}
+\noindent\textbf{What Makes This Textbook Different}
+
+Three features distinguish this textbook:
+
+First, it is \textbf{Canadian}. More than 80\% of the examples, case studies, and data refer to
+Canada. When international comparisons are useful, they are made explicitly and for a reason.
+
+Second, it is \textbf{contemporary}. Each chapter addresses an issue that is actively shaping
+Canada's economic future: the inflation surge of 2022--2023, the housing crisis, artificial
+intelligence and the future of work, and climate policy. Economic theory is the tool;
+contemporary Canada is the subject.
+
+Third, it is \textbf{honest about uncertainty}. Economics does not always deliver clean answers.
+Every chapter includes a ``Policy Debate'' section that presents multiple perspectives, weighs
+the evidence, and acknowledges what we do not yet know. This is closer to how economics is
+actually practised than many textbooks suggest.
+
+\vspace{10pt}
+\noindent\textbf{Acknowledgements}
+
+I am grateful to students in ECON 204 at UNBC whose questions and discussions have shaped
+the structure and tone of every chapter. Northern British Columbia, with its resource economy,
+Indigenous communities, and distinctive labour markets, provides a uniquely rich context
+for studying contemporary economic issues, and I have tried to honour that richness throughout.
+
+\vspace{10pt}
+\hfill\textit{Muhebullah Karimzada}\\
+\hfill Prince George, British Columbia\\
+\hfill January 2027
+
+%--- HOW TO USE THIS TEXTBOOK ----------------------------
+\chapter*{How to Use This Textbook}
+\addcontentsline{toc}{chapter}{How to Use This Textbook}
+\markboth{How to Use This Textbook}{How to Use This Textbook}
+
+\noindent Each chapter in this textbook follows a consistent structure designed to help you build
+understanding progressively. Here is a guide to the features you will encounter.
+
+\vspace{10pt}
+\noindent\textbf{Chapter Features}
+
+\begin{description}[leftmargin=2cm,style=nextline]
+
+\item[\textcolor{unbcgreen}{\bfseries Learning Objectives}]
+Every chapter opens with a list of what you should be able to do after studying the chapter.
+Return to this list when reviewing for exams.
+
+\item[\textcolor{unbcgreen}{\bfseries Definition Boxes}]
+Key terms are defined in gray boxes the first time they appear. These terms form the
+foundation of economic reasoning and will appear in exam questions.
+
+\item[\textcolor{exampleteal}{\bfseries Canadian Example Boxes}]
+Teal boxes highlight real Canadian applications of the theory being discussed. These help
+connect abstract concepts to recognizable events and institutions.
+
+\item[\textcolor{thinkpurple}{\bfseries Think Like an Economist}]
+Purple boxes invite you to apply economic reasoning to a question or scenario. These are
+excellent preparation for analytical exam questions.
+
+\item[\textcolor{policyblue}{\bfseries Policy Debate Boxes}]
+Blue boxes present competing perspectives on a policy question. They show that economics
+involves genuine disagreement and trade-offs, not just formulas.
+
+\item[\textcolor{unbcgreen}{\bfseries Key Takeaway}]
+Green summary boxes at strategic points in the chapter capture the most important insight
+from the preceding section.
+
+\item[\textcolor{dataorange}{\bfseries Data Spotlight}]
+Orange boxes present important Canadian economic data, explain how to read it, and
+discuss what it tells us.
+
+\end{description}
+
+\vspace{10pt}
+\noindent\textbf{End-of-Chapter Material}
+
+Each chapter ends with:
+\begin{itemize}
+  \item \textbf{Chapter Summary} --- a concise review of the main ideas.
+  \item \textbf{Review Questions} --- concept and comprehension questions aligned with the
+        learning objectives.
+  \item \textbf{Discussion Questions} --- open-ended questions for seminar discussion or
+        short written responses.
+  \item \textbf{Exercises} --- quantitative, graphical, and applied problems similar to
+        those on midterm and final exams.
+\end{itemize}
+
+\vspace{10pt}
+\noindent\textbf{Figures}
+
+Every figure includes a descriptive title, labeled axes, and an explanatory caption. Before
+looking at the caption, try to interpret the figure on your own. Reading graphs is a skill
+that develops with practice and is tested in exams.
+
+\vspace{10pt}
+\noindent\textbf{A Note on Data}
+
+Economic data change over time. The figures and statistics in this textbook reflect data
+available at the time of writing (late 2026). For the most current data, consult
+Statistics Canada (\url{www.statcan.gc.ca}) and the Bank of Canada
+(\url{www.bankofcanada.ca}).
+
+%--- TABLE OF CONTENTS ------------------------------------
+\tableofcontents
+\listoffigures
+\listoftables
+
+%----------------------------------------------------------
+% MAIN MATTER
+%----------------------------------------------------------
+\mainmatter
+\pagestyle{fancy}
+
+\input{chapters/ch01_introduction}
+\input{chapters/ch02_inflation}
+\input{chapters/ch03_housing}
+\input{chapters/ch04_labour}
+\input{chapters/ch05_inequality}
+\input{chapters/ch06_immigration}
+\input{chapters/ch07_fiscal}
+\input{chapters/ch08_trade}
+\input{chapters/ch09_technology}
+\input{chapters/ch10_climate}
+
+%----------------------------------------------------------
+% BACK MATTER
+%----------------------------------------------------------
+\backmatter
+\pagestyle{fancy}
+
+\input{chapters/glossary}
+
+\bibliography{references/references}
+
+\end{document}

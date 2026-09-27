@@ -1,0 +1,626 @@
+\chapter{Chapter 1: The Quest for Causality --- An Introduction to Applied Econometrics}
+
+\medskip\hrule\medskip
+
+\section{Chapter Overview}
+
+This chapter introduces the central challenge of applied econometrics: distinguishing \textbf{correlation} from \textbf{causation} in economic data. We begin by asking what kinds of questions economists care about, explain why answering them with observational data is hard, and introduce the conceptual framework --- the \textbf{potential outcomes model} --- that modern applied economists use to think clearly about causality.
+
+By the end of this chapter you will understand why simply comparing group averages can be deeply misleading, what it means to "identify" a causal effect, and what tools the rest of this book will give you to do so.
+
+\medskip\hrule\medskip
+
+\section{Learning Objectives}
+
+After completing this chapter, students will be able to:
+
+\begin{enumerate}
+\item Define applied econometrics and explain its goals.
+\item Formulate a well-posed empirical question in terms of a causal relationship.
+\item Write down the \textbf{potential outcomes} (counterfactual) model for a binary treatment.
+\item Define the \textbf{Average Treatment Effect (ATE)}, the \textbf{Average Treatment Effect on the Treated (ATT)}, and relate them to the observable difference in means.
+\item Identify and explain \textbf{selection bias} and why it contaminates simple comparisons.
+\item Explain how \textbf{random assignment} solves the selection bias problem.
+\item Describe, at a high level, the identification strategies studied in this book (regression, IV, DiD, matching, RDD).
+\end{enumerate}
+
+\medskip\hrule\medskip
+
+\section{1.1 What Is Applied Econometrics?}
+
+Economists study a wide variety of questions: Does access to health insurance improve health outcomes? Do minimum wage laws cause unemployment? Does attending a smaller class improve student test scores? Does going to university raise lifetime earnings?
+
+What unites all of these questions is that they are \textbf{causal}. We do not merely want to know whether smaller class sizes and higher test scores tend to go together in data --- we want to know whether \textit{reducing} class size \textit{causes} test scores to rise, and by how much. The distinction matters enormously for policy. If better-resourced schools happen to have both smaller classes and better teachers, then we might find a strong correlation between class size and test scores even if class size has no causal effect whatsoever.
+
+\textbf{Applied econometrics} is the branch of economics that uses \textbf{data and statistical methods} to estimate causal relationships and test economic theories. It sits at the intersection of economic theory, statistics, and data science, but its animating concern --- separating cause from correlation --- makes it distinctive.
+
+\subsection{1.1.1 A Map of the Terrain}
+
+Applied econometrics divides naturally into two broad activities:
+
+\begin{enumerate}
+\item \textbf{Estimating causal effects.} How large is the return to an additional year of schooling? Does a job-training program raise employment? By how much did a particular policy change crime rates?
+\end{enumerate}
+
+\begin{enumerate}
+\item \textbf{Testing economic theories.} Do consumers respond to prices as standard theory predicts? Is the labour supply curve upward sloping? Are financial markets informationally efficient?
+\end{enumerate}
+
+This course focuses primarily on (1), but the tools we develop are equally useful for (2). Throughout, we will be careful to distinguish between \textbf{descriptive} statements (what is the world like?) and \textbf{causal} statements (what would happen if we intervened?).
+
+\subsection{1.1.2 Data in Applied Econometrics}
+
+Economists work with many types of data:
+
+\begin{itemize}
+\item \textbf{Cross-sectional data} --- observations on many units (individuals, firms, countries) at a single point in time.
+\item \textbf{Time-series data} --- observations on a single unit over many time periods.
+\item \textbf{Panel (longitudinal) data} --- observations on many units over multiple time periods. This is the richest structure and features prominently in this book.
+\item \textbf{Experimental data} --- data collected through randomized controlled trials (RCTs).
+\end{itemize}
+
+Each data type raises its own challenges. Observational data --- data collected without deliberate experimental design --- is by far the most common, and learning to draw valid causal inferences from it is the central skill of applied econometrics.
+
+\medskip\hrule\medskip
+
+\section{1.2 Empirical Questions and the Causal Ideal}
+
+The starting point of any empirical project is a \textbf{well-defined question}. Precision matters. Consider the following progression:
+
+\begin{center}
+\begin{tabular}{@{} l l @{}}
+\toprule
+\textbf{Vague Question} & \textbf{Precise Causal Question} \\
+\midrule
+Do hospitals make people healthier? & Does hospitalization \textit{cause} better health outcomes for elderly patients? \\
+Does education matter? & Does an additional year of schooling \textit{cause} higher lifetime earnings? \\
+Is the minimum wage bad for employment? & Does a \$1 increase in the minimum wage \textit{cause} a reduction in fast-food employment? \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The precise version specifies: (a) the \textbf{cause} (the treatment or intervention), (b) the \textbf{effect} (the outcome), and (c) the \textbf{population} of interest.
+
+\subsection{1.2.1 Fundamental Concepts}
+
+\textbf{Definition 1.1 (Treatment):} A \textit{treatment} is a variable $D_i$ that takes the value 1 if unit $i$ receives the intervention (is "treated") and 0 otherwise.
+
+\textbf{Definition 1.2 (Outcome):} An \textit{outcome} $Y_i$ is the variable we care about --- earnings, health, test scores, employment.
+
+\textbf{Definition 1.3 (Causal Effect):} The causal effect of the treatment on unit $i$ is the difference between the outcome they would experience \textit{with} treatment and the outcome they would experience \textit{without} treatment.
+
+This definition immediately reveals the \textbf{fundamental problem of causal inference}: we can never observe the same unit simultaneously with and without the treatment. Whatever we observe is only one side of a counterfactual comparison.
+
+\medskip\hrule\medskip
+
+\section{1.3 The Potential Outcomes Framework}
+
+The most productive way to think about causal questions is the \textbf{potential outcomes framework}, originally developed by Neyman (1923) and formalized by Rubin (1974). This framework is sometimes called the \textbf{Rubin Causal Model} or the \textbf{Neyman-Rubin framework}.
+
+\subsection{1.3.1 Potential Outcomes Defined}
+
+For each individual $i$ in the population, define two \textbf{potential outcomes}:
+
+\[
+Y_{0i} = \text{the outcome for unit } i \text{ if } D_i = 0 \text{ (not treated)}
+\]
+
+\[
+Y_{1i} = \text{the outcome for unit } i \text{ if } D_i = 1 \text{ (treated)}
+\]
+
+\begin{keybox}{Key Insight:** Both $Y_{0i}$ and $Y_{1i}$ are defined for \textit{every} individual, but we can only ever \textit{observe} one of them --- the one corresponding to the treatment the individual actually received.}
+\end{keybox}
+
+The \textbf{individual causal effect} for unit $i$ is:
+
+\[
+\tau_i = Y_{1i} - Y_{0i}
+\]
+
+This is the difference that would result from "switching" the individual's treatment status, everything else held constant.
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[scale=1.1]
+    % Two columns: treated and untreated
+    \node[font=\bfseries\color{econblue}] at (1.5, 3.8) {Treatment Group ($D_i=1$)};
+    \node[font=\bfseries\color{econblue}] at (5.5, 3.8) {Control Group ($D_i=0$)};
+
+    % Treated column
+    \draw[fill=econblue!15, draw=econblue, thick, rounded corners] (0,0) rectangle (3,3.4);
+    \node[font=\small] at (1.5, 2.8) {\textbf{Observed:} $Y_{1i} = Y_i(1)$};
+    \node[font=\small] at (1.5, 2.0) {(outcome with treatment)};
+    \draw[dashed, gray, thick, rounded corners] (0.2,0.2) rectangle (2.8,1.5);
+    \node[font=\small, gray] at (1.5, 1.1) {\textbf{Counterfactual:} $Y_{0i}$};
+    \node[font=\small, gray] at (1.5, 0.5) {(never observed)};
+
+    % Control column
+    \draw[fill=gray!10, draw=gray!50, thick, rounded corners] (4,0) rectangle (7,3.4);
+    \node[font=\small] at (5.5, 2.8) {\textbf{Observed:} $Y_{0i} = Y_i(0)$};
+    \node[font=\small] at (5.5, 2.0) {(outcome without treatment)};
+    \draw[dashed, gray, thick, rounded corners] (4.2,0.2) rectangle (6.8,1.5);
+    \node[font=\small, gray] at (5.5, 1.1) {\textbf{Counterfactual:} $Y_{1i}$};
+    \node[font=\small, gray] at (5.5, 0.5) {(never observed)};
+
+    % Causal effect arrow
+    \draw[-{Stealth}, thick, econblue] (3.1, 1.8) -- (3.9, 1.8)
+      node[midway, above, font=\small\bfseries, econblue] {$\delta_i = Y_{1i}-Y_{0i}$};
+    \node[font=\tiny, gray] at (3.5, 1.5) {(never observed)};
+  \end{tikzpicture}
+  \caption{The fundamental problem of causal inference. For each unit, only one potential outcome is observed. The causal effect $\delta_i = Y_{1i} - Y_{0i}$ can never be computed directly.}
+  \label{fig:ch01_potential_outcomes}
+\end{figure}
+
+\subsection{1.3.2 Population-Level Causal Estimands}
+
+Because $\tau_i$ varies across individuals and we cannot observe it for any individual, economists focus on \textbf{average} causal effects:
+
+\textbf{Definition 1.4 (Average Treatment Effect):}
+
+\[
+\text{ATE} = E[Y_{1i} - Y_{0i}] = E[\tau_i]
+\]
+
+The ATE is the average causal effect for a randomly chosen unit from the population.
+
+\textbf{Definition 1.5 (Average Treatment Effect on the Treated):}
+
+\[
+\text{ATT} = E[Y_{1i} - Y_{0i} \mid D_i = 1]
+\]
+
+The ATT is the average causal effect for individuals who actually received the treatment. This is often the more policy-relevant quantity: when a government wants to know if a training program helped the participants, it cares about the ATT.
+
+\textbf{Definition 1.6 (Average Treatment Effect on the Untreated):}
+
+\[
+\text{ATU} = E[Y_{1i} - Y_{0i} \mid D_i = 0]
+\]
+
+The ATU describes what the average effect would be if the untreated were brought into the program.
+
+\begin{keybox}{Note on ATE vs ATT:** When treatment effects are heterogeneous (vary by individual) and treatment is not randomly assigned, ATE and ATT need not be equal. Understanding the distinction is important for interpreting estimates and for policy.}
+\end{keybox}
+
+\subsection{1.3.3 What We Observe}
+
+In any dataset, we observe the \textit{realized} outcome:
+
+\[
+Y_i = Y_{0i} + (Y_{1i} - Y_{0i}) D_i = \begin{cases} Y_{1i} & \text{if } D_i = 1 \\ Y_{0i} & \text{if } D_i = 0 \end{cases}
+\]
+
+This is the \textbf{switching equation}. It links the observable data to the underlying potential outcomes.
+
+\medskip\hrule\medskip
+
+\section{1.4 Selection Bias: Why Simple Comparisons Mislead}
+
+The most naive approach to estimating a causal effect is to compare the average outcomes of treated and untreated units. Let us see precisely why this fails.
+
+\subsection{1.4.1 The Decomposition of Observed Differences}
+
+Consider the difference in mean outcomes between treated and untreated groups:
+
+\[
+\underbrace{E[Y_i \mid D_i = 1] - E[Y_i \mid D_i = 0]}_{\text{Observed Difference in Means}}
+\]
+
+Substituting the switching equation:
+
+\[
+= E[Y_{1i} \mid D_i = 1] - E[Y_{0i} \mid D_i = 0]
+\]
+
+Now add and subtract $E[Y_{0i} \mid D_i = 1]$:
+
+\[
+= \underbrace{E[Y_{1i} - Y_{0i} \mid D_i = 1]}_{\text{ATT}} + \underbrace{E[Y_{0i} \mid D_i = 1] - E[Y_{0i} \mid D_i = 0]}_{\text{Selection Bias}}
+\]
+
+\textbf{This is the fundamental decomposition of observed differences into causal effects and bias.}
+
+The first term is the ATT --- what we actually want to know.
+
+The second term, \textbf{selection bias}, is the difference in average untreated outcomes between the treated and untreated groups. It captures the fact that people who select into treatment may be systematically different from those who do not.
+
+\begin{keybox}{Equation 1.1: Bias Decomposition}
+\end{keybox}
+\[
+\underbrace{E[Y_i|D_i=1] - E[Y_i|D_i=0]}_{\text{Observed difference}} = \underbrace{\text{ATT}}_{\text{Causal effect}} + \underbrace{E[Y_{0i}|D_i=1] - E[Y_{0i}|D_i=0]}_{\text{Selection bias}}
+\]
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    mynode/.style={circle, draw=econblue, fill=econblue!10, thick, minimum size=10mm, font=\small\bfseries},
+    confnode/.style={circle, draw=red!70!black, fill=red!10, thick, minimum size=10mm, font=\small\bfseries},
+    myarrow/.style={-{Stealth[scale=1.2]}, thick, econblue},
+    confarrow/.style={-{Stealth[scale=1.2]}, thick, red!70!black, dashed},
+    scale=1.2
+  ]
+    \node[mynode] (D) at (0, 0) {$D_i$};
+    \node[mynode] (Y) at (4, 0) {$Y_i$};
+    \node[confnode] (U) at (2, 2.2) {$U_i$};
+
+    \draw[myarrow] (D) -- (Y) node[midway, below, font=\small] {causal effect};
+    \draw[confarrow] (U) -- (D) node[midway, left, font=\small, red!70!black] {selection};
+    \draw[confarrow] (U) -- (Y) node[midway, right, font=\small, red!70!black] {direct effect};
+
+    \node[font=\footnotesize, gray] at (2, -0.6) {$\underbrace{E[Y_i|D_i=1]-E[Y_i|D_i=0]}_{\text{observed difference}} = \underbrace{E[Y_{1i}-Y_{0i}|D_i=1]}_{\text{ATT}} + \underbrace{E[Y_{0i}|D_i=1]-E[Y_{0i}|D_i=0]}_{\text{selection bias}}$};
+  \end{tikzpicture}
+  \caption{A directed acyclic graph (DAG) illustrating selection bias. The unobserved confounder $U_i$ (red, dashed) simultaneously affects treatment assignment $D_i$ and the outcome $Y_i$, creating a spurious association between treatment and outcome beyond the true causal effect.}
+  \label{fig:ch01_selection_dag}
+\end{figure}
+
+\subsection{1.4.2 A Canonical Example: Hospitals and Health}
+
+Consider the question: do hospitals make people healthier? The National Health Interview Survey (NHIS) data reveal a troubling fact --- individuals who were hospitalized in the past year report \textit{worse} health status on average than those who were not. Does this mean hospitals make you sick?
+
+Of course not. The selection bias here runs in a clear direction: people who end up in hospitals are already, on average, much sicker than the general population. They have worse $Y_{0i}$ --- they would have had worse health \textit{even without} hospitalization. So:
+
+\[
+E[Y_{0i} \mid D_i = 1] < E[Y_{0i} \mid D_i = 0]
+\]
+
+The selection bias is \textit{negative}, masking what may well be a large positive causal effect of hospitalization on health. The observable comparison between hospitalized and non-hospitalized individuals is dominated by the fact that hospitalized people were sicker to begin with.
+
+This example, from Angrist and Pischke (2009), illustrates how selection bias can flip the apparent sign of a causal relationship.
+
+\subsection{1.4.3 Selection Bias in Labour Economics}
+
+A similar issue arises in estimating returns to education. People who choose to obtain more education tend to be more able, more motivated, and from higher-income families. Even if education had \textit{zero} causal effect on earnings, we would observe a positive correlation between education and earnings because of these underlying differences.
+
+Formally:
+
+\[
+E[Y_{0i} \mid D_i = 1] > E[Y_{0i} \mid D_i = 0]
+\]
+
+where $D_i = 1$ denotes more education. The selection bias is positive, and simple OLS regressions of wages on education will overstate the causal return to schooling. (We return to this in Chapters 6 and 8.)
+
+\medskip\hrule\medskip
+
+\section{1.5 The Gold Standard: Randomized Experiments}
+
+The cleanest solution to the selection bias problem is \textbf{random assignment}. In a randomized controlled trial (RCT), whether an individual receives treatment is determined by a coin flip (or random number generator), not by any characteristic of the individual.
+
+\subsection{1.5.1 Why Randomization Works}
+
+If $D_i$ is assigned randomly, then it is independent of potential outcomes:
+
+\[
+\{Y_{0i}, Y_{1i}\} \perp\!\!\!\perp D_i
+\]
+
+This independence condition ensures that:
+
+\[
+E[Y_{0i} \mid D_i = 1] = E[Y_{0i} \mid D_i = 0] = E[Y_{0i}]
+\]
+
+That is, the untreated outcomes of treated and untreated individuals are the same in expectation. \textbf{Selection bias is zero.}
+
+As a result:
+
+\[
+E[Y_i \mid D_i = 1] - E[Y_i \mid D_i = 0] = E[Y_{1i} - Y_{0i}] = \text{ATE}
+\]
+
+The simple difference in group means identifies the Average Treatment Effect.
+
+\subsection{1.5.2 Linking Randomization to Regression}
+
+To connect experiments to the regression framework, write:
+
+\[
+Y_i = \alpha + \rho D_i + \epsilon_i
+\]
+
+where $\alpha = E[Y_{0i}]$, $\rho = Y_{1i} - Y_{0i}$ (assumed constant here), and $\epsilon_i = Y_{0i} - E[Y_{0i}]$.
+
+Under random assignment, $D_i$ is independent of $Y_{0i}$, so $D_i$ is uncorrelated with $\epsilon_i$. The OLS estimator of $\rho$ from this regression recovers the causal effect:
+
+\[
+\hat{\rho}^{OLS} \xrightarrow{p} \rho
+\]
+
+This is the bridge between the potential outcomes framework and regression. Regression with a randomly assigned treatment variable identifies causal effects. The problem --- and most of this course --- is about what to do when treatment is \textit{not} randomly assigned.
+
+\subsection{1.5.3 Example: Project STAR}
+
+One of the most celebrated experiments in economics is Project STAR (Student Teacher Achievement Ratio), conducted in Tennessee from 1985 to 1989. Over 11,000 students and their teachers were randomly assigned to small classes (13--17 students) or regular classes (22--26 students) from kindergarten through grade 3.
+
+Because assignment was random, differences in test scores between students in small and large classes can be attributed to class size, not to preexisting differences in student ability or family background. Krueger (1999) found that students assigned to smaller classes scored roughly 4--5 percentile points higher on standardized tests --- and that these effects were larger for minority and disadvantaged students.
+
+This example illustrates two things: the power of randomization to answer causal questions cleanly, and the policy relevance of the answers.
+
+\begin{keybox}{Box 1.1 --- Fundamental Questions (FUQs)}
+
+Not every empirical question can be answered even in principle. A question is a \textit{Fundamental Unidentified Question} (FUQ) if it requires observing a counterfactual that can never be defined. For example: "What would Canada's GDP have been if it had never adopted a central bank?" The counterfactual here is so distant from any observed data that no statistical method can recover it. The potential outcomes framework helps identify which questions are FUQs and which, with clever design, can be answered.
+\end{keybox}
+
+\medskip\hrule\medskip
+
+\section{1.6 When Experiments Are Impossible: Identification Strategies}
+
+In most economic settings, running experiments is not feasible --- for ethical, practical, or financial reasons. We cannot randomly assign people to different levels of schooling, different countries to different policies, or firms to different market structures.
+
+Applied econometrics has developed a set of \textbf{identification strategies} --- methods for estimating causal effects from non-experimental (observational) data. The key insight behind each strategy is to find a source of variation in treatment that is "as good as random," even if treatment itself is not randomly assigned.
+
+The major identification strategies covered in this book are:
+
+\begin{center}
+\begin{tabular}{@{} l l l @{}}
+\toprule
+\textbf{Strategy} & \textbf{Core Idea} & \textbf{Chapters} \\
+\midrule
+\textbf{Multiple Regression / OLS} & Control for observed confounders & 2--7 \\
+\textbf{Instrumental Variables (IV)} & Use exogenous variation in a "third variable" & 8--9 \\
+\textbf{Panel Data / Fixed Effects} & Control for time-invariant unobservables & 10 \\
+\textbf{Differences-in-Differences} & Compare changes across treated and untreated groups & 11 \\
+\textbf{Matching} & Match treated and untreated units on observable characteristics & 12 \\
+\textbf{Regression Discontinuity} & Exploit arbitrary thresholds in treatment assignment & 13 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Each strategy rests on a \textbf{key identifying assumption} that must be plausible given the research question and context. A major theme of this book is that we must be transparent about these assumptions and subject them to scrutiny.
+
+\subsection{1.6.1 The Credibility Revolution}
+
+Beginning in the 1990s, empirical economics underwent a methodological transformation sometimes called the \textbf{Credibility Revolution}. Economists increasingly insisted that empirical claims rest on transparent identification assumptions that could be argued on substantive grounds, rather than on parametric assumptions that are difficult to verify.
+
+This shift was associated with economists like Joshua Angrist, David Card, Guido Imbens, and Alan Krueger (and recognized by the 2021 Nobel Prize in Economic Sciences, awarded to Card, Angrist, and Imbens). Their work emphasized the use of natural experiments --- situations where policy changes, institutional rules, or other features of the world generate quasi-random variation in treatment --- to identify causal effects.
+
+This textbook teaches econometrics in that tradition. We will be as concerned with \textit{research design} (which variation are we using?) as with \textit{estimation} (how are we fitting curves to data?).
+
+\medskip\hrule\medskip
+
+\section{1.7 Roadmap of This Textbook}
+
+This book is organized into three parts.
+
+\textbf{Part I: Foundations (Chapters 2--5)} develops the regression framework rigorously. We cover the Conditional Expectation Function, OLS algebra and geometry, finite-sample and asymptotic statistical properties, and modern robust inference (heteroskedasticity- and cluster-robust standard errors). This is the toolkit you will use throughout.
+
+\textbf{Part II: The Regression Toolkit (Chapters 6--7)} extends the basic framework with essential tools: the Frisch-Waugh-Lovell theorem, omitted variable bias, dummy variables, interaction terms, and non-linearities.
+
+\textbf{Part III: Identification Strategies (Chapters 8--13)} covers each major strategy in turn: instrumental variables, LATE, panel data, differences-in-differences, matching, and regression discontinuity. For each, we develop the theory, discuss the key assumptions, and study canonical empirical applications.
+
+\textbf{Appendices} provide reviews of probability, matrix algebra, and R programming.
+
+\medskip\hrule\medskip
+
+\section{Chapter Summary}
+
+\begin{itemize}
+\item Applied econometrics aims to estimate \textbf{causal relationships} from data.
+\item The \textbf{potential outcomes framework} defines the causal effect of a treatment for each individual as the difference between two hypothetical outcomes --- one with treatment, one without.
+\item Because we cannot observe both potential outcomes for the same individual, causal inference requires comparing different groups.
+\item \textbf{Selection bias} arises when treated and untreated units differ in their untreated potential outcomes.
+\item The simple observed difference in means equals the ATT plus selection bias.
+\item \textbf{Random assignment} eliminates selection bias by ensuring treatment is independent of potential outcomes.
+\item When randomization is infeasible, applied econometricians use \textbf{identification strategies} --- research designs that generate quasi-random variation in treatment.
+\item The \textbf{Credibility Revolution} has reoriented empirical economics around transparent, design-based identification.
+\end{itemize}
+
+\medskip\hrule\medskip
+
+\section{Key Terms}
+
+\textbf{Applied econometrics} --- the use of statistical methods and data to estimate economic relationships and test economic theories.
+
+\textbf{Potential outcomes} --- the hypothetical outcomes $Y_{1i}$ and $Y_{0i}$ that a unit would experience under treatment and control, respectively.
+
+\textbf{Causal effect} --- the individual-level difference $\tau_i = Y_{1i} - Y_{0i}$.
+
+\textbf{ATE (Average Treatment Effect)} --- $E[Y_{1i} - Y_{0i}]$; the average causal effect across all individuals.
+
+\textbf{ATT (Average Treatment Effect on the Treated)} --- $E[Y_{1i} - Y_{0i} \mid D_i = 1]$.
+
+\textbf{Selection bias} --- $E[Y_{0i} \mid D_i = 1] - E[Y_{0i} \mid D_i = 0]$; the difference in counterfactual outcomes between treated and untreated groups.
+
+\textbf{Switching equation} --- $Y_i = Y_{0i} + (Y_{1i} - Y_{0i})D_i$.
+
+\textbf{Randomized controlled trial (RCT)} --- a study in which treatment is assigned randomly.
+
+\textbf{Identification strategy} --- a research design that exploits quasi-random variation in treatment to estimate causal effects.
+
+\textbf{Fundamental problem of causal inference} --- the impossibility of observing both $Y_{1i}$ and $Y_{0i}$ for the same unit.
+
+\medskip\hrule\medskip
+
+\section{Exercises}
+
+\subsection{Conceptual Questions}
+
+\textbf{1.1} Distinguish between correlation and causation. Give an example (not in this chapter) where a strong correlation does not reflect a causal relationship.
+
+\textbf{1.2} Suppose we observe that people who wear helmets while cycling have a higher rate of cycling injuries than those who don't. Does this mean helmets cause injuries? Use the potential outcomes framework to explain the selection bias present in this comparison.
+
+\textbf{1.3} Write down the switching equation for the following scenario: $D_i = 1$ if individual $i$ participates in a job-training program; $Y_i$ is earnings one year after the program.
+
+\textbf{1.4} In your own words, explain the difference between the ATE and the ATT. In what situations would these two quantities be very different? In what situations would they be approximately equal?
+
+\textbf{1.5} Explain why, in a randomized experiment, the simple difference in mean outcomes between treated and control groups identifies the ATE.
+
+\textbf{1.6} Consider Project STAR. Explain why the fact that some students switched class-size assignments after randomization (non-compliance) complicates the interpretation of the results.
+
+\subsection{Analytical Questions}
+
+\textbf{1.7} Suppose:
+\begin{itemize}
+\item $E[Y_{1i}] = 10$
+\item $E[Y_{0i}] = 6$
+\item $E[Y_{0i} \mid D_i = 1] = 8$
+\item $E[Y_{0i} \mid D_i = 0] = 5$
+\end{itemize}
+
+(a) Compute the ATE.
+(b) Compute the selection bias.
+(c) Compute the observed difference in means $E[Y_i \mid D_i = 1] - E[Y_i \mid D_i = 0]$, assuming constant treatment effects.
+(d) Does the observed difference in means overstate or understate the ATE? Why?
+
+\textbf{1.8} Show algebraically that when $D_i \perp \{Y_{0i}, Y_{1i}\}$ (random assignment), the selection bias term is zero and the observed difference in means equals the ATE.
+
+\textbf{1.9} Consider a government program that provides subsidized childcare to low-income families. Describe the selection bias you would expect if you estimated the effect of the program on children's school readiness by comparing children who received subsidized care to those who did not.
+
+\subsection{Applied Questions}
+
+\textbf{1.10} The following table shows average earnings (in \$000/year) for workers who attended university and those who did not, in a hypothetical survey:
+
+\begin{center}
+\begin{tabular}{@{} l l l l @{}}
+\toprule
+\textbf{} & \textbf{Attended University} & \textbf{Did Not Attend} & \textbf{Difference} \\
+\midrule
+Earnings & \$65 & \$40 & \$25 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+(a) What assumption would you need to make to interpret this \$25 difference as the causal return to university education?
+(b) Is this assumption plausible? Discuss the likely direction of selection bias.
+(c) Propose a research design that would allow you to estimate the causal effect more credibly.
+
+\textbf{1.11} Project STAR involved four conditions: small class, regular class, regular class with a teacher's aide. Briefly describe how you would estimate the effect of small classes relative to regular classes, assuming random assignment was perfect.
+
+\medskip\hrule\medskip
+
+\section{R Lab 1: Introduction to R and Causal Thinking}
+
+\subsection{Objectives}
+\begin{itemize}
+\item Learn basic R syntax and data manipulation
+\item Simulate potential outcomes data
+\item Illustrate the selection bias problem with simulated data
+\item Perform a simple comparison of means (as a naive estimator)
+\end{itemize}
+
+\subsection{Setup}
+
+\begin{lstlisting}
+# Install and load necessary packages
+# install.packages(c("tidyverse", "haven", "stargazer"))
+library(tidyverse)
+set.seed(42)
+\end{lstlisting}
+
+\subsection{Exercise 1.1: Simulating Potential Outcomes}
+
+\begin{lstlisting}
+# Simulate a population of 1000 individuals
+n <- 1000
+
+# Each individual has two potential outcomes
+# Y0: outcome without treatment (e.g., earnings without training)
+# Y1: outcome with treatment (e.g., earnings with training)
+
+# True individual-level treatment effect is 5 (in $000)
+# But individuals with higher ability (theta) also have higher Y0
+theta <- rnorm(n, mean = 10, sd = 3)   # unobserved ability
+
+Y0 <- 30 + 2 * theta + rnorm(n, sd = 5)  # untreated earnings
+Y1 <- Y0 + 5                              # treated earnings (constant +5)
+
+# True ATE
+true_ATE <- mean(Y1 - Y0)
+cat("True ATE:", true_ATE, "\n")   # Should be approximately 5
+\end{lstlisting}
+
+\subsection{Exercise 1.2: Simulating Selection Bias}
+
+\begin{lstlisting}
+# Now simulate NON-random treatment:
+# High-ability individuals are more likely to select into treatment
+prob_treat <- plogis(-5 + 0.5 * theta)   # probability of selecting treatment
+D <- rbinom(n, 1, prob_treat)            # treatment indicator
+
+# Observed outcome
+Y <- D * Y1 + (1 - D) * Y0
+
+# Naive comparison of means
+mean_treated   <- mean(Y[D == 1])
+mean_untreated <- mean(Y[D == 0])
+naive_estimate <- mean_treated - mean_untreated
+
+cat("Mean outcome, treated:", round(mean_treated, 2), "\n")
+cat("Mean outcome, untreated:", round(mean_untreated, 2), "\n")
+cat("Naive difference in means:", round(naive_estimate, 2), "\n")
+cat("True ATE:", round(true_ATE, 2), "\n")
+cat("Selection bias:", round(naive_estimate - true_ATE, 2), "\n")
+\end{lstlisting}
+
+\textbf{Questions:}
+\begin{itemize}
+\item How large is the selection bias in your simulation?
+\item In what direction does it go? Why?
+\item What would happen if you ran an OLS regression of Y on D? Would you recover the true ATE?
+\end{itemize}
+
+\subsection{Exercise 1.3: Simulating a Randomized Experiment}
+
+\begin{lstlisting}
+# Now randomly assign treatment
+D_random <- rbinom(n, 1, 0.5)
+Y_random  <- D_random * Y1 + (1 - D_random) * Y0
+
+# Compare means
+rct_estimate <- mean(Y_random[D_random == 1]) - mean(Y_random[D_random == 0])
+cat("RCT estimate:", round(rct_estimate, 2), "\n")
+cat("True ATE:", round(true_ATE, 2), "\n")
+cat("Bias under RCT:", round(rct_estimate - true_ATE, 2), "\n")
+
+# OLS regression under random assignment
+lm_rct <- lm(Y_random ~ D_random)
+summary(lm_rct)
+\end{lstlisting}
+
+\textbf{Questions:}
+\begin{itemize}
+\item How does the RCT estimate compare to the true ATE?
+\item What is the role of the constant in the regression?
+\item Run the simulation 1000 times (use \texttt{replicate()}) and show that the RCT estimate is unbiased on average.
+\end{itemize}
+
+\subsection{Exercise 1.4: Visualizing Selection Bias}
+
+\begin{lstlisting}
+# Create data frame
+df <- data.frame(Y0 = Y0, Y1 = Y1, D = factor(D, labels = c("Untreated", "Treated")))
+
+# Plot distributions of Y0 by treatment status
+ggplot(df, aes(x = Y0, fill = D)) +
+  geom_density(alpha = 0.5) +
+  labs(
+    title = "Distribution of Untreated Potential Outcome (Y0) by Treatment Status",
+    subtitle = "Selection bias is visible: treated group has higher Y0 on average",
+    x = "Untreated Potential Outcome (Y0)",
+    y = "Density",
+    fill = "Treatment Status"
+  ) +
+  theme_minimal()
+\end{lstlisting}
+
+\textbf{Interpretation:} If treatment were randomly assigned, the two distributions would overlap almost perfectly. The fact that they are separated visually confirms the presence of selection bias.
+
+\medskip\hrule\medskip
+
+\textit{End of Chapter 1}
+
+\medskip\hrule\medskip
+
+\textbf{References}
+
+Angrist, J. D., and Pischke, J. (2009). \textit{Mostly Harmless Econometrics: An Empiricist's Companion}. Princeton University Press.
+
+Cunningham, S. (2021). \textit{Causal Inference: The Mixtape}. Yale University Press.
+
+Imbens, G. W., and Rubin, D. B. (2015). \textit{Causal Inference for Statistics, Social, and Biomedical Sciences}. Cambridge University Press.
+
+Krueger, A. B. (1999). Experimental estimates of education production functions. \textit{Quarterly Journal of Economics}, 114(2), 497--532.
+
+Neyman, J. (1923). On the application of probability theory to agricultural experiments. Translated in \textit{Statistical Science}, 5(4), 465--472.
+
+Rubin, D. B. (1974). Estimating causal effects of treatments in randomized and nonrandomized studies. \textit{Journal of Educational Psychology}, 66(5), 688--701.

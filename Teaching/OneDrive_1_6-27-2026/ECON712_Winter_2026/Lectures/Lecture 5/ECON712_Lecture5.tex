@@ -1,0 +1,364 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%       								 Preamble				         	                                                        %%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\documentclass[10pt]{beamer}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{amsmath,lmodern}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{fit,shapes.misc}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{epstopdf}
+\usepackage{pdfpages}
+\usepackage{bm}
+\usepackage{appendixnumberbeamer}
+\usepackage{color,soul}
+\usepackage{grffile}
+\usepackage{float}
+\usepackage{relsize}
+\usepackage{tcolorbox}
+\newcounter{nodemarkers}
+\usepackage{tikz}
+\newcommand{\toplinesmall}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=3.6cm]current page.north west);}}
+             
+\newcommand{\toplinemedium}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=6.2cm]current page.north west);}}
+ 
+ \newcommand{\toplinelarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=8.9cm]current page.north west);}}           
+             
+ \newcommand{\toplinexlarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=12cm]current page.north west);}}                       
+             
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}{\textcolor{blue}{ECON712}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}{\textcolor{blue}{Winter 2026}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}{\textcolor{blue}{Lecture 5 \: \: \: \: \: \: \: }
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newcommand\marktopleft[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-a) at (-0.2,1.2ex) {};%
+}
+\newcommand\markbottomright[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-b) at (0.16,-1ex) {};%
+    \tikz[overlay,remember picture,thick,inner sep=4pt]
+        \node[draw,rectangle,rounded corners, blue, fit=(marker-#1-a.center) (marker-#1-b.center)] {};%
+}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[triangle]
+\tcbset{colframe=white,colback=white,nobeforeafter}
+\beamertemplatenavigationsymbolsempty
+\addtobeamertemplate{frametitle}{\vspace*{0.19cm}}{\vspace*{0cm}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%  									    Define Title									                                       %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\title{ECON 712: Applied Econometrics} 
+\author{Lecture 5: Linear Regression using Vector Spaces}
+\date{}
+\AtBeginSection[]
+{
+ \begin{frame}<beamer>
+ \tableofcontents[currentsection]
+ \end{frame}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%% 						     				Document								                                                %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{document}
+\setbeamercovered{transparent}
+
+\begin{frame}
+\maketitle
+\end{frame}
+\begin{frame}
+\frametitle{\: \: \: Vector Spaces} 
+\toplinelarge
+\begin{itemize}
+\item An interesting way to understand regression analysis is to study it using vector spaces 
+\vspace{0.11in}
+\item There are three concepts in vector geometry that are used to study OLS:
+\begin{enumerate}
+\vspace{0.11in}
+\item Scalar product
+\vspace{0.11in}
+\item  Vector Addition
+\vspace{0.11in}
+\item Subspaces of Euclidean Spaces
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Scalar Product} 
+\toplinemedium
+\begin{itemize}
+\item Scalar product is a single number that determines the relationship between two vectors of the same dimension:
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=\bm{x}^T \bm{y}=\mathlarger{\sum}_{i=1}^{n}x_i \: y_i
+\end{eqnarray*}
+where both vectors are of size $nx1$
+\vspace{0.11in}
+\item An important property application of the scalar product is the \textbf{length} or \textbf{norm} of a vector defined as:
+\begin{columns}
+\begin{column}{0.3\linewidth}
+\begin{eqnarray*}
+\|\bm{x}\|=\left[\mathlarger{\sum}_{i=1}^{n}x_i^2\right]^{\frac{1}{2}}=\langle \bm{x},\bm{x} \rangle^{\frac{1}{2}}
+\end{eqnarray*}
+\end{column}
+\begin{column}{0.7\linewidth}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{pythagoras.png}
+\end{figure}
+\end{column}
+\end{columns}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Scalar Product} 
+\toplinemedium
+\begin{itemize}
+\item Scalar product is a single number that determines the relationship between two vectors of the same dimension:
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=\bm{x}^T \bm{y}=\mathlarger{\sum}_{i=1}^{n}x_i \: y_i
+\end{eqnarray*}
+where both vectors are of size $nX1$
+\vspace{0.11in}
+\item Another important property is that if the angle between two vectors, $\theta$, is zero, then:
+\begin{columns}
+\begin{column}{0.3\linewidth}
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=\|\bm{x}\| \: \|\bm{y}\|
+\end{eqnarray*}
+\end{column}
+\begin{column}{0.7\linewidth}
+\begin{itemize}
+\item This property is based on multiplying a vector by a scalar: 
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{scalar.png}
+\end{figure}
+\end{column}
+\end{columns}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Scalar Product} 
+\toplinemedium
+\begin{itemize}
+\item Scalar product is a single number that determines the relationship between two vectors of the same dimension:
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=\bm{x}^T \bm{y}=\mathlarger{\sum}_{i=1}^{n}x_i \: y_i
+\end{eqnarray*}
+where both vectors are of size $nx1$
+\vspace{0.11in}
+\item Lastly if the angle between two vectors, $\theta=90^{\circ}$ (i.e. they are \textbf{orthogonal}), then:
+\begin{columns}
+\begin{column}{0.3\linewidth}
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=0
+\end{eqnarray*}
+\end{column}
+\begin{column}{0.7\linewidth}
+\begin{itemize}
+\item E.g. $\bm{x}^T=[1,0]$, $\bm{y}^T=[0,1]$
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{orthogonal.png}
+\end{figure}
+\end{column}
+\end{columns}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Vector Addition} 
+\toplinemedium
+\begin{itemize}
+\item Adding two vectors of size $n$ results in:
+\begin{columns}
+\begin{column}{0.3\linewidth}
+\begin{eqnarray*}
+\bm{z}=\bm{x}+\bm{y}=\begin{bmatrix}
+     x_{1}+y_1  \\
+    x_{2}+y_2  \\
+     \vdots              \\
+    x_{n}+y_n\\
+  \end{bmatrix}
+  \end{eqnarray*}
+ \end{column} 
+ \begin{column}{0.7\linewidth}
+ \begin{figure}
+\centering
+\caption{Vector addition in 2 dimensions}
+\includegraphics[scale=0.4]{vector_addition.png}
+\end{figure}
+\end{column}
+\end{columns}
+\item Vector addition can be combined with multiplication by a scalar 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Euclidean Spaces and Subspaces} 
+\toplinelarge
+\begin{itemize}
+\item Vectors of size $n$ can be thought as coordinates of a point in $E^n$
+\vspace{0.11in}
+\item The minimum set of vectors that spans a particular space are called the \textbf{basis} vectors
+\vspace{0.11in}
+\begin{itemize}
+\item We need $k$ linearly independent vectors of size $n\geq k$ to span the k-dimensional space
+\vspace{0.11in}
+\item If $k<n$, we call $k$ a subspace of $E^n$
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Orthogonal Complement} 
+\toplinelarge
+\begin{itemize}
+\item We call an orthogonal complement, the set of vectors in $E^n$ that are orthogonal to the basis vectors of a k-dimensional subspace.
+\begin{columns}
+\begin{column}{0.3\linewidth}
+\begin{eqnarray*}
+\langle \bm{x},\bm{z} \rangle=0
+\end{eqnarray*}
+ \end{column} 
+ \begin{column}{0.7\linewidth}
+ \begin{figure}
+\caption{Example with $n=2$, $k=1$}
+\includegraphics[scale=0.4]{orth.png}
+\end{figure}
+\end{column}
+\end{columns}
+\item These vectors live in the $n-k$ space
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Vector Space Definitions} 
+\toplinelarge
+\begin{itemize}
+\item We use set of vectors to formally define the following subspaces:
+\begin{enumerate}
+\vspace{0.11in}
+\item $k$-dimensional subspace: 
+\begin{eqnarray*}
+\mathcal{S}(\bm{x_1},\bm{x_2},\cdots,\bm{x_k}) \equiv \left\{\bm{z}\in E^n \mathlarger{|} \bm{z}=\mathlarger{\sum}_{i=1}^{k}b_i \: \bm{x_i}, b_i \in  \mathbb{R} \right\}
+\end{eqnarray*}
+\vspace{0.11in}
+\item $(n-k)$-dimensional orthogonal complement:  
+\begin{eqnarray*}
+\mathcal{S}^\perp(\bm{w})\equiv\left\{\bm{w} \in E^n \mathlarger{|} \bm{w}^T \: \bm{z}=0 \text{  for all} \bm{z}\in \mathcal{S}(\bm{x_1},\bm{x_2},\cdots,\bm{x_k})\right\}
+\end{eqnarray*}
+\end{enumerate}
+\vspace{0.11in}
+\item We will also make use of the following inequality, called Cauchy-Schwartz:
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle \leq \|\bm{x}\|  \|\bm{y}\|
+\end{eqnarray*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Linear Regression} 
+\toplinelarge
+\begin{itemize}
+\item Linear Regression considers each linearly-independent $k$ column vector of size $n$ from $\bm{X}$ as the basis vector that spans the k-dimensional space
+\begin{itemize}
+\vspace{0.11in}
+\item We also assume the following two conditions:
+\begin{eqnarray*}
+\begin{array}{lll}
+\bm{X}^T \bm{\hat{u}}=\bm{0} &,   & \bm{y}=\bm{X} \bm{\hat{\beta}}+\bm{\hat{u}}
+\end{array}
+\end{eqnarray*}
+\item This result in linear regression being defined as selecting $\bm{\hat{\beta}}$ that reaches the perpendicular dropped from $\bm{y}$ vector into the plane spanned by $\bm{X}$  
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Linear Regression} 
+\toplinemedium
+ \begin{figure}
+\caption{Example with $n=3$, $k=2$}
+\includegraphics[scale=0.34]{linear_regression.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Linear Regression} 
+\toplinemedium
+\begin{itemize}
+\item The concept of a dropping a perpendicular is formalized by an orthogonal projection:
+\begin{eqnarray*}
+P_x=\bm{X}(\bm{X}^T\bm{X})^{-1}\bm{X}^T
+\end{eqnarray*}
+\begin{itemize}
+\item An orthogonal projection is a matrix that projects any vector to a point in the subspace $\mathcal{S}(\bm{X})$ that it is closest to it
+\vspace{0.11in}
+\item $\mathcal{S}(\bm{X})$ is called the invariant subspace of $P_x$ because the projection of any vector in $\mathcal{S}(\bm{X})$ using $P_x$ leaves that vector unchanged
+\end{itemize}
+\vspace{0.11in}
+\item We are also going to use a projection onto the orthogonal subspace of $\mathcal{S}(\bm{X})$, $\mathcal{S}^\perp$
+\begin{eqnarray*}
+M_x=I-P_x
+\end{eqnarray*}
+\end{itemize}
+\end{frame}   
+
+
+
+\end{document}

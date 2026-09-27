@@ -1,0 +1,570 @@
+\documentclass[12pt, a4paper]{article}
+
+% ── Page geometry ──────────────────────────────────────────────────────────────
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.8cm, right=2.8cm,
+            headheight=15pt]{geometry}
+
+% ── Font & encoding ────────────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{palatino}
+\usepackage{mathpazo}
+\usepackage{microtype}
+
+% ── Maths ─────────────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{cancel}
+
+% ── Graphics & colour ─────────────────────────────────────────────────────────
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric,
+                decorations.pathreplacing, backgrounds, fit, patterns}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+
+% ── Tables ────────────────────────────────────────────────────────────────────
+\usepackage{booktabs, array, colortbl, multirow, tabularx}
+\renewcommand{\arraystretch}{1.4}
+
+% ── Lists ─────────────────────────────────────────────────────────────────────
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.8em, itemsep=3pt, topsep=4pt}
+\setlist[enumerate]{leftmargin=1.8em, itemsep=3pt, topsep=4pt}
+
+% ── Boxes ─────────────────────────────────────────────────────────────────────
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins, breakable, theorems}
+
+% ── Headers & footers ─────────────────────────────────────────────────────────
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% ── Hyperlinks ────────────────────────────────────────────────────────────────
+\usepackage[colorlinks=true, linkcolor=royalblue, urlcolor=royalblue,
+            citecolor=royalblue, bookmarks=true]{hyperref}
+\usepackage{tocloft}
+
+% ── Miscellaneous ─────────────────────────────────────────────────────────────
+\usepackage{parskip}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+\usepackage{float}
+\usepackage{caption}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  COLOUR PALETTE  (deep navy / gold / teal)
+% ═══════════════════════════════════════════════════════════════════════════════
+\definecolor{royalblue}{RGB}{25, 55, 130}
+\definecolor{navylight}{RGB}{235, 239, 252}
+\definecolor{navyborder}{RGB}{100, 130, 200}
+\definecolor{gold}{RGB}{185, 135, 15}
+\definecolor{lightgold}{RGB}{254, 248, 225}
+\definecolor{teal}{RGB}{15, 115, 105}
+\definecolor{lightteal}{RGB}{225, 248, 244}
+\definecolor{tealborder}{RGB}{15, 115, 105}
+\definecolor{crimson}{RGB}{155, 25, 35}
+\definecolor{lightcrimson}{RGB}{255, 235, 235}
+\definecolor{purple}{RGB}{88, 35, 140}
+\definecolor{lightpurple}{RGB}{245, 238, 255}
+\definecolor{charcoal}{RGB}{42, 42, 42}
+\definecolor{slategray}{RGB}{80, 90, 105}
+\definecolor{tabhead}{RGB}{25, 55, 130}
+\definecolor{tabeven}{RGB}{235, 240, 252}
+\definecolor{solgreen}{RGB}{12, 100, 55}
+\definecolor{lightsol}{RGB}{228, 252, 238}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  TCOLORBOX ENVIRONMENTS
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\newtcolorbox{defbox}[1]{
+  breakable, enhanced,
+  colback=navylight, colframe=royalblue, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Definition: #1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=royalblue, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{thmbox}[1]{
+  breakable, enhanced,
+  colback=lightteal, colframe=teal, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Theorem: #1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=teal, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{propbox}[1]{
+  breakable, enhanced,
+  colback=lightteal, colframe=teal, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Proposition: #1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=teal, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{keybox}[1]{
+  breakable, enhanced,
+  colback=lightgold, colframe=gold, coltitle=charcoal,
+  fonttitle=\bfseries\sffamily, title={#1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=gold, arc=3pt, boxrule=0pt, coltitle=white}
+}
+
+\newtcolorbox{exbox}[1]{
+  breakable, enhanced,
+  colback=lightpurple, colframe=purple, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Worked Example: #1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=purple, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{warnbox}[1]{
+  breakable, enhanced,
+  colback=lightcrimson, colframe=crimson, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={#1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=crimson, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{solbox}{
+  breakable, enhanced,
+  colback=lightsol, colframe=solgreen, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Solution},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=solgreen, arc=3pt, boxrule=0pt}
+}
+
+% ── Theorem-style environments ─────────────────────────────────────────────────
+\theoremstyle{definition}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{corollary}{Corollary}[section]
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  MATHS MACROS
+% ═══════════════════════════════════════════════════════════════════════════════
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Rn}{\mathbb{R}^n}
+\newcommand{\Rm}{\mathbb{R}^m}
+\newcommand{\powerset}{\mathcal{P}}
+\newcommand{\st}{\;\text{s.t.}\;}
+\newcommand{\xto}[1]{\xrightarrow{#1}}
+\newcommand{\inv}{^{-1}}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\img}{img}
+
+% ── Table helpers ──────────────────────────────────────────────────────────────
+\newcommand{\thead}[1]{\cellcolor{tabhead}\color{white}\textbf{#1}}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  PAGE STYLE
+% ═══════════════════════════════════════════════════════════════════════════════
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{royalblue}{\textbf{ECON 320}} \textcolor{slategray}{--- Sets \& Functions}}
+\fancyhead[R]{\textcolor{slategray}{\small School of Economics}}
+\fancyfoot[C]{\textcolor{slategray}{\small Page \thepage\ of \pageref{LastPage}}}
+\renewcommand{\headrulewidth}{1.2pt}
+\renewcommand{\headrule}{%
+  \hbox to\headwidth{\color{royalblue}\leaders\hrule height\headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ── TOC styling ───────────────────────────────────────────────────────────────
+\renewcommand{\cftsecfont}{\bfseries\color{royalblue}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{royalblue}}
+\renewcommand{\cftsubsecfont}{\color{charcoal}}
+\setlength{\cftbeforesecskip}{4pt}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+% ── COVER ─────────────────────────────────────────────────────────────────────
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[royalblue] (current page.north west)
+    rectangle ([yshift=-5.8cm] current page.north east);
+  \fill[gold] ([yshift=-5.8cm] current page.north west)
+    rectangle ([yshift=-6.2cm] current page.north east);
+\end{tikzpicture}
+
+\vspace*{-1.5cm}
+\begin{center}
+  {\color{white}\large\bfseries\sffamily ECON 320 -- Solutions to Practice Problem Set 1}\\[10pt]
+  {\color{white}\Huge\bfseries Sets and Functions}\\[8pt]
+  {\color{gold}\large\itshape Mathematical Foundations for Economic Analysis}
+\end{center}
+
+\vspace{3.4cm}
+
+\begin{center}
+\begin{tabular}{l l}
+  \textbf{\textcolor{royalblue}{Course:}}        & ECON 320: Introduction to Mathematical Economics \\[3pt]
+
+
+  \textbf{\textcolor{royalblue}{Term:}}          & Fall 2026 \\[3pt]
+    \textbf{\textcolor{royalblue}{Instructor:}}          & Muhebullah Karimzada \\[3pt]
+\end{tabular}
+\end{center}
+
+
+
+
+\newpage
+
+
+
+
+
+\newpage
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Full Solutions}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Solutions: Section A}
+
+\begin{solbox}
+\textbf{A1. Set Builder Notation}
+
+\textbf{(a)} Even natural numbers less than 20:
+\[A = \{x \in \N : x \text{ is even and } x < 20\} = \{2, 4, 6, 8, 10, 12, 14, 16, 18\}.\quad\text{Finite (9 elements).}\]
+
+\textbf{(b)} Real numbers with $x^2 < 16$:
+\[B = \{x \in \R : x^2 < 16\} = \{x \in \R : |x| < 4\} = (-4, 4).\quad\text{Infinite.}\]
+
+\textbf{(c)} Prices with $D(P) = 50 - P > 0$ and $P \in [0,100]$:
+
+$D(P) > 0 \Rightarrow P < 50$. Combined with $P \in [0,100]$:
+\[C = \{P \in [0,100] : 50 - P > 0\} = [0, 50).\quad\text{Infinite.}\]
+\end{solbox}
+
+\begin{solbox}
+\textbf{A2. Set Operations}
+
+With $U=\{1,\ldots,10\}$, $A=\{1,2,3,4,5\}$, $B=\{3,4,5,6,7\}$, $C=\{5,6,7,8,9\}$:
+
+\textbf{(a)} $A \cup B = \{1,2,3,4,5,6,7\}$
+
+\textbf{(b)} $A \cap B = \{3,4,5\}$
+
+\textbf{(c)} $A \setminus B = \{1,2\}$\quad (elements in $A$ not in $B$)
+
+\textbf{(d)} $B \setminus A = \{6,7\}$\quad (elements in $B$ not in $A$)
+
+\textbf{(e)} $(A \cup B)^c = U \setminus \{1,2,3,4,5,6,7\} = \{8,9,10\}$
+
+\textbf{(f)} $A \cap B \cap C = \{3,4,5\} \cap \{5,6,7,8,9\} = \{5\}$
+
+\textbf{(g)} $B \cap C = \{5,6,7\}$, so $A \cup (B \cap C) = \{1,2,3,4,5\} \cup \{5,6,7\} = \{1,2,3,4,5,6,7\}$
+
+\textbf{Check distributivity}: $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$.
+$A \cup B = \{1,2,3,4,5,6,7\}$, $A \cup C = \{1,2,3,4,5,6,7,8,9\}$.
+$(A\cup B)\cap(A\cup C) = \{1,2,3,4,5,6,7\}$. \checkmark
+\end{solbox}
+
+\begin{solbox}
+\textbf{A3. Power Set}
+
+$A = \{x, y\}$, so $|A|=2$ and $|\powerset(A)| = 2^2 = 4$:
+\[\powerset(A) = \{\emptyset, \{x\}, \{y\}, \{x,y\}\}\]
+Now $|\powerset(A)| = 4$, so $|\powerset(\powerset(A))| = 2^4 = \mathbf{16}$.
+\end{solbox}
+\newpage
+\begin{solbox}
+\textbf{A4. Cartesian Product}
+
+$A\times B = \{(1,a),(1,b),(1,c),(2,a),(2,b),(2,c)\}$\quad ($|A\times B| = 2\times 3 = 6$ elements)
+
+$B\times A = \{(a,1),(a,2),(b,1),(b,2),(c,1),(c,2)\}$\quad ($|B\times A| = 3\times 2 = 6$ elements)
+
+$A\times B \neq B\times A$: the pairs are ordered differently; e.g.\ $(1,a)\in A\times B$ but $(1,a)\notin B\times A$ since $1\notin B$. In general $A\times B = B\times A$ only if $A = B$.
+\end{solbox}
+
+\begin{solbox}
+\textbf{A5. De Morgan's Law Verification}
+
+$U=\{1,\ldots,8\}$, $A=\{1,2,3,4\}$, $B=\{3,4,5,6\}$.
+
+\textbf{Left side}: $A\cup B = \{1,2,3,4,5,6\}$, so $(A\cup B)^c = \{7,8\}$.
+
+\textbf{Right side}: $A^c = \{5,6,7,8\}$, $B^c = \{1,2,7,8\}$, so $A^c\cap B^c = \{7,8\}$.
+
+$(A\cup B)^c = A^c \cap B^c = \{7,8\}$. \checkmark
+\end{solbox}
+
+\begin{solbox}
+\textbf{A6. Budget Set Intersection}
+
+$A = \{(x_1,x_2)\in\R^2_+ : 2x_1+5x_2\leq 100\}$ is the full budget set (triangle with vertices $(0,0)$, $(50,0)$, $(0,20)$).
+
+$B = \{(x_1,x_2)\in\R^2_+ : x_1 \geq 10\}$ is the closed half-plane to the right of $x_1=10$.
+
+$A\cap B = \{(x_1,x_2)\in\R^2_+ : 2x_1+5x_2\leq 100,\ x_1\geq 10\}$
+
+Geometrically: the budget triangle \emph{truncated} by the vertical line $x_1=10$. It is a quadrilateral with vertices $(10,0)$, $(50,0)$, $(0,20)$... wait --- at $x_1=10$: $2(10)+5x_2\leq 100 \Rightarrow x_2\leq 16$. So the binding vertices are $(10,0)$, $(50,0)$, and $(10,16)$.
+
+\textbf{Economic interpretation}: affordable bundles that contain \emph{at least 10 units of good 1} (perhaps a minimum consumption requirement or a rationing constraint). This is the feasible set when the consumer is forced to consume at least 10 units of good 1.
+\end{solbox}
+
+\begin{solbox}
+\textbf{A7. Proof of Distributive Law}
+
+We prove $A\cap(B\cup C) = (A\cap B)\cup(A\cap C)$ by element-chasing.
+
+\textbf{($\subseteq$)}: Let $x \in A\cap(B\cup C)$. Then $x\in A$ and $x\in B\cup C$.
+
+\textit{Case 1}: $x\in B$. Then $x\in A$ and $x\in B$, so $x\in A\cap B\subseteq (A\cap B)\cup(A\cap C)$.
+
+\textit{Case 2}: $x\in C$. Then $x\in A$ and $x\in C$, so $x\in A\cap C\subseteq (A\cap B)\cup(A\cap C)$.
+
+In either case, $x\in(A\cap B)\cup(A\cap C)$.
+
+\textbf{($\supseteq$)}: Let $x\in(A\cap B)\cup(A\cap C)$.
+
+\textit{Case 1}: $x\in A\cap B$. Then $x\in A$ and $x\in B\subseteq B\cup C$, so $x\in A\cap(B\cup C)$.
+
+\textit{Case 2}: $x\in A\cap C$. Then $x\in A$ and $x\in C\subseteq B\cup C$, so $x\in A\cap(B\cup C)$.
+
+Since $A\cap(B\cup C)\subseteq(A\cap B)\cup(A\cap C)$ and $(A\cap B)\cup(A\cap C)\subseteq A\cap(B\cup C)$, equality holds. \qed
+\end{solbox}
+
+\begin{solbox}
+\textbf{A8. Supremum and Infimum}
+
+\textbf{(a)} $A=\left\{\frac{n}{n+1}:n\in\N\right\} = \left\{\frac{1}{2},\frac{2}{3},\frac{3}{4},\ldots\right\}$
+
+The sequence $n/(n+1)$ is strictly increasing and approaches 1. So $\sup A = 1$ (not attained: $n/(n+1)<1$ for all $n$, so $\max A$ does not exist). $\inf A = \min A = \frac{1}{2}$ (attained at $n=1$).
+
+\textbf{(b)} $B=(-3,5]$: $\inf B = -3$ (not attained, $\min B$ DNE); $\sup B = \max B = 5$.
+
+\textbf{(c)} $C=\{x\in\R:x^2<9\} = (-3,3)$: $\inf C = -3$ (DNE); $\sup C = 3$ (DNE). Neither $\min$ nor $\max$ exists.
+
+\textbf{(d)} $D=\{x\in\R:x^3\leq 8\} = (-\infty,2]$: $\sup D = \max D = 2$. $D$ is unbounded below: $\inf D = -\infty$ (no infimum in $\R$).
+\end{solbox}
+
+\subsection{Solutions: Section B}
+
+\begin{solbox}
+\textbf{B1. Domain and Range}
+
+\textbf{(a)} $f(x)=\sqrt{9-x^2}$: need $9-x^2\geq 0$, i.e.\ $x^2\leq 9$, i.e.\ $x\in[-3,3]$.
+
+Range: $f(x)\geq 0$ and $f(0)=3$, so range $=[0,3]$.
+
+\textbf{(b)} $g(x)=\frac{x-1}{x^2-4}=\frac{x-1}{(x-2)(x+2)}$: need $x\neq\pm 2$.
+
+Domain $= \R\setminus\{-2,2\}$. Range: $g$ takes all real values except... at $x=1$, $g(1)=0$. Analysis shows range $=\R$ (every value achieved by continuity and the behaviour near the poles).
+
+\textbf{(c)} $h(x)=\ln(x^2-1)$: need $x^2-1>0$, i.e.\ $|x|>1$.
+
+Domain $=(-\infty,-1)\cup(1,\infty)$. As $|x|\to 1^+$, $\ln(x^2-1)\to-\infty$; as $|x|\to\infty$, $\ln(x^2-1)\to\infty$. Range $=\R=(-\infty,\infty)$.
+
+\textbf{(d)} $k(x,y)=\sqrt{x}+\sqrt{y}$: need $x\geq 0$ and $y\geq 0$.
+
+Domain $= \R^2_+ = [0,\infty)^2$. Range: $k(x,y)\geq 0$ always; for any $z\geq 0$, take $x=z^2$, $y=0$: $k(z^2,0)=z$. Range $=[0,\infty)$.
+\end{solbox}
+
+\begin{solbox}
+\textbf{B2. Injectivity and Surjectivity}
+
+\textbf{(a)} $f(x)=3x-7$: \textbf{Bijective.}
+
+Injective: $3x_1-7=3x_2-7 \Rightarrow x_1=x_2$. \checkmark
+
+Surjective: for any $y\in\R$, $x=(y+7)/3$ gives $f(x)=y$. \checkmark
+
+\textbf{(b)} $g(x)=x^3-x=x(x-1)(x+1)$: \textbf{Neither.}
+
+Not injective: $g(0)=0=g(1) \cdot$... let's check: $g(0)=0$, $g(-1)=(-1)(0) = 0$ wait: $g(-1)=(-1)(-2)(0)=0$. So $g(0)=g(-1)=0$ with $0\neq -1$. Not injective.
+
+Not surjective? Actually it IS surjective since $\lim_{x\to\pm\infty}g(x)=\pm\infty$ and $g$ is continuous, so by IVT every value in $\R$ is achieved. So $g$ is \textbf{surjective but not injective}.
+
+\textbf{(c)} $h:\R\to\R^+$, $h(x)=e^x$: \textbf{Bijective.}
+
+Injective: $e^{x_1}=e^{x_2}\Rightarrow x_1=x_2$. \checkmark
+
+Surjective (onto $\R^+$): for any $y>0$, $x=\ln y\in\R$ gives $h(x)=e^{\ln y}=y$. \checkmark
+
+\textbf{(d)} $k:[0,\pi]\to[-1,1]$, $k(x)=\cos x$: \textbf{Bijective.}
+
+Injective: $\cos$ is strictly decreasing on $[0,\pi]$, so injective. \checkmark
+
+Surjective (onto $[-1,1]$): $k(0)=1$, $k(\pi)=-1$, continuous, so by IVT every value in $[-1,1]$ is achieved. \checkmark
+
+\textbf{(e)} $\ell:\R_+\to\R_+$, $\ell(x)=x^3$: \textbf{Bijective.}
+
+Injective: $x^3$ is strictly increasing on $\R_+$. \checkmark
+
+Surjective: for any $y\geq 0$, $x=y^{1/3}\geq 0$ gives $\ell(x)=y$. \checkmark
+\end{solbox}
+
+\begin{solbox}
+\textbf{B3. Inverse Functions}
+
+\textbf{(a)} $f(x)=5x+3$: Set $y=5x+3 \Rightarrow x=\frac{y-3}{5}$.
+
+So $f^{-1}(y)=\dfrac{y-3}{5}$, domain $\R$.
+
+\textbf{(b)} $g(x)=\dfrac{x+1}{x-2}$, $x\neq 2$: Set $y=\dfrac{x+1}{x-2}$.
+
+$y(x-2)=x+1 \Rightarrow xy-2y=x+1 \Rightarrow x(y-1)=2y+1 \Rightarrow x=\dfrac{2y+1}{y-1}$.
+
+So $g^{-1}(y)=\dfrac{2y+1}{y-1}$, domain $\R\setminus\{1\}$.
+
+\textbf{(c)} $h(x)=e^{2x-1}$: Set $y=e^{2x-1} \Rightarrow \ln y = 2x-1 \Rightarrow x=\dfrac{\ln y+1}{2}$.
+
+So $h^{-1}(y)=\dfrac{\ln y+1}{2}$, domain $(0,\infty)$.
+
+\textbf{(d)} $k(x)=x^3+2$ on $\R$: Set $y=x^3+2 \Rightarrow x^3=y-2 \Rightarrow x=(y-2)^{1/3}$.
+
+So $k^{-1}(y)=(y-2)^{1/3}$, domain $\R$ (cube roots defined for all reals).
+\end{solbox}
+
+\begin{solbox}
+\textbf{B4. Composition}
+
+$f(x)=2x^2-1$, $g(x)=\sqrt{x+3}$ with domain $[-3,\infty)$.
+
+\textbf{(a)} $(g\circ f)(x)=g(f(x))=\sqrt{(2x^2-1)+3}=\sqrt{2x^2+2}=\sqrt{2}\cdot\sqrt{x^2+1}$.
+
+Domain: need $f(x)\in[-3,\infty)$, i.e.\ $2x^2-1\geq -3$, i.e.\ $x^2\geq -1$. This holds for all $x\in\R$.
+
+Domain of $g\circ f$ is $\R$.
+
+\textbf{(b)} $(f\circ g)(x)=f(g(x))=2(\sqrt{x+3})^2-1=2(x+3)-1=2x+5$.
+
+Domain: need $x\in[-3,\infty)$ (the domain of $g$).
+
+Domain of $f\circ g$ is $[-3,\infty)$.
+
+\textbf{(c)} $(g\circ f)(2)=\sqrt{2(4)+2}=\sqrt{10}$
+
+$(f\circ g)(1)=2(1)+5=7$
+
+\textbf{(d)} $(g\circ f)(x)=\sqrt{2}\sqrt{x^2+1}$ vs.\ $(f\circ g)(x)=2x+5$. These are clearly different functions.
+
+This illustrates that function composition is \textbf{not commutative}: $g\circ f\neq f\circ g$ in general.
+\end{solbox}
+\newpage
+\begin{solbox}
+\textbf{B5. Pre-image}
+
+$f(x)=x^2-4$.
+
+\textbf{(a)} $f^{-1}(\{0\})=\{x:x^2-4=0\}=\{x:x^2=4\}=\{-2,2\}$.
+
+\textbf{(b)} $f^{-1}([-4,0])=\{x:-4\leq x^2-4\leq 0\}=\{x:0\leq x^2\leq 4\}=\{x:|x|\leq 2\}=[-2,2]$.
+
+\textbf{(c)} $f^{-1}((0,5])=\{x:0<x^2-4\leq 5\}=\{x:4<x^2\leq 9\}=\{x:2<|x|\leq 3\}=[-3,-2)\cup(2,3]$.
+
+\textbf{(d)} $f^{-1}(\{-5\})=\{x:x^2-4=-5\}=\{x:x^2=-1\}=\emptyset$.
+
+(No real number has a negative square, so no input maps to $-5$.)
+\end{solbox}
+
+\begin{solbox}
+\textbf{B6. Homogeneity}
+
+\textbf{(a)} $f(K,L)=3K^{0.4}L^{0.6}$:
+
+$f(tK,tL)=3(tK)^{0.4}(tL)^{0.6}=3t^{0.4}K^{0.4}t^{0.6}L^{0.6}=t^{1}\cdot 3K^{0.4}L^{0.6}=t^1 f(K,L)$.
+
+\textbf{Homogeneous of degree 1} (CRS). By Euler's theorem: $K\cdot\frac{\partial f}{\partial K}+L\cdot\frac{\partial f}{\partial L}=1\cdot f(K,L)$.
+
+\textbf{(b)} $g(x,y)=x^2+xy+y^2$:
+
+$g(tx,ty)=(tx)^2+(tx)(ty)+(ty)^2=t^2x^2+t^2xy+t^2y^2=t^2(x^2+xy+y^2)=t^2g(x,y)$.
+
+\textbf{Homogeneous of degree 2}.
+
+\textbf{(c)} $h(x,y)=\dfrac{x^2y}{x^3+y^3}$:
+
+$h(tx,ty)=\dfrac{(tx)^2(ty)}{(tx)^3+(ty)^3}=\dfrac{t^3 x^2 y}{t^3(x^3+y^3)}=\dfrac{x^2y}{x^3+y^3}=t^0\cdot h(x,y)$.
+
+\textbf{Homogeneous of degree 0} (like Walrasian demand: scale-invariant).
+
+\textbf{(d)} $k(x,y)=x+y+1$:
+
+$k(tx,ty)=tx+ty+1=t(x+y)+1\neq t^r(x+y+1)$ for any $r$ (the constant 1 is unaffected by scaling).
+
+\textbf{Not homogeneous} of any degree.
+\end{solbox}
+
+\begin{solbox}
+\textbf{B7. Convexity and Concavity}
+
+\textbf{(a)} $f(x)=x^4$: $f''(x)=12x^2\geq 0$ for all $x$, with equality only at $x=0$.
+
+\textbf{Convex} (not strictly convex everywhere, since $f''(0)=0$, but it is strictly convex in the sense that $f(\lambda x+(1-\lambda)y)<\lambda f(x)+(1-\lambda)f(y)$ for $x\neq y$).
+
+\textbf{(b)} $g(x)=x^3$: $g''(x)=6x$. $g''(x)>0$ for $x>0$ (convex) and $g''(x)<0$ for $x<0$ (concave). \textbf{Neither convex nor concave} on all of $\R$.
+
+\textbf{(c)} $h(x)=-2x^2+4x-1$: $h''(x)=-4<0$ for all $x$. \textbf{Strictly concave.}
+
+\textbf{(d)} $k(x)=|x|$: For $x\geq 0$, $k''=0$ (weakly convex); for $x\leq 0$, $k''=0$. Using the definition: $k(\lambda x+(1-\lambda)y)\leq\lambda k(x)+(1-\lambda)k(y)$ by the triangle inequality.
+
+$|\lambda x+(1-\lambda)y|\leq |\lambda x|+|(1-\lambda)y|=\lambda|x|+(1-\lambda)|y|$ (since $\lambda,1-\lambda\geq 0$). \textbf{Convex} (weakly, not strictly).
+\end{solbox}
+
+\begin{solbox}
+\textbf{B8. Monopolist Economic Application}
+
+\textbf{(a)} Profit function:
+\[
+  \pi(Q) = \text{Revenue} - \text{Cost} = P(Q)\cdot Q - C(Q) = (100-2Q)Q - (Q^2+10Q+50)
+\]
+\[
+  \pi(Q) = 100Q - 2Q^2 - Q^2 - 10Q - 50 = -3Q^2 + 90Q - 50
+\]
+Domain: $Q\geq 0$ and $P(Q)=100-2Q\geq 0 \Rightarrow Q\leq 50$. So domain $=[0,50]$.
+
+\textbf{(b)} $\pi(Q)=-3Q^2+90Q-50$ is a downward parabola. Maximum at $Q^*=15$ (see (d)):
+\[
+  \pi_{\max} = -3(225)+90(15)-50 = -675+1350-50 = 625
+\]
+At endpoints: $\pi(0)=-50$, $\pi(50)=-3(2500)+4500-50=-50$.
+
+Range $= [-50, 625]$.
+
+\textbf{(c)} $\pi''(Q) = -6 < 0$ for all $Q$. Therefore $\pi$ is \textbf{strictly concave}.
+
+Economic meaning: each additional unit of output raises profit by less and less (eventually reducing it). The profit-maximising $Q$ is uniquely determined and is a global maximum.
+
+\textbf{(d)} First-order condition: $\pi'(Q)=-6Q+90=0 \Rightarrow Q^*=15$.
+
+$\pi(15) = -3(225)+90(15)-50 = -675+1350-50 = \mathbf{625}$.
+
+Maximum profit is \textbf{\$625} at output $Q^*=15$.
+
+\textbf{(e)} Break-even: $\pi(Q)=0$:
+\[
+  -3Q^2+90Q-50=0 \Rightarrow 3Q^2-90Q+50=0
+\]
+\[
+  Q = \frac{90\pm\sqrt{8100-600}}{6} = \frac{90\pm\sqrt{7500}}{6} = \frac{90\pm 50\sqrt{3}}{6} = 15\pm\frac{25\sqrt{3}}{3}
+\]
+\[
+  Q_1 = 15 - \frac{25\sqrt{3}}{3}\approx 15-14.43=0.57, \qquad Q_2=15+\frac{25\sqrt{3}}{3}\approx 29.43
+\]
+So $\pi^{-1}(\{0\})\approx \{0.57,\; 29.43\}$.
+
+\textbf{Interpretation}: The firm breaks even at approximately $Q=0.57$ (barely above shutdown) and $Q=29.43$ (the high-output break-even point). For $Q\in(0.57,\,29.43)$, the firm makes positive profit; outside this range, it makes a loss. The firm should produce $Q^*=15$ to maximise profit.
+\end{solbox}
+
+
+
+
+
+
+\end{document}

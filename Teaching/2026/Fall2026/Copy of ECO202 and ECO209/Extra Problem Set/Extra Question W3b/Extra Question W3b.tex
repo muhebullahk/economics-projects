@@ -1,0 +1,185 @@
+\documentclass[addpoints,12pt,answers]{exam}
+\usepackage{babel}
+\usepackage[top=3cm,bottom=3cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{csquotes}
+\usepackage{paralist}
+%\usepackage{wasysym}
+\usepackage[math]{iwona}
+\usepackage{setspace}
+\usepackage{enumitem}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+
+\pointpoints{Point}{Points}
+\bonuspointpoints{Bonuspunkt}{Bonuspunkte}
+\renewcommand{\solutiontitle}{\noindent\textbf{Solution:}\enspace}
+
+\chqword{Frage}   
+\chpgword{Seite} 
+\chpword{Punkte}   
+\chbpword{Bonus Points} 
+\chsword{Erreicht}   
+\chtword{Gesamt}
+
+\checkboxchar{\Square}
+\checkedchar{\CheckedBox}
+
+\pagestyle{headandfoot}
+%\runningheadrule
+%\firstpageheader{ECO208}{Test 3}{28th Feb, 2022}
+%\runningheader{ECO208}{Test 3}{28th Feb, 2022}
+%\firstpagefooter{ECO208}{Test 3}{\thepage\,/\,\numpages}
+%\runningfooter{ECO208}{Test 3}{\thepage\,/\,\numpages}
+\doublespacing
+
+\begin{document}
+	\vspace*{3em}
+	
+	\makebox[\textwidth]{Extra Question W3b}
+	\makebox[\textwidth]{Name:\enspace\hrulefill}
+	
+	\vspace*{3em}
+	
+	\begin{questions}
+		
+		\question You are given the following sales data for the last four months:
+		
+		\vspace{4mm}
+		\begin{center}
+			\begin{tabular}{|c|c|}
+				\hline
+				\textbf{Month (\( t \))} & \textbf{Sales \(\$ Y_t \)} \\
+				\hline
+				\( t-3 \) & 120 \\
+				\( t-2 \) & 130 \\
+				\( t-1 \) & 140 \\
+				\( t \)   & 150 \\
+				\hline
+			\end{tabular}
+		\end{center}
+		\vspace{4mm}
+		
+		\begin{enumerate}[label=(\alph*)]
+			\item Calculate the 3-month Trailing Simple Moving Average (SMA) at time $t-1$ and \( t \).
+%			\[
+%			SMA_t = \frac{Y_{t-2} + Y_{t-1} + Y_t}{3}
+%			\]
+			\item What is the estimated trend value using the SMA method?
+
+			\item Now, suppose we apply a Weighted Moving Average (WMA) where more recent months are given higher weights:
+			\begin{itemize}
+				\item Weight for \( t \) (most recent month) = 3
+				\item Weight for \( t-1 \) (second most recent) = 2
+				\item Weight for \( t-2 \) (third most recent) = 1
+			\end{itemize}
+			 Compute the 3-month WMA at time \( t-1 \) and \( t \) using the formula:
+%			\[
+%			WMA_t = \frac{w_{t} Y_t + w_{t-1} Y_{t-1} + w_{t-2} Y_{t-2}}{w_t + w_{t-1} + w_{t-2}}
+%			\]
+			
+			\item How does the WMA estimate compare to the SMA estimate?
+			\item Why does the Weighted Moving Average react more quickly to recent changes compared to the Simple Moving Average?
+			\item Prof. Vince suggested us to use the following weight:
+			\begin{itemize}
+				\item Weight for \( t \) (most recent month) = 1
+				\item Weight for \( t-1 \) (second most recent) = 1
+				\item Weight for \( t-2 \) (third most recent) = 1
+			\end{itemize}
+			Is it different from the SMA? Does it do the job of ``more recent months are given higher weights"?
+		\end{enumerate}
+		
+		\clearpage
+		\textbf{Sol'n}
+		\begin{enumerate}[label=(\alph*)]
+			\item 
+			The SMA at time \(t-1\) is given by:
+			\[
+			\text{SMA}_{t-1} = \frac{Y_{t-3} + Y_{t-2} + Y_{t-1}}{3} = \frac{120 + 130 + 140}{3} = \frac{390}{3} = 130.
+			\]
+			The SMA at time \(t\) is given by:
+			\[
+			\text{SMA}_t = \frac{Y_{t-2} + Y_{t-1} + Y_t}{3} = \frac{130 + 140 + 150}{3} = \frac{420}{3} = 140.
+			\]
+			
+			\item 
+			The trend estimate is taken as the SMA value, so the estimated trend at time $t-1$ is 130 and \(t\) is 140.
+
+			\item 
+			The WMA is computed by:
+			\[
+			\text{WMA}_{t-1} = \frac{w_0 Y_{t-1} + w_{-1} Y_{t-2} + w_{-2} Y_{t-3}}{w_0 + w_{-1} + w_{-2}}
+			= \frac{3(140) + 2(130) + 1(120)}{3 + 2 + 1} = \frac{800}{6} \approx 133.33
+			\]
+			\[
+			\text{WMA}_t = \frac{w_0 Y_t + w_{-1} Y_{t-1} + w_{-2} Y_{t-2}}{w_0 + w_{-1} + w_{-2}}
+			= \frac{3(150) + 2(140) + 1(130)}{3 + 2 + 1} = \frac{860}{6} \approx 143.33
+			\]
+			
+			\item 
+			The SMA yields 140, whereas the WMA is approximately 143.33. The higher weight on the most recent month (with a sales figure of 150) causes the WMA to be higher.
+			
+			\item 
+			Because the WMA assigns a larger weight to the most recent observation, it reacts more quickly to changes in recent data. In contrast, the SMA gives equal weight to all observations, smoothing out recent fluctuations.
+			
+			\item 
+			With weights \(w_t = w_{t-1} = w_{t-2} = 1\), the WMA becomes:
+			\[
+			\text{WMA}_t = \frac{1\cdot Y_t + 1\cdot Y_{t-1} + 1\cdot Y_{t-2}}{1+1+1} = \frac{Y_t + Y_{t-1} + Y_{t-2}}{3},
+			\]
+			which is exactly the same as the SMA. Therefore, using equal weights does not emphasize recent observations.
+			
+		\end{enumerate}
+		
+		\clearpage
+		
+		
+		
+%		\newpage 
+%		\centering{This page intentionally left blank.}
+%		\ % The empty page
+%		
+
+%		 \vfill
+%		 \centering{-- The End -- }
+		
+		
+		
+		%		\begin{solution}
+			%			
+			%		\end{solution}	
+%		\clearpage 
+%		
+%		\question Was wäre, wenn es keine Luft gäbe?
+%		\begin{parts} 
+%			\part[5] Was würde mit Luftballons geschehen? 
+%			\bonuspart[6] Wie könnten Fluggesellschaften damit umgehen?
+%		\end{parts}
+%		
+%		\question [100] Wird es morgen schneien?
+%		\begin{checkboxes}
+%			\CorrectChoice Ja
+%			\choice Nein
+%			\choice Vielleicht
+%		\end{checkboxes}
+%		
+%		\question Ein Name der folgenden Reihe passt nicht zu den anderen. Welcher?
+%		\begin{oneparchoices}
+%			\choice Donald
+%			\choice Dagobert
+%			\choice Daisy
+%			\choice Micky
+%			\CorrectChoice Balu
+%		\end{oneparchoices}
+		
+	\end{questions}
+	
+%	\begin{center}
+%		\combinedgradetable[h][questions]
+%	\end{center}
+	
+\end{document}

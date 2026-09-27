@@ -1,0 +1,287 @@
+\documentclass[letterpaper,12pt]{article}
+%\usepackage{harvard}
+%\usepackage{subfigure}
+%\usepackage[active]{srcltx}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{grffile}
+\usepackage{relsize}
+\usepackage{tablefootnote}
+\usepackage{footnote}
+\usepackage{sectsty}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{color}
+\usepackage[breaklinks,colorlinks]{hyperref}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[multiple]{footmisc}
+\usepackage{appendix}
+\usepackage{times}
+\usepackage{relsize}
+\usepackage{caption}
+\usepackage{newtxtext,newtxmath}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%      											    Title Page Information							                      %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace{-2.4cm} ECON 712: Applied Econometrics}
+\author{University of Northern British Columbia}
+\date{Winter 2026}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%         								  Double and Single Space Commands                                                            %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]{\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{1\defbaselineskip}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\newtheoremstyle{dotlessS}{}{}{\itshape}{}{\color{dg}\bfseries}{}{ }{}
+\theoremstyle{dotlessS}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand\Pitem{%
+  \addtocounter{enumi}{-1}%
+  \renewcommand\theenumi{\arabic{\enumi}'}%
+  \item%
+  \renewcommand\theenumi{\arabic{enumi}}%
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%           								                    Set Margins Here                                                                  %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textwidth=6.5in
+\textheight=9in
+\oddsidemargin=0.10in
+\evensidemargin=0.10in
+\topmargin=-0.5in
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%          									  Actual Document Begins Here                                                               %%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\maketitle
+\vspace{-1cm}
+\noindent\makebox[\linewidth]{\rule{\textwidth}{1.5pt}}
+\section{Contact Information}
+\subsection*{Instructor: Leandro Freylejer}
+\textbf{Office:} Teaching and Learning Building, Room 10-4536 \\
+\textbf{E-mail:} leandro.freylejer@unbc.ca, \textbf{Phone:} 250-960-5302 \\
+\textbf{Office Hours:} Tuesdays 11:45am-12:45pm, Thursdays 1:00pm-2:00pm
+\section{Course Information}
+\textbf{Room:} Weller Library 5-307 ,\textbf{Time:} Tuesdays, Thursdays 10:00 am-11:20 am \\
+\textbf{Course website:} https://moodle.unbc.ca/
+
+\section{Overview}
+
+This course provides a graduate-level introduction to statistical tools for using data to empirically estimate economic relationships. The goals of estimating these relationships are, for instance, to assess the empirical validity of economic theories, identify the effects of various policies and programs (program evaluation) and analyze economic history. Topics are organized in two broad sections. In the first section, student are presented with an introduction to regression analysis at and advanced level. In the second section, the emphasis is on providing students with several tools to establish causal relationships between a cause and an observable outcome (identification strategies). To that end, this section provides an introduction to relevant frameworks used to interpret causal relationships, and a detailed investigation of several of the most commonly used applied econometric methods to empirically establish these relationships (e.g. Multiple Linear Regression, DID, IV, Matching Estimators.). This course will also emphasize coding in one or more software packages and students will be expected to gain intermediate-level coding skills. Throughout the semester, this course emphasizes both theory and applications of theoretical concepts. 
+
+\section{Learning Outcomes}
+
+The goal of this course is to provide students with the knowledge to conduct empirical economics research at a graduate level as well as to understand and apply modern econometrics/causal inference methods. By the conclusion of the term students are expected to ... 
+\begin{itemize}
+\item have a solid theoretical understanding of the statistical properties and practical applications of regression analysis
+\item have a good understanding of the use of statistics in applied economic analysis
+\item have a good understanding of the use of several commonly used empirical methods to establish causal relationships
+\item learn the process of finding, managing, cleaning, and analysing real-world data in applied economics research
+\end{itemize}
+
+\section{Textbooks}
+My lectures will be based on the following textbooks: \\
+\begin{itemize}
+\item Angrist, J., Pischke, J. \textit{Mostly Harmless Econometrics: An Empiricist's  Companion}, Princeton University Press. Available from regular book vendors (e.g. Amazon) --- there is also one copy available at the Weller Library. (MHE, hereafter)
+\item Davidson, R., MacKinnon, J. \textit{Econometric Theory and Methods}, Oxford University Press, freely available at \url{http://qed.econ.queensu.ca/ETM/}. (ETM, hereafter) 
+\item Cunningham, S. \textit{Causal Inference}, Yale University Press, freely available at: \url{https://mixtape.scunning.com/}   (CI, hereafter) \\
+\item Wooldridge, J. \textit{Introductory Econometrics: A Modern Approach}, 7 or 8 Edition--- Your ECON312 textbook. Cengage (IE, hereafter)
+\end{itemize}
+
+
+\subsection*{Software}
+An objective of this course is to get students to perform statistical analysis of data using software. Therefore, you will be required to learn to code in one of many statistical programs available. The most widely used statistical software in economics is Stata. Stata is a commercial software available for a variety of operating system (e.g. Windows, macOS and Linux). A  \href{https://www.stata.com/order/new/edu/profplus/student-pricing/}{6-month license to Stata/BE for students} costs 48USD. An advantage of Stata is that it provides an excellent platform in which students can learn statistical programming without any previous coding experience. In addition, there are many resources available to learn to code in Stata, including the great Stata help menu, freely on-line resources and my knowledge of this software. This will be the only software that is \textbf{fully supported by the instructor} through tutorials (if enough students choose to purchase the software) and in office hours.\\
+\\
+There are alternative statistical programs that students can choose to use in this class. The two most common alternatives to Stata are R and SAS. R is an excellent open-source program that can be downloaded for free. This is the software that I teach students to use in my ECON312 class. It is able to perform everything that Stata is able to do (and some more). There are countless freely available and very informative on-line resources that students can use to learn to code in R. A problem with R is that the learning curve for beginners is very steep. This means that, if you do not have enough coding experience, you will be spending a lot of time trying to figure out how to program different routines (specially data cleaning routines) in R. In addition, my knowledge of R is limited, which means that it will be up to you to learn a lot of the programming needed to complete your project.\\
+\\
+Finally, SAS is also a commercial software widely used in the Health Sciences with different type of licenses available for purchase. However,  unlike for Stata, UNBC has a subscription for SAS, which means that students can use it for free through the University server. My experience with this software is extremely limited. This means that, if you choose to use SAS for your project, I will not be able to help you with the programming part of your project.      
+
+\section{Lectures and Office Hours}
+
+\subsection*{Lectures}
+Lectures will take place on Tuesdays and Thursdays from 10:00 pm to 11:20 pm in Weller Library Building, room 5-307. In most weeks, I will post lecture slides on the course website at least one and a half hours before class. If necessary, corrected slides will be posted as soon as possible. Slides are not
+substitutes but complements to class attendance. I also encourage students to complete readings before class. This facilitates in-class discussion and participation. I encourage you to use laptops or tablets only for the purposes of taking notes. I ask you to please turn off your cell phones and
+other communication devices before entering the classroom. Please be mindful of other students around you. Any conduct that is deemed to be disruptive to a learning environment will not be tolerated.
+
+
+\subsection*{Office Hours}
+I will hold office hours on Tuesdays 11:45am-12:45pm and Thursdays 1:00pm-2:00pm. A lot of the later material in this course builds on earlier material. Therefore, it is very important that you do not let major gaps in your understanding drag on. You are strongly encouraged to come to office hours as early as possible and as \textbf{often} as you need.\\
+\\
+\noindent If for some specific reason you cannot attend office hours, I am available by appointment only. Please do not drop-in unannounced.
+
+\newpage
+\section{Evaluation}
+The final grade for the course consists of \textbf{term work worth $65\%$} and a \textbf{comprehensive final exam worth $35\%$}.
+\\
+\begin{table}[!h]
+\begin{minipage}[h]{1\textwidth}
+\centering
+\resizebox{12.5cm}{!}{%
+\begin{tabular}{cccc}   
+\hline
+					                                         & Value                & Due date   \\  
+\hline
+\hline
+Problem Set I                                             &$7\%$           & January 29th, in class                 \\ 
+Problem Set II									        &$7\%$                & February 12th, in class                 \\ 
+Midterm                                                    &$20\%$           & February 24th, in class                 \\          
+Problem Set III                                          & $7\%$            & March 12th, in class                  \\
+Replication Exercise                                    & $10\%$            & April 2nd, in class                  \\
+Presentation                                              & $7\%$            & April 7th, in class                  \\
+Problem Set IV                                          &$7\%$            & April 9th, in class     \\
+Final Exam                                                & $35\%$           & TBD                                         \\
+\hline
+\end{tabular}}
+\end{minipage}
+\end{table}	\\
+\\
+Throughout the semester, I might assign additional problems that I will solve in class. These problems will not be graded but I expect that you attempt to solve them before class.\\ 
+\subsection*{Problem Sets}
+There will be four graded problem sets in this course. In these problem sets, I will ask you to solve  theoretical and empirical problems. The theoretical problems in these assignments provide an idea of the types of questions I ask in exams. Therefore, it is important that you put effort in trying to solve these questions by yourself first, and then ask other students or me for help, if you are unable to reach the final answer. For the empirical problems, you will be  expected to use a statistical software to solve the questions. I will post these assignments on the course website \textit{at least} one week before the due date, but generally earlier than that. I encourage you to start working on them as soon as they are posted. I will also post assignment's solutions previous to exams. \\
+
+\subsection*{Replication Exercise and Presentation}
+Gaining applied research skills is an important learning outcome of this class. To gain practical experience, you will be required to fully replicate a well-executed empirical paper that uses data from publicly available sources. You will be tasked with collecting, compiling and cleaning the data as well as producing code that replicates main results and supporting robustness checks of the paper. In addition, your final submission will include a report that clearly explains the reason for the author's/authors' choice of identification strategy and whether this approach was appropriate. The final component of the replication exercise is an in-class presentation where you will present the paper, discuss main results as well as share your overall assessment of the validity of the empirical exercise. I will provide more information on the replication exercise assignment and presentation as well as provide a list of potential papers based on students' interests in the coming weeks.        
+
+       
+\subsection*{Exams}
+There will be two exams in this class. A midterm exam scheduled for February 24th during class time, and a \textbf{comprehensive} 3-hour final exam to be scheduled by the University during the examination period. I will provide you with more information regarding the format of these exams closer to the examination dates.  
+
+\section{Administrative Details}
+\subsection*{Course web-page and e-mail policy}
+Students should check Moodle (moodle.unbc.ca) frequently for announcements, assignments, additional resources and other information for this course.  Moreover, I often post additional practice material, such as past exams with answer keys, before midterm and final exams.\\
+\\   
+I will do my best to respond to e-mails within 24 hours on a weekday, 48 hours on a weekend. Please use official ``@unbc.ca" email accounts for all communication. I only respond to e-mails posing questions that can be answered in no more than three sentences. For more involved questions, I will ask you to attend my office hours or ask questions during lectures. Also, I do not reply to e-mails that request information that can be found in the website or the syllabus.
+
+\subsection*{Academic Misconduct}
+I do not tolerate any form of academic misconduct, including \textit{plagiarism}. Any student caught engaging in such activities will be subject to academic discipline ranging from a mark of zero on the test or examination to dismissal from the university as outlined in the academic handbook.
+
+\subsection*{Late Submissions}
+Late assignments are subjected to a penalty of $8$ percentage points per day, and they will not be accepted three days after the deadline has passed (including weekends). If you cannot submit an assignment on time, for an exceptional reason out of your control, you should email me as soon as you are able to. We will discuss your particular situation, and hopefully, come up with a mutually satisfactory solution, which is also fair to other students in the class who submitted their assignment on time. When proper documentation can be obtained, you should be prepared to provide such documentation.    
+
+
+\subsection*{Missing an Exam}
+A missed midterm or final exams will receive a zero grade, unless in exceptional circumstances when for documented serious reasons a student is not able to write an exam. In this case, I usually shift the weight of the midterm towards the final exam or allow a student to write a make-up final exam. If you miss an exam, you should email me as soon as you are able to. We will discuss your particular situation, and hopefully, come up with mutually satisfactory solution, which is also fair to other students in the class who did not missed the exam. In the case when proper documentation can be obtained, you should be prepared to provide such documentation. 
+
+\subsection*{Grade Appeals}
+Appeals regarding the grading of assignments, critical review or exams must be submitted to me by email within two weeks of your receipt of the graded work. You must clearly and in detail explain the reason for your appeal. I will re-grade the entire work. Note that this may lead to a higher or lower overall grade. This policy does not apply to situations where there is a clear mistake on my part (e.g. I added points incorrectly)
+
+\section*{Tentative schedule of Topics and required readings}
+\textbf{Introduction}
+\begin{itemize}
+\item MHE: Chapter 1 and 2
+\end{itemize}
+\textbf{Regression Fundamentals}
+\begin{itemize}
+\item \textbf{Introduction}
+\begin{itemize}
+\item ETM: Chapter 1
+\item MHE: Chapter 3, Sections 3.1.1, 3.1.2, 3.1.4
+\end{itemize}
+\item \textbf{Algebraic Propoerties of OLS}
+\begin{itemize}
+\item ETM: Chapter 2, Sections 2.1, 2.2, 2.3, 2.4, Goodness of Fit (pp.73-75)
+\end{itemize}
+\item \textbf{Statistical Properties of OLS}
+\begin{itemize}
+\item MHE: Chapter 3, Section 3.1.3
+\item ETM: Chapter 3, Sections 3.1-3.6
+\item CI: Probability and Regression (pp.70-95)
+\end{itemize}
+\item \textbf{Causality, Heterogeneity, Non-linearities and Weighting}
+\begin{itemize}
+\item ETM: Chapter 3, Section 3.7
+\item MHE: Chapter 3, Sections 3.2, 3.3.1, 3.4
+\end{itemize}
+\end{itemize}
+\newpage
+\noindent \textbf{Instrumental Variables}
+\begin{itemize}
+\item MHE: Chapter 4, Except for Sections 4.2.2, 4.3
+\end{itemize}
+\textbf{Panel Data and Differences-in-Differences}
+\begin{itemize}
+\item \textbf{Panel Data}
+\begin{itemize}
+\item CI: Panel Data
+\item IE: Chapter 14, Sections 14.1-14.3
+\end{itemize}
+\item \textbf{Differences-in-Differences}
+\begin{itemize}
+\item MHE: Chapter 5
+\end{itemize}
+\end{itemize}
+\textbf{Matching Estimators}
+\begin{itemize}
+\item CI: Matching and Sub-classification
+\item MHE: Chapter 3, Sections 3.3.2, 3.3.3
+\end{itemize}
+\textbf{Regression Discontinuity (time permitting)}
+\begin{itemize}
+\item CI: Regression Discontinuity
+\end{itemize}
+
+
+\section{Additional University Resources}
+
+
+\subsection*{Academic Success Centre}
+
+The Academic Success Centre provides students with FREE access to academic support services: 
+\begin{itemize}
+\item Tutoring (by appointment, asynchronous online, or drop-in)
+\item Personalized study skills assessments 
+\item Peer-led course supports 
+\item Downloadable handouts 
+\item Access to self-assessment sites 
+\item Customized programs and workshops
+\end{itemize}
+ASC services are available in person at the Prince George Campus and online for distance, regional, or physically distanced students. \\
+\\
+For more information see the Academic Success Centre website at \url{www.unbc.ca/asc}, to book an appointment visit them on the first floor of the library, email asc@unbc.ca, or phone 250-960-6367. Toll-free: 1-888-440-3440 (wait on the line and ask for the ASC).
+
+
+
+\subsection*{Access Resource Centre}
+The Access Resource Centre (ARC) provides service to students with documented disabilities or health conditions, ranging from permanent to temporary, including but not limited to chronic health issues, hearing and visual impairments, learning disabilities and attention deficit/hyperactivity disorders, mental health and neurological disabilities, and mobility and other physical disabilities. ARC staff are available by appointment to assess specific needs, provide referrals, and arrange appropriate academic accommodations to assist students in achieving their academic goals. Students who may have a need for academic accommodation are encouraged to contact ARC by email at arc@unbc.ca, by phone at 250-960-5682 (toll free 1-888-960-5682), or in person at 5-157. 
+
+
+\subsection*{Health and Wellness}
+Everyone can experience mental health concerns or stressful events that can interfere with our academic performance and negatively impact our daily activities.
+All of us can benefit from support during times of struggle.  If you or anyone you know experiences academic stress, difficult life events or feelings of anxiety, depression or suicidal thoughts, the UNBC Wellness Centre team is here to help. Their services are free for UNBC Students and appointments are available. You can learn more about confidential mental health services available on and off campus at:  
+ \url{https://www2.unbc.ca/counselling}  OR \url{https://www2.unbc.ca/medical-clinic}. Remember that getting help is a smart and courageous thing to do - for yourself, for those you care about, and for those who care about you. Asking for support sooner rather than later is almost always helpful. 
+
+
+
+
+\end{document}

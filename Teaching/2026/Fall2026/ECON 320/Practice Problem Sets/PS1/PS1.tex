@@ -1,0 +1,336 @@
+\documentclass[12pt, a4paper]{article}
+
+% ── Page geometry ──────────────────────────────────────────────────────────────
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2.8cm, right=2.8cm,
+            headheight=15pt]{geometry}
+
+% ── Font & encoding ────────────────────────────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{palatino}
+\usepackage{mathpazo}
+\usepackage{microtype}
+
+% ── Maths ─────────────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm, mathtools}
+\usepackage{cancel}
+
+% ── Graphics & colour ─────────────────────────────────────────────────────────
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, calc, shapes.geometric,
+                decorations.pathreplacing, backgrounds, fit, patterns}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.15}
+
+% ── Tables ────────────────────────────────────────────────────────────────────
+\usepackage{booktabs, array, colortbl, multirow, tabularx}
+\renewcommand{\arraystretch}{1.4}
+
+% ── Lists ─────────────────────────────────────────────────────────────────────
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.8em, itemsep=3pt, topsep=4pt}
+\setlist[enumerate]{leftmargin=1.8em, itemsep=3pt, topsep=4pt}
+
+% ── Boxes ─────────────────────────────────────────────────────────────────────
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{skins, breakable, theorems}
+
+% ── Headers & footers ─────────────────────────────────────────────────────────
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% ── Hyperlinks ────────────────────────────────────────────────────────────────
+\usepackage[colorlinks=true, linkcolor=royalblue, urlcolor=royalblue,
+            citecolor=royalblue, bookmarks=true]{hyperref}
+\usepackage{tocloft}
+
+% ── Miscellaneous ─────────────────────────────────────────────────────────────
+\usepackage{parskip}
+\setlength{\parskip}{6pt}
+\setlength{\parindent}{0pt}
+\usepackage{float}
+\usepackage{caption}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  COLOUR PALETTE  (deep navy / gold / teal)
+% ═══════════════════════════════════════════════════════════════════════════════
+\definecolor{royalblue}{RGB}{25, 55, 130}
+\definecolor{navylight}{RGB}{235, 239, 252}
+\definecolor{navyborder}{RGB}{100, 130, 200}
+\definecolor{gold}{RGB}{185, 135, 15}
+\definecolor{lightgold}{RGB}{254, 248, 225}
+\definecolor{teal}{RGB}{15, 115, 105}
+\definecolor{lightteal}{RGB}{225, 248, 244}
+\definecolor{tealborder}{RGB}{15, 115, 105}
+\definecolor{crimson}{RGB}{155, 25, 35}
+\definecolor{lightcrimson}{RGB}{255, 235, 235}
+\definecolor{purple}{RGB}{88, 35, 140}
+\definecolor{lightpurple}{RGB}{245, 238, 255}
+\definecolor{charcoal}{RGB}{42, 42, 42}
+\definecolor{slategray}{RGB}{80, 90, 105}
+\definecolor{tabhead}{RGB}{25, 55, 130}
+\definecolor{tabeven}{RGB}{235, 240, 252}
+\definecolor{solgreen}{RGB}{12, 100, 55}
+\definecolor{lightsol}{RGB}{228, 252, 238}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  TCOLORBOX ENVIRONMENTS
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\newtcolorbox{defbox}[1]{
+  breakable, enhanced,
+  colback=navylight, colframe=royalblue, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Definition: #1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=royalblue, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{thmbox}[1]{
+  breakable, enhanced,
+  colback=lightteal, colframe=teal, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Theorem: #1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=teal, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{propbox}[1]{
+  breakable, enhanced,
+  colback=lightteal, colframe=teal, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Proposition: #1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=teal, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{keybox}[1]{
+  breakable, enhanced,
+  colback=lightgold, colframe=gold, coltitle=charcoal,
+  fonttitle=\bfseries\sffamily, title={#1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=gold, arc=3pt, boxrule=0pt, coltitle=white}
+}
+
+\newtcolorbox{exbox}[1]{
+  breakable, enhanced,
+  colback=lightpurple, colframe=purple, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Worked Example: #1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=purple, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{warnbox}[1]{
+  breakable, enhanced,
+  colback=lightcrimson, colframe=crimson, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={#1},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=crimson, arc=3pt, boxrule=0pt}
+}
+
+\newtcolorbox{solbox}{
+  breakable, enhanced,
+  colback=lightsol, colframe=solgreen, coltitle=white,
+  fonttitle=\bfseries\sffamily, title={Solution},
+  arc=4pt, boxrule=1pt, left=8pt, right=8pt, top=6pt, bottom=6pt,
+  attach boxed title to top left={yshift=-2mm, xshift=6mm},
+  boxed title style={colback=solgreen, arc=3pt, boxrule=0pt}
+}
+
+% ── Theorem-style environments ─────────────────────────────────────────────────
+\theoremstyle{definition}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{corollary}{Corollary}[section]
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  MATHS MACROS
+% ═══════════════════════════════════════════════════════════════════════════════
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Rn}{\mathbb{R}^n}
+\newcommand{\Rm}{\mathbb{R}^m}
+\newcommand{\powerset}{\mathcal{P}}
+\newcommand{\st}{\;\text{s.t.}\;}
+\newcommand{\xto}[1]{\xrightarrow{#1}}
+\newcommand{\inv}{^{-1}}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\ran}{ran}
+\DeclareMathOperator{\img}{img}
+
+% ── Table helpers ──────────────────────────────────────────────────────────────
+\newcommand{\thead}[1]{\cellcolor{tabhead}\color{white}\textbf{#1}}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+%  PAGE STYLE
+% ═══════════════════════════════════════════════════════════════════════════════
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\textcolor{royalblue}{\textbf{ECON 320}} \textcolor{slategray}{--- Sets \& Functions}}
+\fancyhead[R]{\textcolor{slategray}{\small School of Economics}}
+\fancyfoot[C]{\textcolor{slategray}{\small Page \thepage\ of \pageref{LastPage}}}
+\renewcommand{\headrulewidth}{1.2pt}
+\renewcommand{\headrule}{%
+  \hbox to\headwidth{\color{royalblue}\leaders\hrule height\headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% ── TOC styling ───────────────────────────────────────────────────────────────
+\renewcommand{\cftsecfont}{\bfseries\color{royalblue}}
+\renewcommand{\cftsecpagefont}{\bfseries\color{royalblue}}
+\renewcommand{\cftsubsecfont}{\color{charcoal}}
+\setlength{\cftbeforesecskip}{4pt}
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\begin{document}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+% ── COVER ─────────────────────────────────────────────────────────────────────
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[royalblue] (current page.north west)
+    rectangle ([yshift=-5.8cm] current page.north east);
+  \fill[gold] ([yshift=-5.8cm] current page.north west)
+    rectangle ([yshift=-6.2cm] current page.north east);
+\end{tikzpicture}
+
+\vspace*{-1.5cm}
+\begin{center}
+  {\color{white}\large\bfseries\sffamily ECON 320 -- Practice Problem Set 1}\\[10pt]
+  {\color{white}\Huge\bfseries Sets and Functions}\\[8pt]
+  {\color{gold}\large\itshape Mathematical Foundations for Economic Analysis}
+\end{center}
+
+\vspace{3.4cm}
+
+\begin{center}
+\begin{tabular}{l l}
+  \textbf{\textcolor{royalblue}{Course:}}        & ECON 320: Introduction to Mathematical Economics \\[3pt]
+
+
+  \textbf{\textcolor{royalblue}{Term:}}          & Fall 2026 \\[3pt]
+    \textbf{\textcolor{royalblue}{Instructor:}}          & Muhebullah Karimzada \\[3pt]
+\end{tabular}
+\end{center}
+
+
+
+\newpage
+
+
+% ═══════════════════════════════════════════════════════════════════════════════
+\section{Practice Questions}
+% ═══════════════════════════════════════════════════════════════════════════════
+
+\subsection{Section A: Sets and Set Operations}
+
+\begin{enumerate}[label=\textbf{A\arabic*.}, leftmargin=2.5em]
+
+  \item \textbf{(Set Builder Notation)} Write each of the following sets in set-builder notation and determine whether it is finite or infinite:
+  \begin{enumerate}[label=(\alph*)]
+    \item The set of all even natural numbers less than 20.
+    \item The set of all real numbers whose square is less than 16.
+    \item The set of all prices in $[0, 100]$ that make demand positive, given $D(P) = 50 - P$.
+  \end{enumerate}
+
+  \item \textbf{(Set Operations)} Let $U = \{1,2,3,4,5,6,7,8,9,10\}$, $A = \{1,2,3,4,5\}$, $B = \{3,4,5,6,7\}$, and $C = \{5,6,7,8,9\}$. Compute:
+  \begin{enumerate}[label=(\alph*)]
+    \item $A \cup B$ \quad (b) $A \cap B$ \quad (c) $A \setminus B$ \quad (d) $B \setminus A$ \quad (e) $(A \cup B)^c$ \quad (f) $A \cap B \cap C$ \quad (g) $A \cup (B \cap C)$
+  \end{enumerate}
+
+  \item \textbf{(Power Set)} Find the power set of $A = \{x, y\}$. How many elements does $\powerset(\powerset(A))$ have?
+
+  \item \textbf{(Cartesian Product)} Let $A = \{1, 2\}$ and $B = \{a, b, c\}$. List all elements of $A \times B$ and $B \times A$. Are they equal?
+
+  \item \textbf{(De Morgan's Laws)} Verify De Morgan's Law $(A \cup B)^c = A^c \cap B^c$ using $U = \{1,\ldots,8\}$, $A=\{1,2,3,4\}$, $B=\{3,4,5,6\}$.
+
+  \item \textbf{(Economic Application)} A consumer has income $w = 100$ and faces prices $p_1 = 2$, $p_2 = 5$. Define:
+    \[A = \{(x_1,x_2)\in\R^2_+ : 2x_1 + 5x_2 \leq 100\}\]
+    \[B = \{(x_1,x_2)\in\R^2_+ : x_1 \geq 10\}\]
+    Describe $A \cap B$ geometrically. What does this set represent economically?
+
+  \item \textbf{(Proof)} Prove the distributive law: $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ using the element-chasing method.
+
+  \item \textbf{(Supremum and Infimum)} For each set, find $\sup$, $\inf$, and state whether $\max$ and $\min$ exist:
+  \begin{enumerate}[label=(\alph*)]
+    \item $A = \left\{\frac{n}{n+1} : n \in \N\right\}$
+    \item $B = (-3, 5]$
+    \item $C = \{x \in \R : x^2 < 9\}$
+    \item $D = \{x \in \R : x^3 \leq 8\}$
+  \end{enumerate}
+\end{enumerate}
+\newpage
+\subsection{Section B: Functions}
+
+\begin{enumerate}[label=\textbf{B\arabic*.}, leftmargin=2.5em]
+
+  \item \textbf{(Domain and Range)} Find the natural domain and range of:
+  \begin{enumerate}[label=(\alph*)]
+    \item $f(x) = \sqrt{9 - x^2}$
+    \item $g(x) = \dfrac{x-1}{x^2-4}$
+    \item $h(x) = \ln(x^2 - 1)$
+    \item $k(x,y) = \sqrt{x} + \sqrt{y}$ (treat as a function from $\R^2$)
+  \end{enumerate}
+
+  \item \textbf{(Injectivity and Surjectivity)} For each function, determine whether it is injective, surjective, bijective, or none:
+  \begin{enumerate}[label=(\alph*)]
+    \item $f: \R \to \R$, $f(x) = 3x - 7$
+    \item $g: \R \to \R$, $g(x) = x^3 - x$
+    \item $h: \R \to \R^+$, $h(x) = e^x$
+    \item $k: [0,\pi] \to [-1,1]$, $k(x) = \cos x$
+    \item $\ell: \R_+ \to \R_+$, $\ell(x) = x^3$
+  \end{enumerate}
+
+  \item \textbf{(Inverse Functions)} Find the inverse of each function and state its domain:
+  \begin{enumerate}[label=(\alph*)]
+    \item $f(x) = 5x + 3$
+    \item $g(x) = \dfrac{x+1}{x-2}$, $x \neq 2$
+    \item $h(x) = e^{2x-1}$
+    \item $k(x) = x^3 + 2$ on $\R$
+  \end{enumerate}
+
+  \item \textbf{(Composition)} Let $f(x) = 2x^2 - 1$ and $g(x) = \sqrt{x+3}$ (defined on $[-3,\infty)$). Compute:
+  \begin{enumerate}[label=(\alph*)]
+    \item $(g \circ f)(x)$ and state its domain.
+    \item $(f \circ g)(x)$ and state its domain.
+    \item $(g \circ f)(2)$ and $(f \circ g)(1)$.
+    \item Are $g \circ f$ and $f \circ g$ equal? What does this illustrate?
+  \end{enumerate}
+
+  \item \textbf{(Pre-image)} Let $f:\R\to\R$, $f(x) = x^2 - 4$. Find:
+  \begin{enumerate}[label=(\alph*)]
+    \item $f^{-1}(\{0\})$\quad (b) $f^{-1}([-4, 0])$\quad (c) $f^{-1}((0,5])$\quad (d) $f^{-1}(\{-5\})$
+  \end{enumerate}
+\newpage
+  \item \textbf{(Homogeneity)} Determine whether each function is homogeneous, and if so, find the degree:
+  \begin{enumerate}[label=(\alph*)]
+    \item $f(K,L) = 3K^{0.4}L^{0.6}$
+    \item $g(x,y) = x^2 + xy + y^2$
+    \item $h(x,y) = \dfrac{x^2 y}{x^3 + y^3}$
+    \item $k(x,y) = x + y + 1$
+  \end{enumerate}
+
+  \item \textbf{(Concavity and Convexity)} Determine whether each function is convex, concave, or neither:
+  \begin{enumerate}[label=(\alph*)]
+    \item $f(x) = x^4$ on $\R$
+    \item $g(x) = x^3$ on $\R$
+    \item $h(x) = -2x^2 + 4x - 1$ on $\R$
+    \item $k(x) = |x|$ on $\R$
+  \end{enumerate}
+
+  \item \textbf{(Economic Application --- Full Question)} A monopolist faces inverse demand $P(Q) = 100 - 2Q$ and has total cost $C(Q) = Q^2 + 10Q + 50$.
+  \begin{enumerate}[label=(\alph*)]
+    \item Define the profit function $\pi(Q)$ and state its domain.
+    \item Find the range of $\pi$.
+    \item Is $\pi$ concave? Justify.
+    \item Find the profit-maximising quantity and maximum profit.
+    \item Find $\pi^{-1}(\{0\})$ (the break-even quantities) and interpret.
+  \end{enumerate}
+\end{enumerate}
+
+\end{document}

@@ -1,0 +1,418 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%       								 Preamble				         	                                                        %%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\documentclass[10pt]{beamer}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{amsmath,lmodern}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{fit,shapes.misc}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{epstopdf}
+\usepackage{pdfpages}
+\usepackage{appendixnumberbeamer}
+\usepackage{color,soul}
+\usepackage{grffile}
+\usepackage{float}
+\usepackage{relsize}
+\usepackage{tcolorbox}
+\newcounter{nodemarkers}
+\usepackage{tikz}
+\newcommand{\toplinesmall}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=3.6cm]current page.north west);}}
+             
+\newcommand{\toplinemedium}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=6.2cm]current page.north west);}}
+ 
+ \newcommand{\toplinelarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=8.9cm]current page.north west);}}           
+             
+ \newcommand{\toplinexlarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=12cm]current page.north west);}}                       
+             
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}{\textcolor{blue}{ECON311}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}{\textcolor{blue}{Winter 2026}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}{\textcolor{blue}{Lecture 10 \: \: \: \: \: \: \: }
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newcommand\marktopleft[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-a) at (-0.2,1.2ex) {};%
+}
+\newcommand\markbottomright[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-b) at (0.16,-1ex) {};%
+    \tikz[overlay,remember picture,thick,inner sep=4pt]
+        \node[draw,rectangle,rounded corners, blue, fit=(marker-#1-a.center) (marker-#1-b.center)] {};%
+}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[triangle]
+\tcbset{colframe=white,colback=white,nobeforeafter}
+\beamertemplatenavigationsymbolsempty
+\addtobeamertemplate{frametitle}{\vspace*{0.19cm}}{\vspace*{0cm}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%  									    Define Title									                                       %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\title{ECON 311} 
+\author{Lecture 10: Long-Run Growth}
+\date{}
+\AtBeginSection[]
+{
+ \begin{frame}<beamer>
+ \tableofcontents[currentsection]
+ \end{frame}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%% 						     				Document								                                                %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{document}
+\setbeamercovered{transparent}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%% 						     				Introduction	             		                                		  %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%
+\section{Economics of ideas}
+
+\begin{frame}
+\frametitle{\: \: \: Ideas in the Production Function}
+\toplinelarge
+\begin{itemize}
+\item Production of ideas result in changes in TFP:
+\begin{eqnarray*} 
+Y_t=F(K_t,L_t,A_t)=A_t \: K_t^{\frac{1}{3}} \: L_t^{\frac{2}{3}}
+\end{eqnarray*}
+\item There are constant returns to TFP
+\begin{figure}
+\centering
+\includegraphics[scale=.55]{TFP_production_function}
+\end{figure}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Ideas in the Production Function}
+\toplinelarge
+\begin{itemize}
+\item Production of ideas result in changes in TFP:
+\begin{eqnarray*} 
+Y_t=F(K_t,L_t,A_t)=A_t \: K_t^{\frac{1}{3}} \: L_t^{\frac{2}{3}}
+\end{eqnarray*}
+\item There are increasing returns to scale
+\begin{itemize}
+\vspace{.11in}
+\item Multiply all inputs by a constant ($\gamma$):
+\begin{eqnarray*} 
+\begin{array}{l}
+Y_t=F(\gamma \: K_t, \gamma \: L_t, \gamma \: A_t)=\gamma \: A_t \: \left(\gamma \:  K_t\right)^{\frac{1}{3}} \: \left(\gamma \: L_t\right)^{\frac{2}{3}} \\[3ex]
+Y_t=\gamma ^2 \: F(K_t,L_t,A_t)
+\end{array}
+\end{eqnarray*}
+\end{itemize}
+\end{itemize}
+\end{frame} 
+
+\begin{frame}
+\frametitle{\: \: \: The Production of Ideas}
+\toplinelarge
+\begin{itemize}
+\item Producing ideas is not free:
+\begin{itemize}
+\vspace{.11in}
+\item Innovators must invest ``labour'' to produce ideas:
+\begin{eqnarray*}
+\begin{array}{l}
+L_{A_t}=\overline{l} \: \overline{L} \\[3ex]
+L_{Y_t}=(1-\overline{l}) \: \overline{L} \\[3ex] 
+L_{A_t}+L_{Y_t}=\overline{L}
+\end{array}
+\end{eqnarray*}
+\item Trade-off between producing consumption goods and ideas:
+\begin{eqnarray*}
+\begin{array}{l}
+Y_t=A_t \:  L_{Y_t}  \\[3ex]
+A_{t+1}=A_{t}+\underbrace{\overline{z} \: A_t \: L_{A_t}}_{\text{Idea}}
+\end{array}
+\end{eqnarray*}
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: TFP Growth}
+\toplinemedium
+\begin{itemize}
+\item Accumulation of ideas result in TFP growth over the long-run:
+\begin{eqnarray*}
+\underbrace{\frac{A_{t+1}-A_t}{A_t}}_{\overline{g}}=\overline{z} \: \overline{l} \: \: \overline{L}
+\end{eqnarray*}
+\item \textcolor{red}{(Trade-off)} An increase in $\overline{l}$ increases $A_{t+1}$, but decreases $Y_t$ 
+\begin{itemize}
+\vspace{.11in}
+\item An increase in $\overline{l}$ has the potential to increase output in the long-run
+\vspace{.11in}
+\item Furthermore, an increase in $\overline{l}$ increases the long-run growth rate of output 
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Output Growth in the Long-Run}
+\toplinelarge
+\begin{itemize}
+\item Output per capita at time $t$ is:
+\begin{eqnarray*}
+y_t=A_0 \: (1-\overline{l}) \: (1+\overline{g})^t
+\end{eqnarray*}
+\item Using the growth rate of TFP, we can solve for the long-run growth of $y_t$ (BGP):
+\begin{eqnarray*}
+\begin{array}{c}
+g_y=\overline{z} \: \overline{I} \: \overline{L} 
+\end{array}
+\end{eqnarray*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Trade-Off}
+\toplinelarge
+\begin{figure}
+\centering
+\includegraphics[scale=.35]{romer_trade}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Conclusion}
+\toplinemedium
+\begin{itemize}
+\item Introducing the production of ideas ...
+\begin{itemize}
+\vspace{.11in}
+\item provides a theory as to why, in the long-run, some countries are able to grow at a faster rate than others 
+\vspace{.11in}
+\item consistent with the data models long-run growth in GDP per capita as the result of TFP growth  
+\vspace{.11in}
+\item provides an explanation as to why some countries have a higher level of TFP growth (better ideas generation process)
+\end{itemize}   
+\end{itemize}
+\end{frame}
+
+\section{Growth Accounting}
+
+
+\begin{frame}
+\frametitle{\: \: \: Solow and Romer}
+\toplinemedium
+We combine Romer and Solow:
+\begin{eqnarray*} 
+Y_t=F(K_t,L_t,A_t)=A_t \: K_t^{\frac{1}{3}} \: L_{Y_t}^{\frac{2}{3}}
+\end{eqnarray*}
+\begin{eqnarray*}
+\begin{array}{l}
+L_{A_t}=\overline{l} \: \overline{L} \\[3ex]
+L_{Y_t}=(1-\overline{l}) \: \overline{L} \\[3ex] 
+\end{array}
+\end{eqnarray*}
+\begin{eqnarray*}
+\begin{array}{l}
+\underbrace{\frac{A_{t+1}-A_t}{A_t}}_{g_{A_t}}=\overline{z}  \: L_{A_t}
+\end{array}
+\end{eqnarray*}
+\begin{eqnarray*}
+\underbrace{\frac{K_{t+1}-K_t}{K_t}}_{g_{K_t}}=\overline{s} \: \frac{Y_t}{K_t}-\overline{d}
+\end{eqnarray*}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Solow and Romer}
+\toplinemedium
+\begin{itemize}
+\item In the long-run equilibrium (BGP), we need capital to grow at a constant rate, $g_K$, which means:
+\begin{eqnarray*}
+g_{Y}=g_{K}
+\end{eqnarray*}
+\item Using the above equation and the growth rate of TFP, we can solve for the long-run growth of $Y_t$:
+\begin{eqnarray*}
+\begin{array}{c}
+g_Y=g_A+\frac{1}{3} \: g_k +\frac{2}{3} \: g_{(1-\overline{l})\: \overline{L}}  \\[1.3ex]
+g_Y=  \overline{z} \: \overline{l} \: \: \overline{L}+\frac{1}{3} \:g_y+\frac{2}{3} \: \: 0 \\[1.3ex]
+g_Y=g_y= \frac{3}{2} \: \overline{z} \: \overline{l} \: \: \overline{L} \geq 0 
+\end{array}
+\end{eqnarray*}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Growth Accounting}
+\toplinemedium
+\begin{itemize}
+\item Similar to the Production Function analysis, Growth Accounting disaggregates growth of output into the growth of inputs:
+\begin{eqnarray*}
+g_y=g_A+\frac{1}{3} \: (g_k-g_L) +\frac{2}{3} (g_{L_{Y_t}-g_{L_t}}) \\[1.3ex]
+\end{eqnarray*}
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[scale=.55]{growth_accounting}
+\end{figure}
+\end{frame}
+
+\section{Inflation}
+
+\begin{frame}
+\frametitle{\: \: \: Introduction}
+\toplinesmall
+\begin{itemize}
+\item Inflation rate is defined as the rate of change of prices
+\begin{eqnarray*}
+\pi_{t+1}=\frac{P_{t+1}-P_t}{P_t}
+\end{eqnarray*}
+\item Inflation in the Canadian economy:
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[scale=.4]{inflation_Canada}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Introduction}
+\toplinesmall
+\begin{figure}
+\centering
+\includegraphics[scale=1]{inflation}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Introduction}
+\toplinesmall
+\begin{figure}
+\centering
+\includegraphics[scale=.6]{hyperinflation1}
+\end{figure}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{\: \: \: The Quantity Theory of Money}
+\toplinexlarge
+\begin{itemize}
+\item The central component of the quantity theory of money is the quantity equation, which connects nominal GDP with the effective amount of liquidity in circulation:
+\begin{eqnarray*}
+M_t \: V_t=P_t \: Y_t
+\end{eqnarray*}
+\begin{itemize}
+\item $M_t$=Money Supply
+\vspace{.11in}
+\item $V_t$=Velocity (the rate at which money changes hands)
+\vspace{.11in}
+\item $P_t$=Price level
+\vspace{.11in}
+\item $Y_t$=Real GDP
+\end{itemize}
+\vspace{.11in}
+\item Effective money supply is equal to money demand
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Prices and Inflation in the Quantity Theory}
+\toplinexlarge
+\begin{itemize}
+\item Classical Dichotomy: real and nominal sides of the economy are separate (money is \textbf{neutral} in the long run).
+\vspace{.11in}
+\item Prices in the quantity theory of money are given by:
+\begin{eqnarray*}
+P_t=\frac{M_t \overline{V}}{Y_t}
+\end{eqnarray*}
+\begin{itemize}
+\item Prices are given by how many goods the effective supply of money is chasing.
+\end{itemize}
+\vspace{.11in}
+\item Inflation is given by the following equation:
+\begin{eqnarray*}
+\Pi=g_M-g_Y
+\end{eqnarray*}
+\begin{itemize}
+\item If the classical dichotomy holds, we should observe that, on average and over the long-run, high inflation correlates with high levels of money supply growth.
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Inflation in the Quantity Theory}
+\toplinelarge
+\begin{figure}
+\centering
+\includegraphics[scale=.5]{money_growth_inflation}
+\end{figure}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Risk of Inflation}
+\toplinelarge
+\begin{itemize}
+\item As we will see in the short-run analysis, monetary policy is an important tool to fight recessions (such as the COVID recession)
+\vspace{.11in}
+\item A risk with loose monetary policy is the risk of increasing the inflation rate over the long-run 
+\begin{itemize}
+\vspace{.11in}
+\item Costs associated with large levels of inflation are well understood.
+\vspace{.11in}
+\item Large debate over whether this risk has been overblown by economists in recent times (MMT)
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\end{document}

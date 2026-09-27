@@ -1,0 +1,375 @@
+%% ============================================================
+%%  ECON 621: Applied Econometrics — Textbook
+%%  University of Northern British Columbia
+%%  Prepared for ECON 621 (cross-listed senior UG / graduate)
+%% ============================================================
+\documentclass[11pt, twoside, openright]{book}
+
+%% ── Encoding & fonts ──────────────────────────────────────
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+% Declare Unicode math/punct chars that may slip through:
+\DeclareUnicodeCharacter{2212}{$-$}         % − MINUS SIGN
+\DeclareUnicodeCharacter{2248}{$\approx$}   % ≈
+\DeclareUnicodeCharacter{2260}{$\neq$}      % ≠
+\DeclareUnicodeCharacter{2261}{$\equiv$}    % ≡
+\DeclareUnicodeCharacter{2264}{$\leq$}      % ≤
+\DeclareUnicodeCharacter{2265}{$\geq$}      % ≥
+\DeclareUnicodeCharacter{2192}{$\to$}       % →
+\DeclareUnicodeCharacter{2190}{$\leftarrow$}% ←
+\DeclareUnicodeCharacter{00D7}{$\times$}    % ×
+\DeclareUnicodeCharacter{22A5}{$\perp$}     % ⊥
+\DeclareUnicodeCharacter{2208}{$\in$}       % ∈
+\DeclareUnicodeCharacter{2026}{\ldots}      % …
+\DeclareUnicodeCharacter{00B7}{$\cdot$}     % ·
+\DeclareUnicodeCharacter{2014}{---}         % — em dash
+\DeclareUnicodeCharacter{2013}{--}          % – en dash
+\DeclareUnicodeCharacter{201C}{``}          % "
+\DeclareUnicodeCharacter{201D}{''}          % "
+\DeclareUnicodeCharacter{2018}{`}           % '
+\DeclareUnicodeCharacter{2019}{'}           % '
+\usepackage{lmodern}
+\usepackage{microtype}
+
+%% ── Page geometry ─────────────────────────────────────────
+\usepackage[
+  paperwidth=7.5in, paperheight=10in,
+  top=1.1in, bottom=1.1in,
+  inner=1.1in, outer=0.85in,
+  headsep=0.25in,
+  headheight=14pt
+]{geometry}
+
+%% ── Mathematics ───────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm, mathtools, bm}
+\usepackage{mathrsfs}
+
+%% ── Theorem environments ─────────────────────────────────
+\newtheoremstyle{econstyle}
+  {8pt}{6pt}{\itshape}{}{\bfseries\color{econblue}}{.}{ }{}
+\theoremstyle{econstyle}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\newtheoremstyle{defstyle}
+  {8pt}{6pt}{\normalfont}{}{\bfseries\color{econblue}}{.}{ }{}
+\theoremstyle{defstyle}
+\newtheorem{definition}{Definition}[chapter]
+\newtheorem{assumption}{Assumption}[chapter]
+\newtheorem{example}{Example}[chapter]
+\newtheorem{remark}{Remark}[chapter]
+
+%% ── Colors ────────────────────────────────────────────────
+\usepackage[dvipsnames, table]{xcolor}
+\definecolor{econblue}{RGB}{0, 64, 128}
+\definecolor{boxbg}{RGB}{235, 243, 255}
+\definecolor{shadedbg}{RGB}{248, 248, 248}
+\definecolor{codebg}{RGB}{248, 248, 248}
+\definecolor{codeframe}{RGB}{180, 180, 180}
+
+%% ── Boxes & callouts ──────────────────────────────────────
+\usepackage{tcolorbox}
+\tcbuselibrary{skins, breakable, theorems}
+
+%% keybox: mandatory arg {title} – avoids pgfkeys parsing issues with
+%%         math or commas in optional [title] arguments.
+\newenvironment{keybox}[1]{%
+  \begin{tcolorbox}[colback=boxbg, colframe=econblue,
+    breakable, enhanced,
+    before upper={\noindent\textbf{\color{econblue}#1}\par\smallskip}]
+}{%
+  \end{tcolorbox}%
+}
+
+\newenvironment{warningbox}[1]{%
+  \begin{tcolorbox}[colback=yellow!10, colframe=orange!80!black,
+    breakable, enhanced,
+    before upper={\noindent\textbf{\color{orange!80!black}#1}\par\smallskip}]
+}{%
+  \end{tcolorbox}%
+}
+
+\newtcolorbox{notebox}{
+  colback=shadedbg, colframe=gray!40,
+  fontupper=\small, breakable
+}
+
+%% ── Code listings ─────────────────────────────────────────
+\usepackage{listings}
+\lstset{inputencoding=utf8, extendedchars=true,
+  literate={←}{$\leftarrow$}{1}{→}{$\rightarrow$}{1}
+           {≈}{$\approx$}{1}{≠}{$\neq$}{1}{≡}{$\equiv$}{1}
+           {−}{$-$}{1}{×}{$\times$}{1}{≤}{$\leq$}{1}
+           {≥}{$\geq$}{1}{∈}{$\in$}{1}{⊥}{$\perp$}{1}
+           {…}{\ldots}{1}{·}{$\cdot$}{1}
+}
+\lstdefinestyle{Rstyle}{
+  language=R,
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\footnotesize,
+  keywordstyle=\color{blue!70!black}\bfseries,
+  commentstyle=\color{green!50!black}\itshape,
+  stringstyle=\color{orange!80!black},
+  numberstyle=\tiny\color{gray},
+  frame=single, frameround=tttt,
+  rulecolor=\color{codeframe},
+  numbers=left, numbersep=6pt,
+  breaklines=true, breakatwhitespace=true,
+  showstringspaces=false,
+  tabsize=2,
+  captionpos=b,
+  xleftmargin=8pt,
+  morekeywords={library, data, ggplot, aes, geom_point, geom_line,
+    geom_smooth, labs, theme_minimal, lm, summary, coef, vcov,
+    residuals, fitted, predict, anova, rbind, cbind, matrix,
+    solve, diag, t, nrow, ncol, round, cat, mean, sd, var,
+    cor, set.seed, rnorm, rbinom, runif, replicate, map_dfr,
+    as_tibble, mutate, filter, group_by, summarise, left_join,
+    pivot_longer, pivot_wider, factor, case_when, ifelse,
+    pdata.frame, plm, phtest, feols, iplot, ivreg, rdrobust,
+    matchit, weightit, rddensity, rdplotdensity}
+}
+\lstset{style=Rstyle}
+
+%% ── Tables ────────────────────────────────────────────────
+\usepackage{booktabs, longtable, array, multirow, tabularx}
+\renewcommand{\arraystretch}{1.3}
+
+%% ── Graphics ──────────────────────────────────────────────
+\usepackage{graphicx, float}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, shapes.geometric, positioning, calc, decorations.pathreplacing, patterns, fit, backgrounds}
+\tikzset{
+  node/.style={circle, draw=econblue, fill=econblue!10, thick, minimum size=8mm, font=\small},
+  arrow/.style={-{Stealth[scale=1.2]}, thick, econblue},
+  dasharrow/.style={-{Stealth[scale=1.2]}, thick, dashed, gray},
+}
+
+%% ── Headers & footers ─────────────────────────────────────
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\textcolor{econblue}{\itshape ECON 621: Applied Econometrics}}
+\fancyhead[RO]{\small\textcolor{econblue}{\itshape\leftmark}}
+\fancyfoot[LE,RO]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[C]{\small\thepage}\renewcommand{\headrulewidth}{0pt}}
+
+%% ── Chapter title style ───────────────────────────────────
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\Huge\bfseries\color{econblue}}
+  {\chaptertitlename\ \thechapter}{14pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{-10pt}{30pt}
+
+\titleformat{\section}{\large\bfseries\color{econblue!80!black}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{econblue!60!black}}{\thesubsection}{0.7em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{0.6em}{}
+
+%% ── Table of contents ─────────────────────────────────────
+\usepackage[titles]{tocloft}
+\setcounter{tocdepth}{2}
+\renewcommand{\cftchapfont}{\bfseries\color{econblue}}
+
+%% ── Hyperlinks ────────────────────────────────────────────
+\usepackage[
+  colorlinks=true,
+  linkcolor=econblue,
+  citecolor=econblue!80!black,
+  urlcolor=econblue!70!black,
+  bookmarks=true,
+  bookmarksnumbered=true
+]{hyperref}
+
+%% ── Bibliography ──────────────────────────────────────────
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+
+%% ── Miscellaneous ─────────────────────────────────────────
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.5em, itemsep=2pt}
+\setlist[enumerate]{leftmargin=1.5em, itemsep=2pt}
+\usepackage{parskip}
+\setlength{\parskip}{4pt}
+\usepackage{setspace}
+\usepackage{epigraph}
+
+%% ── Custom commands ───────────────────────────────────────
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\plim}{\operatorname{plim}}
+\newcommand{\xrightarrowp}{\xrightarrow{p}}
+\newcommand{\xrightarrowd}{\xrightarrow{d}}
+\newcommand{\bhat}{\hat{\boldsymbol{\beta}}}
+\newcommand{\bols}{\hat{\boldsymbol{\beta}}^{OLS}}
+\newcommand{\Px}{\mathbf{P_X}}
+\newcommand{\Mx}{\mathbf{M_X}}
+\newcommand{\XX}{\mathbf{X}^T\mathbf{X}}
+\newcommand{\Xy}{\mathbf{X}^T\mathbf{y}}
+\newcommand{\MX}{\mathbf{M_X}}
+
+%% ── Title page info ───────────────────────────────────────
+\title{%
+  \vspace{-1cm}
+  {\color{econblue}\rule{\textwidth}{2pt}}\\[0.5em]
+  {\Huge\bfseries\color{econblue} Applied Econometrics}\\[0.4em]
+  {\large A Textbook for ECON 621}\\[0.3em]
+  {\color{econblue}\rule{\textwidth}{1pt}}
+}
+\author{%
+  University of Northern British Columbia\\[0.3em]
+  School of Business and Economics\\[0.5em]
+  \small Based on ECON 712: Applied Econometrics (Winter 2026)
+}
+\date{%
+  \small Winter 2027\\[0.5em]
+  \small\itshape Drawing on: Angrist \& Pischke (2009) $\cdot$
+         Davidson \& MacKinnon (2004) $\cdot$
+         Cunningham (2021) $\cdot$ Wooldridge (2019)
+}
+
+%% ===========================================================
+\begin{document}
+
+\frontmatter
+
+%% ── Title page ────────────────────────────────────────────
+\maketitle
+\thispagestyle{empty}
+
+%% ── Copyright / disclaimer ────────────────────────────────
+\newpage
+\thispagestyle{empty}
+\vspace*{\fill}
+\begin{center}
+{\small
+\textbf{ECON 621: Applied Econometrics}\\
+University of Northern British Columbia\\
+School of Business and Economics\\[1em]
+These lecture notes are prepared for course use only.\\
+They draw extensively on the following foundational texts:\\[0.5em]
+Angrist, J.~D., and Pischke, J.~S. (2009).
+\textit{Mostly Harmless Econometrics}. Princeton University Press.\\[0.2em]
+Davidson, R., and MacKinnon, J.~G. (2004).
+\textit{Econometric Theory and Methods}. Oxford University Press.\\[0.2em]
+Cunningham, S. (2021). \textit{Causal Inference: The Mixtape}. Yale University Press.\\[0.2em]
+Wooldridge, J.~M. (2019). \textit{Introductory Econometrics}, 7th ed. Cengage.\\[1em]
+ECON 712 lecture materials by Prof.\ Leandro Freylejer, UNBC, Winter 2026.
+}
+\end{center}
+\vspace*{\fill}
+
+%% ── Table of Contents ─────────────────────────────────────
+\tableofcontents
+
+%% ── Preface ───────────────────────────────────────────────
+\chapter*{Preface}
+\addcontentsline{toc}{chapter}{Preface}
+
+This textbook is written for ECON 621: Applied Econometrics at the University of Northern British Columbia.
+The course is cross-listed as a senior undergraduate and graduate course, and these notes are designed to
+serve both audiences: they develop the material rigorously enough for graduate students while maintaining
+the accessibility and applied focus appropriate for advanced undergraduates.
+
+The notes are organized in three parts.
+\textbf{Part I: Foundations} (Chapters 1--5) covers the regression framework rigorously, from the
+potential outcomes model through OLS algebra, finite-sample theory, and asymptotic inference with
+robust standard errors. \textbf{Part II: The Regression Toolkit} (Chapters 6--7) extends the
+framework with the Frisch-Waugh-Lovell theorem, omitted variable bias, and flexible specifications.
+\textbf{Part III: Identification Strategies} (Chapters 8--13) covers instrumental variables,
+the Local Average Treatment Effect, panel data, differences-in-differences, matching, and regression
+discontinuity --- the core of modern applied econometrics.
+
+Every chapter includes formal definitions and proofs, economic intuition, canonical empirical examples
+from the literature, exercises at multiple levels, and a complete \textbf{R programming lab} with
+working code that students can run directly.
+
+The approach follows the \textit{Credibility Revolution} tradition: we are as concerned with
+\emph{research design} as with estimation. Understanding what variation identifies an effect,
+and whether that identification strategy is credible, is the central skill of applied econometrics.
+
+\bigskip
+\noindent\textit{Note to students:} Do not just read these notes --- work through the derivations
+with pencil and paper, run the R code, and modify it to test your understanding. Applied econometrics
+is learned by doing.
+
+\mainmatter
+
+%% ===========================================================
+%%  PART I: FOUNDATIONS
+%% ===========================================================
+\part{Foundations}
+
+\input{chapters/ch01_introduction}
+\input{chapters/ch02_cef}
+\input{chapters/ch03_ols_geometry}
+\input{chapters/ch04_finite_sample}
+\input{chapters/ch05_asymptotic}
+
+%% ===========================================================
+%%  PART II: THE REGRESSION TOOLKIT
+%% ===========================================================
+\part{The Regression Toolkit}
+
+\input{chapters/ch06_fwl_ovb}
+\input{chapters/ch07_dummies}
+
+%% ===========================================================
+%%  PART III: IDENTIFICATION STRATEGIES
+%% ===========================================================
+\part{Identification Strategies}
+
+\input{chapters/ch08_iv}
+\input{chapters/ch09_late}
+\input{chapters/ch10_panel}
+\input{chapters/ch11_did}
+\input{chapters/ch12_matching}
+\input{chapters/ch13_rdd}
+
+%% ── Back matter ───────────────────────────────────────────
+\backmatter
+
+%% ── Index (placeholder) ───────────────────────────────────
+\chapter*{Notation Index}
+\addcontentsline{toc}{chapter}{Notation Index}
+
+\begin{tabular}{ll}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\
+\midrule
+$Y_i, y_i$              & Outcome variable for unit $i$ \\
+$D_i$                   & Binary treatment indicator \\
+$Y_{0i}, Y_{1i}$        & Potential outcomes (untreated, treated) \\
+$\boldsymbol{\beta}$    & Parameter vector \\
+$\hat{\boldsymbol{\beta}}^{OLS}$ & OLS estimator \\
+$\mathbf{X}$            & $n \times k$ design matrix \\
+$\mathbf{P_X}$          & Projection matrix: $\mathbf{X}(\mathbf{X}^T\mathbf{X})^{-1}\mathbf{X}^T$ \\
+$\mathbf{M_X}$          & Annihilator: $\mathbf{I} - \mathbf{P_X}$ \\
+$\hat{\mathbf{u}}$      & OLS residual vector \\
+$\sigma^2$              & Error variance \\
+$\hat{\sigma}^2$        & Estimated error variance: $SSR/(n-k)$ \\
+$R^2$                   & Coefficient of determination \\
+$\boldsymbol{\Omega}$   & Sandwich ``meat'': $E[u_i^2 \mathbf{x}_i\mathbf{x}_i^T]$ \\
+$p(\mathbf{x})$         & Propensity score: $P(D_i=1|\mathbf{X}_i=\mathbf{x})$ \\
+$\xrightarrow{p}$       & Convergence in probability \\
+$\xrightarrow{d}$       & Convergence in distribution \\
+ATT                     & Average Treatment Effect on the Treated \\
+ATE                     & Average Treatment Effect \\
+LATE                    & Local Average Treatment Effect \\
+IV                      & Instrumental Variable \\
+2SLS                    & Two-Stage Least Squares \\
+FE                      & Fixed Effects \\
+DiD                     & Differences-in-Differences \\
+RDD                     & Regression Discontinuity Design \\
+FWL                     & Frisch-Waugh-Lovell (Theorem) \\
+OVB                     & Omitted Variable Bias \\
+CIA                     & Conditional Independence Assumption \\
+\bottomrule
+\end{tabular}
+
+\end{document}

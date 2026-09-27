@@ -1,0 +1,448 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%       								 Preamble				         	                                                        %%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\documentclass[10pt]{beamer}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{amsmath,lmodern}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{tikz}
+\usetikzlibrary{fit,shapes.misc}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{lscape}
+\usepackage{multirow}
+\usepackage{enumerate}
+\usepackage{mathtools}
+\usepackage{epstopdf}
+\usepackage{pdfpages}
+\usepackage{bm}
+\usepackage{appendixnumberbeamer}
+\usepackage{color,soul}
+\usepackage{grffile}
+\usepackage{float}
+\usepackage{relsize}
+\usepackage{tcolorbox}
+\newcounter{nodemarkers}
+\usepackage{tikz}
+\newcommand{\toplinesmall}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=3.6cm]current page.north west);}}
+             
+\newcommand{\toplinemedium}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=6.2cm]current page.north west);}}
+ 
+ \newcommand{\toplinelarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=8.9cm]current page.north west);}}           
+             
+ \newcommand{\toplinexlarge}{%
+  \tikz[remember picture,overlay] {%
+    \draw[blue,thick] ([yshift=-1cm, xshift=.9cm]current page.north west)
+             -- ([yshift=-1cm,xshift=12cm]current page.north west);}}                       
+             
+\setbeamertemplate{footline}
+{
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}{\textcolor{blue}{ECON712}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}{\textcolor{blue}{Winter 2026}}
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}{\textcolor{blue}{Lecture 2 \: \: \: \: \: \: \: }
+    \insertframenumber{} / \inserttotalframenumber\hspace*{2ex}} 
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+\newtheorem{proposition}[theorem]{Proposition}
+
+\newcommand\marktopleft[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-a) at (-0.2,1.2ex) {};%
+}
+\newcommand\markbottomright[1]{%
+    \tikz[overlay,remember picture] 
+        \node (marker-#1-b) at (0.16,-1ex) {};%
+    \tikz[overlay,remember picture,thick,inner sep=4pt]
+        \node[draw,rectangle,rounded corners, blue, fit=(marker-#1-a.center) (marker-#1-b.center)] {};%
+}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+\setbeamertemplate{itemize items}[ball]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamertemplate{itemize subsubitem}[triangle]
+\tcbset{colframe=white,colback=white,nobeforeafter}
+\beamertemplatenavigationsymbolsempty
+\addtobeamertemplate{frametitle}{\vspace*{0.19cm}}{\vspace*{0cm}}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%%%  									    Define Title									                                       %%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\title{ECON 712: Applied Econometrics} 
+\author{Lecture 2: Regression Fundamentals: Introduction}
+\date{}
+\AtBeginSection[]
+{
+ \begin{frame}<beamer>
+ \tableofcontents[currentsection]
+ \end{frame}
+}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+%%%%%%%% 						     				Document								                                                %%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+\begin{document}
+\setbeamercovered{transparent}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+\section{Conditional Expectation Function Decomposition}
+
+\begin{frame}
+\frametitle{\: \: \: Conditional Expectation Function (CEF)}
+\toplinexlarge
+\begin{itemize}
+\item We can generalize the idea of studying relationships between variables through conditional expectations beyond the binary case.
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{Educ_Wages.png}
+\end{figure}
+\item And, to multiple variables:
+\begin{align*}
+E[Y_i \mid \mathbf{X}_i = \mathbf{x}], \quad
+\mathbf{X}_i &=
+\begin{bmatrix}
+X_{1i} \\
+\vdots \\
+X_{ki}
+\end{bmatrix},
+\quad
+\mathbf{x} =
+\begin{bmatrix}
+x_{1} \\
+\vdots \\
+x_{k}
+\end{bmatrix}
+\end{align*}
+\end{itemize}
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{\: \: \: Conditional Expectation Function (CEF)} \label{cef}
+\toplinexlarge
+\begin{itemize}
+\item The advantage of the CEF is that it decomposes a random variable into two parts:
+\[
+Y_i = E[Y_i \mid \mathbf{X}_i] + \epsilon_i
+\]
+
+\item \textbf{Mean Independence:}
+\[
+E[\epsilon_i \mid \mathbf{X}_i = \mathbf{x}] = 0
+\]
+
+\begin{itemize}
+\item And, by the LIE:
+\[
+E[\epsilon_i]
+= E[E[\epsilon_i \mid \mathbf{X}_i]]
+= \int E[\epsilon_i \mid \mathbf{X}_i = \mathbf{x}] g(\mathbf{x})\, d\mathbf{x}
+= 0
+\]
+$\: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \:  \: \: \: \: \: \: \: \: \: \: \:  \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: \: $        \hyperlink{sh}{\beamerbutton{Notation}}
+\end{itemize}
+
+\item \textbf{Uncorrelated:} $E[h(\bm{X}_i)\,\epsilon_i]=0$
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \:  Conditional Expectation Function (CEF)} \label{cef2}
+\toplinexlarge
+The CEF decomposition property results in the following two conditions:
+\begin{enumerate}
+\vspace{.11in}
+\item Among all functions of the random vector $\mathbf{X}_i$, $m(\mathbf{X}_i)$,
+the one that best predicts $Y_i$ (in the minimum mean squared deviation sense) is:
+\[
+m(\mathbf{X}_i) = E[Y_i \mid \mathbf{X}_i]
+\]
+\begin{itemize}
+\item Intuition: $E[Y_i]$ is the best predictor of $Y_i$, and by the LIE,
+\[
+E[E[Y_i \mid \mathbf{X}_i]] = E[Y_i].
+\]
+\end{itemize}
+
+\item \textbf{ANOVA Theorem:}
+\[
+V(Y_i) = V(E[Y_i \mid \mathbf{X}_i]) + E[V(Y_i \mid \mathbf{X}_i)].
+\]
+
+\begin{itemize}
+\item Variation in $Y_i$ can be decomposed into a part explained by $\mathbf{X}_i$, through conditional expectation,
+and a part that is not \hyperlink{anova}{\beamerbutton{ANOVA}}.
+\end{itemize}
+
+\end{enumerate}
+
+
+\end{frame}
+
+
+\section{Multiple Linear Regression}
+
+
+\begin{frame}
+\frametitle{\: \: \: Multiple Regression: Matrix Form} 
+\toplinelarge
+\begin{itemize}
+\item We are going to write the Multiple Regression Equation with $k$ regressors and $n$ observations as:
+\begin{eqnarray*}
+\underset{n \: X \: 1}{\bm{y}}=\bm{X} \underset{(k+1) \: X \: 1}{\bm{\beta}}+\underset{n \: X \: 1}{\bm{u}}
+\end{eqnarray*}
+where
+
+\begin{eqnarray*}
+\underset{n\: X \: (k+1)}{X}=
+  \begin{bmatrix}
+    \bm{X_1}\\
+    \bm{X_2} \\
+     \vdots \\
+    \bm{X_n}\\
+  \end{bmatrix}
+=
+ \begin{bmatrix}
+    1 & x_{11} & x_{12} & \cdots & x_{1k} \\
+    1 & x_{21} & x_{22} & \cdots & x_{2k} \\
+     \vdots    &   \vdots      &  \vdots &  \vdots  &\vdots          \\
+    1 & x_{n1} & x_{n2} & \cdots & x_{nk} \\
+  \end{bmatrix}
+\end{eqnarray*}
+\item By Matrix Multiplication:
+\begin{eqnarray*}
+\begin{array}{lll}
+y_i &=& \bm{X}_i \bm{\beta}+u_i \text{   (ETM Notation)} \\[1.2ex]
+y_i &=& \mathlarger{\sum}_{s=1}^{k+1}x_{is} \: \beta_s+u_i
+\end{array}
+\end{eqnarray*}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Multiple Regression} 
+\toplinelarge
+\begin{itemize}
+\item To fully specify the previous model, we need to put structure on the distribution of the vector of error terms.
+\begin{itemize}
+\vspace{.11in}
+\item ETM defines as a fully specified model, a model that allows us to simulate random vector $\bm{Y}$ given $\bm{X}$
+\end{itemize}
+\vspace{.11in}
+\item  Let's assume that $u's$ are $iid$ and that $E[u_i|\bm{X}_i=\bm{x}]=E[u_i]=0$ for all possible values of $\bm{X}_i$  (the model is still underspecified), then
+\begin{eqnarray*}
+E[Y_i \mid \mathbf{X}_i = \mathbf{x}]=\bm{x} \bm{\beta}
+\end{eqnarray*}
+\begin{itemize}
+\item Conditional Mean Independence of the error term makes the linear regression to be equal to the CEF
+\vspace{.11in}
+\item Conditional Mean Independence of the error term for all possible values of $\bm{X}_i$ can only be achieved if the CEF is linear
+\vspace{.11in}
+\item Note that we have not said anything about whether $\bm{\beta}$ is causal (as opposed to what we said about $\rho$) 
+\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Multiple Regression: Matrix Form} 
+\toplinelarge
+\begin{itemize}
+\item The Method-of-Moment Estimator is expressed as:
+\begin{eqnarray*}
+\bm{X}^T \: (\bm{y}-\bm{X} \: \bm{\hat{\beta}})=\bm{0}
+\end{eqnarray*}
+\item By matrix multiplication:
+\begin{eqnarray*}
+\begin{array}{ll}
+\mathlarger{\sum}_{i=1}^n x_{ik} \: (y_i-\bm{x}_i \bm{\hat{\beta}})=0 & \text{  k equations} \\[1.2ex]
+\mathlarger{\sum}_{i=1}^n (y_i-\bm{x}_i \bm{\hat{\beta}})=0 & \text{  1 equation} \\
+\end{array}
+\end{eqnarray*}
+\item Solving for these, we obtain:
+\begin{eqnarray*}
+\bm{\hat{\beta}}=(\bm{X}^T \: \bm{X})^{-1} \: \bm{X}^T \: \bm{y}
+\end{eqnarray*}
+\begin{itemize}
+\item $(\bm{X}' \: \bm{X})$ can only be inverted if it is full rank (which requires $\bm{X}$ to be full rank-- i.e. no perfect multicollinearity) 
+\end{itemize}
+\vspace{0.11in}
+\item The same estimator can be derived by solving: 
+\begin{eqnarray*}
+\underset{\bm{\hat{\beta}}}{Min} (\bm{y}-\bm{X}\bm{\hat{\beta}})^{T} \: (\bm{y}-\bm{X}\bm{\hat{\beta}})
+\end{eqnarray*}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: Multiple Regression: Matrix Form} 
+\toplinelarge
+\begin{itemize}
+\item An interesting way to understand regression analysis is to study it using vector spaces 
+\vspace{0.11in}
+\item There are three concepts in vector geometry that are used to study OLS:
+\begin{enumerate}
+\vspace{0.11in}
+\item Scalar product
+\vspace{0.11in}
+\item  Vector Addition
+\vspace{0.11in}
+\item Subspaces of Euclidean Spaces
+\end{enumerate}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Scalar Product} 
+\toplinemedium
+\begin{itemize}
+\item Scalar product is a single number that determines the relationship between two vectors of the same dimension:
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=\bm{x}^T \bm{y}=\mathlarger{\sum}_{i=1}^{n}x_i \: y_i
+\end{eqnarray*}
+where both vectors are of size $nX1$
+\vspace{0.11in}
+\item An important property application of the scalar product is the \textbf{length} or \textbf{norm} of a vector defined as:
+\begin{columns}
+\begin{column}{0.3\linewidth}
+\begin{eqnarray*}
+\|\bm{x}\|=\left[\mathlarger{\sum}_{i=1}^{n}x_i^2\right]^{\frac{1}{2}}=\langle \bm{x},\bm{x} \rangle^{\frac{1}{2}}
+\end{eqnarray*}
+\end{column}
+\begin{column}{0.7\linewidth}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{pythagoras.png}
+\end{figure}
+\end{column}
+\end{columns}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Scalar Product} 
+\toplinemedium
+\begin{itemize}
+\item Scalar product is a single number that determines the relationship between two vectors of the same dimension:
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=\bm{x}^T \bm{y}=\mathlarger{\sum}_{i=1}^{n}x_i \: y_i
+\end{eqnarray*}
+where both vectors are of size $nX1$
+\vspace{0.11in}
+\item Another important property is that if the angle between two vectors, $\theta$, is zero, then:
+\begin{columns}
+\begin{column}{0.3\linewidth}
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=\|\bm{x}\| \: \|\bm{y}\|
+\end{eqnarray*}
+\end{column}
+\begin{column}{0.7\linewidth}
+\begin{itemize}
+\item This property is based on multiplying a vector by a scalar: 
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{scalar.png}
+\end{figure}
+\end{column}
+\end{columns}
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{\: \: \: Scalar Product} 
+\toplinemedium
+\begin{itemize}
+\item Scalar product is a single number that determines the relationship between two vectors of the same dimension:
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=\bm{x}^T \bm{y}=\mathlarger{\sum}_{i=1}^{n}x_i \: y_i
+\end{eqnarray*}
+where both vectors are of size $nX1$
+\vspace{0.11in}
+\item Lastly if the angle between two vectors, $\theta=90^{\circ}$ (i.e. they are \textbf{orthogonal}), then:
+\begin{columns}
+\begin{column}{0.3\linewidth}
+\begin{eqnarray*}
+\langle \bm{x},\bm{y} \rangle=0
+\end{eqnarray*}
+\end{column}
+\begin{column}{0.7\linewidth}
+\begin{itemize}
+\item E.g. $\bm{x}^T=[1,0]$, $\bm{y}^T=[0,1]$
+\end{itemize}
+\begin{figure}
+\centering
+\includegraphics[scale=0.4]{orthogonal.png}
+\end{figure}
+\end{column}
+\end{columns}
+\end{itemize}
+\end{frame}
+
+
+
+
+\section{Appendix}
+ 
+\begin{frame}
+\frametitle{\: \: \: Short-Hand Notation} \label{sh}
+\toplinelarge
+\begin{itemize}
+\item Example with two random variables: $X_1$ , $X_2$:
+\begin{eqnarray*}
+E[\epsilon_i]=\int \int E[\epsilon_i \mid X_{1i}= x_1, X_{2i}= x_2] g(x_1,x_2) \, dx_1 \, dx_2
+\end{eqnarray*}
+\begin{figure}
+\centering
+\includegraphics[scale=0.56]{bivariate_normal.png}
+\end{figure}
+\end{itemize}
+\hyperlink{cef}{\beamerbutton{Back}}
+\end{frame}
+
+\begin{frame}
+\frametitle{\: \: \: ANOVA Representation} \label{anova}
+\toplinelarge
+\begin{figure}
+\centering
+\includegraphics[scale=0.8]{treatments}
+\end{figure}
+\hyperlink{cef2}{\beamerbutton{Back}}
+\end{frame}
+
+
+\end{document}

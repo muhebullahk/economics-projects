@@ -1,0 +1,379 @@
+%=============================================================
+% Paper 8: Krusell, Mukoyama, Rogerson & Sahin (2017), AER
+%=============================================================
+\chapter{Krusell, Mukoyama, Rogerson \& \c{S}ahin (2017)}
+
+\begin{paperbox}{Gross Worker Flows over the Business Cycle}
+\textbf{Authors:} Per Krusell, Toshihiko Mukoyama, Richard Rogerson,
+Ayşegül Şahin\\[3pt]
+\textbf{Journal:} \textit{American Economic Review} 107(11): 3447--3476\\[3pt]
+\textbf{Year:} 2017 \quad\textbf{Field:} Macroeconomics; Labour economics\\[3pt]
+\textbf{Classification:} Structural (heterogeneous-agent calibrated model)
+\end{paperbox}
+
+%------------------------------------------------------------
+\section{Research Question}
+
+Can a parsimonious hybrid model---combining heterogeneous-agent labour supply
+with labour market frictions---simultaneously account for the cyclical
+properties of all six gross worker flow rates across employment (E),
+unemployment (U), and nonparticipation (N)?
+
+%------------------------------------------------------------
+\section{Motivation}
+
+The E--U and U--E flows between employment and unemployment have been
+extensively studied (Blanchard--Diamond 1990; Shimer 2012). However, flows
+involving nonparticipation (N)---a state comprising $\approx$35\% of the
+population---were largely ignored, even though the flows into and out of N
+are as volatile as E--U flows. Two key counterintuitive facts motivate the
+paper: (i) the U-to-N transition rate ($f_{UN}$) is \emph{procyclical}---
+workers move from unemployment to nonparticipation \emph{more} in booms
+despite the participation rate being procyclical; (ii) both pure labour
+supply models (no U state) and pure search models (no participation margin)
+fail to capture this pattern. The paper builds a hybrid that accounts for
+all six flows simultaneously.
+
+%------------------------------------------------------------
+\section{Main Contribution}
+
+\begin{enumerate}
+  \item \textbf{Documented new facts:} All six $f_{ij}$ transition rates
+    tabulated with two misclassification corrections (Abowd--Zellner;
+    de$\overline{\text{NUN}}$ification). Key counterintuitive fact:
+    $f_{UN}$ is \emph{procyclical}.
+  \item \textbf{First model to match all six steady-state flow rates} within
+    95\% confidence intervals.
+  \item \textbf{Intertemporal substitution in a frictional model:} Even with
+    a constant wage per efficiency unit, intertemporal labour supply
+    effects emerge through the job ladder (higher $f_{EE}$ in booms
+    accelerates career advancement).
+  \item \textbf{Participation margin is first-order:} Flows between N and
+    the other states account for $\approx$33\% of cyclical fluctuations
+    in the unemployment rate.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Relationship to the Literature}
+
+Bridges three literatures: (i) heterogeneous-agent labour supply
+(Lucas--Rapping 1969; Chang--Kim 2006); (ii) search-matching
+(Mortensen--Pissarides 1994; Shimer 2012); (iii) gross worker flows with
+participation (Elsby, Hobijn, \c{S}ahin 2015; Shimer 2013). Distinguished
+from existing hybrid models by focusing on \emph{gross worker flows} (not
+stocks alone) and by introducing UI, on-the-job search, and heterogeneous
+match quality for realistic calibration.
+
+%------------------------------------------------------------
+\section{Theoretical Framework and Economic Mechanism}
+
+\subsection*{Individual Preferences}
+
+\begin{equation}
+  \mathbb{E}_t \sum_{t=0}^{\infty}\beta^t\bigl[\log(c_t) - \alpha e_t
+    - \gamma s_t\bigr],
+  \label{eq:kmrs_prefs}
+\end{equation}
+where $c_t\geq 0$ is consumption, $e_t\in\{0,1\}$ employment status,
+$s_t\in\{0,1\}$ active search indicator, $\alpha>0$ (disutility of work),
+$\gamma>0$ (disutility of search).
+
+\subsection*{Idiosyncratic Productivity and Match Quality}
+
+$\log z_{t+1} = \rho_z\log z_t + \varepsilon_{t+1}$ with
+$\varepsilon_{t+1}\sim N(0,\sigma_\varepsilon^2)$.
+
+Each employment opportunity comes with an i.i.d.\ match quality draw
+$q\sim\text{LogNormal}(0,\sigma_q^2)$; employed workers can accept better
+matches via on-the-job search ($\lambda_e$).
+
+\subsection*{Labour Market Frictions}
+
+Four friction parameters characterise the aggregate environment
+$\Lambda=(w,r,\lambda_u,\lambda_n,\lambda_e,\sigma)$:
+\begin{itemize}
+  \item $\lambda_u$: offer arrival rate for active searchers (unemployed)
+  \item $\lambda_n$: offer arrival rate for passive searchers (out of LF)
+  \item $\lambda_e$: outside offer rate for employed workers
+  \item $\sigma$: job separation rate
+\end{itemize}
+
+\subsection*{Bellman Equations (key)}
+
+For a worker with an employment opportunity (value $W$ if accepted, $J$ if
+rejected):
+\begin{multline}
+  W(a,z,q,I^B,\Lambda) = \max_{c\geq 0,a'\geq 0}\Bigl\{\ln c - \alpha \\
+    + \beta\,\mathbb{E}\bigl[(1-\sigma-\lambda_e)V(a',z',q,\gamma',0,\Lambda')
+    + \lambda_e V(a',z',\max\{q,q'\},\gamma',0,\Lambda') \\
+    + \sigma(1-\lambda_u)J(a',z',\gamma',1,\Lambda')
+    + \sigma\lambda_u V(a',z',q',\gamma',1,\Lambda')\bigr]\Bigr\}
+\end{multline}
+subject to $c+a'=(1+r)a+(1-\tau)wzq+T$.
+
+For an unemployed worker who chooses active search:
+\begin{equation}
+  U(a,z,\gamma,I^B,\Lambda) = \max_{c,a'}\bigl\{\ln c - \gamma + \beta\,\mathbb{E}\bigl[\lambda_u V + (1-\lambda_u)J\bigr]\bigr\}
+\end{equation}
+subject to $c+a'=(1+r)a+(1-\tau)I^B b(z)+T$.
+
+\subsection*{Mechanism for Procyclical $f_{UN}$}
+
+In booms, strongly attached workers find jobs quickly, leaving the
+unemployment pool populated by workers near the U--N indifference margin.
+These workers are more likely to transition to N, generating the
+\emph{counterintuitive} procyclical $f_{UN}$.
+
+%------------------------------------------------------------
+\section{Data}
+
+\begin{itemize}
+  \item \textbf{CPS gross worker flows:} Monthly CPS matched surveys,
+    1978:Q1--2012:Q3; six $f_{ij}$ rates computed (Table~2).
+  \item \textbf{Misclassification corrections:} (1) Abowd--Zellner (1985)
+    reinterview-based; (2) de$\overline{\text{NUN}}$ification (recodes
+    U$\to$N$\to$U sequences as N). Both substantially reduce flows involving N.
+  \item \textbf{SIPP:} Validates model predictions for flow rates conditional
+    on wealth.
+  \item \textbf{Calibration targets:} LFPR (0.66), unemployment rate (0.068),
+    $f_{EU}$ (0.014), $f_{NE}$ (0.022); J2J rate (2.2\%/month); avg wage
+    gain on J2J (3.3\%).
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Empirical Strategy}
+
+\begin{enumerate}
+  \item Tabulate cyclical properties of all six gross flow rates using
+    HP-filtered ($\lambda=1600$) quarterly series (Table~3).
+  \item Calibrate the model's steady state to match average flow rates
+    (Table~4--5).
+  \item Subject calibrated model to aggregate shocks (drawn from cyclical
+    variation in job-finding and separation rates); compare model-generated
+    cyclical moments to data (Table~6).
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Identification Strategy}
+
+Calibration, not econometric identification. Parameters are set through:
+(a)~external values ($\rho_z=0.996$, $\sigma_\varepsilon=0.096$ from wage
+panel studies; $\tau=0.30$; UI parameters from programme data);
+(b)~steady-state moment matching (Table~4); (c)~model fixed-point conditions.
+Aggregate shocks are measured from data on cyclical variation in job-finding
+and separation rates.
+
+%------------------------------------------------------------
+\section{Main Results}
+
+\subsection*{Key Cyclical Facts (Table~3, AZ-corrected)}
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Flow} & \textbf{Std dev} & $\boldsymbol{\rho(x,Y)}$ &
+  \textbf{Pattern} \\
+\midrule
+$f_{EU}$ & 0.089 & $-0.63$ & Countercyclical \\
+$f_{EN}$ & 0.083 & $+0.43$ & \textbf{Procyclical} (counterintuitive) \\
+$f_{UE}$ & 0.088 & $+0.76$ & Procyclical \\
+$f_{UN}$ & 0.106 & $+0.61$ & \textbf{Procyclical} (counterintuitive) \\
+$f_{NE}$ & 0.103 & $+0.52$ & Procyclical \\
+$f_{NU}$ & 0.072 & $-0.23$ & Weakly countercyclical \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Note: $f_{UN}$ procyclical means workers leave unemployment for N
+\emph{more} in booms---counterintuitive from a discouraged-worker perspective.
+
+\subsection*{Calibration Achievement (Table~5)}
+
+The model matches all six average flow rates within 95\% CIs---the first
+structural model to achieve this. Previous models could not match N-adjacent
+flows.
+
+\subsection*{Cyclical Performance (Table~6)}
+
+Model does a good job matching most cyclical moments; flows between
+participation and nonparticipation account for $\approx$33\% of unemployment
+rate fluctuations.
+
+%------------------------------------------------------------
+\section{Economic Magnitude and Interpretation}
+
+The participation margin is far more important for cyclical unemployment than
+previously recognised: one-third of the rise in the unemployment rate during
+recessions reflects unemployed workers failing to exit to employment
+($\downarrow f_{UE}$, $\uparrow f_{EU}$), but also the participation margin
+($f_{UN}$, $f_{NE}$). The procyclical $f_{UN}$ implies the standard
+``discouraged worker'' narrative (workers give up searching in recessions) is
+a level effect, not a rate effect: the stock of discouraged workers rises in
+recessions not because the rate $f_{UN}$ increases but because the stock of
+unemployed is larger.
+
+%------------------------------------------------------------
+\section{Mechanisms}
+
+Two forces nearly cancel to produce the \emph{weak} procyclicality of the
+participation rate:
+\begin{itemize}
+  \item \textbf{Wealth effect:} Higher assets in booms reduce desire to work
+    (reduces participation).
+  \item \textbf{Intertemporal substitution:} Higher $f_{EE}$ (J2J) in booms
+    accelerates movement up the job-quality ladder $\Rightarrow$ higher
+    return to participation now (increases participation).
+\end{itemize}
+Near-cancellation $\Rightarrow$ LFPR fluctuates little ($\sigma=0.0026$)
+compared to the unemployment rate ($\sigma=0.117$).
+
+Procyclical $f_{UN}$: in booms, the unemployment pool is disproportionately
+composed of workers close to the U--N indifference margin; these workers
+transition to N at a higher rate, generating the counterintuitive procyclicality.
+
+%------------------------------------------------------------
+\section{Robustness Checks}
+
+\begin{itemize}
+  \item Two misclassification corrections (Abowd--Zellner and
+    de$\overline{\text{NUN}}$ification) give quantitatively similar cyclical
+    properties; both shown in Table~3.
+  \item Model evaluated against both correction methods in Table~6.
+  \item SIPP wealth-conditional flow data used to validate model heterogeneity
+    predictions.
+  \item An earlier GE version (Krusell et al.\ 2012) gives similar results,
+    confirming the PE assumption is not driving findings.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Limitations}
+
+\begin{enumerate}
+  \item \textbf{Partial equilibrium:} Prices and aggregate frictions are
+    exogenous; wages and vacancy posting not endogenised.
+  \item \textbf{Friction shocks only:} The source of cyclical friction
+    variation is not connected to TFP, monetary policy, or aggregate demand.
+  \item \textbf{No age, gender, or education heterogeneity:} All empirically
+    important for N dynamics, especially for participation decisions.
+  \item \textbf{Quantitative mismatch:} Table~6 shows the model does not
+    fully replicate all six cyclical moments simultaneously.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Policy Implications}
+
+\begin{itemize}
+  \item Policies targeting unemployment (UI, ALMP) affect flows from N
+    as well---the participation margin is a first-order policy variable.
+  \item The intertemporal substitution channel implies aggregate demand
+    stimulus that increases J2J flows also raises participation---a positive
+    feedback loop.
+  \item Procyclical $f_{UN}$: UI recipients are more likely to stop searching
+    and exit to N in \emph{booms} (after finding a job, they stop claiming),
+    consistent with UI moral hazard being cyclically variable.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Overall Assessment}
+
+A technically accomplished paper that fills an important gap in macro-labour
+economics. The empirical documentation of all six gross flow rates with careful
+misclassification corrections is valuable in itself. The calibration
+achievement---matching all six average flow rates within CIs---is a genuine
+advance. The conceptual contributions (participation fluctuations are first-
+order; intertemporal substitution operates through the job ladder) are
+important and influential.
+
+\textbf{Quality: Very good. Strong data work, careful calibration,
+novel model insights.}
+
+%------------------------------------------------------------
+\section{Relevance to My Research}
+
+Directly relevant for RDC work on Canadian labour market flows. The E/U/N
+three-state framework is applicable to matched LFS data or LEED/LWF. Testing
+whether Canadian gross flows show the same counterintuitive cyclical patterns
+($f_{UN}$ procyclical; large N-adjacent volatility) would be a valuable
+contribution, especially distinguishing resource-intensive from manufacturing
+provinces.
+
+%------------------------------------------------------------
+\section{Potential Research Extensions}
+
+\begin{itemize}
+  \item Implement the gross-flow framework for Canada using matched monthly
+    LFS microdata; test whether the counterintuitive procyclical $f_{UN}$
+    holds in Canada and differs across provinces.
+  \item Extend the model with sectoral heterogeneity (resource vs.\
+    manufacturing vs.\ services) to understand how commodity cycles drive
+    differential E/U/N flows in Canada.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Research Gaps}
+
+\begin{itemize}
+  \item The cyclical source of friction variation is unexplained; integrating
+    a production/vacancy-posting side (Mortensen--Pissarides structure) would
+    close this gap.
+  \item No treatment of long-run participation trends (declining since 2000);
+    a low-frequency extension would be valuable.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Methodological Lessons}
+
+\begin{enumerate}
+  \item The Abowd--Zellner misclassification correction is essential for
+    flows involving N; spurious U--N and N--U flows dramatically inflate
+    measured N-adjacent volatility.
+  \item Matching all six \emph{average} flow rates (not just aggregate stocks)
+    is a far more stringent model test; passing the flow test automatically
+    passes the stock test, but not vice versa.
+  \item Labour market stocks are a less stringent check on models than gross
+    flows---when gross flows are available, they should be used as the primary
+    calibration target.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section*{Five-Sentence Summary}
+
+Krusell, Mukoyama, Rogerson, and \c{S}ahin (2017) document that gross worker
+flows into and out of nonparticipation are as volatile over the business cycle
+as the much-studied employment--unemployment flows, and that the U-to-N
+transition rate is procyclical---counterintuitive but explained by the changing
+composition of the unemployment pool in booms. They build a parsimonious hybrid
+model combining heterogeneous-agent labour supply with search frictions, the
+first structural model to match all six average gross flow rates within their
+95\% confidence intervals. Despite a constant wage per efficiency unit,
+intertemporal substitution operates through the job-quality ladder---higher
+job-to-job flows in booms increase career returns, generating a procyclical
+incentive to participate. Flows between participation and nonparticipation
+account for approximately one-third of cyclical fluctuations in the
+unemployment rate---far larger than previously recognised. The paper
+establishes both empirically and theoretically that the participation margin
+is a first-order dimension of aggregate labour market dynamics that cannot be
+omitted from business cycle models of unemployment.
+
+\vspace{6pt}
+\begin{quickref}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\textbf{Key contribution} &
+  First model to match all six steady-state E/U/N gross flow rates within
+  CIs; establishes the counterintuitive procyclicality of $f_{UN}$; documents
+  that the N margin accounts for $\approx$33\% of unemployment fluctuations.
+  \\[4pt]
+\textbf{Key weakness} &
+  Partial equilibrium; aggregate friction shocks taken as given rather than
+  derived; model does not fully match all cyclical moments quantitatively;
+  no demographic heterogeneity. \\[4pt]
+\textbf{Most interesting gap} &
+  The source of cyclical variation in friction parameters is left unexplained;
+  a production side with vacancy posting and TFP shocks would complete the
+  model. \\[4pt]
+\textbf{Publishable extension} &
+  Implement the gross-flow framework for Canada using matched monthly LFS data;
+  test whether the counterintuitive procyclical $f_{UN}$ holds in Canada and
+  differs between resource-intensive and manufacturing provinces.
+\end{tabularx}
+\end{quickref}

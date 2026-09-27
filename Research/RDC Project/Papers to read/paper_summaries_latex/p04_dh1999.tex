@@ -1,0 +1,474 @@
+%=============================================================
+% Paper 4: Davis & Haltiwanger (1999), AER
+%=============================================================
+\chapter{Davis \& Haltiwanger (1999)}
+
+\begin{paperbox}{On the Driving Forces Behind Cyclical Movements in Employment
+and Job Reallocation}
+\textbf{Authors:} Steven J.\ Davis \& John Haltiwanger\\[3pt]
+\textbf{Journal:} \textit{American Economic Review} 89(5): 1234--1258\\[3pt]
+\textbf{Year:} 1999 \quad\textbf{Field:} Macroeconomics; Labour economics\\[3pt]
+\textbf{Classification:} Empirical (structural VAR)
+\end{paperbox}
+
+%------------------------------------------------------------
+\section{Research Question}
+
+What types of structural disturbances---allocative shocks (which shift the
+distribution of employment opportunities across job sites) versus aggregate
+shocks (which move all plants in the same direction)---are the primary drivers
+of cyclical movements in aggregate employment and job reallocation in U.S.\
+manufacturing?
+
+%------------------------------------------------------------
+\section{Motivation}
+
+The DH (1992) paper documented that job reallocation is countercyclical and
+job destruction substantially more volatile than job creation. A key open
+question is whether these patterns reflect primarily allocative disturbances
+(sector-specific technology, oil price, or structural change shocks) or
+aggregate disturbances (monetary policy, aggregate demand, aggregate
+productivity). This distinction matters enormously for policy: if reallocation
+is primarily driven by allocative shocks, standard aggregate demand
+stabilisation cannot reduce it and might not even be desirable; if aggregate
+shocks drive most employment fluctuations, conventional macroeconomic
+interventions are more directly relevant. Previous VAR identification
+strategies (Blanchard--Quah 1989; Bernanke 1986) could not exploit the
+information in gross job flows. Davis--Haltiwanger (1999) develops a novel
+identification strategy using the creation--destruction decomposition that
+allows both qualitative and quantitative restrictions motivated by economic
+theory.
+
+%------------------------------------------------------------
+\section{Main Contribution}
+
+\begin{enumerate}
+  \item \textbf{Identification via creation--destruction:} Develops a
+    structural VAR where the decomposition of employment changes into creation
+    and destruction rates provides novel identifying information unavailable
+    in aggregate employment data alone. Aggregate and allocative disturbances
+    have \emph{qualitatively different} implications for creation and
+    destruction: aggregate shocks move them in \emph{opposite} directions,
+    while allocative shocks move them in the \emph{same} direction.
+
+  \item \textbf{Tighter inequality restrictions:} Theory implies that job
+    destruction responds \emph{at least as much} as job creation to aggregate
+    shocks ($b_{na}\leq -1$), and that the contemporaneous impact of allocative
+    shocks on job creation does not exceed that on job destruction ($|b_{ps}|\leq 1$).
+    These restrictions, drawn from search-theoretic models and option-value
+    arguments, substantially narrow the range of permissible inferences.
+
+  \item \textbf{Long historical series:} Estimates the system over
+    1947:Q1--1993:Q4, exploiting a long quarterly series constructed by
+    splicing LRD data (1972--1993) with BLS turnover data (1947--1981) using
+    a cyclically varying quit replacement rate.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Relationship to the Literature}
+
+The paper is a direct sequel to DH1992 and DH1990. It is methodologically
+related to the structural VAR literature (Blanchard--Quah 1989; King--Watson
+1992; Shapiro--Watson 1988) but extends it by using the creation--destruction
+decomposition to generate additional identifying restrictions not available in
+aggregate time series. It contributes to the debate between ``cleansing
+recession'' theories (Caballero--Hammour 1994; Lilien 1982) and ``sullying''
+theories, and shows that the identification of which shock dominates depends
+critically on which restrictions one is willing to impose.
+
+%------------------------------------------------------------
+\section{Theoretical Framework and Economic Mechanism}
+
+\subsection*{Structural Moving Average Representation}
+
+Let $Y_t=[\text{POS}_t,\,\text{NEG}_t]'$ and
+$\varepsilon_t=[\varepsilon^a_t,\,\varepsilon^s_t]'$ (aggregate and
+allocative structural innovations). The structural representation is:
+\begin{equation}
+  Y_t = B(L)\,\varepsilon_t, \qquad B(0) = B_0.
+  \label{eq:structural_ma}
+\end{equation}
+The estimated reduced-form VAR yields:
+\begin{equation}
+  Y_t = D(L)\,\eta_t, \qquad D(0) = I,
+  \label{eq:rf_var}
+\end{equation}
+with reduced-form innovations $\eta_t = B_0\,\varepsilon_t$.
+
+\subsection*{Identification Problem}
+
+With diagonal elements of $B_0$ normalised to unity, there are two free
+parameters: $b_{na}$ (contemporaneous effect of an aggregate shock on POS
+relative to NEG) and $b_{ps}$ (contemporaneous effect of an allocative shock
+on NEG relative to POS). The zero-covariance restriction
+$\text{Cov}(\varepsilon^a,\varepsilon^s)=0$ yields the moment equation:
+\begin{equation}
+  b_{ps} = \frac{\sigma_{pn} - b_{na}\,\sigma_p^2}{\sigma_n^2 - b_{na}\,\sigma_{pn}},
+  \label{eq:dh99_bps}
+\end{equation}
+leaving the system one-dimensionally underidentified.
+
+\subsection*{Weak Inequality Restrictions}
+
+\begin{align}
+  &\text{(i)}\quad b_{na} < 0:
+    &&\text{aggregate shocks move POS and NEG in opposite directions}\\
+  &\text{(ii)}\quad b_{ps} > 0:
+    &&\text{allocative shocks move both in the same direction}
+\end{align}
+
+\subsection*{Tighter Theory-Motivated Restrictions}
+
+\begin{align}
+  &\text{(i)'}\quad b_{na} \leq -1:
+    &&\text{NEG responds at least as much as POS to aggregate shocks}\\
+  &\text{(ii.a)'}\quad |b_{ps}| \leq 1:
+    &&\text{allocative shock impact on POS}\leq\text{impact on NEG}\\
+  &\text{(ii.b)'}\quad \textstyle\sum_{l=1}^{m} B_{11}(l) > 0
+    &&\text{for all } m \leq M\!=\!16
+\end{align}
+
+Restriction (i)' follows from search models: separations can occur
+instantaneously while new matches require search time, so an aggregate shock
+causes a sharper contemporaneous rise in destruction than fall in creation.
+Restriction (ii.a)' follows from option value arguments: sunk costs of
+investment create an incentive to delay job creation in the face of uncertain
+future allocative disturbances, depressing creation even as destruction rises.
+
+\subsection*{Long-Run Neutrality Restrictions (Alternative)}
+
+\begin{align}
+  &\text{(iv)}\quad \sum_{l=0}^{\infty}\bigl[B_{11}(l) + B_{21}(l)\bigr] = 0:
+    &&\text{aggregate shocks have no long-run effect on job reallocation}\\
+  &\text{(v)}\quad \sum_{l=0}^{\infty}\bigl[B_{12}(l) - B_{22}(l)\bigr] = 0:
+    &&\text{allocative shocks have no long-run effect on employment}
+\end{align}
+
+%------------------------------------------------------------
+\section{Data}
+
+\begin{itemize}
+  \item \textbf{Primary (1972--1993):} LRD quarterly job creation and
+    destruction data, updated through 1993 (Davis et al.\ 1996).
+  \item \textbf{Secondary (1947--1981):} BLS monthly turnover data (accessions,
+    layoffs, quits), converted using the Blanchard--Diamond (1990) method with
+    a \emph{cyclically varying} quit replacement rate.
+  \item \textbf{Splicing:} Join the two series over their 1972--1981 overlap.
+    $\rho(\text{implied NET growth},\text{BLS 790 data})=0.91$.
+  \item \textbf{Sample:} 1947:Q1--1993:Q4 (187 observations).
+\end{itemize}
+
+\begin{center}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Statistic} & \textbf{POS} & \textbf{NEG} & \textbf{NET} & \textbf{SUM} \\
+\midrule
+Mean & 5.8\% & 6.0\% & $-0.1\%$ & 11.8\% \\
+Std dev & 1.2\% & 1.5\% & 2.0\% & 1.7\% \\
+Min & 3.8\% & 2.9\% & $-5.9\%$ & 7.4\% \\
+Max & 10.2\% & 10.8\% & 6.8\% & 16.3\% \\
+\bottomrule
+\multicolumn{5}{l}{\small Source: BLS--LRD spliced series, 1947:Q1--1993:Q4}
+\end{tabular}
+\end{center}
+
+%------------------------------------------------------------
+\section{Empirical Strategy}
+
+Structural VAR estimation with multiple identification schemes:
+\begin{enumerate}
+  \item Estimate a 2-variable VAR in POS and NEG with 4 lags (Dickey--Fuller
+    tests reject unit roots in both series).
+  \item Derive the reduced-form covariance matrix.
+  \item Apply each set of identifying restrictions to recover admissible ranges
+    for $(b_{na}, b_{ps})$ and corresponding variance decompositions.
+  \item Bootstrap standard errors using 1,000 Monte Carlo draws.
+  \item Construct historical decompositions at boundary values of the
+    admissible parameter space (Figures 4--5).
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Identification Strategy}
+
+This is the paper's central methodological innovation. Rather than point-
+identifying the system, the paper derives \emph{ranges} of parameter values
+consistent with a set of qualitative restrictions, then reports the implied
+range of variance decompositions.
+
+Key identification elements:
+\begin{itemize}
+  \item \textbf{Sign restrictions on contemporaneous responses:} (i) and (ii)
+    are definitional and accepted by nearly all theories.
+  \item \textbf{Magnitude restrictions:} (i)' and (ii.a)' are theory-motivated
+    from search models and option value arguments; these are the \emph{binding}
+    restrictions that narrow the admissible range.
+  \item \textbf{Zero covariance:} Standard in the VAR literature; the paper
+    explores sensitivity to relaxing this (Figures 7--8).
+\end{itemize}
+
+\textbf{Critical limitation:} The mapping from $(b_{na}, b_{ps})$ to variance
+decompositions is highly nonlinear (Figure~3). The allocation of variance
+between aggregate and allocative shocks is extremely sensitive to where in the
+admissible range one sits. The paper honestly reports ranges rather than point
+estimates---an intellectually rigorous but informationally limited strategy.
+
+%------------------------------------------------------------
+\section{Main Results}
+
+\subsection*{Under Weak Restrictions (Figure~3)}
+
+Admissible range: $b_{na}\in(-2.5,-0.87)$.
+\begin{itemize}
+  \item Allocative shocks account for 5--20\% of 4-step forecast-error
+    variance of employment growth.
+  \item Aggregate shocks are always a major driving force behind employment
+    fluctuations.
+  \item Allocative shocks account for 20--90\% of job reallocation variance
+    (wide range).
+\end{itemize}
+
+\subsection*{Under Tighter Restrictions (Table~3, Columns 1--2)}
+
+Admissible range narrows to $b_{na}\in(-1.63,-1.0)$, $b_{ps}\in(0.1,1.0)$.
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Variable} & \textbf{Range (4-step horizon)} &
+  \textbf{Range (16-step horizon)} \\
+\midrule
+Employment growth & 3\%--13\% & 5\%--17\% \\
+Job reallocation & 44\%--80\% & 49\%--84\% \\
+\bottomrule
+\multicolumn{3}{l}{\small Fraction of forecast-error variance explained by
+\emph{allocative} shocks.}
+\end{tabular}
+\end{center}
+
+\textbf{Key inference:} Allocative disturbances are a \emph{minor} driver of
+employment fluctuations but the \emph{dominant} driver of job reallocation
+intensity.
+
+\subsection*{Under Neutrality Restrictions (Table~3, Columns 3--5)}
+
+\begin{itemize}
+  \item Restricting allocative shocks to have no long-run employment effect
+    (v) yields $b_{na}=0.03$, $b_{ps}=-0.41$---\emph{violates} weak
+    qualitative restrictions (i), (ii), (i)'.
+  \item Restricting aggregate shocks to have no long-run reallocation effect
+    (iv) yields $b_{na}=-0.68$, $b_{ps}=-0.12$---violates (i)' and (i).
+  \item Under these neutrality restrictions, allocative shocks account for
+    34--80\% of employment variance and $>$80--94\% of reallocation variance.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Economic Magnitude and Interpretation}
+
+The paper's core quantitative finding under the tighter qualitative restrictions
+is:
+\begin{itemize}
+  \item \textbf{Aggregate shocks account for 83--97\%} of cyclical variation
+    in employment growth (4-step forecast errors).
+  \item \textbf{Allocative shocks account for 44--80\%} of cyclical variation
+    in job reallocation intensity.
+\end{itemize}
+These two findings are not in tension: aggregate shocks cause recessions;
+allocative shocks cause the gross flows that accompany them independently.
+The economy's output cycles and its reallocation cycles are driven by different
+forces.
+
+%------------------------------------------------------------
+\section{Mechanisms}
+
+Two mechanisms determine the relative importance of the two shock types:
+
+\begin{enumerate}
+  \item \textbf{Opportunity cost mechanism} (Davis--Haltiwanger 1990): during
+    recessions, the opportunity cost of relocating workers falls, so the pace
+    of allocative reallocation endogenously increases. A constant stream of
+    allocative disturbances generates countercyclical reallocation intensity.
+
+  \item \textbf{Option value / sunk cost mechanism:} The sunk nature of
+    investments required to create new vacancies generates an option value
+    for waiting. When allocative shocks are serially correlated (Table~2
+    shows significant autocorrelations in cross-industry return dispersion
+    at lags 1--6), this option value simultaneously depresses job creation
+    and boosts job destruction---enabling $b_{ps}<0$, i.e., allocative
+    innovations that cause short-run employment declines.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Robustness Checks}
+
+\begin{itemize}
+  \item Results reported for five different identification schemes (qualitative
+    and neutrality restrictions).
+  \item Sensitivity analysis for $\rho(\varepsilon^a,\varepsilon^s)
+    \in\{-0.3,\,0,\,+0.3\}$ (Figures 7--8).
+  \item BLS~790 data cross-validation ($\rho = 0.91$ between implied and
+    published net employment growth).
+  \item Dickey--Fuller tests confirm stationarity of POS and NEG series.
+  \item VARs with deterministic trends as sensitivity checks.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Limitations}
+
+\begin{enumerate}
+  \item \textbf{One-dimensional underidentification:} No single restriction
+    produces a unique parameter point; results are necessarily range-valued.
+  \item \textbf{Two-variable system:} Cannot distinguish among multiple types
+    of allocative or aggregate shocks (technology, monetary, fiscal, oil).
+  \item \textbf{Manufacturing only:} The long historical series is available
+    only for manufacturing, which exhibits secular decline over the sample.
+  \item \textbf{BLS splicing:} The 1947--1971 portion relies on a maintained
+    assumption about quit replacement rates, introducing potential measurement
+    error.
+  \item \textbf{Linearity:} Nonlinear interactions between aggregate and
+    allocative shocks---which the theories all suggest---are not accommodated.
+  \item \textbf{Inconsistency of neutrality and qualitative restrictions:}
+    Long-run neutrality restrictions produce $(b_{na}, b_{ps})$ values that
+    violate the sign restrictions, revealing internal inconsistency and
+    limiting the credibility of the long-run results.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Policy Implications}
+
+\begin{itemize}
+  \item Because aggregate shocks drive most cyclical employment fluctuations
+    (under preferred tighter restrictions), standard aggregate demand policies
+    can influence employment---but do not address the underlying allocative
+    process that determines job reallocation intensity.
+  \item The finding that allocative shocks are a minor driver of employment
+    cycles but a dominant driver of reallocation suggests that policies
+    targeting ``structural unemployment'' address a phenomenon largely
+    independent of macroeconomic stabilisation.
+  \item The long-run neutrality results---where allocative shocks account for
+    34--80\% of employment variance---would, if taken seriously, suggest a
+    much larger role for structural policies. However, these results are
+    theoretically inconsistent with the qualitative restrictions.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Overall Assessment}
+
+Davis--Haltiwanger (1999) is a methodologically important paper that introduces
+a genuinely novel approach to structural VAR identification using the
+creation--destruction decomposition. It is honest about the limits of what the
+data can identify and clearly maps the trade-offs between different sets of
+assumptions. The main empirical finding---under theory-motivated tighter
+restrictions, aggregate shocks drive most employment cyclicality while
+allocative shocks drive most reallocation cyclicality---is sensible and has
+influenced the subsequent literature. The paper's weakness is that its
+conclusions are range-valued rather than point estimates, and the ranges are
+wide enough to be somewhat uninformative on policy-relevant questions.
+
+\textbf{Quality: Very good. A methodologically careful paper with important
+empirical findings, though limited by data and identification constraints.}
+
+%------------------------------------------------------------
+\section{Relevance to My Research}
+
+The identification strategy---using the creation--destruction decomposition to
+distinguish allocative from aggregate shocks---is directly applicable to
+Canadian data. With LEAP/LEED, one could construct quarterly job creation and
+destruction series for the entire Canadian economy and estimate the DH1999
+structural VAR. The Canadian context is particularly interesting because the
+economy faces both aggregate shocks (U.S.\ monetary policy spillovers, global
+demand) and strong allocative shocks (commodity price cycles with large
+sector-specific effects). Testing whether the relative importance of allocative
+vs.\ aggregate shocks differs in resource-intensive provinces versus
+manufacturing provinces would be a natural extension.
+
+%------------------------------------------------------------
+\section{Potential Research Extensions}
+
+\begin{itemize}
+  \item Extend the DH1999 VAR to the service sector in Canada using the full
+    LEAP/LEED universe, which would make the sample more representative of
+    the aggregate economy.
+  \item Add commodity price innovations and exchange rate movements as
+    additional variables in an expanded VAR, exploiting Canadian resource-sector
+    dynamics to better identify allocative shock contributions.
+  \item Use regional variation in commodity price exposure to construct
+    province-specific identifying restrictions on allocative shock magnitudes.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Research Gaps}
+
+\begin{itemize}
+  \item The paper uses only two variables (POS, NEG). Expanding to a
+    four-variable system (POS, NEG, unemployment rate, vacancy rate) would
+    permit Beveridge curve restrictions and substantially tighten identification.
+  \item The allocation between aggregate and allocative shocks is sensitive to
+    $\rho(\varepsilon^a,\varepsilon^s)$ but the paper has no empirical estimate
+    of this parameter.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Methodological Lessons}
+
+\begin{enumerate}
+  \item The creation--destruction decomposition provides identifying information
+    unavailable in aggregate net employment data: allocative and aggregate
+    shocks have qualitatively different creation--destruction responses, and
+    theory imposes magnitude restrictions.
+  \item When a system is underidentified, reporting the range of inferences
+    over the admissible parameter space (rather than arbitrary point
+    identification) is the intellectually honest approach.
+  \item Long-run neutrality restrictions and short-run qualitative restrictions
+    can be internally inconsistent (Table~3), providing a diagnostic for
+    whether theoretical identifying assumptions are self-consistent.
+  \item The serial correlation of cross-industry stock return dispersion
+    (Table~2) as indirect evidence for the option value mechanism is a simple
+    and elegant test of a theoretical underpinning of an identifying assumption.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section*{Five-Sentence Summary}
+
+Davis and Haltiwanger (1999) develop a structural VAR framework for a
+bivariate system of quarterly job creation and destruction rates in U.S.\
+manufacturing (1947--1993), exploiting the qualitatively different responses
+of creation and destruction to aggregate versus allocative shocks to generate
+novel identifying restrictions unavailable in aggregate employment data alone.
+Weak inequality restrictions establish that aggregate shocks are always major
+driving forces behind employment fluctuations, while the contribution of
+allocative shocks to employment variance ranges widely (5--20\%) depending on
+the structural parameter values. Imposing tighter theory-motivated
+restrictions---that job destruction responds at least as much as creation to
+aggregate shocks, and that allocative shocks cannot simultaneously boost
+employment---narrows the range to 3--17\% of employment variance explained by
+allocative shocks but confirms that allocative shocks account for 44--80\% of
+job reallocation intensity variance. Long-run neutrality restrictions imply an
+even larger role for allocative shocks in both employment and reallocation
+variance, but these restrictions are internally inconsistent with the
+qualitative sign restrictions. The paper's core message is that aggregate
+shocks drive most cyclical employment fluctuations, while allocative
+disturbances are the dominant driver of the countercyclical movements in job
+reallocation that accompany those cycles.
+
+\vspace{6pt}
+\begin{quickref}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\textbf{Key contribution} &
+  Novel structural VAR identification using job creation--destruction
+  decomposition; maps the full range of inferences over the admissible
+  structural parameter space under qualitative restrictions from theory. \\[4pt]
+\textbf{Key weakness} &
+  System remains one-dimensionally underidentified; wide admissible ranges
+  limit sharp empirical conclusions; manufacturing-only sample; long-run
+  and short-run restrictions are internally inconsistent. \\[4pt]
+\textbf{Most interesting gap} &
+  Expanding to a four-variable system (POS, NEG, unemployment, vacancies)
+  with Beveridge curve restrictions would tighten identification further and
+  address whether the allocative--aggregate decomposition is stable across
+  business cycle phases. \\[4pt]
+\textbf{Publishable extension} &
+  Construct a DH1999-type structural VAR for the full Canadian economy using
+  quarterly LEAP/LEED-based creation and destruction series, with an expanded
+  variable set including commodity price indices to separately identify
+  resource-sector allocative shocks.
+\end{tabularx}
+\end{quickref}

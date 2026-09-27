@@ -1,0 +1,412 @@
+%=============================================================
+% Paper 9: Carrillo-Tudela & Visschers (2023), Econometrica
+%=============================================================
+\chapter{Carrillo-Tudela \& Visschers (2023)}
+
+\begin{paperbox}{Unemployment and Endogenous Reallocation Over the Business
+Cycle}
+\textbf{Authors:} Carlos Carrillo-Tudela (Essex) \& Ludo Visschers
+(Edinburgh/UC3M)\\[3pt]
+\textbf{Journal:} \textit{Econometrica} 91(3): 1119--1153\\[3pt]
+\textbf{Year:} 2023 \quad\textbf{Field:} Labour economics; Macroeconomics\\[3pt]
+\textbf{Classification:} Structural (multisector business cycle model + SMM)
+\end{paperbox}
+
+%------------------------------------------------------------
+\section{Research Question}
+
+To what extent does the cyclicality of occupational mobility among the
+unemployed shape the aggregate unemployment rate and its duration distribution?
+Is cyclical unemployment driven primarily by occupation-wide productivity
+differences (net reallocation) or by individual workers' changing career
+prospects within occupations (idiosyncratic career shocks)?
+
+%------------------------------------------------------------
+\section{Motivation}
+
+On average, 44\% of unemployed U.S.\ workers change major occupational group
+(MOG) at reemployment. Occupational movers take longer to find jobs, and in
+recessions their duration increases $\approx$35\% more than stayers'. Yet
+standard multisector models (Lucas--Prescott 1974; Lilien 1982) emphasise
+\emph{net} reallocation across sectors as the main driver of unemployment
+fluctuations---and in such models, gross mobility is typically constant or
+countercyclical. Carrillo-Tudela and Visschers document that gross occupational
+mobility is \emph{procyclical} while net mobility is \emph{countercyclical},
+and that the dominant component is \emph{excess mobility} (moves that cancel
+out at the occupation level). This motivates a new theory where idiosyncratic
+career shocks, not occupation-wide differences, drive cyclical unemployment.
+
+%------------------------------------------------------------
+\section{Main Contribution}
+
+\begin{enumerate}
+  \item \textbf{New empirical facts (SIPP, corrected for miscoding):}
+    \begin{itemize}
+      \item 44.5\% of unemployed workers change MOG at reemployment.
+      \item Gross mobility is \emph{procyclical}; net mobility is
+        \emph{countercyclical}.
+      \item 90\% of gross mobility is excess mobility (procyclical).
+      \item Gross mobility increases with unemployment duration (mobility-
+        duration profile).
+    \end{itemize}
+  \item \textbf{Multisector business cycle model with idiosyncratic career
+    shocks} ($z$): workers face both occupation-wide productivity differences
+    ($p_o$) and idiosyncratic career shocks ($z$). A ``wait zone'' between the
+    separation and reallocation cutoffs generates rest/wait unemployment.
+  \item \textbf{Central quantitative finding:} Idiosyncratic career shocks
+    ($z$), not occupation-wide differences ($p_o$), are the dominant driver
+    of cyclical unemployment fluctuations.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Relationship to the Literature}
+
+Challenges the Lucas--Prescott (1974)/Lilien (1982)/Rogerson (1987)
+multisector framework. Related to Alvarez--Shimer (2011) rest/search model
+(but extends to dynamic business cycle). Complements Pilossoph (2014) and
+Chodorow-Reich--Wieland (2020)---which also find muted effects of net
+reallocation---but those papers have countercyclical or acyclical gross
+mobility, inconsistent with the data. Distinguishes from Kambourov--Manovskii
+(2008) by focusing exclusively on workers who go through unemployment.
+
+%------------------------------------------------------------
+\section{Theoretical Framework and Economic Mechanism}
+
+\subsection*{Environment}
+
+Discrete time. Workers differ in: idiosyncratic productivity $z_t$ (Markov,
+common across occupations---``career match'' or career prospect); occupation-
+specific human capital $x_t$ (accumulates when employed via learning-by-doing;
+depreciates during unemployment). Occupation-wide productivity $p_{o,t}$ and
+aggregate productivity $A_t$ follow separate Markov processes.
+
+\subsection*{Value Function---Unemployed Worker}
+
+\begin{equation}
+  W^U(\omega) = b + \beta E_{\omega'}\!\left[\max_{\rho(\omega')}\!
+    \left\{\rho\,R(\omega') + (1-\rho)\!\left[\lambda(\theta(\omega'))W^E(\omega')
+    + (1-\lambda(\theta(\omega')))W^U(\omega')\right]\right\}\right],
+  \label{eq:ct_wu}
+\end{equation}
+where $\rho\in\{0,1\}$ is the reallocation decision, $R(\omega)$ is the
+expected net value of searching across occupations, $\theta(\omega)$ is labour
+market tightness in submarket $(z,x)$ of occupation $o$.
+
+\subsection*{Separation and Reallocation Cutoffs}
+
+Within each occupation, the model yields two productivity thresholds:
+\begin{align}
+  &\text{\textbf{Separation cutoff}} \quad z_s:
+    &&W^E(\omega) < W^U(\omega) \;\Leftrightarrow\; z < z_s \\
+  &\text{\textbf{Reallocation cutoff}} \quad z_r:
+    &&R(\omega) > W^U(\omega) \;\Leftrightarrow\; z < z_r
+\end{align}
+The calibration finds $z_s > z_r$---creating a \textbf{wait zone}
+$(z_r, z_s)$ where workers who separate prefer to remain attached to their
+occupation rather than switch, because they expect their career prospect $z$
+to recover.
+
+\subsection*{Cyclical Widening of the Wait Zone}
+
+In recessions, aggregate productivity $A$ falls $\Rightarrow$ wages fall
+$\Rightarrow$ both $z_s$ and $z_r$ rise. Because $z_s$ rises more than $z_r$,
+the gap $z_s - z_r$ \emph{widens}, pulling more workers into the wait zone
+$\Rightarrow$ more rest/wait unemployment $\Rightarrow$ longer spells,
+disproportionately for movers.
+
+\subsection*{Imperfect Directed Search Across Occupations}
+
+Workers allocate search effort $\{s_{\tilde{o}}\}$ across remaining
+occupations with $\sum_{\tilde{o}\in O^-}s_{\tilde{o}}=1$. Concavity of the
+matching function creates a trade-off between targeting the best occupation
+and the total probability of receiving any offer. This generates
+\emph{excess mobility}: workers switch occupations even without systematic
+occupation-wide differences, driven by idiosyncratic career prospects.
+
+%------------------------------------------------------------
+\section{Data}
+
+\begin{itemize}
+  \item \textbf{SIPP:} 1984--2008 panels (covering 1983--2014); EUE
+    (employment $\to$ unemployment $\to$ employment) spells; excludes
+    self-employed, military, agriculture.
+  \item \textbf{Miscoding correction:} Novel degarbling matrix $\Gamma$
+    identified from the 1985$\to$1986 SIPP interviewing method change
+    (independent to dependent). True occupational stayers have a
+    $\approx$20\% chance of appearing as movers. Assumptions: (A1) independent
+    classification errors; (A2) detailed balance in miscoding; (A3) strict
+    diagonal dominance.
+  \item \textbf{Cross-validation:} PSID 1968--1997; CPS 1979--2019.
+  \item \textbf{Occupational classification:} 21 major groups (2000 SOC);
+    also task-based (NRC, RC, NRM, RM).
+  \item \textbf{Calibration:} Simulated Method of Moments (SMM).
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Empirical Strategy}
+
+\begin{enumerate}
+  \item \textbf{Classification error correction:} Degarble observed flows
+    $M^I=\Gamma'M\Gamma$ to recover true flows $M=(\Gamma^{-1})'M^I\Gamma^{-1}$.
+  \item \textbf{Mobility-duration profile:} For duration $x$, compute the
+    proportion of workers who changed MOG among those with spells $\geq x$
+    months (Figure~1).
+  \item \textbf{Cyclicality regressions (Table~I):} Regress (log) gross
+    mobility on HP-filtered unemployment rate; report across SIPP
+    (corrected/uncorrected), CPS, with/without controls.
+  \item \textbf{Net/excess decomposition:} Net mobility
+    $= \tfrac{1}{2}\sum_i|E_{-i}UE_i - E_iUE_{-i}|/EUE$; excess
+    $=$ gross $-$ net.
+  \item \textbf{Model calibration:} SMM on moments including gross mobility
+    rate, mobility-duration slope, cyclicality, unemployment volatility,
+    duration distribution, Beveridge curve.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Identification Strategy}
+
+The causal claim---that idiosyncratic career shocks ($z$), not occupation-wide
+differences ($p_o$), drive cyclical unemployment---is identified through model
+counterfactuals (shutting off $z$ vs.\ $p_o$ shocks). The empirical
+identification rests on:
+\begin{itemize}
+  \item Gross flows order-of-magnitude larger than net flows $\Rightarrow$
+    occupation-wide differences cannot account for the data.
+  \item Procyclical gross mobility (not net) $\Rightarrow$ models with
+    countercyclical net reallocation are inconsistent.
+  \item SMM estimates identify the $z$ shock process from the
+    mobility-duration profile slope.
+\end{itemize}
+
+The miscoding correction identification relies on the detailed balance
+assumption (A2), tested and supported using SIPP--PSID--CPS data.
+
+%------------------------------------------------------------
+\section{Main Results}
+
+\subsection*{Empirical Results}
+
+\begin{center}
+\small
+\begin{tabular}{lc}
+\toprule
+\textbf{Statistic} & \textbf{Value} \\
+\midrule
+Gross occupational mobility at reemployment & 44.5\% \\
+Mobility at $\geq$9 months of duration & 54.6\% \\
+Average excess mobility (of gross) & 90\% \\
+Average net mobility & 4.3\% \\
+Cyclicality of gross mobility (SIPP, corrected): elast.\ & $-0.145$ \\
+Duration gap (mover vs.\ stayer): expansion & 0.4 months \\
+Duration gap: recession & 0.9 months \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Net mobility is \emph{countercyclical}; excess mobility is \emph{procyclical}
+and drives the procyclicality of gross mobility.
+
+\subsection*{Model Results}
+
+\begin{itemize}
+  \item Quantitatively matches: procyclical gross mobility, countercyclical
+    net mobility, downward-sloping Beveridge curve, unemployment volatility,
+    duration distribution, cyclicality of job-finding and separation rates.
+  \item In recessions: rest/wait unemployment becomes relatively more
+    prominent; search unemployment dominates in expansions.
+  \item \textbf{Counterfactual:} Shutting off $z$ shocks eliminates most of
+    the cyclical variation in unemployment; shutting off $p_o$ differences
+    has little effect.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Economic Magnitude and Interpretation}
+
+The duration gap between movers and stayers grows from 0.4 to 0.9 months
+from expansion to recession---a 40\% contribution to the overall increase in
+average unemployment duration across the cycle. This means roughly two-fifths
+of the aggregate duration increase is attributable to the worsening situation
+of occupational movers specifically. The finding that 90\% of gross mobility
+is excess (cancelling out at the occupation level) implies that the standard
+narrative of ``structural unemployment'' driven by workers fleeing hard-hit
+sectors accounts for only about 10\% of actual occupational transitions.
+
+%------------------------------------------------------------
+\section{Mechanisms}
+
+The central mechanism is the \textbf{endogenous widening of the wait zone}
+in recessions:
+\begin{enumerate}
+  \item $A\downarrow$ $\Rightarrow$ wages fall $\Rightarrow$ both
+    $z_s$ and $z_r$ rise.
+  \item $z_s$ rises more than $z_r$ (because option value of staying in the
+    occupation is more affected by falling wages than the option value of
+    reallocation, which provides a fresh $z$ draw).
+  \item More workers have career prospects $z\in(z_r, z_s)$ $\Rightarrow$
+    they separate but \emph{wait} rather than switch.
+  \item Waiting motive is stronger for occupational movers (who must redraw
+    $z$ upon switching) $\Rightarrow$ their spells lengthen more in recessions.
+\end{enumerate}
+
+The \textbf{excess mobility mechanism}: workers who draw low $z$ from the
+ergodic distribution after separation find their occupation unattractive and
+search in other occupations. Since most eventually draw a new $z$ (often
+returning to prior occupation), these moves cancel at the occupation level
+$\Rightarrow$ large gross but small net flows.
+
+%------------------------------------------------------------
+\section{Robustness Checks}
+
+Extensive (Online Supplementary Material + Supplementary Appendices):
+\begin{itemize}
+  \item Results hold under alternative classifications (21-group SOC,
+    task-based NRC/RC/NRM/RM).
+  \item Procyclicality robust using SIPP (corrected/uncorrected), CPS
+    1979--2019, with/without demographic controls.
+  \item Mobility-duration profile robust to nonemployment spells, alternative
+    spell definitions, CPS 1994-redesign restriction.
+  \item Classification error assumptions (A1--A3) tested with PSID and CPS.
+  \item Non-targeted moment: repeat mobility (63.4\% of stayers remain stayers;
+    54.4\% of movers become movers again)---matched by the model.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Limitations}
+
+\begin{enumerate}
+  \item \textbf{EUE spells only:} Workers who never return to employment
+    are excluded; may miss extreme reallocation cases.
+  \item \textbf{Coarse occupation classification:} 21 major groups may miss
+    finer mobility patterns.
+  \item \textbf{BRE restriction:} Block Recursive Equilibrium restricts value
+    functions to individual states plus aggregate---a technical tractability
+    assumption.
+  \item \textbf{Exogenous wage determination:} Nash bargaining; richer wage
+    dynamics (posting, rigidity) may alter quantitative results.
+  \item \textbf{US-specific calibration:} The $z$ shock process and mobility
+    rates are calibrated to U.S.\ data; generalisability unclear.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Policy Implications}
+
+\begin{itemize}
+  \item Idiosyncratic career shocks dominate $\Rightarrow$ standard
+    \emph{sectoral retraining} policies address only $\approx$10\% of
+    occupational transitions (net flows). Most mobility is driven by
+    individual career dynamics.
+  \item The wait zone mechanism implies workers appearing ``structurally
+    unemployed'' are often rationally waiting for career recovery. Policies
+    forcing rapid reallocation (e.g.\ strict UI time limits) may push workers
+    to accept worse occupational matches prematurely.
+  \item Occupational movers have 35\% longer duration increases in recessions
+    $\Rightarrow$ supports differential UI policies for occupational switchers
+    (longer or more generous benefits during transitions).
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Overall Assessment}
+
+An exceptional paper combining careful empirical measurement (novel miscoding
+correction), a tractable theoretical model, and rigorous SMM calibration.
+The main empirical fact---procyclical gross mobility, countercyclical net
+mobility, excess mobility dominates---overturns a widely held prior. The
+model's success in matching this complex pattern simultaneously with the
+cyclical properties of unemployment duration is impressive.
+
+\textbf{Quality: Outstanding. A landmark contribution to occupational
+mobility, unemployment dynamics, and business cycles.}
+
+%------------------------------------------------------------
+\section{Relevance to My Research}
+
+Highly relevant for RDC work. Canadian LEED/LEAP data may allow measurement
+of occupational mobility among the unemployed, testing whether the procyclical
+gross/countercyclical net finding holds in Canada. The wait-zone mechanism
+has direct relevance for resource-sector workers during commodity busts.
+
+%------------------------------------------------------------
+\section{Potential Research Extensions}
+
+\begin{itemize}
+  \item Test the mobility-duration profile and its cyclicality for Canada
+    using LWF/LEED data.
+  \item Study whether the wait zone is wider for resource-sector workers in
+    Canada during commodity busts (high occupation-specific human capital
+    $\Rightarrow$ stronger waiting motive).
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Research Gaps}
+
+\begin{itemize}
+  \item The paper does not model long-run secular changes in occupational
+    mobility (automation, polarisation); the excess mobility mechanism might
+    interact with technological change.
+  \item Firm actions (R&D, capital investment) could endogenously affect
+    workers' career prospects $z$---this feedback is absent.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Methodological Lessons}
+
+\begin{enumerate}
+  \item The degarbling matrix $\Gamma$ identified from a data collection
+    design change (SIPP interviewing method) is a powerful and broadly
+    applicable tool for measuring occupational mobility free of coding error.
+  \item Decomposing gross mobility into net and excess components is essential:
+    the two have completely different cyclical properties; aggregating them
+    would obscure the key empirical patterns.
+  \item Block Recursive Equilibrium is an effective approach to tractability
+    in rich multisector heterogeneous-agent models---it rules out the joint
+    productivity distribution as a state variable while preserving full
+    individual-level heterogeneity.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section*{Five-Sentence Summary}
+
+Carrillo-Tudela and Visschers (2023) document, using SIPP data with a novel
+miscoding correction, that 44\% of unemployed U.S.\ workers change major
+occupational group at reemployment, gross occupational mobility among the
+unemployed is procyclical, net mobility is countercyclical, and 90\% of gross
+mobility is excess mobility---patterns inconsistent with standard multisector
+models. They develop a multisector business cycle model with idiosyncratic
+career shocks ($z$), occupation-specific human capital, and DMP matching
+frictions; within each occupation the separation cutoff exceeds the reallocation
+cutoff, creating a wait zone where separated workers prefer to remain attached
+to their occupation. In recessions, aggregate productivity falls, the wait zone
+widens endogenously, more workers enter rest/wait unemployment, and duration
+spells lengthen disproportionately for occupational movers---generating the
+observed 35\% larger duration increase for movers than stayers in downturns.
+The model is calibrated by SMM and quantitatively matches the mobility-duration
+profile, procyclical gross mobility, countercyclical net mobility, unemployment
+volatility, and the Beveridge curve simultaneously. The core finding is that
+cyclical unemployment is driven by workers' changing idiosyncratic career
+prospects, not occupation-wide differences---implying standard sectoral
+retraining policies address only a small fraction ($\approx$10\%) of actual
+occupational transitions.
+
+\vspace{6pt}
+\begin{quickref}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\textbf{Key contribution} &
+  First model to simultaneously reproduce procyclical gross and countercyclical
+  net occupational mobility among the unemployed; shows idiosyncratic career
+  shocks (not occupation-wide differences) drive cyclical unemployment through
+  an endogenous wait-zone mechanism. \\[4pt]
+\textbf{Key weakness} &
+  EUE spells only (non-returners excluded); BRE restriction for tractability;
+  exogenous Nash wage determination; US-specific calibration. \\[4pt]
+\textbf{Most interesting gap} &
+  Interaction between automation/polarisation and the excess mobility
+  mechanism: if technological change destroys career prospects within
+  occupations, the wait zone should be wider and cyclical amplification larger.
+  \\[4pt]
+\textbf{Publishable extension} &
+  Test the mobility-duration profile and its cyclicality for Canada using
+  LEED/LWF data; study whether resource-sector workers exhibit stronger wait-
+  zone behaviour during commodity busts due to their high occupation-specific
+  human capital.
+\end{tabularx}
+\end{quickref}

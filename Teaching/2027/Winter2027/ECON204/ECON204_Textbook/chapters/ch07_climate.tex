@@ -1,0 +1,599 @@
+%==========================================================
+%  CHAPTER 7: Climate Change and Sustainability
+%==========================================================
+
+\chapter{Climate Change and Sustainability}
+\label{ch:climate}
+
+\begin{learningobjectives}
+\item Explain climate change as a market failure caused by a negative externality and a global public goods problem.
+\item Define the social cost of carbon and explain how it is used to evaluate climate policy.
+\item Describe and compare the main economic policy instruments for reducing greenhouse gas emissions: carbon taxes, cap-and-trade, command-and-control regulation, and green subsidies.
+\item Evaluate Canada's federal carbon pricing system, including its design, distributional effects, and economic performance.
+\item Distinguish climate adaptation from climate mitigation and analyze the trade-offs between investment in each.
+\item Describe the distinctive climate vulnerabilities of Indigenous and Northern communities in Canada.
+\end{learningobjectives}
+
+%----------------------------------------------------------
+\section{The Economics of Climate Change}
+%----------------------------------------------------------
+
+On a hot afternoon in August 2023, the sky over Prince George turned a shade of orange that residents had seen too often in recent years. Wildfire smoke blanketed Northern BC, closing schools, triggering air quality advisories, and driving some communities to evacuate. That year, BC wildfires burned approximately 2.84 million hectares---a record. The economic damages from Canadian wildfires in 2023 (suppression costs, insured losses, lost timber, disruption to communities) ran into the billions of dollars.
+
+These events are not economically random. They are, in the language of economics, the physical manifestation of a market failure---the largest and most consequential market failure in human history.
+
+\subsection{Externalities and the Climate Market Failure}
+
+When a firm burns fossil fuels to produce electricity, it creates costs that are not captured in its production costs or the prices it charges customers. The carbon dioxide and methane emitted by that combustion trap heat in the atmosphere, raising global temperatures, increasing extreme weather events, threatening coastal infrastructure, and disrupting agricultural systems---costs borne by people around the world and by future generations.
+
+This gap between private costs (paid by the emitter) and social costs (paid by everyone, including those unrelated to the transaction) is a \term{negative externality}---the textbook market failure that justifies government intervention.
+
+\begin{defbox}{Negative Externality}
+A \textbf{negative externality} exists when the production or consumption of a good imposes costs on parties not involved in the transaction---costs that are not reflected in the market price.
+
+\textit{Simple explanation:} The emitter doesn't pay for the climate damage they cause; society does.
+
+\textit{Economic consequence:} Without intervention, markets produce \textbf{too much} of goods generating negative externalities, because producers ignore the social costs they impose.
+
+\textit{Climate example:} The price of gasoline reflects the cost of oil extraction, refining, distribution, and taxes---but not the global warming damage from its combustion. This causes over-consumption of fossil fuels relative to the social optimum.
+\end{defbox}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=11cm, height=9cm,
+  xlabel={Quantity of Emissions},
+  ylabel={Price / Cost (\$)},
+  xlabel style={font=\small},
+  ylabel style={font=\small},
+  xmin=0, xmax=10, ymin=0, ymax=10,
+  xtick=\empty, ytick=\empty,
+  axis line style={-Stealth, thick},
+  axis lines=left,
+  clip=false
+]
+% Marginal Private Cost (MPC) = Supply
+\addplot[thick, color=policyblue, domain=0.5:9] {x}
+  node[right, font=\small] {$MPC$ (Supply)};
+% Marginal Social Cost (MSC = MPC + Externality)
+\addplot[thick, color=dataorange, domain=0.5:8.5] {x + 3}
+  node[right, font=\small] {$MSC = MPC + \text{Externality}$};
+% Marginal Social Benefit (MSB) = Demand
+\addplot[thick, color=unbcgreen, domain=0.5:9.5] {10 - x}
+  node[right, font=\small] {$MSB$ (Demand)};
+% Market equilibrium (MPC = MSB)
+\addplot[only marks, mark=*, mark size=3pt, color=black]
+  coordinates {(5,5)};
+\addplot[thin, dashed, color=chaptergray] coordinates {(5,0)(5,5)};
+\node[font=\small] at (axis cs:5,-0.6) {$Q_m$};
+\node[font=\small\bfseries] at (axis cs:5.4,5.4) {$E_m$};
+% Social optimum (MSC = MSB)
+\addplot[only marks, mark=square*, mark size=3pt, color=dataorange]
+  coordinates {(3.5,6.5)};
+\addplot[thin, dashed, color=dataorange] coordinates {(3.5,0)(3.5,6.5)};
+\node[font=\small, color=dataorange] at (axis cs:3.5,-0.6) {$Q^*$};
+\node[font=\small\bfseries, color=dataorange] at (axis cs:3.9,7.1) {$E^*$};
+% Deadweight loss triangle
+\fill[dataorange!20, opacity=0.5]
+  (axis cs:3.5,6.5) -- (axis cs:5,5) -- (axis cs:5,8) -- cycle;
+\node[font=\scriptsize, color=dataorange] at (axis cs:4.5,7)
+  {DWL};
+% Pigouvian tax arrow
+\draw[<->, thick, color=dataorange]
+  (axis cs:1,1) -- (axis cs:1,4)
+  node[left, midway, font=\scriptsize, color=dataorange] {Carbon tax $= \tau^*$};
+\end{axis}
+\end{tikzpicture}
+\caption{The Negative Externality of Carbon Emissions. The market equilibrium ($E_m$) produces
+  too many emissions ($Q_m$) because emitters face only marginal private cost ($MPC$), not
+  marginal social cost ($MSC = MPC + \text{externality damage}$). The social optimum is at
+  $E^*$ with emissions $Q^*$. A Pigouvian carbon tax equal to $\tau^* = MSC - MPC$ at the
+  optimal quantity shifts the supply curve up to $MSC$, achieving the socially optimal
+  outcome. The shaded triangle represents the deadweight loss from unpriced emissions.}
+\label{fig:externality}
+\end{figure}
+
+\subsection{The Global Commons Problem}
+
+Climate change is not only a negative externality---it is also a \term{global public good} problem. The atmosphere is a global commons: the benefits of reducing emissions are non-excludable (all countries benefit from reduced warming regardless of who pays) and non-rival (one country's benefit from a stable climate does not reduce another's).
+
+This creates a \term{free-rider problem}: any individual country has an incentive to let others bear the cost of emissions reduction while enjoying the benefits. If all countries free ride, no one acts sufficiently. This is why climate change is so difficult to address: it requires international cooperation across 190+ sovereign nations with divergent interests, time horizons, and capacities.
+
+The \term{Paris Agreement} (2015), in which countries committed to nationally determined contributions (NDCs) to emissions reduction, is the primary international framework. Canada committed to reducing emissions by 40--45\% below 2005 levels by 2030.
+
+%----------------------------------------------------------
+\section{The Social Cost of Carbon}
+%----------------------------------------------------------
+
+\begin{defbox}{Social Cost of Carbon (SCC)}
+The \textbf{social cost of carbon (SCC)} is the economic value of the damage caused by emitting one additional tonne of CO$_2$ (or equivalent greenhouse gas) into the atmosphere. It captures the present value of all future harms: crop losses, sea level rise, extreme weather events, health impacts, ecosystem damage, and displacement costs.
+
+\textit{Use:} The SCC is the benchmark for evaluating climate policies. If the cost of reducing a tonne of emissions is less than the SCC, the policy creates net social benefit. If greater, it does not.
+
+\textit{Estimates:} There is significant uncertainty in SCC estimates. The U.S.\ government (Biden administration) estimated the SCC at approximately USD 190/tonne CO$_2$ in 2022. The Canadian government's estimate for domestic policy is approximately CAD 300/tonne by 2030 (the equivalent of the planned 2030 carbon price). More recent academic work (Rennert et al., 2022, in \textit{Nature}) estimated the SCC at USD 185/tonne, substantially above earlier estimates.
+\end{defbox}
+
+The uncertainty in the SCC reflects deep challenges:
+\begin{itemize}
+  \item \textbf{Discount rate:} How much do we value future costs relative to present costs? Higher discount rates (preferring the present) produce lower SCC estimates. This is an ethical as well as economic question, since high discount rates effectively de-value the welfare of future generations.
+  \item \textbf{Climate sensitivity:} How much warming results from a given concentration of CO$_2$? Scientific uncertainty remains, with the IPCC estimating 1.5--4.5\textdegree C warming per doubling of CO$_2$.
+  \item \textbf{Damage functions:} The relationship between temperature increase and economic damage is poorly understood, especially for non-linear tipping points and catastrophic scenarios.
+\end{itemize}
+
+%----------------------------------------------------------
+\section{Policy Instruments for Climate Change}
+%----------------------------------------------------------
+
+Economists have identified four main categories of climate policy instruments, each with different efficiency, equity, and political feasibility characteristics.
+
+\subsection{Carbon Taxes (Pigouvian Taxes)}
+
+A \term{carbon tax} places a direct price on greenhouse gas emissions. Proposed by A.C. Pigou in 1920 as a general remedy for negative externalities (hence ``Pigouvian tax''), a carbon tax set equal to the social cost of carbon would internalize the externality and achieve the socially optimal emissions level.
+
+\textbf{Advantages:}
+\begin{itemize}
+  \item \textbf{Economic efficiency:} All emitters face the same marginal price and reduce emissions wherever it is cheapest to do so. Aggregate abatement is achieved at minimum total cost.
+  \item \textbf{Revenue generation:} Carbon tax revenue can be returned to households (rebates), used to cut other taxes, or fund public investment.
+  \item \textbf{Innovation incentive:} A permanent carbon price creates ongoing incentive to develop low-carbon technologies.
+\end{itemize}
+
+\textbf{Disadvantages:}
+\begin{itemize}
+  \item \textbf{Price uncertainty:} The quantity of emissions reduction is uncertain (depends on demand elasticities).
+  \item \textbf{Distributional effects:} Carbon taxes can be regressive if lower-income households spend more of their income on energy and fuel (addressed by rebates).
+  \item \textbf{Political resistance:} Carbon taxes are visible and politically controversial (``I can see the gas price increase'').
+\end{itemize}
+
+\subsection{Cap-and-Trade Systems}
+
+A \term{cap-and-trade} (or emissions trading) system sets an overall cap on total emissions and issues permits (allowances) for those emissions. Firms that can reduce emissions cheaply do so and sell their surplus permits to firms facing high abatement costs. The market price for permits reflects the marginal cost of abatement.
+
+\textbf{Advantages:}
+\begin{itemize}
+  \item \textbf{Quantity certainty:} The cap guarantees a specific emissions ceiling.
+  \item \textbf{Cost-effectiveness:} Firms trade until marginal abatement costs are equalized across all regulated entities.
+\end{itemize}
+
+\textbf{Disadvantages:}
+\begin{itemize}
+  \item \textbf{Price volatility:} Permit prices fluctuate with economic conditions, creating investment uncertainty.
+  \item \textbf{Complexity:} Allocating initial permits, preventing manipulation, and setting the cap require sophisticated administrative capacity.
+\end{itemize}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  box/.style={rectangle, rounded corners=4pt, draw=unbcgreen, fill=unbcgreenlight,
+               minimum width=5.5cm, minimum height=2.5cm, text centered,
+               font=\small, text width=5.3cm},
+  label/.style={font=\small\bfseries, color=unbcgreen}
+]
+\node[box] (tax) at (0,0) {
+  \textbf{Carbon Tax} \\[4pt]
+  Sets a price per tonne\\
+  Quantity of reduction uncertain\\
+  Revenue goes to government\\
+  Price is certain; quantity is not
+};
+\node[box] (cap) at (7.5,0) {
+  \textbf{Cap-and-Trade} \\[4pt]
+  Sets a quantity cap\\
+  Price of permits uncertain\\
+  Revenue from permit auction\\
+  Quantity is certain; price is not
+};
+\node[font=\small\itshape, color=chaptergray] at (3.75,0)
+  {vs.};
+\node[font=\small\bfseries, color=unbcgreen] at (3.75,2.5)
+  {Two Routes to the Same Destination};
+% Arrow
+\draw[->, thick, color=unbcgreen] (tax.east) -- (cap.west);
+\node[font=\scriptsize, color=chaptergray, above] at (3.75,0.1)
+  {\textit{equivalent if perfectly designed}};
+\end{tikzpicture}
+\caption{Carbon Tax vs.\ Cap-and-Trade. Both instruments achieve least-cost emissions
+  reduction. The carbon tax fixes price and lets quantity adjust; cap-and-trade fixes
+  quantity and lets price adjust. Under perfect information, both achieve the same outcome.
+  The choice between them depends on uncertainty about abatement costs (favouring taxes)
+  vs.\ environmental certainty (favouring cap-and-trade).}
+\label{fig:carbon_instruments}
+\end{figure}
+
+\subsection{Command-and-Control Regulation}
+
+Traditional environmental regulation sets specific performance standards (e.g., maximum emissions per unit of output) or technology requirements (e.g., catalytic converters, scrubbers). It is administratively familiar and provides certainty, but is generally less economically efficient than market-based instruments because it does not allow flexibility about \textit{how} or \textit{where} emissions are reduced.
+
+\subsection{Green Subsidies}
+
+Subsidies for low-carbon technologies---solar panels, electric vehicles, heat pumps, zero-emission vehicles---reduce the cost of clean alternatives, encouraging adoption. They do not directly penalize emissions and are therefore less efficient per dollar of public spending at reducing emissions than carbon pricing. However, they may be more politically viable and can address complementary market failures (technology R\&D, information barriers, first-mover disadvantages).
+
+%----------------------------------------------------------
+\section{Carbon Pricing in Canada}
+%----------------------------------------------------------
+
+\subsection{The Federal Carbon Pricing System}
+
+Canada's federal carbon pricing system has two components, applying to different sectors:
+
+\textbf{The federal fuel charge (``consumer carbon tax'').} A levy on fossil fuels at the consumer level, applied in provinces and territories that do not have their own equivalent pricing system meeting federal standards. The carbon price in 2024 is \$65 per tonne of CO$_2$-equivalent, rising by \$15 per year to reach \$170 per tonne by 2030. At \$65/tonne, the fuel charge adds approximately:
+\begin{itemize}
+  \item \$0.154/litre to gasoline
+  \item \$0.177/litre to diesel
+  \item \$0.099/m$^3$ to natural gas
+\end{itemize}
+
+\textbf{The Output-Based Pricing System (OBPS).} An industrial carbon price applying to large industrial emitters (facilities with more than 50,000 tonnes of CO$_2$ per year). Firms pay the carbon price only on emissions above a sector-specific output-based standard, protecting competitiveness while maintaining a price on above-average emissions intensity.
+
+\begin{canexample}{BC's Carbon Tax: North America's Longest-Running Carbon Price}
+British Columbia introduced its carbon tax on July 1, 2008---the first carbon tax in
+North America. Beginning at \$10/tonne, it rose to \$30/tonne by 2012 before being
+frozen until 2018. BC's tax is now aligned with the federal trajectory, reaching
+\$65/tonne in 2024.
+
+Key features: BC's tax is revenue-neutral---the government is required to return all
+carbon tax revenue through cuts to other taxes (corporate income tax, personal income tax)
+and low-income rebates. Studies have found that BC's carbon tax reduced fuel consumption
+by approximately 5--15\% relative to the rest of Canada, with no discernible negative
+effect on GDP growth. BC's economy has grown faster than the Canadian average while
+also reducing per-capita emissions---evidence that environmental and economic objectives
+can be pursued simultaneously.
+\end{canexample}
+
+\subsection{The Canada Carbon Rebate}
+
+The federal government returns the revenue from the consumer fuel charge through the \term{Canada Carbon Rebate (CCR)}, formerly known as the Climate Action Incentive. The CCR is paid quarterly as a direct deposit or cheque to eligible Canadian households. Crucially, it is a flat amount per household (adjusted for family size and rural location)---not proportional to how much carbon tax each household pays.
+
+This design has important distributional consequences:
+\begin{itemize}
+  \item Higher-income households typically consume more fossil fuels and therefore pay more carbon tax.
+  \item All households receive the same rebate amount (per family member).
+  \item Therefore, lower-income households on average receive \textit{more} in rebate than they pay in carbon tax.
+\end{itemize}
+
+\begin{databox}{Canada Carbon Rebate: Distributional Impact}
+Parliamentary Budget Officer estimates (2024) found that the majority of Canadian
+households receive more in Canada Carbon Rebate payments than they pay through the
+federal fuel charge, when considering direct fuel costs only:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Income Quintile} & \textbf{Avg. Carbon Tax Paid} & \textbf{Avg. CCR Received} \\
+\midrule
+Bottom quintile & $\approx$\$540 & $\approx$\$930 \\
+Second quintile & $\approx$\$720 & $\approx$\$930 \\
+Middle quintile & $\approx$\$920 & $\approx$\$930 \\
+Fourth quintile & $\approx$\$1{,}100 & $\approx$\$930 \\
+Top quintile & $\approx$\$1{,}500 & $\approx$\$930 \\
+\bottomrule
+\end{tabular}
+\end{center}
+Note: These estimates include only direct fuel charges, not indirect cost pass-through.
+Including all carbon costs somewhat reduces the net benefit to lower quintiles but the
+bottom two quintiles remain net beneficiaries.
+\source{Parliamentary Budget Officer, \textit{Distributional and Fiscal Impact of the Federal Fuel Charge}, 2023.}
+\end{databox}
+
+\begin{thinkbox}
+The PBO analysis in the Data Spotlight shows that the bottom 40\% of households are
+net beneficiaries of the carbon pricing system (receive more in rebates than they pay
+in direct carbon costs). However, a political narrative has developed that the carbon
+tax harms low-income Canadians. How can you reconcile these facts? What arguments could
+explain why the carbon tax remains politically unpopular even if most households
+receive more than they pay? Does the political economy of carbon pricing depend on the
+salience (visibility) of the costs vs.\ the benefits?
+\end{thinkbox}
+
+%----------------------------------------------------------
+\section{Green Industrial Policy}
+%----------------------------------------------------------
+
+\subsection{The Case for Industrial Policy in the Clean Economy}
+
+Carbon pricing corrects one market failure (the negative externality). But the clean energy transition involves additional market failures that pricing alone may not resolve:
+
+\begin{itemize}
+  \item \textbf{Knowledge spillovers:} R\&D in clean technologies generates knowledge that competitors can use without compensating the innovator. Firms therefore under-invest in clean tech R\&D from a social perspective.
+  \item \textbf{Learning-by-doing:} The cost of new technologies falls substantially with cumulative production experience (the ``learning curve''). Early deployment is expensive; later deployment, after the learning curve has been traversed, is cheap. A subsidy to early deployment can reduce long-run costs for society.
+  \item \textbf{Coordination failures:} Transitioning from fossil fuels to electricity requires simultaneous investment in electric vehicles, charging infrastructure, and green electricity generation---investments that are complementary but risky to undertake unilaterally.
+  \item \textbf{First-mover advantages in global markets:} Clean energy industries may exhibit economies of scale. Countries that develop strong domestic clean energy sectors first may capture global market share. Government support can shift this competition in Canada's favour.
+\end{itemize}
+
+\subsection{Canada's Clean Economy Investment Tax Credits}
+
+In the 2023 and 2024 federal budgets, Canada announced a suite of \term{investment tax credits (ITCs)} for clean energy, modelled partly on the U.S.\ Inflation Reduction Act (IRA, 2022):
+
+\begin{itemize}
+  \item \textbf{Clean Technology ITC (30\%):} For investments in wind, solar, water, or geothermal electricity generation; grid-scale battery storage; zero-emission vehicles.
+  \item \textbf{Clean Electricity ITC (15\%):} For new and refurbished nuclear, hydro, and interprovincial transmission lines.
+  \item \textbf{Clean Hydrogen ITC (15--40\%):} Tiered by the emissions intensity of the hydrogen production process.
+  \item \textbf{Carbon Capture, Utilization and Storage (CCUS) ITC:} For carbon capture equipment used in oil sands and industrial processes.
+\end{itemize}
+
+Total value of Canada's clean economy tax credits: estimated at approximately \$80 billion over 10 years. These credits are significant but smaller, as a share of GDP, than the U.S.\ IRA, which is estimated at USD 370+ billion.
+
+\begin{canexample}{Volkswagen's Battery Plant: Industrial Policy in Action}
+In April 2023, the federal and Ontario governments announced that Volkswagen would
+build North America's first EV battery ``gigafactory'' in St. Thomas, Ontario.
+The government incentive package: federal funding equivalent to approximately
+\$13 billion over 10 years in production subsidies, with Ontario contributing
+additional support.
+
+Proponents argued this was necessary to prevent Canadian EV supply chains from being
+wholly captured by the U.S. (which offered massive IRA incentives) and that the
+multiplier effects would justify the subsidy. Critics questioned whether the
+government overpaid for what Volkswagen was likely to build anyway given proximity
+to U.S.\ automakers. The episode illustrates the risks of industrial policy:
+potential for large fiscal commitments, uncertain additionality, and competitive
+bidding wars between governments.
+\end{canexample}
+
+%----------------------------------------------------------
+\section{Climate Adaptation vs.\ Mitigation}
+%----------------------------------------------------------
+
+\begin{defbox}{Mitigation vs.\ Adaptation}
+\textbf{Climate mitigation} refers to actions that reduce greenhouse gas emissions or enhance carbon sinks (forests, oceans), thereby slowing or reducing the magnitude of future climate change.
+
+\textbf{Climate adaptation} refers to adjustments in economic activity, infrastructure, and behaviour to reduce the harm caused by climate change that is already occurring or locked in from past emissions.
+
+\textit{Economic relationship:} Mitigation and adaptation are substitutes in the long run (more mitigation means less adaptation is needed) but complements in the short run (some warming is already inevitable, requiring adaptation regardless of mitigation policy). Both are costly.
+\end{defbox}
+
+Even if global emissions were reduced to zero immediately, past CO$_2$ accumulation means significant warming will continue for decades. This ``locked-in'' warming makes adaptation investment economically necessary, separate from the question of mitigation.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=12cm, height=7cm,
+  xlabel={Investment in Mitigation (relative to adaptation)},
+  ylabel={Total Climate Change Costs (\$)},
+  xlabel style={font=\small},
+  ylabel style={font=\small},
+  xmin=0, xmax=10,
+  ymin=0, ymax=10,
+  xtick=\empty, ytick=\empty,
+  axis line style={-Stealth, thick},
+  axis lines=left,
+  clip=false
+]
+% Residual damage from insufficient mitigation (falling with mitigation)
+\addplot[thick, color=dataorange, domain=0.5:9.5]
+  {6/(1+0.5*x) + 0.5}
+  node[right, font=\small, color=dataorange] {Residual climate damage};
+% Adaptation costs (falling as more mitigation reduces needed adaptation)
+\addplot[thick, color=policyblue, dashed, domain=0.5:9.5]
+  {3/(1+0.3*x) + 0.3}
+  node[right, font=\small, color=policyblue] {Adaptation costs};
+% Mitigation cost (rising with mitigation)
+\addplot[thick, color=unbcgreen, domain=0.5:9.5]
+  {0.1*x^1.3}
+  node[right, font=\small, color=unbcgreen] {Mitigation costs};
+% Total cost (sum of all three)
+\addplot[thick, color=chaptergray, dotted, domain=0.5:9.5]
+  {6/(1+0.5*x) + 3/(1+0.3*x) + 0.1*x^1.3 + 0.8}
+  node[right, font=\small, color=chaptergray] {Total costs};
+% Optimal point (trough of total costs)
+\addplot[only marks, mark=*, mark size=3pt, color=chaptergray]
+  coordinates {(3.5,5.0)};
+\draw[dashed, thick, color=chaptergray]
+  (axis cs:3.5,0) -- (axis cs:3.5,5.0);
+\node[font=\small, color=chaptergray] at (axis cs:3.5,-0.5) {$m^*$ (optimal mix)};
+\end{axis}
+\end{tikzpicture}
+\caption{Mitigation, Adaptation, and Residual Damage. An optimal climate strategy
+  balances mitigation (reducing emissions), adaptation (adjusting to locked-in change),
+  and residual damage (unavoidable harm). At the optimum, the marginal cost of
+  additional mitigation equals the marginal benefit (reduction in future damage and
+  adaptation costs).}
+\label{fig:adapt_mitigate}
+\end{figure}
+
+\subsection{Canadian Examples of Adaptation}
+
+Canada is already investing in adaptation across multiple domains:
+
+\textbf{Wildfire management.} The 2023 wildfire season---the worst in Canadian recorded history---burned approximately 18 million hectares nationally. The federal and provincial governments have invested in prescribed burns, firebreaks, community wildfire protection plans, and evacuation infrastructure. The economic case for proactive management: a 2023 University of BC study estimated that every dollar invested in prescribed burns saves approximately \$3--\$10 in suppression and damage costs.
+
+\textbf{Flood infrastructure.} The 2021 Abbotsford flooding (from atmospheric rivers), the 2022 Merritt flooding, and recurring floods in communities along the Fraser River have prompted increased investment in dikes, flood plain mapping, and managed retreat from high-risk areas. Some communities are beginning to weigh whether to invest in protection or to facilitate relocation---an economically and socially difficult decision.
+
+\textbf{Infrastructure standards.} Canadian engineering codes are being updated to account for warmer temperatures (affecting permafrost foundation stability in the North), more intense precipitation events, and higher design loads for extreme weather.
+
+%----------------------------------------------------------
+\section{International Dimensions of Climate Policy}
+%----------------------------------------------------------
+
+\subsection{Carbon Leakage}
+
+A major challenge for unilateral carbon pricing is \term{carbon leakage}: the displacement of emissions-intensive production to jurisdictions with lower or no carbon prices. If Canada imposes a \$170/tonne carbon price and the U.S.\ does not, carbon-intensive firms may relocate to the U.S., and U.S.\ firms may outcompete Canadian firms in global markets---without any global emissions reduction.
+
+Carbon leakage undermines the domestic benefits of climate policy and transfers jobs and production offshore. The output-based pricing system (OBPS) for large industrial emitters is designed partly to mitigate leakage by ensuring that Canada's carbon price does not apply to the full output of internationally traded sectors.
+
+\subsection{Carbon Border Adjustments}
+
+A \term{carbon border adjustment mechanism (CBAM)} imposes a carbon price on imports from countries without equivalent carbon pricing, based on the carbon intensity of the imported goods. The EU launched its CBAM in 2023--2024, covering steel, aluminium, cement, fertilizers, and electricity. This mechanism:
+
+\begin{itemize}
+  \item Levels the competitive playing field between domestic (carbon-priced) and imported (potentially unpriced) goods.
+  \item Removes the incentive for carbon leakage.
+  \item May encourage trading partners to adopt their own carbon pricing to avoid the border adjustment.
+\end{itemize}
+
+Canada is actively exploring a CBAM for its own borders, particularly with respect to trade with countries that lack carbon pricing comparable to Canada's.
+
+%----------------------------------------------------------
+\section{Indigenous Peoples and Climate Change in Canada}
+%----------------------------------------------------------
+
+Climate change in Canada is not experienced equally. Indigenous communities---particularly those in remote, coastal, and northern environments---are disproportionately exposed to climate impacts while having contributed least to the greenhouse gas emissions causing those impacts.
+
+\subsection{Disproportionate Exposure}
+
+\textbf{Northern communities and permafrost.} Approximately 40\% of Canada's territory is underlain by permafrost, which is thawing rapidly as temperatures rise. Communities in the Yukon, Northwest Territories, and Nunavut built on permafrost face foundation instability, road damage, and infrastructure collapse. Many northern Indigenous communities---already lacking adequate housing and infrastructure due to historic underfunding---now face additional climate-driven deterioration.
+
+\textbf{Coastal communities.} First Nations on the BC and Atlantic coasts face sea-level rise, storm surge intensification, and ocean warming that disrupts the fisheries on which many communities depend economically and culturally. The Ts'msyen Nation of Northern BC, for example, depends on salmon and herring runs that are already shifting in timing and distribution.
+
+\textbf{Fire and smoke.} Wildfire smoke disproportionately affects Indigenous communities because many are in rural or remote locations without the indoor air quality infrastructure available in urban centres. Repeated displacement from wildfires imposes economic and psychological costs on communities that often have limited financial reserves and insurance coverage.
+
+\textbf{Food security.} Many northern and remote Indigenous communities rely heavily on country food (hunting, fishing, gathering) that is being disrupted by changing species distributions, unpredictable weather, and ice conditions. The loss of traditional food systems has both nutritional and cultural dimensions not captured in standard economic damage assessments.
+
+\subsection{Indigenous-Led Climate Solutions}
+
+Indigenous communities are not only climate victims---many are also leaders in the clean energy transition:
+
+\begin{itemize}
+  \item The \textbf{Lac La Ronge Indian Band} in Saskatchewan developed one of Canada's first Indigenous-owned solar energy projects.
+  \item \textbf{Coastal First Nations} in BC have been involved in developing the Pacific Coast Collaborative and advocating for protection of old-growth forests as carbon sinks.
+  \item The \textbf{Tla-o-qui-aht Nation} on Vancouver Island operates a ``Tribal Parks'' model integrating conservation, carbon offsets, and traditional land stewardship.
+  \item Multiple BC First Nations are exploring small-scale hydro and wind projects on their territories as sources of own-source revenue aligned with cultural values.
+\end{itemize}
+
+UNDRIP's Free, Prior and Informed Consent requirement means that large-scale clean energy projects (transmission lines, wind farms, hydro projects) on traditional territories require genuine Indigenous engagement---not just consultation. Well-designed projects that include revenue sharing, employment, and co-ownership are more likely to gain consent and to generate lasting economic benefit for communities.
+
+%----------------------------------------------------------
+\section{Canada's Emissions Profile and Pathway}
+%----------------------------------------------------------
+
+\begin{databox}{Canada's Greenhouse Gas Emissions Profile}
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Sector} & \textbf{Mt CO$_2$-eq (2021)} & \textbf{Share (\%)} \\
+\midrule
+Oil and gas & 188 & 28 \\
+Transportation & 174 & 25 \\
+Heavy industry & 79 & 11 \\
+Buildings & 90 & 13 \\
+Agriculture & 62 & 9 \\
+Electricity & 61 & 9 \\
+Waste and other & 30 & 5 \\
+\midrule
+\textbf{Total} & \textbf{670} & \textbf{100} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Canada's 2030 target: 40--45\% reduction below 2005 levels ($\approx$443--450 Mt).\\
+Canada's 2005 baseline: 744 Mt.\\
+Current trajectory (without additional policy): approximately 580--600 Mt by 2030---well short of the target.
+\source{Environment and Climate Change Canada, National Inventory Report, 2023.}
+\end{databox}
+
+Canada's largest emissions source is the oil and gas sector (28\%), reflecting Canada's status as a major fossil fuel producer. This creates a distinctive policy tension: Canada both exports fossil fuels and has committed to aggressive emissions reduction. Unlike Germany (a major coal producer that has committed to phase-out) or Norway (which exports oil while running on near-100\% renewable electricity domestically), Canada has not yet resolved this tension---it continues to expand oil and gas production while also expanding carbon pricing and clean energy investment.
+
+%----------------------------------------------------------
+\section{Policy Debate}
+%----------------------------------------------------------
+
+\begin{policydebate}{Is Canada's Carbon Price High Enough?}
+
+\textbf{The Issue}
+
+Canada's carbon price will reach \$170 per tonne of CO$_2$ by 2030---rising from \$65/tonne in 2024. The federal government argues this trajectory is sufficient to meet Canada's 2030 emissions targets. Critics argue the price is either too high (harming economic competitiveness) or too low (insufficient to drive the necessary emissions reductions). What does the economics say?
+
+\vspace{8pt}
+\textbf{Side A: The Carbon Price Should Be Higher (or Complemented by Stronger Policy)}
+
+\begin{itemize}
+  \item \textbf{Social cost of carbon:} The most recent academic estimates of the SCC (Rennert et al., \textit{Nature}, 2022: USD 185/tonne) suggest that even Canada's 2030 price of \$170/tonne CAD may still be below the social cost of emissions.
+  \item \textbf{Inadequate to meet targets:} The Parliamentary Budget Officer and independent modelling suggest Canada is unlikely to meet its 2030 target (\$443--450 Mt) under current policies. A higher or extended carbon price trajectory would help close the gap.
+  \item \textbf{Complements are necessary:} Even at \$170/tonne, some behavioural changes (e.g., abandoning existing gas-heated homes, switching to EVs before the cost premium disappears) may be insufficient without additional regulations and subsidies.
+  \item \textbf{Equity argument:} Delaying adequate climate action passes costs to future generations---a distributional injustice that current economics systematically underweights.
+\end{itemize}
+
+\textbf{Side B: The Carbon Price Is High Enough (or Should Not Be Raised Further)}
+
+\begin{itemize}
+  \item \textbf{Competitiveness risk:} Canada's major trading partner (the U.S.) has no equivalent national carbon price. Canadian manufacturers in tradeable sectors face carbon costs their American competitors do not, risking relocation and carbon leakage.
+  \item \textbf{Cost of living:} The carbon tax directly raises energy and fuel costs. While rebates return more than households pay on average, the distributional analysis is sensitive to indirect cost pass-through in food, housing, and goods.
+  \item \textbf{Diminishing returns:} The easy emissions reductions (where the carbon price is sufficient to trigger a change) happen first. Higher prices eventually face technological barriers---there are currently insufficient EVs, heat pumps, and clean electricity to substitute for fossil fuels at any price.
+  \item \textbf{Political sustainability:} A carbon price that generates public backlash and is reversed by a future government achieves nothing. Moderation that preserves political durability may be more effective in the long run than an ambitious price that is subsequently abolished.
+\end{itemize}
+
+\textbf{Evidence and Assessment}
+
+The empirical evidence on Canada's carbon pricing is generally supportive: BC's long-running carbon tax reduced fuel consumption without measurable harm to economic output. But evidence for large-scale transformation of the energy system from carbon prices alone is limited---most major low-carbon transitions in history (nuclear in France, offshore wind in Denmark) have involved sustained public investment and regulatory mandates alongside or instead of pricing.
+
+The most defensible economic position is that carbon pricing is necessary but not sufficient: a \$170/tonne carbon price combined with investment tax credits, clean electricity regulations, EV mandates, and building codes is more likely to meet Canada's targets than carbon pricing alone, at any realistic price level.
+\end{policydebate}
+
+%----------------------------------------------------------
+\section*{Chapter Summary}
+%----------------------------------------------------------
+
+\begin{itemize}
+  \item \textbf{Climate change is a negative externality}: fossil fuel combustion imposes costs (warming, extreme weather, sea level rise) on the world that emitters do not pay. Markets left alone produce too many emissions. The gap between private and social cost is the rationale for government intervention.
+  \item The \textbf{global commons problem} compounds the externality: the benefits of emissions reduction are non-excludable and non-rival, creating free-rider incentives and necessitating international cooperation (e.g., the Paris Agreement).
+  \item The \textbf{social cost of carbon (SCC)}---the economic value of the damage from one additional tonne of CO$_2$---is the benchmark for evaluating climate policies. Estimates range widely (\$85--\$300+/tonne) due to uncertainty about discount rates, climate sensitivity, and damage functions.
+  \item The two main market-based policy instruments are \textbf{carbon taxes} (fix price, quantity adjusts) and \textbf{cap-and-trade} (fix quantity, price adjusts). Both achieve least-cost abatement; the choice depends on which dimension---price or quantity---is more important to control under uncertainty.
+  \item Canada's \textbf{federal carbon pricing system} combines a consumer fuel charge (rising to \$170/tonne by 2030) and an industrial Output-Based Pricing System. The Canada Carbon Rebate returns fuel charge revenue to households, with lower-income households receiving more than they pay on average.
+  \item \textbf{Green industrial policy} (investment tax credits, clean electricity regulations, EV mandates) is needed alongside carbon pricing to address knowledge spillovers, learning-by-doing effects, and coordination failures in the clean energy transition.
+  \item \textbf{Mitigation} (reducing emissions) and \textbf{adaptation} (adjusting to locked-in climate change) are both necessary. Canada is investing in wildfire management, flood infrastructure, and updated engineering standards as adaptation measures.
+  \item \textbf{Carbon leakage} occurs when emissions-intensive industries relocate to unpriced jurisdictions. Canada's OBPS partially addresses this; a carbon border adjustment mechanism is under exploration.
+  \item \textbf{Indigenous communities} in Canada are disproportionately exposed to climate change impacts (permafrost, wildfire, coastal change, food insecurity) while contributing least to emissions. Indigenous-led clean energy projects offer a model that combines reconciliation, economic development, and climate action.
+  \item Canada's oil and gas sector accounts for approximately \textbf{28\% of national emissions}---the largest single source. Reconciling continued fossil fuel production with climate commitments remains Canada's most difficult and unresolved climate policy tension.
+\end{itemize}
+
+%----------------------------------------------------------
+\section*{Review Questions}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item \textbf{(Concept)} Explain why climate change constitutes a negative externality. Draw a diagram showing the marginal private cost, marginal social cost, and marginal social benefit of greenhouse gas emissions. Identify: (a) the unregulated market equilibrium; (b) the socially optimal level of emissions; (c) the deadweight loss from unpriced emissions; (d) the optimal Pigouvian tax.
+
+\item \textbf{(Concept)} Why does climate change involve a global commons problem? Explain the free-rider problem as it applies to international climate agreements. Why is this problem particularly difficult to solve, and what does the Paris Agreement do to address it?
+
+\item \textbf{(Application)} Compare a carbon tax and a cap-and-trade system. Under what conditions would a policymaker prefer a carbon tax? Under what conditions would they prefer cap-and-trade? What does the answer depend on?
+
+\item \textbf{(Application)} Using the Data Spotlight on the Canada Carbon Rebate (Section~7.4), explain how the design of the rebate affects its distributional impact. Why do lower-income households receive more in rebate than they pay in direct carbon tax? What would happen to this distributional analysis if the tax were much higher?
+
+\item \textbf{(Critical Thinking)} Canada is a major fossil fuel producer and exporter---oil and gas represent a significant share of Canadian exports and government revenues. How does this fact complicate Canada's pursuit of its 2030 climate targets? Is it consistent for Canada to simultaneously expand oil sands production and pursue a \$170/tonne carbon price?
+
+\item \textbf{(Application)} Explain the concept of carbon leakage. How does Canada's Output-Based Pricing System for large industrial emitters address the leakage problem? What are its limitations?
+
+\item \textbf{(Critical Thinking)} Section~7.7 describes how Indigenous communities are disproportionately affected by climate change. Using economic reasoning, explain why standard benefit-cost analyses of climate policy may systematically underestimate the costs borne by Indigenous Canadians. What adjustments to standard analysis would be needed to incorporate these costs?
+
+\end{enumerate}
+
+%----------------------------------------------------------
+\section*{Discussion Questions}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item The carbon tax has become politically controversial in Canada, despite evidence from the Parliamentary Budget Officer that most households receive more in rebates than they pay in direct carbon costs. How do you explain this apparent contradiction? What does it tell us about the political economy of climate policy?
+
+\item Should Canada ban new oil sands development as a climate commitment, given that Canada has made a national pledge to achieve net-zero emissions by 2050? Consider the economic effects on Alberta, Indigenous communities, federal revenues, and Canada's international credibility.
+
+\item Many First Nations communities support clean energy development on their territories as a source of revenue and economic development. At the same time, some oppose large infrastructure projects (pipelines, dams, transmission lines) citing environmental and cultural concerns. Is there a way to design a clean energy transition that respects Indigenous rights under UNDRIP while achieving Canada's climate goals?
+
+\end{enumerate}
+
+%----------------------------------------------------------
+\section*{Exercises}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item \textbf{Carbon Tax Calculation Exercise.} Canada's carbon price is \$65/tonne of CO$_2$-equivalent in 2024, rising by \$15/tonne per year to reach \$170/tonne in 2030.
+  \begin{enumerate}[(a)]
+    \item One litre of gasoline emits approximately 2.3 kg of CO$_2$ when burned. Calculate the carbon tax per litre at the 2024 rate. At the 2030 rate.
+    \item If a Canadian family drives 18,000 km per year in a vehicle averaging 9 litres per 100 km, how much carbon tax do they pay on gasoline in 2024? In 2030?
+    \item The Canada Carbon Rebate for a family of four in BC is approximately \$1,840/year (2024). Based on your calculation in (b), is this family a net payer or net beneficiary of the carbon pricing system in 2024? (Consider gasoline only for simplicity.)
+  \end{enumerate}
+
+\item \textbf{Externality Diagram Exercise.} Draw a fully labeled supply-demand diagram for the market for coal electricity in Canada. Label the marginal private cost (MPC), marginal social cost (MSC = MPC + damage), and marginal social benefit (MSB = demand) curves.
+  \begin{enumerate}[(a)]
+    \item Identify the market equilibrium and the socially optimal output level.
+    \item Show and label the deadweight loss from the negative externality.
+    \item Show how a Pigouvian tax set at the social cost of carbon would shift the market to the optimal outcome. Label the tax.
+    \item If the social cost of carbon is \$185 USD/tonne and coal emits approximately 0.9 tonnes of CO$_2$ per MWh of electricity, what is the appropriate Pigouvian tax per MWh? (Assume 1 USD $\approx$ 1.35 CAD.)
+  \end{enumerate}
+
+\item \textbf{Data Exercise.} Visit Environment and Climate Change Canada's website and find Canada's most recent National Inventory Report. Report: (a) Canada's total GHG emissions in the most recent year available; (b) the change since 2005 (the baseline year); (c) the sector with the largest single contribution; (d) the change in oil and gas sector emissions since 2005. Compare Canada's trajectory to its 2030 target. Is Canada on track?
+
+\item \textbf{Policy Essay (600 words).} Evaluate Canada's climate policy as of 2027. Your essay should: (a) describe the main components of federal climate policy (carbon pricing, clean electricity, ITCs); (b) assess whether these policies are likely to achieve Canada's 2030 emissions reduction target; (c) identify the most significant gap in Canada's current approach; and (d) propose one additional policy that you think would meaningfully improve the chances of meeting the 2030 target, justifying your choice with economic reasoning.
+
+\end{enumerate}

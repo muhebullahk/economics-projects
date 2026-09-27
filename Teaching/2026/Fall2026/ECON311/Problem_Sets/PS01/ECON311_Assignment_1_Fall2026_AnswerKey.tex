@@ -1,0 +1,334 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{grffile}
+\usepackage{relsize}
+\usepackage{tablefootnote}
+\usepackage{footnote}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[multiple]{footmisc}
+\usepackage{appendix}
+\usepackage{times}
+\usepackage{relsize}
+\usepackage{caption}
+\usepackage{newtxtext,newtxmath}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing}
+
+\definecolor{sol}{RGB}{0,80,160}
+
+\title{ECON311: Assignment I --- Solutions}
+\author{}
+\date{Fall 2026}
+
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]{\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{1\defbaselineskip}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+\textwidth=6.5in
+\textheight=9in
+\oddsidemargin=0.10in
+\evensidemargin=0.10in
+\topmargin=-0.5in
+
+\begin{document}
+\pagenumbering{arabic}
+\maketitle
+\vspace{-.4in}
+
+%----------------------------------------------------------------------
+\section*{Question I: National Income Accounting [10 points]}
+%----------------------------------------------------------------------
+
+\subsection*{(a) Expenditure Approach [4 points]}
+
+Identify each GDP component:
+\begin{eqnarray*}
+C &=& \$4{,}000 \text{ (household consumption)} \\
+I &=& \$1{,}700 + \$200 = \$1{,}900 \text{ (gross fixed investment + inventory accumulation)} \\
+G &=& \$2{,}200 \text{ (government purchases of goods and services only)} \\
+NX &=& \$1{,}000 - \$700 = \$300 \text{ (exports minus imports)}
+\end{eqnarray*}
+
+\textcolor{sol}{
+\[
+GDP = C + I + G + NX = 4{,}000 + 1{,}900 + 2{,}200 + 300 = \$8{,}400 \text{ billion}
+\]
+}
+
+\noindent\textbf{Transfer payments:} The \$500 in government transfer payments (pensions, social assistance) is \textbf{not} counted in $G$ and therefore not in GDP. Transfers are pure redistributions of income: no new good or service is produced in exchange. Including them would double-count the associated spending, which is already captured in $C$ when households use transfers to purchase consumption goods.
+
+\noindent\textbf{Net investment:}
+\[
+I_{net} = I_{gross} - \text{Depreciation} = \$1{,}900 - \$1{,}200 = \textcolor{sol}{\$700 \text{ billion}}
+\]
+
+\subsection*{(b) Income Approach [3 points]}
+
+\textcolor{sol}{
+\[
+GDP = \text{Wages} + \text{Profits} + \text{Depreciation} = \$5{,}000 + \$2{,}200 + \$1{,}200 = \$8{,}400 \text{ billion} \checkmark
+\]
+}
+
+\noindent Both approaches yield the same answer. This is not a coincidence: in any economy the circular flow of income ensures that every dollar spent on a good or service becomes a dollar of income to the factors that produced it. GDP measures total value added, which is simultaneously total expenditure and total factor income. (In practice, a statistical discrepancy may arise, but conceptually the two measures are identical by national income accounting identities.)
+
+\subsection*{(c) GDP Deflator and Inflation [3 points]}
+
+\textcolor{sol}{
+\[
+GDP^{deflator}_{2025} = \frac{NGDP_{2025}}{RGDP_{2025}} \times 100 = \frac{8{,}400}{8{,}000} \times 100 = \mathbf{105}
+\]
+}
+
+Since 2024 is the base year, $GDP^{deflator}_{2024} = 100$ and $NGDP_{2024} = RGDP_{2024}$ by construction.
+
+\textcolor{sol}{
+\[
+\text{Inflation}_{2024 \to 2025} = \frac{GDP^{deflator}_{2025} - GDP^{deflator}_{2024}}{GDP^{deflator}_{2024}} \times 100 = \frac{105 - 100}{100} \times 100 = \mathbf{5\%}
+\]
+}
+
+The GDP deflator measures the average price level of all goods and services included in GDP. An increase from 100 to 105 means prices of domestically produced output rose by 5\% between 2024 and 2025.
+
+
+%----------------------------------------------------------------------
+\section*{Question II: Cross-Country Development [30 points]}
+%----------------------------------------------------------------------
+
+\noindent Data source: World Bank Development Indicators. Countries: Canada and South Korea, 1995--2022.
+
+\subsection*{(a) Plotting and Comparison of the Two Series [10 points]}
+
+Students should produce two graphs. The constant 2015 USD series will show a consistently large and relatively stable gap between Canada and South Korea over the full period (Canada roughly \$40{,}000--\$50{,}000; South Korea starting near \$14{,}000 and rising to roughly \$35{,}000). The PPP series will show a smaller gap: South Korea's PPP income is higher than its constant-USD income because the Korean price level is lower, making each dollar of income buy more.
+
+\textbf{Which series is better?} The PPP-adjusted series is better for comparing living standards. GDP at constant exchange-rate prices reflects nominal differences amplified by price level disparities. Countries with lower price levels appear poorer than they truly are in terms of purchasing power. PPP adjusts for this by valuing each country's output at a common set of international prices, so a given basket of goods costs the same amount regardless of country. Because households care about what their income can buy, the PPP series is the appropriate welfare measure for cross-country comparisons.
+
+\subsection*{(b) Capital per Worker Ratio and Convergence [10 points]}
+
+\noindent From the production function $Y = \overline{A}(K)^{1/3}(L)^{2/3}$ and the assumption $\overline{A}$ is equal across countries:
+\[
+y = \overline{A}\,k^{1/3} \quad \Longrightarrow \quad \frac{k_{CAN}}{k_{KOR}} = \left(\frac{y_{CAN}}{y_{KOR}}\right)^{3}
+\]
+
+Students compute this ratio for each year using PPP GDP per capita. The ratio should be declining over time, reflecting South Korea's rapid capital deepening relative to Canada. This is consistent with the Solow model's conditional convergence prediction: countries below their steady state accumulate capital faster than those near theirs.
+
+\textbf{Does this measure actual capital differences?} No. The calculation assumes identical TFP ($\overline{A}$) across countries, which is almost certainly false. Canada has developed institutions, infrastructure, and human capital that likely give it higher TFP. If $\overline{A}_{CAN} > \overline{A}_{KOR}$, then Canada produces more output per worker for a given $k$, so the implied capital gap $k_{CAN}/k_{KOR}$ overstates the true physical capital difference. As discussed in class, income differences reflect both capital and TFP differences; attributing all differences to capital alone is a misspecification.
+
+\subsection*{(c) Growth Rates and Convergence Time [10 points]}
+
+\noindent\textbf{Methodology:}
+
+Let $y_0$ denote GDP per capita PPP in 1995 and $y_T$ denote GDP per capita PPP in 2022 ($T = 27$ years).
+
+\[
+\bar{g}_{KOR} = \left(\frac{y_{KOR,2022}}{y_{KOR,1995}}\right)^{\!\frac{1}{27}} - 1, \qquad \bar{g}_{CAN} = \left(\frac{y_{CAN,2022}}{y_{CAN,1995}}\right)^{\!\frac{1}{27}} - 1
+\]
+
+\noindent Assuming South Korea grows at $\bar{g}_{KOR}$ indefinitely from 2022, the number of additional years to reach Canada's 2022 income is:
+\[
+T^* = \frac{\ln\!\left(y_{CAN,2022}\,/\,y_{KOR,2022}\right)}{\ln(1+\bar{g}_{KOR})}
+\]
+
+\noindent\textit{Note:} Specific numerical answers depend on the data downloaded. The methodology above is what will be assessed. A fully correct solution presents growth rate calculations from actual downloaded data, computes $T^*$ using the formula above, and discusses whether the result is consistent with the convergence trend identified in part (b).
+
+
+%----------------------------------------------------------------------
+\section*{Question III: Growth Accounting [10 points]}
+%----------------------------------------------------------------------
+
+\noindent Model: $Y = \overline{A}(K)^{1/3}(L)^{2/3}$. Growth accounting identity: $g_Y \approx g_A + \frac{1}{3}g_K + \frac{2}{3}g_L$.
+
+\subsection*{(a) GDP Growth Decomposition [5 points]}
+
+\textbf{Economy Alpha} ($g_Y=3.0\%$, $g_K=4.5\%$, $g_L=1.5\%$):
+\begin{eqnarray*}
+\text{Capital contribution} &=& \tfrac{1}{3} \times 4.5\% = \textcolor{sol}{1.5\%} \\
+\text{Labour contribution}  &=& \tfrac{2}{3} \times 1.5\% = \textcolor{sol}{1.0\%} \\
+g_A                         &=& 3.0\% - 1.5\% - 1.0\% = \textcolor{sol}{0.5\%} \\
+\text{TFP share}            &=& 0.5\% / 3.0\% = \textcolor{sol}{1/6 \approx 16.7\%}
+\end{eqnarray*}
+
+\textbf{Economy Beta} ($g_Y=6.0\%$, $g_K=6.0\%$, $g_L=0\%$):
+\begin{eqnarray*}
+\text{Capital contribution} &=& \tfrac{1}{3} \times 6.0\% = \textcolor{sol}{2.0\%} \\
+\text{Labour contribution}  &=& \tfrac{2}{3} \times 0.0\% = \textcolor{sol}{0.0\%} \\
+g_A                         &=& 6.0\% - 2.0\% - 0.0\% = \textcolor{sol}{4.0\%} \\
+\text{TFP share}            &=& 4.0\% / 6.0\% = \textcolor{sol}{2/3 \approx 66.7\%}
+\end{eqnarray*}
+
+\noindent Beta relies far more on TFP. Despite twice the GDP growth rate with zero labour force growth, Beta achieves this through technological dynamism. Alpha's growth is primarily driven by factor accumulation (adding capital and workers); Beta's growth is driven by doing more with existing factors. In the long run, factor accumulation faces diminishing returns and cannot sustain growth alone, making TFP-driven growth (as in Beta) more sustainable.
+
+\subsection*{(b) Per Capita Growth Decomposition [5 points]}
+
+Using $g_y = g_Y - g_L$ and the per-capita identity $g_y = g_A + \frac{1}{3}(g_K - g_L)$:
+
+\textbf{Economy Alpha:}
+\[
+g_y = 3.0\% - 1.5\% = \textcolor{sol}{1.5\%}
+\]
+\begin{eqnarray*}
+\text{Capital deepening} &=& \tfrac{1}{3}(4.5\% - 1.5\%) = \tfrac{1}{3}(3.0\%) = \textcolor{sol}{1.0\%} \\
+\text{TFP}               &=& g_A = \textcolor{sol}{0.5\%} \quad \checkmark \; (1.0\% + 0.5\% = 1.5\%)
+\end{eqnarray*}
+
+\textbf{Economy Beta:}
+\[
+g_y = 6.0\% - 0.0\% = \textcolor{sol}{6.0\%}
+\]
+\begin{eqnarray*}
+\text{Capital deepening} &=& \tfrac{1}{3}(6.0\% - 0.0\%) = \textcolor{sol}{2.0\%} \\
+\text{TFP}               &=& g_A = \textcolor{sol}{4.0\%} \quad \checkmark \; (2.0\% + 4.0\% = 6.0\%)
+\end{eqnarray*}
+
+\noindent \textbf{Comment:} In Alpha, capital deepening (accumulating more capital per worker) accounts for $2/3$ of per-capita growth while TFP accounts for $1/3$. In Beta, TFP accounts for $2/3$ of per-capita growth. Since the Solow model predicts that capital deepening slows as $k$ approaches its steady state, Alpha faces diminishing growth prospects from this channel. Beta's TFP-driven growth, by contrast, does not face such limits in the long run (as the Romer model suggests).
+
+
+%----------------------------------------------------------------------
+\section*{Question IV: Technology and the Solow Model [15 points]}
+%----------------------------------------------------------------------
+
+\noindent Production function: $Y = \overline{A}K^{1/3}\overline{L}^{2/3}$, with $\overline{L}$ fixed and $\overline{A}$ jumping to $\overline{A}' > \overline{A}$ at $t_0$.
+
+\subsection*{Steady States}
+
+Initial steady state: $s\overline{A}(k^*)^{1/3} = \overline{d}\,k^*$, giving:
+\[
+k^* = \!\left(\frac{s\overline{A}}{\overline{d}}\right)^{\!3/2}, \quad y^* = \overline{A}(k^*)^{1/3} = \overline{A}\!\left(\frac{s\overline{A}}{\overline{d}}\right)^{\!1/2}
+\]
+
+New steady state after TFP shock:
+\[
+k^{*\prime} = \!\left(\frac{s\overline{A}'}{\overline{d}}\right)^{\!3/2} > k^*, \qquad y^{*\prime} = \overline{A}'\!\left(\frac{s\overline{A}'}{\overline{d}}\right)^{\!1/2} > y^*
+\]
+
+And $K^{*\prime} = \overline{L}\,k^{*\prime} > K^*$, $\quad Y^{*\prime} = \overline{L}\,y^{*\prime} > Y^*$.
+
+\subsection*{(i) Solow Diagram}
+
+The diagram shows the following shifts:
+
+\begin{itemize}
+  \item Production function: $Y = \overline{A}K^{1/3}\overline{L}^{2/3}$ shifts \textbf{upward} to $Y' = \overline{A}'K^{1/3}\overline{L}^{2/3}$ (same curvature, higher level for all $K>0$).
+  \item Investment curve: $sY$ shifts \textbf{upward} to $sY'$ (proportional shift; for any given $K$, more output means more saving).
+  \item Depreciation line: $\overline{d}K$ is \textbf{unchanged} (a straight line through the origin).
+  \item New intersection: $sY'$ crosses $\overline{d}K$ at $K^{*\prime} > K^*$.
+\end{itemize}
+
+Immediately after the shock, the economy is at $K = K^*$ (capital cannot jump): output jumps upward from $\overline{A}(K^*)^{1/3}\overline{L}^{2/3}$ to $\overline{A}'(K^*)^{1/3}\overline{L}^{2/3}$ on the diagram.
+
+\subsection*{(ii) Time-Path Diagrams}
+
+\noindent\textbf{Capital} $K$ \textbf{and capital per worker} $k$:
+
+At $t_0$, $K = K^*$ and $k = k^*$ — \textbf{no jump}. Immediately after, investment exceeds depreciation (since $sY' > \overline{d}K^*$ at the new higher $Y'$), so $K$ and $k$ begin rising. They increase monotonically, converging to $K^{*\prime}$ and $k^{*\prime}$, with growth slowing as the new steady state is approached. The time paths are S-shaped curves starting at $K^*$ and asymptoting to $K^{*\prime}$.
+
+\noindent\textbf{Output} $Y$ \textbf{and output per worker} $y$:
+
+At $t_0$, $Y$ and $y$ \textbf{jump immediately} to $\overline{A}'(K^*)^{1/3}\overline{L}^{2/3}$ and $\overline{A}'(k^*)^{1/3}$, respectively. This is a discrete upward jump. After $t_0$, as $K$ gradually accumulates, $Y$ and $y$ continue to rise (at a decreasing rate) until they converge to $Y^{*\prime}$ and $y^{*\prime}$.
+
+The time path of $Y$ has a \textbf{kink} (a discrete jump) at $t_0$, followed by a smooth concave approach to the new steady state.
+
+\subsection*{(iii) Contrast with a Savings Rate Increase}
+
+\textbf{Why does output jump at $t_0$ after a TFP shock but not after a savings rate shock?}
+
+\begin{itemize}
+  \item \textbf{TFP shock} ($\overline{A} \to \overline{A}'$): Total factor productivity enters the production function multiplicatively: $Y = \overline{A}'\,K^{1/3}\overline{L}^{2/3}$. At the instant of the shock, the capital stock $K = K^*$ and labour $\overline{L}$ are unchanged, but the productivity of every unit of capital and labour increases immediately. Hence output jumps at $t_0$ even before any new capital has accumulated.
+
+  \item \textbf{Savings rate shock} ($\overline{s} \to \overline{s}'$): A higher savings rate increases the fraction of output invested, but it does \textbf{not} change the production function. At $t_0$, with $K = K^*$, output is still $\overline{A}(K^*)^{1/3}\overline{L}^{2/3}$ — unchanged. Capital begins accumulating faster, but output only rises gradually as $K$ rises. There is \textbf{no immediate jump} in $Y$ or $y$.
+\end{itemize}
+
+In short: a savings rate shock changes the \emph{rate at which the economy invests}, but the production function is unchanged, so output responds only through gradual capital accumulation. A TFP shock changes the \emph{productive capacity of existing factors}, so output responds immediately.
+
+
+%----------------------------------------------------------------------
+\section*{Question V: Endogenous Growth with a Growing Labour Force [15 points]}
+%----------------------------------------------------------------------
+
+\noindent Model: $Y_t = \overline{A}\,K_t$, $\; L_{t+1} = (1+n)L_t$.
+
+\subsection*{(a) Capital Accumulation and Solow Diagram [5 points]}
+
+\noindent\textbf{Capital accumulation equation:}
+\[
+K_{t+1} = K_t + \overline{s}\,Y_t - \overline{d}\,K_t = (1 + \overline{s}\overline{A} - \overline{d})\,K_t
+\]
+
+In per-worker terms ($k_t = K_t/L_t$):
+\[
+k_{t+1} = \frac{K_{t+1}}{L_{t+1}} = \frac{(1 + \overline{s}\overline{A} - \overline{d})\,K_t}{(1+n)\,L_t} = \frac{(1 + \overline{s}\overline{A} - \overline{d})}{1+n}\,k_t
+\]
+
+\textcolor{sol}{
+\[
+\Delta k_{t+1} = k_{t+1} - k_t = \left[\frac{\overline{s}\overline{A} - \overline{d} - n}{1+n}\right]k_t
+\]
+}
+
+\noindent\textbf{Solow diagram} (horizontal axis $k_t$, vertical axis $y_t$ or investment/required investment per worker):
+
+\begin{itemize}
+  \item Per-worker production: $y_t = \overline{A}\,k_t$ — a straight ray through the origin with slope $\overline{A}$.
+  \item Investment per worker: $\overline{s}\,y_t = \overline{s}\overline{A}\,k_t$ — a straight ray with slope $\overline{s}\overline{A} < \overline{A}$.
+  \item Required investment per worker (to maintain $k$ constant in the face of depreciation and population growth): $(\overline{d}+n)\,k_t$ — a straight ray with slope $\overline{d}+n$.
+\end{itemize}
+
+Both the investment and required-investment lines pass through the origin and are linear. They intersect only at $k=0$.
+
+\subsection*{(b) Evolution for Two Cases [5 points]}
+
+\noindent\textbf{Case (i):} $\overline{s}\overline{A} > \overline{d} + n$
+
+The investment line $\overline{s}\overline{A}\,k$ lies \textbf{above} the required-investment line $(\overline{d}+n)k$ for all $k > 0$. Therefore $\Delta k > 0$ for all $k_0 > 0$: capital per worker increases without bound. There is no stable steady state (other than the trivial $k=0$). Starting from any $k_0 > 0$, the economy grows indefinitely. Both $k$ and $y = \overline{A}k$ rise forever. Time paths: $k_t$ and $y_t$ grow exponentially at constant rate $g_k = (\overline{s}\overline{A} - \overline{d} - n)/(1+n)$.
+
+\noindent\textbf{Interpretation:} Saving and TFP together are strong enough to offset both depreciation and the dilution of capital by a growing population. The economy sustains permanently rising living standards.
+
+\noindent\textbf{Case (ii):} $\overline{s}\overline{A} < \overline{d} + n$
+
+The investment line lies \textbf{below} the required-investment line for all $k > 0$. Therefore $\Delta k < 0$ for all $k_0 > 0$: capital per worker falls toward zero. Both $k_t$ and $y_t$ decline over time, converging to zero.
+
+\noindent\textbf{Interpretation:} The population is growing so fast (or saving/productivity is so low) that the economy cannot maintain capital per worker. The capital stock is diluted by new workers faster than saving can replenish it. Per-capita output collapses.
+
+\subsection*{(c) Condition and Growth Rate [5 points]}
+
+From the capital accumulation equation:
+\[
+k_{t+1} = \frac{1 + \overline{s}\overline{A} - \overline{d}}{1+n}\,k_t \equiv (1 + g_k)\,k_t
+\]
+
+\textcolor{sol}{
+\[
+g_y = g_k = \frac{\overline{s}\overline{A} - \overline{d} - n}{1+n} \approx \overline{s}\overline{A} - \overline{d} - n \quad \text{(for small rates)}
+\]
+}
+
+\textbf{Condition for sustained positive per-capita growth:}
+\[
+\textcolor{sol}{\overline{s}\overline{A} > \overline{d} + n}
+\]
+
+\textbf{Comparison with the standard Solow model} ($Y_t = \overline{A}K_t^{1/3}L^{2/3}$):
+
+In the standard Solow model, capital exhibits diminishing returns: the marginal product of capital declines as $k$ rises. Consequently, as $k$ increases, the extra output from a unit of new capital falls, eventually equalling only the amount needed to offset depreciation and population growth. At this point, $k$ stops growing ($\Delta k = 0$) and we reach a stable steady state where $g_y = 0$ in the long run. Sustained per-capita growth in the standard Solow model requires exogenous TFP growth.
+
+In the AK model, the marginal product of capital is the constant $\overline{A}$ (no diminishing returns). Capital deepening never encounters the diminishing-returns brake. Population growth at rate $n$ still dilutes capital, raising the threshold for sustained growth from $\overline{s}\overline{A} > \overline{d}$ (without population growth) to $\overline{s}\overline{A} > \overline{d} + n$ (with it). But provided this condition holds, per-capita growth is permanently positive and constant — independent of $k$ and hence independent of the level of development. This is the hallmark of an \emph{endogenous growth} model: long-run growth is determined by deep economic parameters ($\overline{s}$, $\overline{A}$, $\overline{d}$, $n$) rather than by exogenous forces.
+
+\end{document}

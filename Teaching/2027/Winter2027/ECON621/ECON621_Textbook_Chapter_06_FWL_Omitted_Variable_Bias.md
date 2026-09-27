@@ -1,0 +1,378 @@
+# Chapter 6: The Frisch-Waugh-Lovell Theorem and Omitted Variable Bias
+
+---
+
+## Chapter Overview
+
+Chapter 3 introduced the Frisch-Waugh-Lovell (FWL) Theorem as a result about the algebra of OLS. This chapter makes the theorem earn its keep: it is the key tool for understanding **omitted variable bias (OVB)** — the most important source of endogeneity in applied work. We derive the OVB formula, discuss its direction and magnitude, and explain the difference between bad and good controls. We also cover proxy variables and the concept of "bad controls" — variables that, when included, can actually increase bias rather than reduce it.
+
+---
+
+## Learning Objectives
+
+After completing this chapter, students will be able to:
+
+1. Formally state and prove the **Frisch-Waugh-Lovell (FWL) Theorem**.
+2. Derive the **omitted variable bias (OVB) formula** and use it to sign the direction of bias.
+3. Explain when a control variable reduces bias vs. when it introduces bias ("bad controls").
+4. Distinguish between "bad controls" and "good controls."
+5. Explain the concept of a **proxy variable** and when it is useful.
+6. Apply these concepts to empirical examples in wages, health, and education.
+
+---
+
+## 6.1 Partitioned Regression and the FWL Theorem
+
+We proved the FWL Theorem in Chapter 3. Here we develop its implications more carefully.
+
+**Setup:** Partition the regression:
+
+$$\mathbf{y} = \mathbf{X}_1 \boldsymbol{\beta}_1 + \mathbf{X}_2 \boldsymbol{\beta}_2 + \mathbf{u}$$
+
+where $\mathbf{X}_1$ is $n \times k_1$ ("control variables") and $\mathbf{X}_2$ is $n \times k_2$ ("variables of interest").
+
+**Theorem 6.1 (Frisch-Waugh-Lovell):** The OLS estimate $\hat{\boldsymbol{\beta}}_2$ from the full regression equals the OLS estimate from regressing $\tilde{\mathbf{y}} = \mathbf{M}_{X_1}\mathbf{y}$ on $\tilde{\mathbf{X}}_2 = \mathbf{M}_{X_1}\mathbf{X}_2$:
+
+$$\hat{\boldsymbol{\beta}}_2 = (\tilde{\mathbf{X}}_2^T \tilde{\mathbf{X}}_2)^{-1} \tilde{\mathbf{X}}_2^T \tilde{\mathbf{y}}$$
+
+**Economic interpretation of "residualizing":**
+
+- $\tilde{\mathbf{y}} = \mathbf{M}_{X_1}\mathbf{y}$: the part of $y$ that is NOT linearly predictable from $\mathbf{X}_1$.
+- $\tilde{\mathbf{X}}_2 = \mathbf{M}_{X_1}\mathbf{X}_2$: the part of $\mathbf{X}_2$ that is NOT linearly predictable from $\mathbf{X}_1$.
+
+The FWL regression asks: *among the remaining variation in $\mathbf{X}_2$ after removing what $\mathbf{X}_1$ can predict, how much of the remaining variation in $y$ does it explain?*
+
+This is exactly what we mean by "controlling for $\mathbf{X}_1$" — we remove the linear influence of $\mathbf{X}_1$ on both $y$ and $\mathbf{X}_2$ before asking about the relationship between $\mathbf{X}_2$ and $y$.
+
+---
+
+## 6.2 Omitted Variable Bias
+
+The most important implication of the FWL Theorem is for **omitted variable bias (OVB)**: what happens to estimated coefficients when we leave out a variable that belongs in the model?
+
+### 6.2.1 The Setup
+
+Suppose the true model is:
+
+$$y_i = \beta_1 + \beta_2 x_i + \beta_3 z_i + u_i \tag{Long}$$
+
+but we instead estimate the **short regression**:
+
+$$y_i = \tilde{\beta}_1 + \tilde{\beta}_2 x_i + v_i \tag{Short}$$
+
+What is the relationship between $\hat{\tilde{\beta}}_2$ (from the short regression) and $\hat{\beta}_2$ (from the long regression)?
+
+### 6.2.2 The OVB Formula
+
+**Theorem 6.2 (Omitted Variable Bias):** The short-regression coefficient satisfies:
+
+$$\hat{\tilde{\beta}}_2 = \hat{\beta}_2 + \hat{\beta}_3 \cdot \hat{\delta}_{zx}$$
+
+where $\hat{\delta}_{zx}$ is the **auxiliary regression coefficient** from regressing $z_i$ on $x_i$ (the slope from OLS of $z$ on $x$).
+
+**In population (probability limits):**
+
+$$\text{plim}(\hat{\tilde{\beta}}_2) = \beta_2 + \beta_3 \cdot \delta_{zx}$$
+
+where $\delta_{zx} = \text{Cov}(x_i, z_i)/V(x_i)$.
+
+The **omitted variable bias** is:
+
+$$\text{OVB} = \underbrace{\beta_3}_{\text{effect of } z \text{ on } y} \cdot \underbrace{\delta_{zx}}_{\text{relationship between } z \text{ and } x}$$
+
+**Proof:** By OLS algebra and the FWL Theorem. The short regression estimates:
+
+$$\hat{\tilde{\beta}}_2 = \frac{\text{Cov}_s(x_i, y_i)}{V_s(x_i)}$$
+
+Substituting $y_i = \beta_1 + \beta_2 x_i + \beta_3 z_i + u_i$ and using properties of covariance:
+
+$$= \beta_2 + \beta_3 \frac{\text{Cov}(x_i, z_i)}{V(x_i)} + \frac{\text{Cov}(x_i, u_i)}{V(x_i)} = \beta_2 + \beta_3 \delta_{zx} \quad \square$$
+
+(where $\text{Cov}(x_i, u_i) = 0$ by the long regression assumption.)
+
+### 6.2.3 Signing the Bias
+
+The OVB formula has two factors. To determine the sign of the bias:
+
+$$\text{sign(OVB)} = \text{sign}(\beta_3) \times \text{sign}(\delta_{zx})$$
+
+| Effect of $z$ on $y$ ($\beta_3$) | Correlation of $x$ and $z$ ($\delta_{zx}$) | OVB | Short regression |
+|---|---|---|---|
+| Positive | Positive | Positive (upward) | Overestimates $\beta_2$ |
+| Positive | Negative | Negative (downward) | Underestimates $\beta_2$ |
+| Negative | Positive | Negative (downward) | Underestimates $\beta_2$ |
+| Negative | Negative | Positive (upward) | Overestimates $\beta_2$ |
+
+**Example 6.1 (Returns to Education):** True model: log wages = $\beta_1 + \beta_2 \cdot \text{educ} + \beta_3 \cdot \text{ability} + u$.
+
+If we omit ability:
+- $\beta_3 > 0$: ability increases wages.
+- $\delta_{zx} > 0$: ability is positively correlated with education.
+- OVB $> 0$: the short regression **overestimates** the return to education.
+
+This is the classical "ability bias" problem in the returns to schooling literature. Simply regressing wages on years of schooling produces an upward-biased estimate because more able people both get more education and earn more.
+
+**Example 6.2 (Class Size and Test Scores):** True model: test scores = $\beta_1 + \beta_2 \cdot \text{classsize} + \beta_3 \cdot \text{income} + u$.
+
+If we omit family income:
+- $\beta_3 > 0$: higher income families have children with higher scores.
+- $\delta_{zx} < 0$: higher income districts have smaller classes.
+- OVB $< 0$: the short regression **overestimates** the negative effect of class size (makes classes seem more harmful than they are).
+
+### 6.2.4 The Multivariate OVB Formula
+
+With multiple omitted variables $\mathbf{z}_i = (z_{1i}, \ldots, z_{mi})^T$:
+
+$$\text{plim}(\hat{\tilde{\beta}}_2) = \beta_2 + \boldsymbol{\beta}_z^T \boldsymbol{\delta}_{zx}$$
+
+where $\boldsymbol{\beta}_z$ is the vector of coefficients on $\mathbf{z}$ in the long regression and $\boldsymbol{\delta}_{zx}$ is the vector of auxiliary regression coefficients. OVB can be positive or negative depending on the signs of all $\beta_{z_j} \delta_{z_j x}$ terms.
+
+---
+
+## 6.3 Bad Controls
+
+A natural response to OVB is to "include more controls." But including too many controls — or the wrong controls — can introduce new biases. Variables that seem like good controls can actually be **bad controls**.
+
+### 6.3.1 What Is a Bad Control?
+
+**Definition 6.1 (Bad Control):** A variable $z_i$ is a **bad control** if it is itself affected by the treatment variable $x_i$ (i.e., $z_i$ is a "mediator" on the causal pathway from $x_i$ to $y_i$, or if it shares unobserved determinants with $y_i$ beyond those that caused $z_i$ to be correlated with $x_i$).
+
+**Canonical example (Angrist and Pischke, 2009):** Suppose we want to estimate the effect of college education ($x$) on wages ($y$). Occupation ($z$) is a potential control variable. But:
+- College education affects the occupation a worker enters.
+- Occupation affects wages.
+- Occupation is thus a **mediator** on the causal path: Education → Occupation → Wages.
+
+If we control for occupation, we are "blocking" part of the causal pathway through which education affects wages. The coefficient on education will **understate** the total effect of education on wages.
+
+### 6.3.2 The Bias from Controlling for a Mediator
+
+When $z_i$ is a mediator:
+
+$$y_i = \beta_1 + \beta_2^{direct} x_i + \beta_3 z_i + u_i$$
+
+where $\beta_2^{direct}$ is the *direct* effect of $x$ on $y$ (not through $z$). But:
+
+$$z_i = \gamma_1 + \gamma_2 x_i + \epsilon_i$$
+
+The **total** effect of $x$ on $y$ is $\beta_2^{direct} + \beta_3 \gamma_2$ (direct + indirect through $z$). Controlling for $z$ recovers only the direct effect.
+
+**Is this wrong?** It depends on the question. If you want the **total** causal effect of education on wages, you should NOT control for occupation. If you want the **direct** effect (not mediated by occupation), you should control for it.
+
+### 6.3.3 Selection into the Control Variable
+
+A more subtle problem arises when the control variable $z_i$ has its own unobserved determinants $w_i$ that also affect $y_i$:
+
+- $x$ → $y$ (the causal path we want)
+- $x$ → $z$ (treatment affects the control)
+- $w$ → $z$ (unobserved factor affects control)
+- $w$ → $y$ (same unobserved factor affects outcome)
+
+Controlling for $z$ can open up a "backdoor" correlation between $x$ and $y$ through $w$. Including $z$ introduces bias from $w$ that wasn't there before.
+
+**Example:** Suppose we want the effect of gender ($x$) on wages ($y$). A naive control might be job title ($z$). But:
+- Gender affects job title (discrimination in promotion).
+- $w$ = unobserved productivity affects both job title and wages.
+- Conditioning on job title opens a spurious path: Gender → Job Title ← Productivity → Wages.
+- This introduces bias rather than removing it.
+
+### 6.3.4 Rules of Thumb for Control Variables
+
+**Good controls:** Pre-treatment variables that affect both $x$ and $y$ but are not affected by $x$. These reduce bias from confounding.
+
+**Bad controls:** Variables that are:
+1. Caused by the treatment $x$ (mediators)
+2. Share unobserved determinants with $y$ beyond their relationship with $x$
+3. Selected into by the same process that creates the endogeneity problem
+
+> **Practical Advice:** Think carefully about the causal structure before choosing controls. A useful framework is the **Directed Acyclic Graph (DAG)**, which visually represents causal relationships and helps identify good and bad controls.
+
+---
+
+## 6.4 Proxy Variables
+
+When the true omitted variable $z_i$ is unobserved, we may have access to a **proxy** — a variable $p_i$ that is correlated with $z_i$ and satisfies certain conditions.
+
+**Definition 6.2 (Proxy Variable):** $p_i$ is a valid proxy for $z_i$ if:
+1. $p_i$ is correlated with $z_i$: $\text{Cov}(p_i, z_i) \neq 0$.
+2. $p_i$ is uncorrelated with the structural error $u_i$ conditional on $z_i$: $E[u_i \mid x_i, z_i, p_i] = E[u_i \mid x_i, z_i]$.
+
+Condition (2) says $p_i$ affects $y_i$ only through $z_i$ — once we control for the underlying unobservable $z_i$, the proxy $p_i$ adds no additional information.
+
+**Example:** In the wage-education model, IQ score ($p_i$) may serve as a proxy for cognitive ability ($z_i$). If IQ only affects wages through its relationship with ability, and doesn't directly affect wages, it satisfies the proxy conditions.
+
+**Limitation:** The OLS estimate using a proxy will generally not recover the true structural coefficient on $x_i$, but it reduces OVB compared to omitting the proxy entirely.
+
+---
+
+## Chapter Summary
+
+- The **FWL Theorem** shows that OLS slope coefficients measure partial effects after "residualizing" on all other controls.
+- **Omitted variable bias** arises when an important determinant of $y$ is both correlated with included regressors and omitted from the model.
+- The **OVB formula** is $\text{OVB} = \beta_3 \cdot \delta_{zx}$, the product of the omitted variable's effect on $y$ and its correlation with the included regressor.
+- "More controls are better" is NOT always true. **Bad controls** — mediators or variables that share unobserved determinants with $y$ — can introduce new biases.
+- **Proxy variables** can reduce OVB when the true omitted variable is unobservable but an imperfect proxy is available.
+
+---
+
+## Key Terms
+
+**Omitted Variable Bias (OVB)** — bias in an estimated coefficient when a variable that belongs in the model is omitted.
+
+**Long regression** — the correctly specified model including all relevant variables.
+
+**Short regression** — the misspecified model omitting one or more relevant variables.
+
+**Auxiliary regression** — the regression of the omitted variable on the included regressors.
+
+**OVB formula** — $\text{plim}(\hat{\tilde{\beta}}_2) = \beta_2 + \beta_3 \delta_{zx}$.
+
+**Bad control** — a variable that, when included, introduces bias rather than reducing it.
+
+**Mediator** — a variable on the causal pathway from the treatment to the outcome.
+
+**Proxy variable** — an observable variable correlated with an unobservable omitted variable.
+
+**Directed Acyclic Graph (DAG)** — a visual representation of assumed causal relationships.
+
+---
+
+## Exercises
+
+### Conceptual Questions
+
+**6.1** State the OVB formula. What are its two components? Explain the direction of OVB for the ability bias in the returns-to-education literature.
+
+**6.2** Explain why "including more controls" does not always reduce bias. Give an example of a bad control.
+
+**6.3** You are studying the effect of a job training program ($x$) on earnings ($y$). A colleague suggests controlling for whether the participant found a new job after the program ($z$). Is this a good or bad control? Explain.
+
+**6.4** Define a proxy variable. What conditions must it satisfy? Give an example from economics.
+
+**6.5** In a regression of wages on education and experience, a researcher finds that adding "number of previous employers" reduces the education coefficient from 0.10 to 0.06. What does this suggest about the omitted variable bias in the original regression?
+
+### Analytical Questions
+
+**6.6** True model: $y_i = 2 + 3x_i + (-1)z_i + u_i$, where $\text{Cov}(x,z)/V(x) = 0.5$.
+(a) What is the short-regression coefficient on $x$?
+(b) Is the estimate biased upward or downward relative to the true $\beta_2 = 3$?
+
+**6.7** Suppose we have the true model $y_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \beta_3 x_{3i} + u_i$, but we estimate $y_i = \gamma_0 + \gamma_1 x_{1i} + \gamma_2 x_{2i} + v_i$ (omitting $x_{3i}$). Derive the formula for $\text{plim}(\hat{\gamma}_1)$ and $\text{plim}(\hat{\gamma}_2)$.
+
+**6.8** Consider a regression of health status on income and region. Suppose region is correlated with both income and health (richer regions have better health care). Describe what happens to the income coefficient if you (a) include region as a control; (b) omit region.
+
+### Applied Questions
+
+**6.9** Using the CPS data:
+(a) Estimate the return to education with no controls.
+(b) Add experience as a control. Does the education coefficient change? In which direction? Is this consistent with OVB?
+(c) Add ethnicity as a control. Does the education coefficient change? What does this imply?
+
+**6.10** Conduct the following experiment in R:
+- Generate data: $y_i = 1 + 2x_i + 3z_i + u_i$, $z_i = 0.5 x_i + \epsilon_i$.
+- Estimate the short regression (omitting $z$) and the long regression (including $z$).
+- Verify the OVB formula numerically.
+
+---
+
+## R Lab 6: Omitted Variable Bias and the FWL Theorem
+
+### Exercise 6.1: Demonstrating OVB
+
+```r
+library(tidyverse)
+set.seed(2024)
+n <- 1000
+
+# True parameters
+beta_0 <- 1; beta_x <- 2; beta_z <- 3
+
+# Simulate omitted variable correlated with x
+x <- rnorm(n)
+z <- 0.5 * x + rnorm(n)  # delta_zx ~= 0.5
+u <- rnorm(n)
+y <- beta_0 + beta_x * x + beta_z * z + u
+
+# Short regression (omitting z)
+short_reg <- lm(y ~ x)
+cat("Short regression coefficient on x:", round(coef(short_reg)["x"], 3), "\n")
+
+# Long regression (including z)
+long_reg <- lm(y ~ x + z)
+cat("Long regression coefficient on x:", round(coef(long_reg)["x"], 3), "\n")
+
+# Auxiliary regression
+aux_reg <- lm(z ~ x)
+delta_zx <- coef(aux_reg)["x"]
+cat("delta_zx (z on x):", round(delta_zx, 3), "\n")
+
+# OVB formula
+ovb_formula <- beta_z * delta_zx
+cat("OVB formula prediction:", round(ovb_formula, 3), "\n")
+cat("Actual OVB:", round(coef(short_reg)["x"] - coef(long_reg)["x"], 3), "\n")
+```
+
+### Exercise 6.2: Visualizing Bad Controls
+
+```r
+# Simulate: education -> occupation -> wages; ability -> wages
+set.seed(42)
+n <- 2000
+
+ability   <- rnorm(n)
+education <- 0.5 * ability + rnorm(n)
+# occupation is a mediator: caused by education AND ability
+occupation_index <- 0.4 * education + 0.3 * ability + rnorm(n)
+wages <- 0.5 * education + 0.3 * ability + 0.2 * occupation_index + rnorm(n)
+
+# True total effect of education on wages (should be approx 0.5 + 0.2*0.4 = 0.58)
+cat("True total effect:", 0.5 + 0.2 * 0.4, "\n")
+
+# Without controlling for occupation
+reg1 <- lm(wages ~ education)
+cat("OLS without occupation:", round(coef(reg1)["education"], 3), "\n")
+
+# Controlling for occupation (BAD: occupation is a mediator)
+reg2 <- lm(wages ~ education + occupation_index)
+cat("OLS with occupation (bad control):", round(coef(reg2)["education"], 3), "\n")
+
+# Controlling for ability (GOOD: pre-treatment confounder)
+reg3 <- lm(wages ~ education + ability)
+cat("OLS with ability (good control):", round(coef(reg3)["education"], 3), "\n")
+```
+
+### Exercise 6.3: Verifying FWL Numerically
+
+```r
+library(AER)
+data("CPS1988")
+CPS1988 <- CPS1988 %>% mutate(log_wage = log(wage))
+
+# Full regression
+full_model <- lm(log_wage ~ education + experience + I(experience^2) + ethnicity,
+                  data = CPS1988)
+
+# FWL: residualize log_wage and education on other controls
+M_controls_y    <- residuals(lm(log_wage   ~ experience + I(experience^2) + ethnicity, data = CPS1988))
+M_controls_educ <- residuals(lm(education  ~ experience + I(experience^2) + ethnicity, data = CPS1988))
+
+fwl_model <- lm(M_controls_y ~ M_controls_educ)
+
+cat("Full OLS education coefficient:", round(coef(full_model)["education"], 6), "\n")
+cat("FWL education coefficient:     ", round(coef(fwl_model)["M_controls_educ"], 6), "\n")
+```
+
+---
+
+*End of Chapter 6*
+
+---
+
+**References**
+
+Angrist, J. D., and Pischke, J. (2009). *Mostly Harmless Econometrics*. Chapters 3 and 6.
+
+Davidson, R., and MacKinnon, J. G. (2004). *Econometric Theory and Methods*. Chapter 2.
+
+Pearl, J. (2009). *Causality: Models, Reasoning, and Inference* (2nd ed.). Cambridge University Press.
+
+Wooldridge, J. M. (2019). *Introductory Econometrics* (7th ed.). Chapter 3.

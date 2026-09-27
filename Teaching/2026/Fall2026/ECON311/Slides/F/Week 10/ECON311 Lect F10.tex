@@ -1,0 +1,553 @@
+% !TeX spellcheck = en_US
+\documentclass[aspectratio=1610]{beamer}
+\usetheme{Madrid}
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+\makeatletter
+\define@key{beamerframe}{wide}[10pt]{%
+	\def\beamer@cramped{\itemsep #1\topsep0.5pt\relax}}
+\makeatother
+	
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{booktabs}
+
+\title[Fall - Lecture 10] % (optional, use only with long paper titles)
+{Intermediate Macroeconomics: Lecture  10 (Ch.16)}
+\subtitle{ECON 311 -- Intermediate Macroeconomics}
+
+\author{Muhebullah Karimzada}
+\institute{School of Economics \\\ University of Northern British Columbia}
+\date{Fall 2026}
+
+
+% ---------- UNBC COLORS ----------
+\usepackage{xcolor}
+\definecolor{UNBCGreen}{RGB}{0,102,51}
+\definecolor{UNBCDark}{RGB}{0,74,37}
+\definecolor{UNBCGold}{RGB}{189,155,96}
+\definecolor{SoftCream}{RGB}{249,247,242}
+\definecolor{SoftGray}{RGB}{244,246,248}
+\definecolor{AccentBlue}{RGB}{41,98,255}
+\definecolor{AccentOrange}{RGB}{230,126,34}
+\definecolor{AccentTeal}{RGB}{0,150,136}
+\definecolor{AccentRed}{RGB}{192,57,43}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{structure}{fg=UNBCDark}
+\setbeamercolor{title}{fg=white,bg=UNBCDark}
+\setbeamercolor{subtitle}{fg=UNBCGold}
+\setbeamercolor{frametitle}{fg=white,bg=UNBCDark}
+\setbeamercolor{block title}{fg=white,bg=UNBCDark}
+\setbeamercolor{block body}{fg=black,bg=SoftGray}
+\setbeamercolor{block title alerted}{fg=white,bg=AccentRed}
+\setbeamercolor{block body alerted}{fg=black,bg=SoftGray}
+\setbeamercolor{item}{fg=UNBCDark}
+\setbeamercolor{section in toc}{fg=UNBCDark}
+\setbeamercolor{alerted text}{fg=AccentRed}
+\setbeamercolor{author in head/foot}{fg=white,bg=UNBCDark}
+\setbeamercolor{date in head/foot}{fg=white,bg=UNBCDark}
+% ---------- UNBC BRANDING ----------
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.78\paperwidth,ht=2.8ex,dp=1.2ex,leftskip=1em]{author in head/foot}%
+  \color{white}\textbf{ECON 311} \hspace{0.5em} \textcolor{UNBCGold}{|} \hspace{0.5em} Intermediate Macroeconomics%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.8ex,dp=1.2ex,rightskip=1em plus1fil]{date in head/foot}%
+  \color{white}\insertframenumber/\inserttotalframenumber%
+  \end{beamercolorbox}}%
+}
+
+\newtcolorbox{mybox}[2][]{
+  colback=#2!8,
+  colframe=#2,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  #1
+}
+
+\newcommand{\topbanner}[1]{%
+\begin{tikzpicture}[remember picture,overlay]
+\fill[UNBCGold] ([yshift=-0.65cm]current page.north west) rectangle ([yshift=-0.48cm]current page.north east);
+\node[anchor=north west,font=\small\bfseries,text=UNBCDark] at ([xshift=0.35cm,yshift=-0.78cm]current page.north west) {#1};
+\end{tikzpicture}%
+}
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{frame}[wide]{What are You Going to Learn (Ch. 16)}
+	\begin{itemize}
+		\item The neoclassical consumption model
+		\item Individuals choose the time path of their consumption to maximize utility
+		
+		\item Tow this model leads to a solution in which consumption is proportional to an individual’s total wealth
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Introduction to Consumption Model}
+	\begin{itemize}
+		\item Consumption is the largest component of GDP (more than two-thirds)
+		\item How do households decide what goods and services to consume?
+		\vspace{1mm}
+		\begin{itemize}
+			\item In the Solow model, individuals spend a constant fraction of income  (i.e., $C_t = (1-\bar{s})Y_t$ )
+			\item We should model how this $\bar{s}$ is formula, instead of taking it as exgenously given
+		\end{itemize}
+		\item Heterogeneity in consumer behavior at the microeconomic level
+		\vspace{1mm}
+		\begin{itemize}
+			\item The rich follow the permanent-income hypothesis
+			\item The poor typically have consumption that is quite sensitive to current income
+		\end{itemize}
+		\item The consumption and saving are interlinked
+		\vspace{1mm}
+		\begin{itemize}
+			\item We observe a decline in the personal saving rate and the rise in the debt-income ratio in recent decades
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Introduction to Consumption Model}
+	Neoclassical consumption model
+	\vspace{2mm}
+	\begin{itemize}
+		\item Individuals choose consumption at each moment in time
+		\item Objective: maximize a lifetime utility function 
+		\vspace{1mm}
+		\begin{itemize}
+			\item Function depends on current and future consumption
+		\end{itemize}
+		\item People recognize that income in the future may differ from income today
+		\vspace{1mm}
+		\begin{itemize}
+			\item Such differences influence consumption today
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Neoclassical Consumption Model}
+	\begin{itemize}
+		\item Two time periods: today and the future
+		\vspace{1mm}
+		\begin{itemize}
+			\item People earn income and consume in both periods
+		\end{itemize}
+		\item Key decision to make
+		\vspace{1mm}
+		\begin{itemize}
+			\item How much to consume today versus how much to consume in the future 
+		\end{itemize}
+		\item The consumption model is based on two main elements:
+		\vspace{1mm}
+		\begin{itemize}
+			\item An intertemporal budget constraint
+			\begin{itemize}
+				\item inter: between/across
+				\item temporal: time
+			\end{itemize}
+			\item A utility function: a function that give us a measure of welfare
+			
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Intertemporal Budget Constraint}
+	
+	\begin{itemize}
+		\item We start with two budget constraint, current period and future period
+		\vspace{1mm}
+		\begin{itemize}
+			\item Each of them following that consumption equals income less saving
+		\end{itemize}
+		\item The consumer’s current-period budget constraint:
+		\[c = y - (f'-f)\]
+		where 
+		\begin{itemize}
+			\item[] $c$ is the consumption
+			\item[] $f$ is the amount of wealth at the start of current period
+			\item[] $f'$ is the amount of wealth at the start of future period
+			\item[] $y$ is the amount of income
+		\end{itemize}
+		\item The $(f'-f)$ is the change in wealth = saving/borrowing
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Intertemporal Budget Constraint}
+	\begin{itemize}
+		\item In the last period (future) there is nothing to save for, so all wealth and income are used for consumption
+		\item In general, we use the prime symbol " $'$ " to denote the variable in future period 
+		\item The consumer’s future-period budget constraint:
+		\[c' = y'  + (1+R)f',\]
+		where 
+		\begin{itemize}
+			\item[] $R$ is the real interest rate
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Intertemporal Budget Constraint}
+	\begin{itemize}
+		\item Arrange the future period budget constraint
+		\[f' = \frac{c'-y'}{(1+R)}\]
+		\item Then, sub it into the current period budget constraint
+		\[c = y - \left(\frac{c'-y'}{1+R}-f\right)\]
+		\item Put the consumption terms (both period) on the L.H.S. and the rest to the R.H.S
+		\[c+\frac{c'}{(1+R)}  = y +f + \frac{y'}{(1+R)}\]
+		%\item $\left(\frac{1}{1+r}\right)$ is the relative price of period 2 consumption goods in term of period 1 consumption (the price of period 1 consumption is one) 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Intertemporal Budget Constraint}
+	\begin{itemize}
+		\item Human wealth is the present discounted value (PDV) of labor income
+		\[\text{Present value of consumption} = \text{Financial wealth} + \text{Human wealth}\]
+		\item Consumption in a given year can be different from income.
+		\item PDV of consumption must equal lifetime resources
+		\item Students anticipate an increase in future income and smooth their consumption
+		\vspace{1mm}
+		\begin{itemize}
+			\item By borrowing against future labor income, college students can consume more today
+			\item However, the present value of consumption must equal the present value of lifetime resources
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Utility}
+	\begin{itemize}
+		\item Utility depends on consumption today and in the future
+		\item More consumption means higher utility 
+		\[U = u(c) + \beta u(c')\]
+		\item[] where $\beta$ is the discount factor or the weight placed on future consumption
+		\item Diminishing Marginal Utility
+		\begin{itemize}
+			\item Each additional unit of consumption raises utility by a smaller amount
+		\end{itemize}
+		\item Usually, the $0<\beta<1$ so that future consumption is discounted -- Today’s consumption is valued more than future consumption
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Flow Utility $u(c)$}
+	\begin{itemize}
+		\item A consumption level of c delivers a flow of utility to the consumer of $u(c)$
+		\item Utility rises when $c$ increases, but the amount of the increase gets smaller and smaller, reflecting diminishing marginal utility
+	\end{itemize}
+	\begin{figure}
+		\centering
+		% [Figure not available] \includegraphics[width=0.4\linewidth]{"Figures/MACRO6_FIG16.01"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{Choosing Consumption to Maximize Utility}
+	\begin{itemize}
+		\item Maximize utility by choosing current period consumption and future period consumption, subject to a budget constraint
+		\[\max_{c,c'} U = u(c) + \beta u(c')\]
+		s.t.
+		\[c+\frac{c'}{(1+R)}  = y +f + \frac{y'}{(1+R)} = \bar{X} \]
+		\item[] where $\bar{X}$ represents the total wealth
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[wide]{Choosing Consumption to Maximize Utility}
+	\begin{itemize}
+		\item Rearrange the budget constraint:
+		\[c  =\bar{X} -\frac{c'}{(1+R)}\]
+		\item Sub it into the utility function, the maximization problem becomes
+		\[\max_{c'} U = u\left(\bar{X} -\frac{c'}{(1+R)}\right) + \beta u(c')\]
+		\item First order conditions (take the derivative w.r.t. $c'$ and set it equal to zero):
+		\[\frac{d u\left(\bar{X} -\frac{c'}{(1+R)}\right)}{d c} \frac{-1}{1+R} + \beta \frac{du(c')}{dc'}=0\]
+		The first term here we use the chain rule of calculus. Let $u'(c') = \frac{du(c')}{dc'}$, etc
+		\[\beta u'(c')= \frac{u'(c)}{1+R}\]
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Choosing Consumption to Maximize Utility}
+	\begin{itemize}
+		\item We want to make ourselves as happy as possible, but have a limited income
+		\item Marginal utility of today’s consumption: $u'(c)$
+		\item Marginal utility of future consumption: $u'(c')$
+		\item As seen from the equation from previous slides, agents can either 
+		\begin{itemize}
+			\item consume 1 unit today or 
+			\item save that unit and consume $1+R$ units in the future
+		\end{itemize}
+		\item If individuals maximize utility, agents must be indifferent between consuming today or in the future
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Choosing Consumption to Maximize Utility}
+	\begin{itemize}
+		\item The equation that govern the trade-off between current and future consumption is called Euler equation:
+		\[\beta (1+R) u'(c')= u'(c)\]
+		\item 	MU of consuming 1 more unit today = discounted consumption of  units in the future
+		\begin{itemize}
+			\item LHS: Saving that same unit and consuming 1+R units in the future gives extra utility (discounted)
+			\item RHS: Consuming one unit today, the agent gets the MU of c today
+			
+		\end{itemize}
+		\item Must be indifferent between consuming today and tomorrow
+		\item If the MU of $c$ is greater than the utility from consuming the extra unit (plus interest) in the future,
+		\begin{itemize}
+			\item the individual should reduce consumption in the future and raise it today, increasing overall lifetime utility
+			\item This reallocation should occur until the agent is just indifferent between consuming an extra unit today and consuming that unit plus interest in the future
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Solving the Euler Equation}
+	\begin{itemize}
+		\item Take $u(c) = log (c)$ as an example
+		\begin{itemize}
+			\item Recall that $log (c) = \frac{1}{c}$
+		\end{itemize}
+		\item This implies that $\beta (1+R) u'(c')= u'(c)$ would become
+		
+		\[\frac{\beta (1+R)}{c'} = \frac{1}{c}\]
+		\item Rearranging the Euler equation:
+		\[\frac{c'}{c} = \beta (1+R)\]
+		\item Left side is growth rate of consumption (plus 1)
+		\begin{itemize}
+			\item Consumption is chosen such that the growth rate of consumption ($c'/c$) is a product of the discount parameter and the interest rate
+		\end{itemize}
+		\item Agent takes R as given in partial equilibrium consumption problem, choosing the consumption growth rate
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Solving the Euler Equation}
+	\[\frac{c'}{c} = \beta (1+R)\]
+	\begin{itemize}
+		\item Lower $\beta$: Impatient, consumption growth is lower
+		\item Higher $R$: Patient, consumption growth is faster
+		\item Suppose the economy is in steady state (i.e., $c'/c = 1$), then
+		\[\beta= \frac{1}{1+R}\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Solving the Model}
+	\begin{itemize}
+		\item Rearrange the Euler equation:
+		\[c' = \beta (1+R)c\]
+		\item Plug it into the budget constraint
+		\[c+\frac{\beta (1+R)c}{(1+R)}  = y +f + \frac{y'}{(1+R)}\]
+		\[\implies c^*  = \left[y +f + \frac{y'}{(1+R)}\right] \frac{1}{1+\beta} = \bar{X}\frac{1}{1+\beta}\]
+		\item Plus $c^*$ into the Euler equation (alternative, you can plug it into the budget constraint)
+		\[c^{'*} = \left[y +f + \frac{y'}{(1+R)}\right] \frac{\beta (1+R)}{1+\beta}= (1+R)\bar{X}\frac{\beta }{1+\beta}\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Effect of a Rise in $R$ on Consumption}
+	\begin{itemize} 
+		\item Wealth Effect: A higher interest rate will reduce this present value, therefore reducing consumption in the case of log utility
+		\begin{itemize}
+			\item Total wealth depends on the interest rate because of PDV of labor income (i.e., $\frac{y'}{1+R}$)
+		\end{itemize}
+		\item Substitution effect: When interest rate increase, current consumption become more expensive (because saving will lead to even more future consumption), so consumers will reduce current consumption today
+		\item Income effect: consumers are now richer—because their current saving leads to more income in the future—which makes them want to consume more today
+		\item With log utility, the IE and SE offset each other
+		\item Consumption could increase or decrease, depending on utility function
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Lessons from The Neoclassical Model}
+	\begin{itemize}
+		\item The permanent-income hypothesis is an implication of this model
+		\begin{itemize}
+			\item Consumption depends on average income (PDV of income) rather than current income 
+		\end{itemize}
+		\item Recall overall wealth: $\bar{X} = f + y + \frac{y'}{1+R}$
+		\item[] Last two terms are PDV of income
+		\item Consumption is proportional to a consumer’s overall wealth
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Lessons from The Neoclassical Model}
+	\begin{itemize}
+		\item Permanent-income hypothesis implies that we want to smooth our consumption over time
+		\item What happens if income increases?
+		\begin{itemize}
+			\item We may spend some of the extra income, but will save some for the future
+		\end{itemize}
+		\item Consumer do not like variability in consumption
+		\item Marginal propensity to consume: portion of additional income that is spent for consumption
+		\begin{itemize}
+			\item In the log example, it is equal to $\frac{1}{1+\beta}$ for $c$ and $\frac{\beta}{1+\beta}$ for $c'$
+		\end{itemize}
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Desire to Smooth Consumption}
+	\begin{itemize}
+		\item Suppose an individual could either consume $c_1$ today and $c_2$ in the future, or could consume the average of these two values in both periods
+		\item Because of diminishing marginal utility, agents prefer to smooth consumption and take the average in both periods
+		\item That is, lifetime utility is higher when consumer gets $u(\bar{c})$ in both periods, rather than $u(c1) + u(c2)$
+	\end{itemize}
+	\begin{figure}
+		\centering
+		% [Figure not available] \includegraphics[width=0.35\linewidth]{"Figures/MACRO6_FIG16.02"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{Ricardian Equivalence}
+	\begin{itemize}
+		\item Consumption depends on PDV of taxes and is invariant to the timing of taxes
+		\item The government has a similar constraint that the lifetime government spending is also equal to lifetime tax revenue
+		\item A tax cut today financed by higher future taxes will not affect consumption, as long as the lifetime government spending is the same
+		\[c+\frac{c'}{(1+R)}  = y -t +f + \frac{y'-t'}{(1+R)} = \bar{X}\]
+		\begin{itemize}
+			\item Think of there is an increase in $t$ with a decrease in $t'$ of the same size (apply the interest rate)
+			\[c+\frac{c'}{(1+R)}  = y -(t+\Delta t) +f + \frac{y'-(t'-(1+R)\Delta t)}{(1+R)}\]
+			\item A change in the timing of taxes does not change wealth, so consumption doesn’t change
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Borrowing Constraints}
+	\begin{itemize}
+		\item The model assumes that anyone can borrow or save at the interest rate $R$
+		\item However, in reality, some people may not be able to borrow because of 
+		\begin{itemize}
+			\item poor financial wealth or no access to credit
+			\item weak economic conditions as a whole 
+		\end{itemize}
+		\item In either of these cases, the intertemporal budget constraint is no longer the correct constraint
+		\item The constraint on consumption for individuals with no financial wealth and no access to credit can be rewritten as
+		\[c\leq y\]
+		\item The inequality assumes people are constrained by the lack of borrowing opportunities to be no greater than a person’s income
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Borrowing Constraints}
+	\begin{itemize}
+		\item If a consumer is already consuming less than their income, the no-borrowing constraint will be nonbinding
+		\begin{itemize}
+			\item The individual is already saving, so not allowing him or her to borrow does not change anything
+		\end{itemize}
+		\item If income is low and the borrowing constraint binds, then $c=y$
+		\begin{itemize}
+			\item In most binding cases, it is undesired outcome
+			\item People cannot smooth their consumption even if they want to
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Case Study: Consumption versus Expenditure}
+	\begin{itemize}
+		\item Key prediction of model:	Consumption should not change when an anticipated event occurs
+		\begin{itemize}
+			\item Consumer wants to smooth out their consumption over time
+		\end{itemize}
+		\item However, this doesn’t always hold true
+		\begin{itemize}
+			\item A retirement is usually not an unexpected event
+			\item Consumption should remain relatively unchanged when people retire
+			\item However, expenditures on consumption change quite markedly around this event, falling by around 17 percent
+		\end{itemize}
+		\item A study by Aguiar and Hurst look at it differently
+		\begin{itemize}
+			\item Use data set of food diaries for a large number of households
+			\item While expenditures on consumption do indeed decline sharply upon retirement, the food and calories that people actually consume show no such decline
+			\item Instead, households spend much more time shopping for food and preparing it themselves
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Precautionary Saving}
+	\begin{itemize}
+		\item Saving money to hedge against the possibility of a drop in income due to uncertain and unpredictable event
+		\begin{itemize}
+			\item Consumers might save when income and wealth are temporarily low, meanwhile the basic permanent-income hypothesis would suggest borrowing
+		\end{itemize}
+		\item The recent financial crisis provides an excellent example of precautionary saving
+		\begin{itemize}
+			\item Saving rates rose sharply during the financial crisis, and precautionary motives are a logical part of the explanation
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+
+
+
+%\begin{frame}[wide]{An Increase in the Investment Rate}
+%	\begin{columns} 
+%			% Column 1
+%			\begin{column}{.5\textwidth}
+%				\begin{itemize}
+%					\item Suppose the investment rate increases permanently for exogenous reasons ($s'>s$)
+%					\begin{itemize}
+%						\item The investment curve rotates upward ($\bar{s}'\bar{A}  \bar{L}^{1-\alpha} K_t^\alpha > \bar{s}\bar{A}  \bar{L}^{1-\alpha} K_t^\alpha$)
+%						\item The depreciation curve remains unchanged ($\delta K_t$)
+%						\item The capital stock increases by transition dynamics to reach the new steady state
+%						\begin{itemize}
+%							\item This happens because investment exceeds depreciation ($sY_t>\delta K_t$)
+%						\end{itemize}
+%						\item The new steady state is located to the right
+%					\end{itemize}
+%				\end{itemize}
+%			\end{column}
+%			% Column 2    
+%			\begin{column}{.5\textwidth}			
+%				\begin{figure}
+%					\centering
+%					\includegraphics[width=1\linewidth]{"Figures/An Increase in the Investment Rate"}
+%				\end{figure}
+%			\end{column}%
+%		\end{columns}
+%\end{frame}
+
+%\begin{frame}[wide]{Measuring the State of the Economy}
+%	\begin{columns} 
+%		% Column 1
+%		\begin{column}{.5\textwidth}
+%			\begin{table}[htbp]
+%				\centering
+%				\begin{tabular}{lrrrr}
+%					& 2005  & 2006  & 2007  & 2008 \\
+%					\hline
+%					GDP   & 12.6  & 13.4  & 14.0    & 14.3 \\
+%					(in trillions of \$) &       &       &       &  \\
+%					Growth rate GDP &       & 0.063 & 0.045 & 0.021 \\
+%					\hline
+%				\end{tabular}%
+%				\label{tab:addlabel}%
+%			\end{table}%
+%		\end{column}
+%		% Column 2    
+%		\begin{column}{.5\textwidth}			
+%			
+%			
+%		\end{column}%
+%	\end{columns}
+%\end{frame}
+
+\begin{frame}[wide]{Next Lecture}
+	\begin{itemize}
+		\item Next lecture will begin Ch.7
+	\end{itemize}
+\end{frame}
+
+\end{document}

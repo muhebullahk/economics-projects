@@ -1,0 +1,433 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 3\Q2_log.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}15 Apr 2026, 16:53:17
+{txt}
+{com}. 
+. global mydirec="C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 3"
+{txt}
+{com}. 
+. cd "$mydirec"
+{res}C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 3
+{txt}
+{com}. 
+. use "card.dta"
+{txt}
+{com}. 
+. *** PART I, i ***
+. 
+. reg educ exper expersq black south smsa reg662 reg663 reg664 ///
+>                reg665 reg666 reg667 reg668 reg669
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}     3,010
+{txt}{hline 13}{c +}{hline 34}   F(13, 2996)     = {res}   208.09
+{txt}       Model {c |} {res} 10230.9465        13  786.995882   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 11331.1336     2,996  3.78208732   {txt}R-squared       ={res}    0.4745
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.4722
+{txt}       Total {c |} {res} 21562.0801     3,009  7.16586243   {txt}Root MSE        =   {res} 1.9448
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}        educ{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 7}exper {c |}{col 14}{res}{space 2} -.412537{col 26}{space 2} .0337729{col 37}{space 1}  -12.22{col 46}{space 3}0.000{col 54}{space 4}-.4787575{col 67}{space 3}-.3463166
+{txt}{space 5}expersq {c |}{col 14}{res}{space 2} .0008736{col 26}{space 2} .0016538{col 37}{space 1}    0.53{col 46}{space 3}0.597{col 54}{space 4}-.0023691{col 67}{space 3} .0041163
+{txt}{space 7}black {c |}{col 14}{res}{space 2}-.9246025{col 26}{space 2} .0937567{col 37}{space 1}   -9.86{col 46}{space 3}0.000{col 54}{space 4}-1.108436{col 67}{space 3}-.7407685
+{txt}{space 7}south {c |}{col 14}{res}{space 2}-.0421616{col 26}{space 2} .1352071{col 37}{space 1}   -0.31{col 46}{space 3}0.755{col 54}{space 4}-.3072698{col 67}{space 3} .2229465
+{txt}{space 8}smsa {c |}{col 14}{res}{space 2} .5188739{col 26}{space 2} .0824334{col 37}{space 1}    6.29{col 46}{space 3}0.000{col 54}{space 4} .3572421{col 67}{space 3} .6805057
+{txt}{space 6}reg662 {c |}{col 14}{res}{space 2}-.0742454{col 26}{space 2} .1875067{col 37}{space 1}   -0.40{col 46}{space 3}0.692{col 54}{space 4}-.4419004{col 67}{space 3} .2934097
+{txt}{space 6}reg663 {c |}{col 14}{res}{space 2}-.0652009{col 26}{space 2} .1834829{col 37}{space 1}   -0.36{col 46}{space 3}0.722{col 54}{space 4}-.4249662{col 67}{space 3} .2945643
+{txt}{space 6}reg664 {c |}{col 14}{res}{space 2} .0651931{col 26}{space 2}  .216739{col 37}{space 1}    0.30{col 46}{space 3}0.764{col 54}{space 4}-.3597792{col 67}{space 3} .4901653
+{txt}{space 6}reg665 {c |}{col 14}{res}{space 2}-.3522132{col 26}{space 2} .2172502{col 37}{space 1}   -1.62{col 46}{space 3}0.105{col 54}{space 4}-.7781878{col 67}{space 3} .0737615
+{txt}{space 6}reg666 {c |}{col 14}{res}{space 2}-.4438211{col 26}{space 2} .2333009{col 37}{space 1}   -1.90{col 46}{space 3}0.057{col 54}{space 4}-.9012672{col 67}{space 3}  .013625
+{txt}{space 6}reg667 {c |}{col 14}{res}{space 2}-.3170944{col 26}{space 2} .2332312{col 37}{space 1}   -1.36{col 46}{space 3}0.174{col 54}{space 4}-.7744039{col 67}{space 3} .1402152
+{txt}{space 6}reg668 {c |}{col 14}{res}{space 2} .4697064{col 26}{space 2} .2676291{col 37}{space 1}    1.76{col 46}{space 3}0.079{col 54}{space 4} -.055049{col 67}{space 3} .9944617
+{txt}{space 6}reg669 {c |}{col 14}{res}{space 2} .1951717{col 26}{space 2} .2027681{col 37}{space 1}    0.96{col 46}{space 3}0.336{col 54}{space 4} -.202407{col 67}{space 3} .5927504
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 16.83694{col 26}{space 2} .2355166{col 37}{space 1}   71.49{col 46}{space 3}0.000{col 54}{space 4} 16.37515{col 67}{space 3} 17.29873
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. predict d_tilde, resid
+{txt}
+{com}. 
+. * Residualise nearc4 on X_c  →  z_tilde
+. reg nearc4  exper expersq black south smsa reg662 reg663 reg664 reg665 ///
+>                reg666 reg667 reg668 reg669
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}     3,010
+{txt}{hline 13}{c +}{hline 34}   F(13, 2996)     = {res}    52.66
+{txt}       Model {c |} {res} 121.405116        13  9.33885506   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 531.326113     2,996  .177345165   {txt}R-squared       ={res}    0.1860
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.1825
+{txt}       Total {c |} {res} 652.731229     3,009  .216926298   {txt}Root MSE        =   {res} .42112
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}      nearc4{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 7}exper {c |}{col 14}{res}{space 2}-.0000383{col 26}{space 2} .0073133{col 37}{space 1}   -0.01{col 46}{space 3}0.996{col 54}{space 4}-.0143779{col 67}{space 3} .0143013
+{txt}{space 5}expersq {c |}{col 14}{res}{space 2}-2.15e-06{col 26}{space 2} .0003581{col 37}{space 1}   -0.01{col 46}{space 3}0.995{col 54}{space 4}-.0007043{col 67}{space 3}    .0007
+{txt}{space 7}black {c |}{col 14}{res}{space 2}  .037158{col 26}{space 2} .0203023{col 37}{space 1}    1.83{col 46}{space 3}0.067{col 54}{space 4}  -.00265{col 67}{space 3} .0769659
+{txt}{space 7}south {c |}{col 14}{res}{space 2} .0203676{col 26}{space 2} .0292781{col 37}{space 1}    0.70{col 46}{space 3}0.487{col 54}{space 4}-.0370396{col 67}{space 3} .0777749
+{txt}{space 8}smsa {c |}{col 14}{res}{space 2} .3141448{col 26}{space 2} .0178504{col 37}{space 1}   17.60{col 46}{space 3}0.000{col 54}{space 4} .2791446{col 67}{space 3}  .349145
+{txt}{space 6}reg662 {c |}{col 14}{res}{space 2} .0118388{col 26}{space 2} .0406033{col 37}{space 1}    0.29{col 46}{space 3}0.771{col 54}{space 4}-.0677742{col 67}{space 3} .0914519
+{txt}{space 6}reg663 {c |}{col 14}{res}{space 2}-.1166319{col 26}{space 2} .0397319{col 37}{space 1}   -2.94{col 46}{space 3}0.003{col 54}{space 4}-.1945365{col 67}{space 3}-.0387273
+{txt}{space 6}reg664 {c |}{col 14}{res}{space 2}-.1472816{col 26}{space 2} .0469333{col 37}{space 1}   -3.14{col 46}{space 3}0.002{col 54}{space 4}-.2393063{col 67}{space 3}-.0552569
+{txt}{space 6}reg665 {c |}{col 14}{res}{space 2} -.230613{col 26}{space 2}  .047044{col 37}{space 1}   -4.90{col 46}{space 3}0.000{col 54}{space 4}-.3228547{col 67}{space 3}-.1383712
+{txt}{space 6}reg666 {c |}{col 14}{res}{space 2}-.4115685{col 26}{space 2} .0505196{col 37}{space 1}   -8.15{col 46}{space 3}0.000{col 54}{space 4}-.5106252{col 67}{space 3}-.3125118
+{txt}{space 6}reg667 {c |}{col 14}{res}{space 2}-.2987625{col 26}{space 2} .0505046{col 37}{space 1}   -5.92{col 46}{space 3}0.000{col 54}{space 4}-.3977896{col 67}{space 3}-.1997354
+{txt}{space 6}reg668 {c |}{col 14}{res}{space 2}-.1698296{col 26}{space 2} .0579532{col 37}{space 1}   -2.93{col 46}{space 3}0.003{col 54}{space 4}-.2834616{col 67}{space 3}-.0561975
+{txt}{space 6}reg669 {c |}{col 14}{res}{space 2}-.0506329{col 26}{space 2}  .043908{col 37}{space 1}   -1.15{col 46}{space 3}0.249{col 54}{space 4}-.1367258{col 67}{space 3} .0354599
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} .6018745{col 26}{space 2} .0509994{col 37}{space 1}   11.80{col 46}{space 3}0.000{col 54}{space 4} .5018771{col 67}{space 3}  .701872
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. predict z_tilde, resid
+{txt}
+{com}. 
+. * Residualise lwage on X_c  →  y_tilde
+. 
+. reg lwage  exper expersq black south smsa reg662 reg663 reg664 reg665 ///
+>                reg666 reg667 reg668 reg669
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}     3,010
+{txt}{hline 13}{c +}{hline 34}   F(13, 2996)     = {res}    54.91
+{txt}       Model {c |} {res} 114.030686        13  8.77159122   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 478.610925     2,996  .159749975   {txt}R-squared       ={res}    0.1924
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.1889
+{txt}       Total {c |} {res} 592.641611     3,009  .196956335   {txt}Root MSE        =   {res} .39969
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}       lwage{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 7}exper {c |}{col 14}{res}{space 2} .0540272{col 26}{space 2}  .006941{col 37}{space 1}    7.78{col 46}{space 3}0.000{col 54}{space 4} .0404175{col 67}{space 3} .0676368
+{txt}{space 5}expersq {c |}{col 14}{res}{space 2}-.0022159{col 26}{space 2} .0003399{col 37}{space 1}   -6.52{col 46}{space 3}0.000{col 54}{space 4}-.0028823{col 67}{space 3}-.0015494
+{txt}{space 7}black {c |}{col 14}{res}{space 2}-.2690631{col 26}{space 2} .0192689{col 37}{space 1}  -13.96{col 46}{space 3}0.000{col 54}{space 4}-.3068447{col 67}{space 3}-.2312815
+{txt}{space 7}south {c |}{col 14}{res}{space 2}-.1480811{col 26}{space 2} .0277878{col 37}{space 1}   -5.33{col 46}{space 3}0.000{col 54}{space 4}-.2025662{col 67}{space 3} -.093596
+{txt}{space 8}smsa {c |}{col 14}{res}{space 2} .1918217{col 26}{space 2} .0169417{col 37}{space 1}   11.32{col 46}{space 3}0.000{col 54}{space 4} .1586031{col 67}{space 3} .2250403
+{txt}{space 6}reg662 {c |}{col 14}{res}{space 2} .0914433{col 26}{space 2} .0385364{col 37}{space 1}    2.37{col 46}{space 3}0.018{col 54}{space 4} .0158827{col 67}{space 3} .1670038
+{txt}{space 6}reg663 {c |}{col 14}{res}{space 2} .1397198{col 26}{space 2} .0377095{col 37}{space 1}    3.71{col 46}{space 3}0.000{col 54}{space 4} .0657808{col 67}{space 3} .2136589
+{txt}{space 6}reg664 {c |}{col 14}{res}{space 2} .0549257{col 26}{space 2} .0445442{col 37}{space 1}    1.23{col 46}{space 3}0.218{col 54}{space 4}-.0324147{col 67}{space 3} .1422662
+{txt}{space 6}reg665 {c |}{col 14}{res}{space 2}  .095719{col 26}{space 2} .0446493{col 37}{space 1}    2.14{col 46}{space 3}0.032{col 54}{space 4} .0081726{col 67}{space 3} .1832654
+{txt}{space 6}reg666 {c |}{col 14}{res}{space 2} .0977417{col 26}{space 2} .0479481{col 37}{space 1}    2.04{col 46}{space 3}0.042{col 54}{space 4} .0037273{col 67}{space 3} .1917562
+{txt}{space 6}reg667 {c |}{col 14}{res}{space 2} .0894529{col 26}{space 2} .0479337{col 37}{space 1}    1.87{col 46}{space 3}0.062{col 54}{space 4}-.0045335{col 67}{space 3} .1834393
+{txt}{space 6}reg668 {c |}{col 14}{res}{space 2}-.0212046{col 26}{space 2} .0550032{col 37}{space 1}   -0.39{col 46}{space 3}0.700{col 54}{space 4}-.1290525{col 67}{space 3} .0866432
+{txt}{space 6}reg669 {c |}{col 14}{res}{space 2} .1342786{col 26}{space 2} .0416729{col 37}{space 1}    3.22{col 46}{space 3}0.001{col 54}{space 4} .0525682{col 67}{space 3} .2159891
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 5.884744{col 26}{space 2} .0484034{col 37}{space 1}  121.58{col 46}{space 3}0.000{col 54}{space 4} 5.789837{col 67}{space 3} 5.979652
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. predict y_tilde, resid
+{txt}
+{com}. 
+. 
+. *** PART I, ii ***
+. 
+. reg d_tilde z_tilde
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}     3,010
+{txt}{hline 13}{c +}{hline 34}   F(1, 3008)      = {res}    15.06
+{txt}       Model {c |} {res} 56.4529005         1  56.4529005   {txt}Prob > F        ={res}    0.0001
+{txt}    Residual {c |} {res} 11274.6807     3,008  3.74823161   {txt}R-squared       ={res}    0.0050
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0047
+{txt}       Total {c |} {res} 11331.1336     3,009  3.76574729   {txt}Root MSE        =   {res}  1.936
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}     d_tilde{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}z_tilde {c |}{col 14}{res}{space 2} .3259587{col 26}{space 2}  .083991{col 37}{space 1}    3.88{col 46}{space 3}0.000{col 54}{space 4} .1612731{col 67}{space 3} .4906442
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 2.19e-09{col 26}{space 2} .0352882{col 37}{space 1}    0.00{col 46}{space 3}1.000{col 54}{space 4}-.0691915{col 67}{space 3} .0691915
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. local b_fs = string(_b[z_tilde], "%6.4f")
+{txt}
+{com}. 
+. reg y_tilde z_tilde
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}     3,010
+{txt}{hline 13}{c +}{hline 34}   F(1, 3008)      = {res}     7.48
+{txt}       Model {c |} {res} 1.18731521         1  1.18731521   {txt}Prob > F        ={res}    0.0063
+{txt}    Residual {c |} {res} 477.423609     3,008  .158717955   {txt}R-squared       ={res}    0.0025
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0021
+{txt}       Total {c |} {res} 478.610924     3,009  .159059795   {txt}Root MSE        =   {res} .39839
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}     y_tilde{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 5}z_tilde {c |}{col 14}{res}{space 2} .0472718{col 26}{space 2} .0172835{col 37}{space 1}    2.74{col 46}{space 3}0.006{col 54}{space 4} .0133831{col 67}{space 3} .0811606
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 1.49e-11{col 26}{space 2} .0072616{col 37}{space 1}    0.00{col 46}{space 3}1.000{col 54}{space 4}-.0142381{col 67}{space 3} .0142381
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. local b_rf = string(_b[z_tilde], "%6.4f")
+{txt}
+{com}. 
+. twoway (scatter d_tilde z_tilde, msize(tiny) mcolor(gs10)) ///
+>        (lfit    d_tilde z_tilde, lcolor(black) lwidth(medthick)), ///
+>        xtitle("Residualised nearc4 ")            ///
+>        ytitle("Residualised education ")          ///
+>        title("First Stage (FWL)")                            ///
+>        note("Slope = `b_fs'", size(small))                   ///
+>        legend(off)
+{res}{txt}
+{com}. quietly graph export "PS3_Q2a_FirstStage.png", replace width(1200)
+{txt}
+{com}. 
+. * Reduced-form scatter: y_tilde on z_tilde
+. twoway (scatter y_tilde z_tilde, msize(tiny) mcolor(gs10)) ///
+>        (lfit    y_tilde z_tilde, lcolor(black) lwidth(medthick)), ///
+>        xtitle("Residualised nearc4 ")            ///
+>        ytitle("Residualised log wage ")           ///
+>        title("Reduced Form (FWL)")                           ///
+>        note("Slope = `b_rf'", size(small))                   ///
+>        legend(off)
+{res}{txt}
+{com}. quietly graph export "PS3_Q2a_ReducedForm.png", replace width(1200)
+{txt}
+{com}. 
+. 
+. *** PART I, iii ***
+. 
+. reg educ nearc4 exper expersq black south smsa reg662 reg663 reg664 reg665 ///
+>                reg666 reg667 reg668 reg669
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}     3,010
+{txt}{hline 13}{c +}{hline 34}   F(14, 2995)     = {res}   195.20
+{txt}       Model {c |} {res} 10287.3994        14   734.81424   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 11274.6807     2,995  3.76450107   {txt}R-squared       ={res}    0.4771
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.4747
+{txt}       Total {c |} {res} 21562.0801     3,009  7.16586243   {txt}Root MSE        =   {res} 1.9402
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}        educ{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}nearc4 {c |}{col 14}{res}{space 2} .3259587{col 26}{space 2} .0841731{col 37}{space 1}    3.87{col 46}{space 3}0.000{col 54}{space 4} .1609158{col 67}{space 3} .4910015
+{txt}{space 7}exper {c |}{col 14}{res}{space 2}-.4125245{col 26}{space 2} .0336943{col 37}{space 1}  -12.24{col 46}{space 3}0.000{col 54}{space 4}-.4785909{col 67}{space 3}-.3464582
+{txt}{space 5}expersq {c |}{col 14}{res}{space 2} .0008743{col 26}{space 2} .0016499{col 37}{space 1}    0.53{col 46}{space 3}0.596{col 54}{space 4}-.0023608{col 67}{space 3} .0041095
+{txt}{space 7}black {c |}{col 14}{res}{space 2}-.9367145{col 26}{space 2} .0935907{col 37}{space 1}  -10.01{col 46}{space 3}0.000{col 54}{space 4}-1.120223{col 67}{space 3}-.7532059
+{txt}{space 7}south {c |}{col 14}{res}{space 2}-.0488006{col 26}{space 2} .1349033{col 37}{space 1}   -0.36{col 46}{space 3}0.718{col 54}{space 4}-.3133131{col 67}{space 3} .2157118
+{txt}{space 8}smsa {c |}{col 14}{res}{space 2} .4164757{col 26}{space 2} .0863879{col 37}{space 1}    4.82{col 46}{space 3}0.000{col 54}{space 4}   .24709{col 67}{space 3} .5858614
+{txt}{space 6}reg662 {c |}{col 14}{res}{space 2}-.0781043{col 26}{space 2}  .187073{col 37}{space 1}   -0.42{col 46}{space 3}0.676{col 54}{space 4}-.4449088{col 67}{space 3} .2887002
+{txt}{space 6}reg663 {c |}{col 14}{res}{space 2}-.0271837{col 26}{space 2} .1833189{col 37}{space 1}   -0.15{col 46}{space 3}0.882{col 54}{space 4}-.3866274{col 67}{space 3}   .33226
+{txt}{space 6}reg664 {c |}{col 14}{res}{space 2} .1132008{col 26}{space 2} .2165896{col 37}{space 1}    0.52{col 46}{space 3}0.601{col 54}{space 4}-.3114786{col 67}{space 3} .5378801
+{txt}{space 6}reg665 {c |}{col 14}{res}{space 2}-.2770429{col 26}{space 2}  .217612{col 37}{space 1}   -1.27{col 46}{space 3}0.203{col 54}{space 4} -.703727{col 67}{space 3} .1496413
+{txt}{space 6}reg666 {c |}{col 14}{res}{space 2}-.3096667{col 26}{space 2} .2353218{col 37}{space 1}   -1.32{col 46}{space 3}0.188{col 54}{space 4}-.7710754{col 67}{space 3} .1517419
+{txt}{space 6}reg667 {c |}{col 14}{res}{space 2}-.2197101{col 26}{space 2} .2340433{col 37}{space 1}   -0.94{col 46}{space 3}0.348{col 54}{space 4}-.6786121{col 67}{space 3} .2391918
+{txt}{space 6}reg668 {c |}{col 14}{res}{space 2} .5250638{col 26}{space 2} .2673885{col 37}{space 1}    1.96{col 46}{space 3}0.050{col 54}{space 4}   .00078{col 67}{space 3} 1.049348
+{txt}{space 6}reg669 {c |}{col 14}{res}{space 2} .2116759{col 26}{space 2}  .202341{col 37}{space 1}    1.05{col 46}{space 3}0.296{col 54}{space 4}-.1850654{col 67}{space 3} .6084173
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 16.64075{col 26}{space 2} .2403679{col 37}{space 1}   69.23{col 46}{space 3}0.000{col 54}{space 4} 16.16945{col 67}{space 3} 17.11206
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. test nearc4
+
+{p 0 7}{space 1}{text:( 1)}{space 1} {res}nearc4 = 0{p_end}
+
+{txt}       F(  1,  2995) ={res}   15.00
+{txt}{col 13}Prob > F ={res}    0.0001
+{txt}
+{com}. display "F-stat on nearc4 = " %6.2f r(F) "  (p = " %5.3f r(p) ")"
+{res}F-stat on nearc4 =  15.00  (p = 0.000)
+{txt}
+{com}. 
+. 
+. ***** PART II *****
+. 
+. 
+. reg lwage educ exper black south married smsa, robust
+
+{txt}Linear regression                               Number of obs     = {res}     3,003
+                                                {txt}F(6, 2996)        =  {res}   230.88
+                                                {txt}Prob > F          = {res}    0.0000
+                                                {txt}R-squared         = {res}    0.3050
+                                                {txt}Root MSE          =    {res} .37025
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}       lwage{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}educ {c |}{col 14}{res}{space 2} .0711729{col 26}{space 2} .0036137{col 37}{space 1}   19.70{col 46}{space 3}0.000{col 54}{space 4} .0640872{col 67}{space 3} .0782585
+{txt}{space 7}exper {c |}{col 14}{res}{space 2} .0341518{col 26}{space 2} .0022668{col 37}{space 1}   15.07{col 46}{space 3}0.000{col 54}{space 4} .0297072{col 67}{space 3} .0385964
+{txt}{space 7}black {c |}{col 14}{res}{space 2}-.1660274{col 26}{space 2} .0173977{col 37}{space 1}   -9.54{col 46}{space 3}0.000{col 54}{space 4}-.2001402{col 67}{space 3}-.1319147
+{txt}{space 7}south {c |}{col 14}{res}{space 2}-.1315518{col 26}{space 2} .0152007{col 37}{space 1}   -8.65{col 46}{space 3}0.000{col 54}{space 4}-.1613567{col 67}{space 3}-.1017469
+{txt}{space 5}married {c |}{col 14}{res}{space 2}-.0358707{col 26}{space 2} .0035727{col 37}{space 1}  -10.04{col 46}{space 3}0.000{col 54}{space 4} -.042876{col 67}{space 3}-.0288655
+{txt}{space 8}smsa {c |}{col 14}{res}{space 2} .1757871{col 26}{space 2} .0150994{col 37}{space 1}   11.64{col 46}{space 3}0.000{col 54}{space 4} .1461808{col 67}{space 3} .2053934
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 5.063317{col 26}{space 2} .0661786{col 37}{space 1}   76.51{col 46}{space 3}0.000{col 54}{space 4} 4.933557{col 67}{space 3} 5.193077
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. eststo OLS
+{txt}
+{com}. 
+. 
+. ivreg2 lwage (educ = nearc4)  exper  black south married smsa, first ffirst robust
+{res}
+{txt}First-stage regressions
+{hline 23}
+
+
+First-stage regression of educ:
+
+Statistics robust to heteroskedasticity
+Number of obs = {col 31}{res}    3003
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}        educ{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 6}nearc4 {c |}{col 14}{res}{space 2} .3272826{col 26}{space 2} .0805341{col 37}{space 1}    4.06{col 46}{space 3}0.000{col 54}{space 4} .1693748{col 67}{space 3} .4851903
+{txt}{space 7}exper {c |}{col 14}{res}{space 2} -.404434{col 26}{space 2} .0081984{col 37}{space 1}  -49.33{col 46}{space 3}0.000{col 54}{space 4} -.420509{col 67}{space 3} -.388359
+{txt}{space 7}black {c |}{col 14}{res}{space 2}-.9475281{col 26}{space 2} .0884964{col 37}{space 1}  -10.71{col 46}{space 3}0.000{col 54}{space 4}-1.121048{col 67}{space 3}-.7740082
+{txt}{space 7}south {c |}{col 14}{res}{space 2}-.2973528{col 26}{space 2} .0787506{col 37}{space 1}   -3.78{col 46}{space 3}0.000{col 54}{space 4}-.4517635{col 67}{space 3}-.1429421
+{txt}{space 5}married {c |}{col 14}{res}{space 2}-.0726936{col 26}{space 2} .0176169{col 37}{space 1}   -4.13{col 46}{space 3}0.000{col 54}{space 4} -.107236{col 67}{space 3}-.0381512
+{txt}{space 8}smsa {c |}{col 14}{res}{space 2} .4208945{col 26}{space 2} .0848857{col 37}{space 1}    4.96{col 46}{space 3}0.000{col 54}{space 4} .2544543{col 67}{space 3} .5873348
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  16.8307{col 26}{space 2} .1252943{col 37}{space 1}  134.33{col 46}{space 3}0.000{col 54}{space 4} 16.58502{col 67}{space 3} 17.07637
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+F test of excluded instruments:
+  F(  1,  2996) = {res}   16.52
+{txt}  Prob > F      = {res}  0.0000
+{help ivreg2##swstats:Sanderson-Windmeijer multivariate F test of excluded instruments:}
+{txt}  F(  1,  2996) = {res}   16.52
+{txt}  Prob > F      = {res}  0.0000
+
+
+
+{txt}Summary results for first-stage regressions
+{hline 43}
+
+{col 44}{help ivreg2##swstats:(Underid)}{col 65}{help ivreg2##swstats:(Weak id)}
+Variable     |{col 16}{help ivreg2##swstats:F}({res}{col 17}  1{txt},{res}  2996{txt})  P-val{col 37}|{col 39}{help ivreg2##swstats:SW Chi-sq}({res}  1{txt}) P-val{col 60}|{col 62}{help ivreg2##swstats:SW F}({res}{col 67}  1{txt},{res}  2996{txt})
+{res}educ        {col 14}{txt}|{col 18}{res}   16.52{col 28}  0.0000{col 37}{txt}|{col 42}{res}   16.55{col 51}  0.0000{col 60}{txt}|{col 65}{res}   16.52
+
+{txt}NB: first-stage test statistics heteroskedasticity-robust
+
+Stock-Yogo weak ID F test critical values for single endogenous regressor:
+{res}{txt}{col 36}10% maximal IV size{res}{col 67} 16.38
+{txt}{col 36}15% maximal IV size{res}{col 67}  8.96
+{txt}{col 36}20% maximal IV size{res}{col 67}  6.66
+{txt}{col 36}25% maximal IV size{res}{col 67}  5.53
+{txt}Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for i.i.d. errors only.
+
+{help ivreg2##idtest:Underidentification test}
+Ho: matrix of reduced form coefficients has rank=K1-1 (underidentified)
+Ha: matrix has rank=K1 (identified)
+{res}Kleibergen-Paap rk LM statistic{txt}{col 42}Chi-sq({res}1{txt})={res}16.36  {col 61}{txt}P-val={res}0.0001
+
+{help ivreg2##widtest:Weak identification test}
+{txt}Ho: equation is weakly identified
+{res}Cragg-Donald Wald F statistic{col 65}   15.77
+Kleibergen-Paap Wald rk F statistic{col 65}   16.52
+
+{txt}Stock-Yogo weak ID test critical values for K1=1 and L1=1:
+{res}{txt}{col 36}10% maximal IV size{res}{col 67} 16.38
+{txt}{col 36}15% maximal IV size{res}{col 67}  8.96
+{txt}{col 36}20% maximal IV size{res}{col 67}  6.66
+{txt}{col 36}25% maximal IV size{res}{col 67}  5.53
+{txt}Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+
+{help ivreg2##wirobust:Weak-instrument-robust inference}
+Tests of joint significance of endogenous regressors B1 in main equation
+Ho: B1=0 and orthogonality conditions are valid
+{res}Anderson-Rubin Wald test{txt}{col 36}F({res}1{txt},{res}2996{txt})={col 49}{res}   6.34{col 61}{txt}P-val={res}0.0119
+Anderson-Rubin Wald test{txt}{col 36}Chi-sq({res}1{txt})={col 49}{res}   6.35{col 61}{txt}P-val={res}0.0117
+Stock-Wright LM S statistic{txt}{col 36}Chi-sq({res}1{txt})={col 49}{res}   6.36{col 61}{txt}P-val={res}0.0117
+
+{txt}NB: Underidentification, weak identification and weak-identification-robust
+    test statistics heteroskedasticity-robust
+
+Number of observations               N  = {res}      3003
+{txt}Number of regressors                 K  = {res}         7
+{txt}Number of endogenous regressors      K1 = {res}         1
+{txt}Number of instruments                L  = {res}         7
+{txt}Number of excluded instruments       L1 = {res}         1
+
+{txt}IV (2SLS) estimation
+{hline 20}
+
+Estimates efficient for homoskedasticity only
+Statistics robust to heteroskedasticity
+
+{col 55}Number of obs = {res}    3003
+{txt}{col 55}F(  6,  2996) = {res}  148.44
+{txt}{col 55}Prob > F      = {res}  0.0000
+{txt}Total (centered) SS     = {res} 590.9611167{txt}{col 55}Centered R2   = {res}  0.2513
+{txt}Total (uncentered) SS   = {res} 118352.1588{txt}{col 55}Uncentered R2 = {res}  0.9963
+{txt}Residual SS             = {res} 442.4484805{txt}{col 55}Root MSE      = {res}   .3838
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 14}{c |}{col 26}    Robust
+{col 1}       lwage{col 14}{c |} Coefficient{col 26}  std. err.{col 38}      z{col 46}   P>|z|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}educ {c |}{col 14}{res}{space 2} .1241642{col 26}{space 2} .0491577{col 37}{space 1}    2.53{col 46}{space 3}0.012{col 54}{space 4} .0278169{col 67}{space 3} .2205116
+{txt}{space 7}exper {c |}{col 14}{res}{space 2} .0555882{col 26}{space 2} .0198674{col 37}{space 1}    2.80{col 46}{space 3}0.005{col 54}{space 4} .0166488{col 67}{space 3} .0945277
+{txt}{space 7}black {c |}{col 14}{res}{space 2}-.1156855{col 26}{space 2} .0495591{col 37}{space 1}   -2.33{col 46}{space 3}0.020{col 54}{space 4}-.2128197{col 67}{space 3}-.0185514
+{txt}{space 7}south {c |}{col 14}{res}{space 2}-.1131647{col 26}{space 2} .0229476{col 37}{space 1}   -4.93{col 46}{space 3}0.000{col 54}{space 4}-.1581411{col 67}{space 3}-.0681883
+{txt}{space 5}married {c |}{col 14}{res}{space 2}-.0319754{col 26}{space 2} .0050725{col 37}{space 1}   -6.30{col 46}{space 3}0.000{col 54}{space 4}-.0419172{col 67}{space 3}-.0220335
+{txt}{space 8}smsa {c |}{col 14}{res}{space 2} .1477065{col 26}{space 2} .0303171{col 37}{space 1}    4.87{col 46}{space 3}0.000{col 54}{space 4} .0882861{col 67}{space 3} .2071269
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 4.162476{col 26}{space 2} .8348751{col 37}{space 1}    4.99{col 46}{space 3}0.000{col 54}{space 4} 2.526151{col 67}{space 3} 5.798801
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{help ivreg2##idtest:Underidentification test} (Kleibergen-Paap rk LM statistic):{res}{col 71}  16.356
+{txt}{col 52}Chi-sq({res}1{txt}) P-val =  {res}{col 73}0.0001
+{txt}{hline 78}
+{help ivreg2##widtest:Weak identification test} (Cragg-Donald Wald F statistic):{res}{col 71}  15.767
+{txt}                         (Kleibergen-Paap rk Wald F statistic):{res}{col 71}  16.515
+{txt}Stock-Yogo weak ID test critical values:{res}{txt}{col 42}10% maximal IV size{res}{col 73} 16.38
+{txt}{col 42}15% maximal IV size{res}{col 73}  8.96
+{txt}{col 42}20% maximal IV size{res}{col 73}  6.66
+{txt}{col 42}25% maximal IV size{res}{col 73}  5.53
+{txt}Source: Stock-Yogo (2005).  Reproduced by permission.
+NB: Critical values are for Cragg-Donald F statistic and i.i.d. errors.
+{hline 78}
+{help ivreg2##overidtests:Hansen J statistic} (overidentification test of all instruments):{res}{col 71}   0.000
+{txt}{col 50}(equation exactly identified)
+{hline 78}
+Instrumented:{col 23}educ
+Included instruments:{col 23}exper black south married smsa
+Excluded instruments:{col 23}nearc4
+{hline 78}
+
+{com}. eststo tsls
+{txt}
+{com}. matrix first=e(first)
+{txt}
+{com}. estadd scalar F1=first[4,1]
+
+{txt}added scalar:
+                 e(F1) =  {res}16.515286
+{txt}
+{com}. 
+. 
+. 
+. estout OLS tsls using "PS3_Q2b_Card_Table57.tex",                 ///
+>     replace                                                         ///
+>     style(tex)                                                      ///
+>     cells(b(star fmt(%9.4f)) se(par fmt(%9.4f)))                   ///
+>     starlevels(* 0.10 ** 0.05 *** 0.01)                            ///
+>     stats(F1 N r2,                                                     ///
+>           labels("F-test" "Observations" "\$R^2\$")                         ///
+>           fmt(%9.0f %9.0f %9.3f))                                         ///
+>     mlabels("OLS" "2SLS")                                          ///
+>     collabels(none)                                                 ///
+>     keep(educ exper black south married smsa)                               ///
+>     prehead(                                                        ///
+>         "\begin{c -(}table{c )-}[H]"                                          ///
+>         "\begin{c -(}center{c )-}"                                            ///
+>         "\caption{c -(}Replication Table 57{c )-}"                                          ///
+>         "\resizebox{c -(}.57\textwidth{c )-}{c -(}!{c )-}{c -(}%"                            ///
+>         "\begin{c -(}tabular{c )-}{c -(}lll{c )-}"                                      ///
+>         "\hline" "\hline"                                           ///
+>     )                                                               ///
+>       postfoot(                                                        ///
+>         "\hline" "\hline"                                           ///
+>         "\end{c -(}tabular{c )-}{c )-}"                                             ///
+>         "\end{c -(}center{c )-}"                                              ///  
+>         "\captionsetup{c -(}font={c -(}scriptsize{c )-}{c )-}"                          ///
+>         "\captionsetup{c -(}width=0.80\textwidth{c )-}"                       ///
+>         "\captionsetup{c -(}skip=0pt{c )-}"                                   ///
+>         "\caption*{c -(}\scriptsize Notes: Heteroscedasticity-robust standard errors in parentheses." ///
+>         "Controls: region dummies, and a constant."                 ///
+>         "Instrument in 2SLS: \texttt{c -(}nearc4{c )-} (proximity to 4-year college)." ///
+>         "* \$p<0.10\$, ** \$p<0.05\$, *** \$p<0.01\$.{c )-}"           ///
+>         "\end{c -(}table{c )-}"                                               ///
+>     )
+{res}{txt}(output written to {browse  `"PS3_Q2b_Card_Table57.tex"'})
+
+{com}. 
+. cap log close
+{smcl}
+{com}{sf}{ul off}

@@ -1,0 +1,653 @@
+\chapter{Chapter 2: The Conditional Expectation Function and Linear Regression}
+
+\medskip\hrule\medskip
+
+\section{Chapter Overview}
+
+Before we can understand why regression works --- and when it doesn't --- we need a clear statistical framework for describing relationships between variables. This chapter develops the \textbf{Conditional Expectation Function (CEF)}, the population object that regression is trying to estimate. We show that the CEF has deep and useful mathematical properties, that OLS regression is the best linear approximation to the CEF, and that the two coincide when the CEF happens to be linear.
+
+This chapter also connects the regression framework to the causal questions introduced in Chapter 1. Understanding the relationship between regression and the CEF is essential for interpreting regression output correctly and avoiding common mistakes.
+
+\medskip\hrule\medskip
+
+\section{Learning Objectives}
+
+After completing this chapter, students will be able to:
+
+\begin{enumerate}
+\item Define the \textbf{Conditional Expectation Function (CEF)} and explain what it represents.
+\item State and apply the \textbf{Law of Iterated Expectations (LIE)}.
+\item Explain the \textbf{CEF Decomposition Property} and its implications.
+\item Prove that the CEF is the \textbf{best predictor} of $Y$ given $X$ in the mean-squared-error sense.
+\item Explain the \textbf{ANOVA Theorem} (variance decomposition).
+\item State the \textbf{OLS linear regression problem} and derive the population parameter $\boldsymbol{\beta}^{OLS}$.
+\item Explain why OLS is the \textbf{best linear approximation} to the CEF even when the CEF is non-linear.
+\item Interpret regression coefficients as statements about the CEF.
+\item Apply these concepts to real economic data using R.
+\end{enumerate}
+
+\medskip\hrule\medskip
+
+\section{2.1 Describing Relationships: From Scatter Plots to Functions}
+
+Consider the question: how do wages vary with education? Figure 2.1 (described below) shows a scatter plot of log weekly earnings against years of schooling, constructed from Current Population Survey (CPS) data. There is a clear positive relationship, but with enormous variation: two people with identical schooling can have very different earnings. What summary of this cloud of points do we want?
+
+The obvious answer is: we want to know the \textbf{average wage for each level of education}. If we could calculate the mean of $Y_i$ (log earnings) for every value of $X_i$ (schooling), we would trace out a curve through the scatter plot. This curve is the \textbf{Conditional Expectation Function}.
+
+\begin{keybox}{Figure 2.1 Description:** Scatter plot of log weekly earnings ($Y$) against years of schooling ($X$) for a random sample of workers. The cloud of points slopes upward on average. Within each level of schooling, wages are spread over a wide range. The line running through the scatter plot represents $E[Y_i \mid X_i = x]$ for each value of $x$.}
+\end{keybox}
+
+\medskip\hrule\medskip
+
+\section{2.2 The Conditional Expectation Function (CEF)}
+
+\textbf{Definition 2.1 (CEF):} Let $Y_i$ be a random variable (the outcome) and $\mathbf{X}_i$ be a vector of conditioning variables (regressors). The \textbf{Conditional Expectation Function} is:
+
+\[
+E[Y_i \mid \mathbf{X}_i = \mathbf{x}]
+\]
+
+This is a function of $\mathbf{x}$ that gives the mean of $Y_i$ in the subpopulation where $\mathbf{X}_i$ equals $\mathbf{x}$.
+
+\subsection{2.2.1 The CEF with a Single Binary Variable}
+
+The simplest case has $X_i \in \{0, 1\}$:
+
+\[
+E[Y_i \mid X_i = 1] = \text{mean outcome among treated units}
+\]
+\[
+E[Y_i \mid X_i = 0] = \text{mean outcome among untreated units}
+\]
+
+These are the two conditional means we discussed in Chapter 1. The CEF here takes only two values.
+
+\subsection{2.2.2 The CEF with a Continuous Variable}
+
+When $X_i$ is continuous, $E[Y_i \mid X_i = x]$ traces a potentially complex curve. For the education-wage example, it might look roughly linear but could be non-linear (e.g., the return to the 12th year of schooling may differ from the return to the 16th).
+
+\subsection{2.2.3 The Multivariate CEF}
+
+In practice, we condition on multiple variables $\mathbf{X}_i = (X_{1i}, X_{2i}, \ldots, X_{ki})^T$:
+
+\[
+E[Y_i \mid \mathbf{X}_i = \mathbf{x}] = E\left[Y_i \mid X_{1i} = x_1, X_{2i} = x_2, \ldots, X_{ki} = x_k\right]
+\]
+
+This is a function from $\mathbb{R}^k$ to $\mathbb{R}$. It answers the question: among all individuals with \textit{exactly} these values of all $k$ covariates, what is the average value of $Y$?
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}
+    \begin{axis}[
+      width=10cm, height=7cm,
+      xlabel={$X$ (e.g., years of schooling)},
+      ylabel={$Y$ (e.g., log wages)},
+      xmin=0, xmax=6,
+      ymin=0, ymax=5,
+      axis lines=left,
+      tick style={draw=none},
+      xtick={1,2,3,4,5},
+      xticklabels={10,12,14,16,18},
+      ytick={1,2,3,4},
+      yticklabels={2.0,2.5,3.0,3.5},
+      legend style={at={(0.95,0.15)}, anchor=south east, font=\small},
+      grid=none,
+    ]
+      % Scatter points (simulated data)
+      \addplot[only marks, mark=*, mark size=1.5pt, color=gray!60, opacity=0.7]
+        coordinates {
+          (1,0.8)(1,1.2)(1,1.5)(1,0.5)(1,1.8)
+          (2,1.3)(2,1.8)(2,2.1)(2,1.0)(2,2.5)(2,1.6)
+          (3,2.0)(3,2.6)(3,2.2)(3,3.1)(3,1.8)(3,2.8)
+          (4,2.5)(4,3.2)(4,2.8)(4,3.5)(4,2.1)(4,3.8)
+          (5,3.2)(5,3.8)(5,3.5)(5,4.2)(5,2.9)(5,4.5)
+        };
+
+      % CEF (step function)
+      \addplot[thick, econblue, const plot]
+        coordinates {(0.7,1.16)(1.7,1.16)(1.7,1.88)(2.7,1.88)(2.7,2.5)(3.7,2.5)(3.7,3.18)(4.7,3.18)(4.7,3.82)(5.7,3.82)};
+
+      % OLS regression line
+      \addplot[thick, red!70!black, dashed, domain=0.7:5.7]
+        {0.5 + 0.666*x};
+
+      \legend{Data, CEF $E[Y|X=x]$, OLS regression line}
+    \end{axis}
+  \end{tikzpicture}
+  \caption{The Conditional Expectation Function (CEF) and the OLS regression line. The CEF $E[Y_i|X_i=x]$ (solid blue step function) gives the population mean of $Y$ at each value of $X$. The OLS regression line (dashed red) is the best linear approximation to the CEF in the minimum mean-squared-error sense.}
+  \label{fig:ch02_cef_vs_ols}
+\end{figure}
+
+\medskip\hrule\medskip
+
+\section{2.3 The Law of Iterated Expectations}
+
+The Law of Iterated Expectations (LIE) is one of the most useful identities in probability and statistics. We will use it repeatedly throughout this course.
+
+\textbf{Theorem 2.1 (Law of Iterated Expectations):}
+
+\[
+E[Y_i] = E\left[E[Y_i \mid \mathbf{X}_i]\right]
+\]
+
+\textit{Interpretation:} You can compute the unconditional expectation of $Y_i$ in two steps: first compute $E[Y_i \mid \mathbf{X}_i = \mathbf{x}]$ for each value $\mathbf{x}$, then average this over the distribution of $\mathbf{X}_i$.
+
+\textbf{Proof (continuous case):} Let $g(\mathbf{x}) = E[Y_i \mid \mathbf{X}_i = \mathbf{x}]$ and let $f_X(\mathbf{x})$ be the marginal density of $\mathbf{X}_i$. Then:
+
+\[
+E\left[E[Y_i \mid \mathbf{X}_i]\right] = \int g(\mathbf{x}) f_X(\mathbf{x})\, d\mathbf{x} = \int E[Y_i \mid \mathbf{X}_i = \mathbf{x}] f_X(\mathbf{x})\, d\mathbf{x} = E[Y_i] \quad \square
+\]
+
+\subsection{2.3.1 Practical Application of the LIE}
+
+\textbf{Example 2.1:} Suppose we want to compute average wages in an economy where workers are either male (M) or female (F). The LIE tells us:
+
+\[
+E[\text{Wage}] = E[\text{Wage} \mid \text{Male}] \cdot P(\text{Male}) + E[\text{Wage} \mid \text{Female}] \cdot P(\text{Female})
+\]
+
+This is intuitive: the average wage is a probability-weighted average of average wages within each group.
+
+\textbf{Corollary 2.1:} $E[h(\mathbf{X}_i) \epsilon_i] = 0$ for any function $h$, where $\epsilon_i = Y_i - E[Y_i \mid \mathbf{X}_i]$.
+
+\textit{Proof:} By the LIE, $E[h(\mathbf{X}_i) \epsilon_i] = E\left[E[h(\mathbf{X}_i) \epsilon_i \mid \mathbf{X}_i]\right] = E\left[h(\mathbf{X}_i) E[\epsilon_i \mid \mathbf{X}_i]\right] = 0$, since $E[\epsilon_i \mid \mathbf{X}_i] = 0$ by construction. $\square$
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[scale=1.1,
+    box/.style={draw=econblue, fill=econblue!8, thick, rounded corners, minimum width=3.5cm, minimum height=1cm, align=center, font=\small}
+  ]
+    \node[box] (outer) at (0, 0) {$E[Y_i]$\\(unconditional mean)};
+    \node[box] (middle) at (0, -2.2) {$E\bigl[E[Y_i|X_i]\bigr]$\\(average of conditional means)};
+    \node[box] (inner) at (0, -4.4) {$E[Y_i|X_i=x]$\\(conditional mean at $x$)};
+
+    \draw[-{Stealth}, thick, econblue] (outer) -- (middle)
+      node[midway, right, font=\small] {$= $ (LIE)};
+    \draw[-{Stealth}, thick, econblue] (middle) -- (inner)
+      node[midway, right, font=\small] {average over $X$};
+
+    \node[font=\footnotesize, gray, align=center] at (4.5, -2.2)
+      {$E[Y_i] = E\bigl[E[Y_i | X_i]\bigr]$\\``the expectation of\\a conditional expectation\\equals the unconditional expectation''};
+  \end{tikzpicture}
+  \caption{The Law of Iterated Expectations (LIE). The unconditional mean equals the expectation of the conditional mean function taken over the distribution of $X$.}
+  \label{fig:ch02_lie}
+\end{figure}
+
+\medskip\hrule\medskip
+
+\section{2.4 The CEF Decomposition and Its Properties}
+
+The CEF defines a natural \textbf{decomposition} of any random variable into a systematic part and a residual part.
+
+\subsection{2.4.1 The CEF Decomposition}
+
+\textbf{Proposition 2.1 (CEF Decomposition):} Any random variable $Y_i$ can be written as:
+
+\[
+Y_i = \underbrace{E[Y_i \mid \mathbf{X}_i]}_{\text{Systematic part}} + \underbrace{\epsilon_i}_{\text{Residual part}}
+\]
+
+where the residual $\epsilon_i = Y_i - E[Y_i \mid \mathbf{X}_i]$ satisfies:
+
+\begin{enumerate}
+\item \textbf{Mean Independence:} $E[\epsilon_i \mid \mathbf{X}_i] = 0$ for all values of $\mathbf{X}_i$.
+\item \textbf{Zero Unconditional Mean:} $E[\epsilon_i] = 0$ (by the LIE).
+\item \textbf{Uncorrelated with Any Function of $\mathbf{X}_i$:} $E[h(\mathbf{X}_i) \epsilon_i] = 0$ for any function $h$.
+\end{enumerate}
+
+\textit{Proof:} Property (1) follows directly from the definition: $E[\epsilon_i \mid \mathbf{X}_i] = E[Y_i \mid \mathbf{X}_i] - E[Y_i \mid \mathbf{X}_i] = 0$. Properties (2) and (3) follow from (1) and the LIE. $\square$
+
+\begin{keybox}{This decomposition is fundamental.** It says that any variable can be split into a part predictable from $\mathbf{X}_i$ (the CEF) and a part that is, in the strongest possible sense, unpredictable given $\mathbf{X}_i$ (the residual $\epsilon_i$).}
+\end{keybox}
+
+\subsection{2.4.2 The CEF is the Best Predictor}
+
+\textbf{Theorem 2.2 (CEF as Best Predictor):} Among \textit{all} functions $m(\mathbf{X}_i)$, the CEF $E[Y_i \mid \mathbf{X}_i]$ minimizes the \textbf{Mean Squared Prediction Error (MSPE)}:
+
+\[
+E[Y_i \mid \mathbf{X}_i] = \underset{m(\cdot)}{\operatorname{argmin}} \ E\!\left[(Y_i - m(\mathbf{X}_i))^2\right]
+\]
+
+\textit{Proof:} For any function $m$, write:
+
+\[
+E\left[(Y_i - m(\mathbf{X}_i))^2\right] = E\left[(Y_i - E[Y_i \mid \mathbf{X}_i] + E[Y_i \mid \mathbf{X}_i] - m(\mathbf{X}_i))^2\right]
+\]
+
+\[
+= E[\epsilon_i^2] + E\left[(E[Y_i \mid \mathbf{X}_i] - m(\mathbf{X}_i))^2\right] + 2E\!\left[\epsilon_i (E[Y_i \mid \mathbf{X}_i] - m(\mathbf{X}_i))\right]
+\]
+
+The cross term is zero by Corollary 2.1. The second term is non-negative and equals zero only when $m(\mathbf{X}_i) = E[Y_i \mid \mathbf{X}_i]$. $\square$
+
+\textit{Intuition:} $E[Y_i]$ is the best constant predictor of $Y_i$. The CEF does better by conditioning on available information: by the LIE, $E[E[Y_i \mid \mathbf{X}_i]] = E[Y_i]$, so the CEF is as good on average and better in specific strata.
+
+\subsection{2.4.3 The ANOVA Theorem}
+
+\textbf{Theorem 2.3 (Variance Decomposition / ANOVA):}
+
+\[
+\underbrace{V(Y_i)}_{\text{Total variance}} = \underbrace{V(E[Y_i \mid \mathbf{X}_i])}_{\text{Explained variance}} + \underbrace{E[V(Y_i \mid \mathbf{X}_i)]}_{\text{Unexplained variance}}
+\]
+
+\textit{Interpretation:} The total variation in $Y_i$ decomposes into:
+\begin{itemize}
+\item The variation in the conditional mean (what $\mathbf{X}$ can "explain")
+\item The average within-group variation (what remains after conditioning on $\mathbf{X}$)
+\end{itemize}
+
+This is the population analogue of the sample $R^2$ decomposition $\text{TSS} = \text{ESS} + \text{SSR}$.
+
+\textbf{Example 2.2 (ANOVA in Wage Data):} In the CPS data, approximately 25--30\% of the variation in log wages is explained by education, age, gender, and occupation. The remaining 70--75\% is within-group variation: workers with the same observable characteristics still have very different wages.
+
+\medskip\hrule\medskip
+
+\section{2.5 Why Linear Regression?}
+
+The CEF can take any shape --- it need not be linear. So why do economists almost always estimate \textit{linear} regressions? This section provides two justifications.
+
+\subsection{2.5.1 Justification 1: The CEF is Linear}
+
+If the true population CEF is linear:
+
+\[
+E[Y_i \mid \mathbf{X}_i] = \mathbf{X}_i^T \boldsymbol{\beta}^*
+\]
+
+then by the CEF decomposition theorem:
+
+\[
+E\left[\mathbf{X}_i(Y_i - \mathbf{X}_i^T \boldsymbol{\beta}^*)\right] = \mathbf{0}
+\]
+
+Solving for $\boldsymbol{\beta}^*$:
+
+\[
+\boldsymbol{\beta}^* = E[\mathbf{X}_i \mathbf{X}_i^T]^{-1} E[\mathbf{X}_i Y_i] \equiv \boldsymbol{\beta}^{OLS}
+\]
+
+So when the CEF is linear, the OLS population parameter $\boldsymbol{\beta}^{OLS}$ equals the true parameter $\boldsymbol{\beta}^*$ of the CEF. The linear regression model is correctly specified.
+
+\textbf{When is the CEF exactly linear?} The CEF is linear in $X$ when $(Y, X)$ follow a jointly normal distribution (because $E[Y \mid X] = \mu_Y + \rho \frac{\sigma_Y}{\sigma_X}(X - \mu_X)$ for the bivariate normal). But this is a very strong assumption.
+
+\subsection{2.5.2 Justification 2: OLS Provides the Best Linear Approximation}
+
+What if the CEF is \textit{not} linear? Does OLS still make sense? The answer is yes.
+
+\textbf{Theorem 2.4 (OLS as Best Linear Approximation):} Even when $E[Y_i \mid \mathbf{X}_i]$ is not linear, $\boldsymbol{\beta}^{OLS}$ minimizes the mean squared error of linear prediction:
+
+\[
+\boldsymbol{\beta}^{OLS} = \underset{\mathbf{b}}{\operatorname{argmin}} \ E\!\left[(Y_i - \mathbf{X}_i^T \mathbf{b})^2\right]
+\]
+
+Moreover, the linear projection $\mathbf{X}_i^T \boldsymbol{\beta}^{OLS}$ is the \textbf{best linear approximation to the CEF}:
+
+\[
+\boldsymbol{\beta}^{OLS} = \underset{\mathbf{b}}{\operatorname{argmin}} \ E\!\left[(E[Y_i \mid \mathbf{X}_i] - \mathbf{X}_i^T \mathbf{b})^2\right]
+\]
+
+\textit{Proof of the second result:} Taking the first-order condition:
+
+\[
+E\!\left[\mathbf{X}_i(E[Y_i \mid \mathbf{X}_i] - \mathbf{X}_i^T \boldsymbol{\beta})\right] = \mathbf{0}
+\]
+
+\[
+\Rightarrow \boldsymbol{\beta} = E[\mathbf{X}_i \mathbf{X}_i^T]^{-1} E[\mathbf{X}_i E[Y_i \mid \mathbf{X}_i]]
+\]
+
+By the CEF decomposition, $E[\mathbf{X}_i E[Y_i \mid \mathbf{X}_i]] = E[\mathbf{X}_i Y_i] - E[\mathbf{X}_i \epsilon_i] = E[\mathbf{X}_i Y_i]$. 
+
+Therefore: $\boldsymbol{\beta} = E[\mathbf{X}_i \mathbf{X}_i^T]^{-1} E[\mathbf{X}_i Y_i] = \boldsymbol{\beta}^{OLS}$. $\square$
+
+\begin{keybox}{Key Takeaway:** OLS provides the best linear fit to the data, regardless of whether the CEF is linear or not. When the CEF is not linear, the OLS regression is the best \textit{linear} approximation to the CEF --- it fits a straight line through a potentially curved cloud as well as any straight line can.}
+\end{keybox}
+
+\subsection{2.5.3 Visualizing the Linear Approximation}
+
+Consider the education-wage CEF. The true CEF may curve (with higher returns to college years than to early secondary years). But the OLS regression line through the scatter plot is the straight line that minimizes the sum of squared vertical distances to all data points. This line is the best linear summary of the relationship.
+
+For many purposes --- especially for computing conditional means at typical values of the covariates --- the linear approximation is excellent. For prediction at extreme values or for studying non-linearities, we might prefer more flexible methods.
+
+\medskip\hrule\medskip
+
+\section{2.6 OLS as the Best Linear Approximation to the CEF}
+
+Let us be more explicit about the \textbf{population linear projection model}. 
+
+\textbf{Definition 2.2 (Linear Projection / Population OLS):} The linear projection of $Y_i$ on $\mathbf{X}_i$ is:
+
+\[
+L(Y_i \mid \mathbf{X}_i) = \mathbf{X}_i^T \boldsymbol{\beta}^{OLS}
+\]
+
+where $\boldsymbol{\beta}^{OLS}$ solves:
+
+\[
+\boldsymbol{\beta}^{OLS} = \left(E[\mathbf{X}_i \mathbf{X}_i^T]\right)^{-1} E[\mathbf{X}_i Y_i]
+\]
+
+This is the population parameter vector that OLS estimates from a sample. The sample OLS estimator (Chapter 3) converges to this population quantity as sample size grows.
+
+\textbf{Interpreting the Components:} Consider the simple bivariate case with $\mathbf{X}_i = (1, X_i)^T$ and $\boldsymbol{\beta} = (\alpha, \beta)^T$. Then:
+
+\[
+\beta^{OLS} = \frac{\text{Cov}(X_i, Y_i)}{V(X_i)}
+\]
+
+This is the \textbf{population regression slope}: the ratio of the covariance of $X$ and $Y$ to the variance of $X$. It equals the change in the conditional mean of $Y$ for a one-unit change in $X$, under the linear approximation.
+
+\subsection{2.6.1 The Linear Regression Equation}
+
+Given $\boldsymbol{\beta}^{OLS}$, we can always write:
+
+\[
+Y_i = \mathbf{X}_i^T \boldsymbol{\beta}^{OLS} + \underbrace{e_i}_{\text{Population OLS residual}}
+\]
+
+where $e_i = Y_i - \mathbf{X}_i^T \boldsymbol{\beta}^{OLS}$ is the \textbf{population OLS residual} (not the CEF residual $\epsilon_i$, though they coincide when the CEF is linear). By construction:
+
+\[
+E[\mathbf{X}_i e_i] = \mathbf{0}
+\]
+
+This \textbf{zero covariance condition} (or \textbf{orthogonality condition}) is the key property of the OLS estimator --- it is weaker than strict mean independence $E[e_i \mid \mathbf{X}_i] = 0$.
+
+\subsection{2.6.2 When Does Regression Identify Causal Effects?}
+
+Regression identifies the CEF (up to a linear approximation). But the CEF is not necessarily a causal relationship. Whether the regression coefficient $\beta$ has a causal interpretation depends on \textit{why} $E[Y_i \mid X_i = x]$ varies with $x$.
+
+Three distinct reasons for $E[Y_i \mid X_i = x]$ to vary with $x$:
+
+\begin{enumerate}
+\item \textbf{Causality:} changing $X$ for a given individual changes their $Y$.
+\item \textbf{Selection:} people with higher $X$ would have had higher $Y$ even without the higher $X$ (like the wage-education example with ability selection).
+\item \textbf{Reverse causality:} $Y$ causes $X$ (e.g., healthier people exercise more).
+\end{enumerate}
+
+OLS recovers the CEF regardless of the reason. The \textbf{CEF is causal} only if $X$ is randomly assigned or if we can credibly argue that, conditional on $\mathbf{X}$, the treatment variable of interest is "as good as randomly assigned." This is the identification problem we discussed in Chapter 1.
+
+\medskip\hrule\medskip
+
+\section{2.7 Empirical Illustration: Education and Wages}
+
+Let us apply these concepts to a classic economic question: how does schooling affect wages?
+
+\subsection{2.7.1 Data and Setting}
+
+We use data from the Current Population Survey (CPS), a representative survey of the US labour market. The outcome variable $Y_i$ is the log of weekly earnings; the regressor $X_i$ is years of completed schooling.
+
+\subsection{2.7.2 The Wage-Schooling CEF}
+
+When we calculate $E[\log(\text{wage}) \mid \text{schooling} = s]$ for each value of $s = 0, 1, \ldots, 20$, we trace out the wage-schooling CEF. Key features:
+
+\begin{itemize}
+\item The CEF is approximately \textbf{linear} over most of the schooling range.
+\item There is a notable \textbf{kink} at 12 years (high school completion) and at 16 years (college completion) --- the "sheepskin" effects.
+\item The overall slope is approximately \textbf{0.08--0.11} in OLS regressions, implying each additional year of schooling is associated with an 8--11\% increase in wages.
+\end{itemize}
+
+\subsection{2.7.3 The Linear Regression Approximation}
+
+The OLS regression line:
+
+\[
+\widehat{\log(\text{wage})_i} = \hat{\alpha} + \hat{\beta} \times \text{schooling}_i
+\]
+
+provides the best linear fit to the wage-schooling scatter. The slope $\hat{\beta} \approx 0.10$ says: on average, each additional year of schooling is associated with a 10\% increase in weekly wages.
+
+\textbf{Is this causal?} Not necessarily. People who stay in school longer differ in many ways --- cognitive ability, family background, patience --- from those who leave school earlier. The OLS regression does not distinguish between the causal effect of schooling and these selection differences. We return to this in Chapters 6 (omitted variable bias) and 8 (instrumental variables).
+
+\medskip\hrule\medskip
+
+\section{Chapter Summary}
+
+\begin{itemize}
+\item The \textbf{Conditional Expectation Function (CEF)} $E[Y_i \mid \mathbf{X}_i]$ is the best predictor of $Y_i$ given $\mathbf{X}_i$ in the mean-squared-error sense.
+\item The \textbf{CEF Decomposition} writes $Y_i = E[Y_i \mid \mathbf{X}_i] + \epsilon_i$, where $\epsilon_i$ has zero mean conditional on $\mathbf{X}_i$.
+\item The \textbf{Law of Iterated Expectations} relates the unconditional mean to an average of conditional means.
+\item The \textbf{ANOVA Theorem} decomposes total variance into explained and unexplained components.
+\item The OLS population coefficient vector $\boldsymbol{\beta}^{OLS}$ equals the CEF parameter when the CEF is linear.
+\item When the CEF is non-linear, OLS still provides the \textbf{best linear approximation} to the CEF.
+\item Whether the OLS regression has a \textbf{causal interpretation} depends on the research design, not the statistical method.
+\end{itemize}
+
+\medskip\hrule\medskip
+
+\section{Key Terms}
+
+\textbf{Conditional Expectation Function (CEF)} --- the function $E[Y_i \mid \mathbf{X}_i = \mathbf{x}]$ giving the expected value of $Y$ for each value of $\mathbf{X}$.
+
+\textbf{Law of Iterated Expectations (LIE)} --- $E[Y_i] = E[E[Y_i \mid \mathbf{X}_i]]$.
+
+\textbf{CEF Decomposition} --- $Y_i = E[Y_i \mid \mathbf{X}_i] + \epsilon_i$ where $E[\epsilon_i \mid \mathbf{X}_i] = 0$.
+
+\textbf{Mean Independence} --- the condition $E[\epsilon_i \mid \mathbf{X}_i] = 0$.
+
+\textbf{ANOVA Theorem} --- $V(Y_i) = V(E[Y_i \mid \mathbf{X}_i]) + E[V(Y_i \mid \mathbf{X}_i)]$.
+
+\textbf{Best linear approximation} --- the linear function of $\mathbf{X}_i$ that is closest to the CEF in the mean-squared-error sense.
+
+\textbf{Population OLS parameter} --- $\boldsymbol{\beta}^{OLS} = (E[\mathbf{X}_i \mathbf{X}_i^T])^{-1} E[\mathbf{X}_i Y_i]$.
+
+\textbf{Linear projection} --- $L(Y_i \mid \mathbf{X}_i) = \mathbf{X}_i^T \boldsymbol{\beta}^{OLS}$.
+
+\textbf{Orthogonality condition} --- $E[\mathbf{X}_i e_i] = \mathbf{0}$, where $e_i$ is the population OLS residual.
+
+\medskip\hrule\medskip
+
+\section{Exercises}
+
+\subsection{Conceptual Questions}
+
+\textbf{2.1} Explain in plain language what the CEF $E[Y_i \mid X_i = x]$ means. Give an example from economics where the CEF is likely non-linear.
+
+\textbf{2.2} State the Law of Iterated Expectations. Give an example where you would use it.
+
+\textbf{2.3} Is it possible for $E[Y_i \mid X_i = x]$ to be decreasing in $x$ even though the population regression coefficient $\beta^{OLS}$ is positive? Give an example or prove impossibility.
+
+\textbf{2.4} Explain the difference between the CEF residual $\epsilon_i = Y_i - E[Y_i \mid \mathbf{X}_i]$ and the population OLS residual $e_i = Y_i - \mathbf{X}_i^T \boldsymbol{\beta}^{OLS}$. When are they the same?
+
+\textbf{2.5} "OLS regression always identifies the causal effect of $X$ on $Y$." Is this statement true or false? Explain.
+
+\subsection{Analytical Questions}
+
+\textbf{2.6} Let $Y_i \in \{0, 1\}$ (binary outcome) and $X_i \in \{0, 1\}$ (binary treatment), with joint distribution:
+
+\begin{center}
+\begin{tabular}{@{} l l l @{}}
+\toprule
+\textbf{} & \textbf{$X_i = 0$} & \textbf{$X_i = 1$} \\
+\midrule
+$Y_i = 0$ & 0.40 & 0.10 \\
+$Y_i = 1$ & 0.20 & 0.30 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+(a) Compute $E[Y_i]$, $E[Y_i \mid X_i = 0]$, and $E[Y_i \mid X_i = 1]$.  
+(b) Compute $\beta^{OLS}$ from the bivariate regression of $Y_i$ on $X_i$ using $\beta^{OLS} = \text{Cov}(X,Y)/V(X)$.  
+(c) Interpret the slope coefficient. Does it have a causal interpretation here?
+
+\textbf{2.7} Using the ANOVA theorem, show that the population $R^2 = V(E[Y_i \mid \mathbf{X}_i]) / V(Y_i)$ lies between 0 and 1.
+
+\textbf{2.8} Suppose $E[Y_i \mid X_i] = \alpha + \beta X_i + \gamma X_i^2$ (a quadratic CEF). You run the OLS regression of $Y_i$ on $X_i$ only (without the quadratic term). Show that the OLS estimate of the slope will generally not equal $\beta$, and derive the formula for the bias in terms of $\gamma$ and the moments of $X_i$.
+
+\textbf{2.9} Prove Corollary 2.1: if $\epsilon_i = Y_i - E[Y_i \mid \mathbf{X}_i]$, then $E[h(\mathbf{X}_i)\epsilon_i] = 0$ for any function $h(\cdot)$.
+
+\textbf{2.10} Consider the regression of $Y_i$ on $\mathbf{X}_i$. Show that adding a variable $Z_i$ to the regression does not change the population OLS coefficient on $X_{1i}$ if and only if $Z_i$ is uncorrelated with $X_{1i}$ after partialling out the other regressors.
+
+\subsection{Applied Questions}
+
+\textbf{2.11} Describe how you would construct the wage-schooling CEF from survey data. What would you do for each value of schooling from 0 to 20?
+
+\textbf{2.12} The CEF of health status on income slopes upward: people with higher income have better health on average. List at least three reasons this positive association might hold, and classify each as: (a) causal (income causes health), (b) reverse causality (health causes income), (c) confounding.
+
+\textbf{2.13} In your own words, explain why the fact that "OLS provides the best linear approximation to the CEF" is a useful result even when the CEF is non-linear.
+
+\medskip\hrule\medskip
+
+\section{R Lab 2: Estimating the CEF and OLS Regression}
+
+\subsection{Objectives}
+\begin{itemize}
+\item Compute the empirical CEF from data
+\item Compare the CEF to OLS regression
+\item Visualize the relationship between a continuous variable and an outcome
+\end{itemize}
+
+\subsection{Setup}
+
+\begin{lstlisting}
+library(tidyverse)
+# install.packages("quantreg")
+# install.packages("AER")
+library(AER)  # contains CPS1988 data
+
+# Load CPS data on wages and education
+data("CPS1988")
+head(CPS1988)
+\end{lstlisting}
+
+\subsection{Exercise 2.1: Exploring the Data}
+
+\begin{lstlisting}
+# Summary statistics
+summary(CPS1988[, c("wage", "education", "experience", "ethnicity")])
+
+# Log wages
+CPS1988 <- CPS1988 %>%
+  mutate(log_wage = log(wage))
+
+# Distribution of education
+ggplot(CPS1988, aes(x = education)) +
+  geom_histogram(bins = 16, fill = "steelblue", color = "white") +
+  labs(title = "Distribution of Years of Schooling", x = "Years of Education", y = "Count") +
+  theme_minimal()
+\end{lstlisting}
+
+\subsection{Exercise 2.2: Estimating the Empirical CEF}
+
+\begin{lstlisting}
+# Compute the empirical CEF: mean log wage for each education level
+cef_data <- CPS1988 %>%
+  group_by(education) %>%
+  summarise(
+    mean_log_wage  = mean(log_wage),
+    median_log_wage = median(log_wage),
+    n = n(),
+    se_log_wage = sd(log_wage) / sqrt(n)
+  )
+
+print(cef_data)
+
+# Plot the empirical CEF with confidence intervals
+ggplot(cef_data, aes(x = education, y = mean_log_wage)) +
+  geom_point(aes(size = n), color = "steelblue") +
+  geom_line(color = "steelblue") +
+  geom_ribbon(aes(ymin = mean_log_wage - 1.96 * se_log_wage,
+                  ymax = mean_log_wage + 1.96 * se_log_wage),
+              alpha = 0.2, fill = "steelblue") +
+  labs(
+    title = "Empirical CEF: Mean Log Wage by Years of Education",
+    subtitle = "The CEF shows a generally increasing, approximately linear relationship",
+    x = "Years of Education",
+    y = "Mean Log Wage",
+    size = "Sample Size"
+  ) +
+  theme_minimal()
+\end{lstlisting}
+
+\subsection{Exercise 2.3: OLS Regression vs. the CEF}
+
+\begin{lstlisting}
+# Run OLS regression
+ols_model <- lm(log_wage ~ education, data = CPS1988)
+summary(ols_model)
+
+# Add OLS fitted line to the CEF plot
+ggplot(cef_data, aes(x = education, y = mean_log_wage)) +
+  geom_point(color = "steelblue", size = 3) +
+  geom_line(color = "steelblue", linetype = "dashed") +
+  geom_smooth(
+    data = CPS1988,
+    aes(x = education, y = log_wage),
+    method = "lm",
+    se = TRUE,
+    color = "red"
+  ) +
+  labs(
+    title = "Empirical CEF vs. OLS Regression Line",
+    subtitle = "Blue: Empirical CEF; Red: OLS best linear fit",
+    x = "Years of Education",
+    y = "Log Wage"
+  ) +
+  theme_minimal()
+\end{lstlisting}
+
+\textbf{Questions:}
+\begin{enumerate}
+\item Is the empirical CEF approximately linear?
+\item Where does it deviate most from linearity? (Hint: look at 12 and 16 years of schooling.)
+\item How does the slope of the OLS regression compare to the slope of the CEF in the linear range?
+\end{enumerate}
+
+\subsection{Exercise 2.4: Residuals and the ANOVA Decomposition}
+
+\begin{lstlisting}
+# Compute OLS residuals
+CPS1988 <- CPS1988 %>%
+  mutate(
+    fitted_ols = predict(ols_model),
+    resid_ols  = residuals(ols_model)
+  )
+
+# ANOVA decomposition
+TSS <- var(CPS1988$log_wage)
+ESS <- var(CPS1988$fitted_ols)
+SSR_mean <- mean(CPS1988$resid_ols^2)
+
+cat("Total Variance (TSS equivalent):", round(TSS, 4), "\n")
+cat("Explained Variance (ESS):", round(ESS, 4), "\n")
+cat("Average Residual Variance:", round(SSR_mean, 4), "\n")
+cat("R-squared:", round(summary(ols_model)$r.squared, 4), "\n")
+cat("Check (ESS/TSS):", round(ESS/TSS, 4), "\n")
+
+# Does E[X * resid] = 0?
+cat("Cov(education, residuals):", round(cov(CPS1988$education, CPS1988$resid_ols), 6), "\n")
+\end{lstlisting}
+
+\subsection{Exercise 2.5: Multiple Regression CEF}
+
+\begin{lstlisting}
+# Multiple regression: education + experience
+ols_multi <- lm(log_wage ~ education + experience + I(experience^2), data = CPS1988)
+summary(ols_multi)
+
+# Partial effect of education (controlling for experience)
+# Using the FWL theorem (preview):
+# Regress education on experience, get residuals
+educ_resid <- residuals(lm(education ~ experience + I(experience^2), data = CPS1988))
+wage_resid  <- residuals(lm(log_wage  ~ experience + I(experience^2), data = CPS1988))
+fwl_model   <- lm(wage_resid ~ educ_resid)
+cat("FWL estimate of education coefficient:", round(coef(fwl_model)[2], 4), "\n")
+cat("Multiple regression estimate:", round(coef(ols_multi)["education"], 4), "\n")
+\end{lstlisting}
+
+\textbf{Interpretation:} The two estimates should be identical, illustrating the Frisch-Waugh-Lovell Theorem (covered in Chapter 6).
+
+\medskip\hrule\medskip
+
+\textit{End of Chapter 2}
+
+\medskip\hrule\medskip
+
+\textbf{References}
+
+Angrist, J. D., and Pischke, J. (2009). \textit{Mostly Harmless Econometrics}. Princeton University Press. Chapter 3, Sections 3.1.1--3.1.4.
+
+Davidson, R., and MacKinnon, J. G. (2004). \textit{Econometric Theory and Methods}. Oxford University Press. Chapter 1.
+
+Wooldridge, J. M. (2019). \textit{Introductory Econometrics: A Modern Approach} (7th ed.). Cengage. Chapters 2--3.

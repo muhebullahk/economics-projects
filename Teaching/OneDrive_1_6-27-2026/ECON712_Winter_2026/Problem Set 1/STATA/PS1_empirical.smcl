@@ -1,0 +1,462 @@
+{smcl}
+{com}{sf}{ul off}{txt}{.-}
+      name:  {res}<unnamed>
+       {txt}log:  {res}C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\PS1_empirical.smcl
+  {txt}log type:  {res}smcl
+ {txt}opened on:  {res}20 Feb 2026, 16:08:31
+{txt}
+{com}. 
+. ************************************************************************************************************************
+. ************************************************************************************************************************
+. **************************************                                                                    **********************************************
+. **************************************        PART II: Data cleaning      **********************************************
+. **************************************                                                            **********************************************
+. ************************************************************************************************************************
+. ************************************************************************************************************************
+. 
+. forvalues i=1(1)12{c -(}
+{txt}  2{com}.         local data_file="$data"+"LFS_"+"`i'"+"_2025.tab"
+{txt}  3{com}.         local save_file="$data"+"LFS_"+"`i'"+"_2025.dta"
+{txt}  4{com}.         import delimited "`data_file'", delimiter(tab) clear
+{txt}  5{com}.         save "`save_file'", replace
+{txt}  6{com}. {c )-}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 111,856 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_1_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 113,780 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_2_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 115,590 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_3_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 116,287 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_4_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 116,042 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_5_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 114,376 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_6_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 114,155 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_7_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 113,549 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_8_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 112,927 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_9_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 112,776 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_10_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 111,714 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_11_2025.dta{rm}
+saved
+{p_end}
+{res}{txt}(encoding automatically selected: ISO-8859-1)
+{res}{text}(60 vars, 111,627 obs)
+{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\LFS_12_2025.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. use "$data\LFS_1_2025.dta"
+{txt}
+{com}. 
+. forvalues i=2(1)12{c -(}
+{txt}  2{com}.         local data_file="$data"+"LFS_"+"`i'"+"_2025.dta"
+{txt}  3{com}.         append using "`data_file'"
+{txt}  4{com}. 
+. {c )-}
+{txt}
+{com}. 
+. save "$data\LFS_2025.dta",replace
+{txt}{p 0 4 2}
+file {bf}
+C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\STATA\Data\\LFS_2025.dta{rm}
+saved
+{p_end}
+
+{com}. 
+. 
+. drop if hrlyearn==0 | hrlyearn==.
+{txt}(675,886 observations deleted)
+
+{com}. drop if age_12==01 | age_12==02 | age_12==11 | age_12==12 
+{txt}(125,291 observations deleted)
+
+{com}. 
+. 
+. ************************************************************************************************************************
+. ************************************************************************************************************************
+. **************************************                                                                    **********************************************
+. **************************************       PART III: Summary Statistics **********************************************
+. **************************************                                                            **********************************************
+. ************************************************************************************************************************
+. ************************************************************************************************************************
+. eststo clear
+{txt}
+{com}. generate BA=0
+{txt}
+{com}. replace BA=1 if educ>4
+{txt}(213,646 real changes made)
+
+{com}. generate female=0
+{txt}
+{com}. replace female=1 if gender==2
+{txt}(283,386 real changes made)
+
+{com}. generate ln_wage=log(hrlyearn)
+{txt}
+{com}. generate immigrant=0
+{txt}
+{com}. replace immigrant=1 if immig<3
+{txt}(134,640 real changes made)
+
+{com}. generate age1=0
+{txt}
+{com}. replace age1=1 if age_12==04
+{txt}(78,980 real changes made)
+
+{com}. generate age2=0
+{txt}
+{com}. replace age2=1 if age_12==05
+{txt}(81,121 real changes made)
+
+{com}. generate age3=0
+{txt}
+{com}. replace age3=1 if age_12==06
+{txt}(79,141 real changes made)
+
+{com}. generate age4=0
+{txt}
+{com}. replace age4=1 if age_12==07
+{txt}(73,295 real changes made)
+
+{com}. generate age5=0
+{txt}
+{com}. replace age5=1 if age_12==08
+{txt}(68,866 real changes made)
+
+{com}. generate age6=0
+{txt}
+{com}. replace age6=1 if age_12==09
+{txt}(60,877 real changes made)
+
+{com}. generate age7=0
+{txt}
+{com}. replace age7=1 if age_12==10
+{txt}(50,713 real changes made)
+
+{com}. gen const=1
+{txt}
+{com}. 
+. local vars ln_wage tenure female immigrant age1 age2 age3 age4 age5 age6 age7
+{txt}
+{com}. 
+. foreach v of local vars {c -(}
+{txt}  2{com}. 
+.     * Mean for BA = 0
+.     quietly reg `v' const if BA==0,noconstant 
+{txt}  3{com}.     eststo `v'_0, title("")
+{txt}  4{com}. 
+.     * Mean for BA = 1
+.     quietly reg `v' const if BA==1,noconstant 
+{txt}  5{com}.     eststo `v'_1, title("")
+{txt}  6{com}. 
+.     * Difference (regression)
+.     quietly reg `v' i.BA
+{txt}  7{com}.     eststo `v'_diff, title("")
+{txt}  8{com}. 
+. {c )-}
+{txt}
+{com}. 
+. 
+. 
+. estout ln_wage_0 ln_wage_1 ln_wage_diff using "$tables\table1.tex", replace cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none)  label  rename(1.BA "const") keep(const) style(tex)   ///
+>         title(Comparison of individual characteristics BA vs. no-BA) ///
+>          starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "Ln(wage)") ///
+>         prehead("\begin{c -(}table{c )-}[t]" "\begin{c -(}center{c )-}"  "\caption{c -(}@title{c )-}" "\label{c -(}table1{c )-}" "\resizebox{c -(}.82\textwidth{c )-}{c -(}!{c )-}{c -(}%" "\begin{c -(}tabular{c )-}{c -(}llll{c )-}" ///
+>         "\hline" "\hline") posthead(" Variable & No BA & BA & Diff \\" "\hline") postfoot("\hline")
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.         
+. estout tenure_0 tenure_1 tenure_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label rename(1.BA "const") keep(const) style(tex)   ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "tenure (months)") 
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.                 
+.         
+. estout female_0 female_1 female_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label rename(1.BA "const") keep(const) style(tex)   ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "female")
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.         
+.         
+. estout immigrant_0 immigrant_1 immigrant_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label rename(1.BA "const") keep(const) style(tex)   ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "immigrant")
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.         
+. 
+. estout age1_0 age1_1 age1_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label rename(1.BA "const") keep(const) style(tex)  ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "Age 30-34")
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.         
+. estout age2_0 age2_1 age2_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>    collabels(none) label rename(1.BA "const") keep(const) style(tex)   ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "Age 35-39")
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.         
+. estout age3_0 age3_1 age3_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label rename(1.BA "const") keep(const) style(tex)  ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "Age 40-44")
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.         
+. estout age4_0 age4_1 age4_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label rename(1.BA "const") keep(const) style(tex)   ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "Age 45-49")
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.         
+. estout age5_0 age5_1 age5_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label rename(1.BA "const") keep(const) style(tex)   ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "Age 50-54")
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.         
+. estout age6_0 age6_1 age6_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label rename(1.BA "const") keep(const) style(tex)   ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "Age 55-59")
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}.         
+. estout age7_0 age7_1 age7_diff using "$tables\table1.tex", append cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label rename(1.BA "const") keep(const) style(tex)   ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(const "Age 60-64") ///
+>         postfoot("\hline" "\hline"  "\end{c -(}tabular{c )-}{c )-}" "\end{c -(}center{c )-}" "\captionsetup{c -(}font={c -(}scriptsize{c )-}{c )-}" "\captionsetup{c -(}width=0.80\textwidth{c )-}" "\captionsetup{c -(}skip=0pt{c )-}" "\caption*{c -(}Note: This table displays average characteristics for individuals with and without a BA, defined as a four year University degree. The source are author's own calculations from the Canadian Labour Force Survey {c )-}{c )-}" "\end{c -(}table{c )-}") 
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table1.tex"'})
+
+{com}. 
+. 
+. 
+. 
+. 
+. ************************************************************************************************************************
+. ************************************************************************************************************************
+. **************************************                                                                    **********************************************
+. **************************************        PART IV: Regression         **********************************************
+. **************************************                                                            **********************************************
+. ************************************************************************************************************************
+. ************************************************************************************************************************
+. 
+. reg ln_wage i.BA 
+
+{txt}      Source {c |}       SS           df       MS      Number of obs   ={res}   563,502
+{txt}{hline 13}{c +}{hline 34}   F(1, 563500)    = {res} 50695.07
+{txt}       Model {c |} {res} 9306.08112         1  9306.08112   {txt}Prob > F        ={res}    0.0000
+{txt}    Residual {c |} {res} 103441.542   563,500  .183569729   {txt}R-squared       ={res}    0.0825
+{txt}{hline 13}{c +}{hline 34}   Adj R-squared   ={res}    0.0825
+{txt}       Total {c |} {res} 112747.623   563,501  .200084158   {txt}Root MSE        =   {res} .42845
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}     ln_wage{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}1.BA {c |}{col 14}{res}{space 2} .2648739{col 26}{space 2} .0011764{col 37}{space 1}  225.16{col 46}{space 3}0.000{col 54}{space 4} .2625681{col 67}{space 3} .2671796
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 3.428442{col 26}{space 2} .0007244{col 37}{space 1} 4733.05{col 46}{space 3}0.000{col 54}{space 4} 3.427022{col 67}{space 3} 3.429862
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}{txt}
+{com}. eststo model1, title("(1)")
+{txt}
+{com}. 
+. reghdfe ln_wage i.BA, absorb(i.age_12) 
+{res}{txt}({browse "http://scorreia.com/research/hdfe.pdf":MWFE estimator} converged in 1 iterations)
+{res}
+{txt}HDFE Linear regression{col 51}Number of obs{col 67}= {res}   563,502
+{txt}Absorbing 1 HDFE group{col 51}F({res}   1{txt},{res} 563493{txt}){col 67}= {res}  53827.37
+{txt}{col 51}Prob > F{col 67}= {res}    0.0000
+{txt}{col 51}R-squared{col 67}= {res}    0.1169
+{txt}{col 51}Adj R-squared{col 67}= {res}    0.1169
+{txt}{col 51}Within R-sq.{col 67}= {res}    0.0872
+{txt}{col 51}Root MSE{col 67}= {res}    0.4203
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}     ln_wage{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}1.BA {c |}{col 14}{res}{space 2} .2703573{col 26}{space 2} .0011653{col 37}{space 1}  232.01{col 46}{space 3}0.000{col 54}{space 4} .2680734{col 67}{space 3} .2726413
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 3.426363{col 26}{space 2} .0007133{col 37}{space 1} 4803.72{col 46}{space 3}0.000{col 54}{space 4} 3.424965{col 67}{space 3} 3.427761
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Absorbed degrees of freedom:
+{res}{col 1}{text}{hline 13}{c TT}{hline 12}{hline 12}{hline 14}{hline 1}{c TRC}
+{col 1}{text} Absorbed FE{col 14}{c |} Categories{col 27} - Redundant{col 39}  = Num. Coefs{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c +}{hline 12}{hline 12}{hline 14}{hline 1}{c RT}
+{col 1}{text}      age_12{col 14}{c |}{space 1}        8{col 27}{space 1}        0{col 39}{result}{space 1}        8{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}{hline 13}{c BT}{hline 12}{hline 12}{hline 14}{hline 1}{c BRC}
+{res}{txt}
+{com}. eststo model2, title("(2)")
+{txt}
+{com}. 
+. reghdfe ln_wage i.BA tenure, absorb(i.age_12) 
+{res}{txt}({browse "http://scorreia.com/research/hdfe.pdf":MWFE estimator} converged in 1 iterations)
+{res}
+{txt}HDFE Linear regression{col 51}Number of obs{col 67}= {res}   563,502
+{txt}Absorbing 1 HDFE group{col 51}F({res}   2{txt},{res} 563492{txt}){col 67}= {res}  45968.87
+{txt}{col 51}Prob > F{col 67}= {res}    0.0000
+{txt}{col 51}R-squared{col 67}= {res}    0.1683
+{txt}{col 51}Adj R-squared{col 67}= {res}    0.1683
+{txt}{col 51}Within R-sq.{col 67}= {res}    0.1403
+{txt}{col 51}Root MSE{col 67}= {res}    0.4079
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}     ln_wage{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}1.BA {c |}{col 14}{res}{space 2} .2718617{col 26}{space 2} .0011309{col 37}{space 1}  240.39{col 46}{space 3}0.000{col 54}{space 4} .2696451{col 67}{space 3} .2740783
+{txt}{space 6}tenure {c |}{col 14}{res}{space 2} .0013736{col 26}{space 2} 7.36e-06{col 37}{space 1}  186.51{col 46}{space 3}0.000{col 54}{space 4} .0013592{col 67}{space 3} .0013881
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 3.292492{col 26}{space 2} .0009972{col 37}{space 1} 3301.83{col 46}{space 3}0.000{col 54}{space 4} 3.290537{col 67}{space 3} 3.294446
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Absorbed degrees of freedom:
+{res}{col 1}{text}{hline 13}{c TT}{hline 12}{hline 12}{hline 14}{hline 1}{c TRC}
+{col 1}{text} Absorbed FE{col 14}{c |} Categories{col 27} - Redundant{col 39}  = Num. Coefs{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c +}{hline 12}{hline 12}{hline 14}{hline 1}{c RT}
+{col 1}{text}      age_12{col 14}{c |}{space 1}        8{col 27}{space 1}        0{col 39}{result}{space 1}        8{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}{hline 13}{c BT}{hline 12}{hline 12}{hline 14}{hline 1}{c BRC}
+{res}{txt}
+{com}. eststo model3, title("(3)")
+{txt}
+{com}. 
+. reghdfe ln_wage i.BA tenure female, absorb(i.age_12) 
+{res}{txt}({browse "http://scorreia.com/research/hdfe.pdf":MWFE estimator} converged in 1 iterations)
+{res}
+{txt}HDFE Linear regression{col 51}Number of obs{col 67}= {res}   563,502
+{txt}Absorbing 1 HDFE group{col 51}F({res}   3{txt},{res} 563491{txt}){col 67}= {res}  38298.31
+{txt}{col 51}Prob > F{col 67}= {res}    0.0000
+{txt}{col 51}R-squared{col 67}= {res}    0.1964
+{txt}{col 51}Adj R-squared{col 67}= {res}    0.1964
+{txt}{col 51}Within R-sq.{col 67}= {res}    0.1694
+{txt}{col 51}Root MSE{col 67}= {res}    0.4010
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}     ln_wage{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}1.BA {c |}{col 14}{res}{space 2} .2889509{col 26}{space 2} .0011183{col 37}{space 1}  258.39{col 46}{space 3}0.000{col 54}{space 4} .2867591{col 67}{space 3} .2911427
+{txt}{space 6}tenure {c |}{col 14}{res}{space 2} .0013822{col 26}{space 2} 7.24e-06{col 37}{space 1}  190.92{col 46}{space 3}0.000{col 54}{space 4}  .001368{col 67}{space 3} .0013964
+{txt}{space 6}female {c |}{col 14}{res}{space 2}-.1510344{col 26}{space 2} .0010751{col 37}{space 1} -140.49{col 46}{space 3}0.000{col 54}{space 4}-.1531415{col 67}{space 3}-.1489273
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2}  3.36114{col 26}{space 2} .0010952{col 37}{space 1} 3068.96{col 46}{space 3}0.000{col 54}{space 4} 3.358994{col 67}{space 3} 3.363287
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Absorbed degrees of freedom:
+{res}{col 1}{text}{hline 13}{c TT}{hline 12}{hline 12}{hline 14}{hline 1}{c TRC}
+{col 1}{text} Absorbed FE{col 14}{c |} Categories{col 27} - Redundant{col 39}  = Num. Coefs{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c +}{hline 12}{hline 12}{hline 14}{hline 1}{c RT}
+{col 1}{text}      age_12{col 14}{c |}{space 1}        8{col 27}{space 1}        0{col 39}{result}{space 1}        8{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}{hline 13}{c BT}{hline 12}{hline 12}{hline 14}{hline 1}{c BRC}
+{res}{txt}
+{com}. eststo model4, title("(4)")
+{txt}
+{com}. 
+. reghdfe ln_wage i.BA tenure female immigrant, absorb(i.age_12) 
+{res}{txt}({browse "http://scorreia.com/research/hdfe.pdf":MWFE estimator} converged in 1 iterations)
+{res}
+{txt}HDFE Linear regression{col 51}Number of obs{col 67}= {res}   563,502
+{txt}Absorbing 1 HDFE group{col 51}F({res}   4{txt},{res} 563490{txt}){col 67}= {res}  30690.54
+{txt}{col 51}Prob > F{col 67}= {res}    0.0000
+{txt}{col 51}R-squared{col 67}= {res}    0.2056
+{txt}{col 51}Adj R-squared{col 67}= {res}    0.2056
+{txt}{col 51}Within R-sq.{col 67}= {res}    0.1789
+{txt}{col 51}Root MSE{col 67}= {res}    0.3987
+
+{txt}{hline 13}{c TT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{col 1}     ln_wage{col 14}{c |} Coefficient{col 26}  Std. err.{col 38}      t{col 46}   P>|t|{col 54}     [95% con{col 67}f. interval]
+{hline 13}{c +}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{space 8}1.BA {c |}{col 14}{res}{space 2}  .304958{col 26}{space 2} .0011293{col 37}{space 1}  270.03{col 46}{space 3}0.000{col 54}{space 4} .3027446{col 67}{space 3} .3071715
+{txt}{space 6}tenure {c |}{col 14}{res}{space 2} .0013136{col 26}{space 2} 7.25e-06{col 37}{space 1}  181.25{col 46}{space 3}0.000{col 54}{space 4} .0012994{col 67}{space 3} .0013278
+{txt}{space 6}female {c |}{col 14}{res}{space 2} -.152141{col 26}{space 2}  .001069{col 37}{space 1} -142.32{col 46}{space 3}0.000{col 54}{space 4}-.1542362{col 67}{space 3}-.1500459
+{txt}{space 3}immigrant {c |}{col 14}{res}{space 2}-.1030598{col 26}{space 2} .0012749{col 37}{space 1}  -80.84{col 46}{space 3}0.000{col 54}{space 4}-.1055585{col 67}{space 3}-.1005611
+{txt}{space 7}_cons {c |}{col 14}{res}{space 2} 3.386904{col 26}{space 2} .0011346{col 37}{space 1} 2985.14{col 46}{space 3}0.000{col 54}{space 4}  3.38468{col 67}{space 3} 3.389128
+{txt}{hline 13}{c BT}{hline 11}{hline 11}{hline 9}{hline 8}{hline 13}{hline 12}
+{res}
+{txt}Absorbed degrees of freedom:
+{res}{col 1}{text}{hline 13}{c TT}{hline 12}{hline 12}{hline 14}{hline 1}{c TRC}
+{col 1}{text} Absorbed FE{col 14}{c |} Categories{col 27} - Redundant{col 39}  = Num. Coefs{col 54}{c |}
+{res}{col 1}{text}{hline 13}{c +}{hline 12}{hline 12}{hline 14}{hline 1}{c RT}
+{col 1}{text}      age_12{col 14}{c |}{space 1}        8{col 27}{space 1}        0{col 39}{result}{space 1}        8{col 53}{text} {col 54}{c |}
+{res}{col 1}{text}{hline 13}{c BT}{hline 12}{hline 12}{hline 14}{hline 1}{c BRC}
+{res}{txt}
+{com}. eststo model5, title("(5)")
+{txt}
+{com}. 
+. 
+. 
+. estout model1 model2 model3 model4 model5 using "$tables\table2.tex", replace cells(mean(fmt(%9.3f)) b(star fmt(%9.3f)) se(par fmt(%9.3f))) ///
+>     collabels(none) label  drop(_cons 0.BA) style(tex)  title(Returns to Finishing a four-year university degree) ///
+>         mlabels(, span prefix(\multicolumn{c -(}@span{c )-}{c -(}c{c )-}{c -(}) suffix({c )-})) starlevels(* 0.1 ** 0.05 *** 0.01) varlabels(1.BA "4-year Degree") ///
+>         prehead("\begin{c -(}table{c )-}[t]" "\begin{c -(}center{c )-}"  "\caption{c -(}@title{c )-}" "\label{c -(}table1{c )-}" "\resizebox{c -(}.82\textwidth{c )-}{c -(}!{c )-}{c -(}%" "\begin{c -(}tabular{c )-}{c -(}llllll{c )-}" "\hline" "\hline") /// 
+>         posthead("\hline") prefoot("\hline" "Age Group FE & No & Yes & Yes & Yes & Yes \\")  ///
+>         stats(N , fmt(%9.3f %9.3f %9.3f %9.0f) labels("Obs.")) ///
+>         postfoot("\hline" "\hline"  "\end{c -(}tabular{c )-}{c )-}" "\end{c -(}center{c )-}" "\captionsetup{c -(}font={c -(}scriptsize{c )-}{c )-}" "\captionsetup{c -(}width=0.80\textwidth{c )-}" "\captionsetup{c -(}skip=0pt{c )-}" "\caption*{c -(}Note: This table displays the returns to finishing a four-year degree or higher. The source are author's own calculations from the Canadian Labour Force Survey {c )-}{c )-}" "\end{c -(}table{c )-}") 
+{res}{txt}(output written to {browse  `"C:\Users\freylejer\OneDrive - UNBC\AP_UNBC\ECON712_Winter_2026\Problem Set 1\Solutions\table2.tex"'})
+
+{com}.         
+.         
+.         
+.         
+. cap log close
+{smcl}
+{com}{sf}{ul off}

@@ -1,0 +1,491 @@
+%=============================================================
+% Paper 12: Hopenhayn, Neira & Singhania (2022), Econometrica
+%=============================================================
+\chapter{Hopenhayn, Neira \& Singhania (2022)}
+
+\begin{paperbox}{From Population Growth to Firm Demographics: Implications
+for Concentration, Entrepreneurship and the Labor Share}
+\textbf{Authors:} Hugo Hopenhayn (UCLA), Julian Neira (Exeter),
+Rish Singhania (Exeter)\\[3pt]
+\textbf{Journal:} \textit{Econometrica} 90(4): 1879--1914\\[3pt]
+\textbf{Year:} 2022 \quad\textbf{Field:} Macroeconomics; Firm dynamics;
+Labour economics\\[3pt]
+\textbf{Classification:} Structural (GE model + quantitative calibration
++ historical decomposition)
+\end{paperbox}
+
+%------------------------------------------------------------
+\section{Research Question}
+
+Can changes in population/labour force growth---primarily driven by the baby
+boom and subsequent demographic slowdown---provide a unified quantitative
+explanation for three major secular trends in the U.S.\ economy: (i)~rising
+concentration of employment in large firms; (ii)~declining firm entry rates;
+and (iii)~declining aggregate labour share?
+
+%------------------------------------------------------------
+\section{Motivation}
+
+Three well-documented but apparently disconnected secular trends in the U.S.\
+economy since the late 1970s have attracted separate literatures:
+\begin{itemize}
+  \item \textbf{Rising concentration:} employment share in firms with
+    250+ employees rose from 51.6\% to 57.3\% (1978--2014).
+  \item \textbf{Declining dynamism:} U.S.\ firm entry rate fell by
+    approximately 6 percentage points.
+  \item \textbf{Declining labour share:} aggregate share of GDP going
+    to labour has fallen substantially.
+\end{itemize}
+The paper proposes a single unified mechanism: the baby boom increased firm
+entry rates in the 1970s, creating a cohort of ``baby boom firms''; as these
+firms aged, the firm-age distribution shifted toward older, larger, less dynamic
+firms---mechanically generating all three trends simultaneously through a simple
+accounting identity.
+
+%------------------------------------------------------------
+\section{Main Contribution}
+
+\begin{enumerate}
+  \item \textbf{Empirical documentation:} Using BDS data (1978--2014),
+    shows that once firm-age controls are included, the time trends in
+    concentration, exit rates, and average size \emph{reverse sign}---the
+    aggregate trends are entirely driven by changes in the firm-age
+    distribution.
+
+  \item \textbf{Invariance theorem (Corollary~1):} In a general class of
+    GE models (perfect competition, CES monopolistic competition, variable
+    markup oligopoly), equilibrium allocations \emph{conditional on firm
+    age are invariant to changes in population growth}. All aggregate
+    changes must therefore come from changes in the firm-age distribution.
+
+  \item \textbf{Dynamic entry equation (Corollary~2):} Characterises
+    firm entry as a history-dependent distributed-lag equation, enabling
+    quantitative simulation from historical labour force data.
+
+  \item \textbf{Quantitative analysis:} Feeds historical U.S.\ labour
+    force data (1940--2014) through the model; replicates the observed
+    entry rate decline, concentration, average size, exit rates, and the
+    aggregate labour share (including the baby-boom spike and subsequent
+    decline).
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Relationship to the Literature}
+
+Synthesises three previously disconnected literatures: (i)~business
+dynamism (Haltiwanger, Jarmin, Miranda 2011; Decker et al.\ 2014, 2020);
+(ii)~rising concentration (Autor et al.\ 2020; Grullon et al.\ 2019);
+(iii)~labour share decline (Karabarbounis--Neiman 2014; Kehrig--Vincent
+2021). The closest predecessor is Karahan, Pugsley, \c{S}ahin (2018), who
+link population growth to entry rates in a Hopenhayn (1992)-style model.
+The present paper extends this by providing conditions applicable to imperfect
+competition, characterising transitional dynamics explicitly, and showing
+that baby-boom transitional effects explain 55\% of the entry rate decline
+--- more than the long-run effect (45\%).
+
+%------------------------------------------------------------
+\section{Theoretical Framework and Economic Mechanism}
+
+\subsection*{Accounting Identity}
+
+The fundamental identity of the paper:
+\begin{equation}
+  \lambda_t = \frac{\dot{N}_t}{N_{t-1}}\frac{e_{t-1}}{e_t} - 1 + \xi_t,
+  \label{eq:hns_identity}
+\end{equation}
+where $\lambda_t$ is the firm entry rate, $\dot{N}/N$ is labour force growth,
+$e_t = N_t/M_t$ is average employment per firm, and $\xi_t$ is the aggregate
+exit rate. Entry rate equals labour force growth minus growth in average size
+plus exit rate.
+
+\subsection*{General Framework}
+
+Labour endowment $N_t$ inelastically supplied. Firm profits
+$\pi(s,z)$ and employment $n(s,z)$ are increasing in idiosyncratic state~$s$
+and aggregate state~$z$, under a Markov process $F(s'|s)$. The firm's
+Bellman equation:
+\begin{equation}
+  v(s,z_t) = \max\!\left\{0,\;\pi(s,z_t)+\beta\,\mathbb{E}[v(s',z_{t+1})|s]\right\},
+  \label{eq:hns_bellman}
+\end{equation}
+with exit threshold $s^*_t = \inf\{s\,|\,\pi(s,z_t)+\beta\mathbb{E}[v(s',z_{t+1})|s]>0\}$.
+Free entry pins down $z^*$ via $v^e(z^*) = \int v(s,z^*)\,dG(s) - c_e = 0$.
+
+\subsection*{Invariance of Age Profiles (Corollary~1)}
+
+Because the aggregate state $z^*$ is determined solely by the zero-profit
+condition for entrants---independent of $N_t$---adjustments in aggregate
+quantities occur entirely through changes in the mass of entrants $m_t$,
+leaving age profiles unchanged:
+\begin{align*}
+  &\text{Exit rates by age } \tilde{\xi}_a, \quad
+  \text{Average firm size by age } \tilde{e}_a, \quad
+  \text{Size distribution by age}\\
+  &\hspace{2cm}\text{are all invariant to changes in } N_t.
+\end{align*}
+This result holds for all models satisfying the general framework
+(three examples given: perfect competition, CES monopolistic competition,
+variable markup oligopoly).
+
+\subsection*{Dynamic Entry Equation (Corollary~2)}
+
+The invariance of age profiles implies that market clearing
+$N_t = m_t(S_0\tilde{e}_0+c_e) + \sum_{a=1}^{t}m_{t-a}S_a\tilde{e}_a$
+uniquely determines:
+\begin{equation}
+  m_t = \frac{N_t - \sum_{a=1}^{t}m_{t-a}\,S_a\,\tilde{e}_a}{S_0\,\tilde{e}_0 + c_e},
+  \label{eq:hns_entry}
+\end{equation}
+where $S_a$ is the probability of surviving to age~$a$ and $\tilde{e}_a$
+is average firm size at age~$a$. Entry is \emph{history-dependent}: current
+entry depends on the entire distributed lag of past entry masses
+$\{m_{t-a}\}$.
+
+\subsection*{Long-Run Multiplier (Proposition~2)}
+
+When $\tilde{\xi}_a$ is decreasing in $a$ (older firms have lower exit
+rates, as in the data), the long-run aggregate exit rate $\xi^{SS}$ is
+\emph{increasing} in population growth~$g$. Therefore, the effect of
+population growth on the entry rate is amplified:
+\begin{equation}
+  \lambda^{SS} = g + \xi^{SS} \quad\Rightarrow\quad
+  \frac{d\lambda^{SS}}{dg} = 1 + \frac{d\xi^{SS}}{dg} \approx 1.5
+  \label{eq:hns_multiplier}
+\end{equation}
+for the U.S.\ economy. A 2~pp decline in labour force growth generates
+$\approx 3$~pp decline in the long-run entry rate (long-run effect alone).
+
+\subsection*{Baby Boom Transitional Dynamics}
+
+The baby boom raised firm entry rates in the 1960s--70s, creating a glut
+of firms. Three reinforcing feedback loops amplify the direct effect of
+declining population growth:
+\begin{enumerate}
+  \item \textbf{Exit rate feedback:} Aging distribution lowers aggregate
+    exit rate $\xi_t$ (older firms exit less) $\Rightarrow$ entry falls
+    further.
+  \item \textbf{Average size feedback:} Aging distribution raises average
+    firm size $e_t$ (older firms are larger) $\Rightarrow$ entry falls
+    further.
+  \item \textbf{Baby boom glut:} The large cohort of baby-boom firms has
+    not yet died off; as of 2014, the firm-age distribution is older than
+    the new steady state would imply.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Data}
+
+\begin{itemize}
+  \item \textbf{Business Dynamics Statistics (BDS):} U.S.\ Census Bureau,
+    1978--2014; near-universal coverage of private-sector firms with paid
+    employees; entry/exit rates, average firm size, concentration, and
+    job flows by firm age and sector.
+  \item \textbf{Historical labour force data:} 1940--2014 (BLS civilian
+    labour force; Survey of Current Business entry rates 1940--1962).
+  \item \textbf{Structural calibration:} GMM targeting 1978--1983 moments:
+    entry rate (13.14\%), average entrant size (5.96), concentration of
+    entrants, 5-year firm growth (73.86\%), 5-year exit rate (55.01\%),
+    large-firm employment shares.
+  \item \textbf{Labour share:} Karabarbounis--Neiman (2014); Koh,
+    Santaeul{\`a}lia-Llopis, Zheng (2020).
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Empirical Strategy}
+
+Three complementary approaches:
+\begin{enumerate}
+  \item \textbf{Regression evidence (Table~I):} Regress exit rate, average
+    firm size, and concentration on year trend, with and without firm-age
+    controls. The reversal of sign when age controls are included is the
+    core identification.
+  \item \textbf{Shift-share accounting:} Compute
+    \[
+      \text{Change if Aging Only}
+      = \frac{(\text{Unconditional trend} - \text{Age-conditional trend})\times 36}
+             {\text{Level}_{1978}}
+    \]
+    to isolate the contribution of the changing age distribution.
+  \item \textbf{Dynamic entry equation simulation:} Estimate the firm
+    employment stochastic process by GMM; feed historical labour force
+    data from 1940 into equation~(\ref{eq:hns_entry}) and iterate forward
+    to generate aggregate time series.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Identification Strategy}
+
+The key identifying assumption is the \textbf{invariance of age profiles}:
+exit rates, average size, and size distributions by firm age do not change
+with population growth. This is directly validated by the regression evidence:
+\begin{itemize}
+  \item After controlling for firm age, the exit rate trend becomes slightly
+    \emph{positive} (consistent with no within-age-group change).
+  \item After controlling for firm age, average size and concentration
+    trends become \emph{negative} (consistent with mild within-age
+    declines).
+\end{itemize}
+The aggregate positive trends in size and concentration are entirely accounted
+for by the shifting firm-age distribution.
+
+\textbf{Important caveat:} The invariance result requires a perfectly elastic
+supply of potential entrants proportional to population. If the pool of
+potential entrepreneurs is fixed, the mechanism is weaker.
+
+%------------------------------------------------------------
+\section{Main Results}
+
+\subsection*{Regression Evidence (Table~I)}
+
+\begin{center}
+\small
+\begin{tabular}{lccc}
+\toprule
+\textbf{Variable} & \textbf{Aggregate trend} &
+  \textbf{Controlling for age} & \textbf{Sign reversal?} \\
+\midrule
+Exit rate & $-0.043$/yr *** & $+0.011$/yr & Yes \\
+Average firm size & $+0.096$/yr *** & $-0.143$/yr *** & Yes \\
+Concentration & $+0.159$/yr *** & $-0.069$/yr *** & Yes \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Decomposition of 6~pp Entry Rate Decline (Table~V)}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Component} & \textbf{Magnitude} & \textbf{Share} \\
+\midrule
+Long-run effect (steady state) & $-2.76$~pp & 45\% \\
+1978 transition effect (baby boom entry) & $-1.47$~pp & 24\% \\
+2014 transition effect (baby boom aging) & $-1.84$~pp & 30\% \\
+Residual & $-0.01$~pp & 1\% \\
+\midrule
+\textbf{Total} & $-6.08$~pp & 100\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Of the long-run effect: direct labour force growth decline accounts for
+1.88~pp; long-run multiplier effect on exit rates adds 0.88~pp.
+
+\subsection*{Model Fit for Aggregate Variables (Figure~8)}
+
+Aging alone (model) generates:
+\begin{itemize}
+  \item 16\% decline in exit rate (data ``aging only'': 18\%)
+  \item 41\% increase in average firm size (data: 43\%)
+  \item 15\% increase in concentration (data: 16\%)
+\end{itemize}
+
+\subsection*{Labour Share and Job Reallocation}
+
+Firm aging generates the hump-shaped post-WWII pattern in the aggregate
+labour share: rising until $\approx$1980 (baby-boom entrants are small,
+high-labour-share) and falling after (firms age and grow). Firm aging
+explains:
+\begin{itemize}
+  \item \textbf{48\%} of the decline in the job creation rate
+  \item \textbf{38\%} of the decline in the job destruction rate
+  \item \textbf{32\%} of the decline in the job reallocation rate
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Economic Magnitude and Interpretation}
+
+The 6~pp decline in the U.S.\ firm entry rate represents a massive
+structural change. The paper shows that baby-boom transitional dynamics
+(55\% of total) are quantitatively larger than the long-run steady-state
+effect (45\%), meaning the timing of the demographic cycle matters as much
+as its level. With labour force projections through 2060, entry rates are
+projected to partially recover by $\approx$2030 as the baby boom cohort
+exits and millennial births enter the labour force.
+
+%------------------------------------------------------------
+\section{Mechanisms}
+
+Three reinforcing feedback loops amplify the direct demographic effect:
+\begin{enumerate}
+  \item \textbf{Exit rate feedback:} Declining entry $\to$ aging
+    distribution $\to$ lower aggregate exit rate (older firms exit less)
+    $\to$ even lower entry.
+  \item \textbf{Average size feedback:} Aging distribution $\to$ higher
+    average firm size (older firms are larger) $\to$ lower entry demand
+    per unit of labour.
+  \item \textbf{Baby boom glut:} The large cohort of firms created in the
+    1970s continues to suppress entry in 2014 because the 2014 firm-age
+    distribution is older than the new steady state would predict.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Robustness Checks}
+
+\begin{itemize}
+  \item Results hold in all 7 major BDS sectors (Table~II); aging is
+    quantitatively important across every sector.
+  \item Sector controls do not remove aggregate trends; they deepen them
+    for size and concentration.
+  \item Invariance assumption validated by regression evidence (age controls
+    flip sign of all three trends).
+  \item Shift-share exercise using data levels and model age weights yields
+    similar results.
+  \item Alternative explanations evaluated within the model: higher entry
+    costs, economies of scale, lower diffusion rates---each can explain some
+    facts but is inconsistent with others.
+  \item WW2 fluctuations: model generates entry rate fluctuations matching
+    Survey of Current Business data for 1940--1962.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Limitations}
+
+\begin{enumerate}
+  \item \textbf{Perfectly elastic entrant supply:} Requires the number of
+    potential entrants proportional to population; weakened if the
+    entrepreneurial pool is fixed.
+  \item \textbf{Constant aggregate state:} Invariance result requires
+    risk-neutral households or small open economy; CRRA with endogenous
+    interest rates may partially offset the mechanism.
+  \item \textbf{No welfare analysis:} The paper does not characterise
+    whether the shift to older, larger firms is efficient or inefficient.
+  \item \textbf{Labour share mechanism:} Requires overhead labour (fixed
+    cost) to generate the size--labour-share relationship; maintained
+    assumption rather than derived from micro-foundations.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Policy Implications}
+
+\begin{itemize}
+  \item \textbf{Declining entrepreneurship is a demographic phenomenon.}
+    Policies targeting startup subsidies address the symptom; the root cause
+    (declining birth rates) will not be reversed by business policy.
+  \item \textbf{Concentration is not necessarily a competition problem.}
+    Rising concentration reflects a shift in the age distribution of firms,
+    not necessarily market power. This complicates antitrust interpretations.
+  \item \textbf{Labour share decline is partly demographic.} Interventions
+    targeting labour market institutions or trade may address only a subset
+    of the decline.
+  \item \textbf{Job reallocation decline.} 32--48\% of the decline in gross
+    job reallocation is explained by firm aging; restoring dynamism requires
+    addressing the demographic slowdown, not just regulatory reform.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Overall Assessment}
+
+Hopenhayn, Neira, and Singhania (2022) achieve something rare in
+macroeconomics: a parsimonious unified explanation for three major trends
+that have separately occupied large literatures. The invariance result,
+applicable across a general class of GE models, is a rigorous theoretical
+contribution. The transition dynamics analysis---distinguishing long-run
+and baby-boom transitional effects---is both analytically and quantitatively
+careful. The empirical evidence (sign reversal with age controls) is
+compelling.
+
+\textbf{Quality: Outstanding. A landmark paper in firm dynamics and
+macroeconomics.}
+
+%------------------------------------------------------------
+\section{Relevance to My Research}
+
+Highly relevant for RDC research on Canadian firm dynamics. Canada has
+experienced similar demographic trends. The Business Register/LEAP data
+could test the HNS mechanism for Canada: does firm aging explain declining
+Canadian entry rates? The heterogeneous provincial demographics (Quebec
+birth rate fluctuations, Alberta immigration-driven growth) could provide
+within-country identifying variation.
+
+%------------------------------------------------------------
+\section{Potential Research Extensions}
+
+\begin{itemize}
+  \item Test the HNS mechanism for Canada using LEAP data; exploit
+    provincial variation in demographic patterns (Quebec vs.\ Alberta
+    vs.\ Ontario) as quasi-experimental variation in the key driving force.
+  \item Extend the model to incorporate immigration separately from
+    native birth rates; test whether immigration-driven labour force growth
+    has different effects on firm demographics than birth-rate-driven growth.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Research Gaps}
+
+\begin{itemize}
+  \item The welfare consequences of the baby-boom firm aging are
+    uncharacterised: is the shift toward older, larger firms efficient
+    (positive selection) or inefficient (protection of incumbents from
+    younger challengers)?
+  \item The model does not account for the global nature of the trends;
+    similar patterns in European economies with different demographics
+    suggest additional forces beyond demographics alone.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Methodological Lessons}
+
+\begin{enumerate}
+  \item The accounting identity (\ref{eq:hns_identity}) organises all
+    subsequent analysis without requiring a full structural model; it
+    enables clear decomposition of what drives entry rate changes.
+  \item The regression reversal (age controls flip all three trend signs)
+    is a simple, convincing empirical strategy for establishing the proximate
+    mechanism, regardless of the underlying model.
+  \item The invariance result reduces a complex GE problem to a demographic
+    accounting exercise, making the dynamic entry equation (\ref{eq:hns_entry})
+    applicable across market structures.
+  \item Separating transitional from long-run effects reveals that one-half of
+    the observed trend is transitory (baby boom)---the economy is not in steady
+    state and may partially recover, with major implications for policy urgency.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section*{Five-Sentence Summary}
+
+Hopenhayn, Neira, and Singhania (2022) document that three major secular
+trends in the U.S.\ economy---rising employment concentration, declining firm
+entry rates ($-6$~pp from 1978--2014), and declining labour share---all
+reverse sign once firm-age controls are included in regressions, establishing
+that they are driven entirely by changes in the firm-age distribution rather
+than within-age-group trends. They develop a general theoretical framework,
+applicable to perfect competition, CES monopolistic competition, and variable
+markup oligopoly, showing that equilibrium allocations conditional on firm age
+are invariant to changes in population growth, and derive a dynamic entry
+equation linking current entry to the entire distributed lag of past entry via
+survival probabilities and average firm size by age. Feeding historical U.S.\
+labour force data (1940--2014) into this equation, the model replicates the
+6~pp decline in the entry rate---with 45\% attributable to the long-run
+multiplier effect of declining labour force growth (elasticity $\approx 1.5$)
+and 55\% to baby-boom transitional dynamics (aging of firms founded in the
+1970s). Firm aging also generates the hump-shaped post-WWII pattern in the
+aggregate labour share and accounts for 32--48\% of the decline in gross job
+reallocation rates. The paper provides the first unified quantitative
+explanation linking baby-boom demographics to declining entrepreneurship,
+rising concentration, declining labour share, and falling job reallocation---
+trends previously treated as separate phenomena requiring separate explanations.
+
+\vspace{6pt}
+\begin{quickref}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\textbf{Key contribution} &
+  First unified quantitative explanation linking baby-boom demographics to
+  declining entrepreneurship, rising concentration, declining labour share,
+  and falling job reallocation through firm aging; invariance theorem
+  applicable across a general class of GE models. \\[4pt]
+\textbf{Key weakness} &
+  Requires perfectly elastic entrant supply proportional to population; no
+  welfare analysis of the aging transition; labour share mechanism requires
+  maintained assumption of overhead labour. \\[4pt]
+\textbf{Most interesting gap} &
+  The welfare consequences of baby-boom firm aging are uncharacterised: is
+  the shift toward older, larger firms efficient (positive selection) or
+  inefficient (protection of incumbents from younger challengers)? \\[4pt]
+\textbf{Publishable extension} &
+  Test the HNS mechanism for Canada using LEAP data, exploiting provincial
+  variation in demographic patterns (Quebec vs.\ Alberta vs.\ Ontario) as
+  quasi-experimental variation; test whether the long-run multiplier
+  elasticity of $\approx 1.5$ also holds in Canadian provincial data.
+\end{tabularx}
+\end{quickref}

@@ -1,0 +1,310 @@
+\documentclass[letterpaper,12pt]{article}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{bm}
+\usepackage{grffile}
+\usepackage{relsize}
+\usepackage{tablefootnote}
+\usepackage{footnote}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[multiple]{footmisc}
+\usepackage{appendix}
+\usepackage{times}
+\usepackage{relsize}
+\usepackage{newtxtext,newtxmath}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Title Page Information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace{-.5in} ECON712: Problem Set 3 --- Answer Key}
+\author{Leandro Freylejer}
+\date{Due date: April 15th before noon}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Double and Single Space Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]{\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{1\defbaselineskip}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Set Margins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textwidth=6.5in
+\textheight=9in
+\oddsidemargin=0.10in
+\evensidemargin=0.10in
+\topmargin=-0.5in
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Actual Document Begins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\pagenumbering{arabic}
+
+\maketitle
+\vspace{-.3in}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Question I: Panel Data}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{enumerate}[label=(\alph*)]
+
+%--- Part (a) ---
+\item \textbf{(7 points) Pooled OLS estimator and probability limit.}
+
+\medskip
+\textbf{Derivation of $\hat{\bm{\beta}}^{OLS}$.} A researcher who ignores $\alpha_i$ treats $\bm{u} \equiv \bm{\alpha} + \bm{\varepsilon}$ as the composite error and minimizes the residual sum of squares:
+\[
+\hat{\bm{\beta}}^{OLS} = \arg\min_{\bm{\beta}}\;(\bm{y}-\bm{X}\bm{\beta})'(\bm{y}-\bm{X}\bm{\beta}).
+\]
+The first-order condition is $\bm{X}'(\bm{y} - \bm{X}\hat{\bm{\beta}}^{OLS}) = \bm{0}$, which (assuming $\bm{X}'\bm{X}$ is invertible) gives:
+\[
+\boxed{\hat{\bm{\beta}}^{OLS} = (\bm{X}'\bm{X})^{-1}\bm{X}'\bm{y}.}
+\]
+Substituting the true model $\bm{y} = \bm{X}\bm{\beta} + \bm{\alpha} + \bm{\varepsilon}$:
+\[
+\hat{\bm{\beta}}^{OLS} = \bm{\beta} + (\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\alpha} + (\bm{X}'\bm{X})^{-1}\bm{X}'\bm{\varepsilon}.
+\]
+
+\textbf{Probability limit as $n\to\infty$ with $T$ fixed.} Divide through by $nT$:
+\[
+\hat{\bm{\beta}}^{OLS} = \bm{\beta} + \left(\frac{1}{nT}\bm{X}'\bm{X}\right)^{-1}\!\frac{1}{nT}\bm{X}'\bm{\alpha} + \left(\frac{1}{nT}\bm{X}'\bm{X}\right)^{-1}\!\frac{1}{nT}\bm{X}'\bm{\varepsilon}.
+\]
+
+\textit{Term 1.} The matrix $\frac{1}{nT}\bm{X}'\bm{X} = \frac{1}{nT}\sum_{i=1}^n\sum_{t=1}^T \bm{x}_{it}\bm{x}_{it}'$ is an average of i.i.d.\ terms (over $i$, for fixed $T$). By the \textbf{LLN}:
+\[
+\frac{1}{nT}\bm{X}'\bm{X} \xrightarrow{p} \mathbb{E}[\bm{x}_{it}\bm{x}_{it}'] \equiv S_{XX},
+\]
+assumed positive definite, so $\left(\frac{1}{nT}\bm{X}'\bm{X}\right)^{-1} \xrightarrow{p} S_{XX}^{-1}$.
+
+\textit{Term 2.} Similarly:
+\[
+\frac{1}{nT}\bm{X}'\bm{\alpha} = \frac{1}{nT}\sum_{i=1}^n\sum_{t=1}^T \bm{x}_{it}\alpha_i \xrightarrow{p} \mathbb{E}[\bm{x}_{it}\alpha_i].
+\]
+This limit is the population covariance between the regressors and the fixed effect (after adjusting for means).
+
+\textit{Term 3.} By strict exogeneity, $\mathbb{E}[\varepsilon_{it}|\bm{x}_{i1},\ldots,\bm{x}_{iT},\alpha_i]=0$, so $\mathbb{E}[\bm{x}_{it}\varepsilon_{it}]=\bm{0}$. By the \textbf{LLN}:
+\[
+\frac{1}{nT}\bm{X}'\bm{\varepsilon} \xrightarrow{p} \mathbb{E}[\bm{x}_{it}\varepsilon_{it}] = \bm{0}.
+\]
+
+Applying \textbf{Slutsky's theorem}:
+\[
+\boxed{\mathrm{plim}\;\hat{\bm{\beta}}^{OLS} = \bm{\beta} + S_{XX}^{-1}\,\mathbb{E}[\bm{x}_{it}\alpha_i].}
+\]
+The pooled OLS estimator converges to $\bm{\beta}$ plus an \textit{omitted variable bias} term driven by the correlation between regressors and fixed effects.
+
+%--- Part (b) ---
+\item \textbf{(5 points) Conditions for inconsistency and economic interpretation.}
+
+\medskip
+$\hat{\bm{\beta}}^{OLS}$ is \textbf{inconsistent} whenever
+\[
+\mathbb{E}[\bm{x}_{it}\alpha_i] \neq \bm{0},
+\]
+that is, whenever at least one regressor is correlated with the unit fixed effect. This is the classic \emph{endogeneity from omitted time-invariant heterogeneity} problem.
+
+\textbf{Economic interpretation.} The fixed effect $\alpha_i$ captures all unobserved, time-invariant characteristics of unit $i$ — in a firm panel, this includes managerial quality, firm culture, location-specific advantages, or historical capital vintages. If the researcher includes, say, firm-level capital expenditure $k_{it}$ as a regressor, more productive firms (high $\alpha_i$) are likely to invest more (high $k_{it}$), yielding $\text{Cov}(k_{it},\alpha_i)>0$. Pooled OLS then attributes part of the \emph{level} advantage of high-$\alpha_i$ firms to their observed capital, biasing $\hat{\beta}^{OLS}$ upward.
+
+\textbf{Why pooled OLS fails intuitively.} Pooled OLS stacks all $nT$ observations and treats them as if they were i.i.d.\ draws. But observations belonging to the same unit $i$ share the same $\alpha_i$, introducing within-group correlation. By ignoring this structure, pooled OLS conflates within-unit variation in $\bm{x}_{it}$ (the variation used to identify $\bm{\beta}$) with between-unit variation that is contaminated by $\alpha_i$. When $\alpha_i$ and $\bm{x}_{it}$ move together across units, the between-unit comparison is biased. The fixed-effects (within) estimator eliminates this source of bias by demeaning out $\alpha_i$ before estimation.
+
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Question II: Instrumental Variables and Returns to Schooling}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{enumerate}[label=(\alph*)]
+
+%--- Part (a) ---
+\item \textbf{(10 points) FWL residualization, scatter plots, Wald estimate, and instrument relevance.}
+
+\medskip
+\textbf{(i) Residualization via FWL.}
+
+Let $\bm{X}_c$ denote the matrix of included controls (experience, experience$^2$, \texttt{black}, \texttt{south}, \texttt{smsa}, region dummies, and a constant). By the Frisch--Waugh--Lovell theorem, the coefficient on \texttt{educ} in the full OLS regression equals the OLS coefficient from regressing the residual $\tilde{y}$ on the residual $\tilde{d}$, where:
+\begin{align*}
+\tilde{d} &= M_c\;\texttt{educ}, \quad \tilde{z} = M_c\;\texttt{nearc4}, \quad \tilde{y} = M_c\;\texttt{lwage},
+\end{align*}
+and $M_c = I - \bm{X}_c(\bm{X}_c'\bm{X}_c)^{-1}\bm{X}_c'$ is the annihilator matrix. These residuals represent variation in each variable that is \emph{orthogonal} to all included controls. In STATA:
+\begin{verbatim}
+* Partial out controls from educ, nearc4, and lwage
+reg educ exper expersq black south smsa reg662-reg669
+predict d_tilde, resid
+
+reg nearc4 exper expersq black south smsa reg662-reg669
+predict z_tilde, resid
+
+reg lwage exper expersq black south smsa reg662-reg669
+predict y_tilde, resid
+\end{verbatim}
+
+\medskip
+\textbf{(ii) Scatter plots.}
+
+\begin{itemize}
+    \item \textbf{First stage:} $\tilde{d}$ (y-axis) against $\tilde{z}$ (x-axis). The slope equals the first-stage OLS coefficient $\hat{\pi}_{FS} = (\tilde{z}'\tilde{d})/(\tilde{z}'\tilde{z})$. A positive, statistically significant slope confirms that living near a college raises completed years of education, conditional on controls.
+    \item \textbf{Reduced form:} $\tilde{y}$ (y-axis) against $\tilde{z}$ (x-axis). The slope equals the reduced-form OLS coefficient $\hat{\rho}_{RF} = (\tilde{z}'\tilde{y})/(\tilde{z}'\tilde{z})$. A positive slope indicates that college proximity is associated with higher wages, through the channel of increased schooling.
+\end{itemize}
+Both scatter plots should label the axes (e.g., ``Residualized education'' and ``Residualized nearc4'') and report the fitted slope in the caption. In STATA:
+\begin{verbatim}
+twoway (scatter d_tilde z_tilde, msize(tiny) mcolor(gs8)) ///
+       (lfit d_tilde z_tilde, lcolor(black)), ///
+       xtitle("Residualized nearc4") ytitle("Residualized educ") ///
+       title("First Stage") legend(off)
+
+twoway (scatter y_tilde z_tilde, msize(tiny) mcolor(gs8)) ///
+       (lfit y_tilde z_tilde, lcolor(black)), ///
+       xtitle("Residualized nearc4") ytitle("Residualized lwage") ///
+       title("Reduced Form") legend(off)
+\end{verbatim}
+
+\medskip
+\textbf{(iii) Wald IV estimate.}
+
+By FWL, the slopes from the scatter plots equal:
+\[
+\hat{\pi}_{FS} = \frac{\tilde{z}'\tilde{d}}{\tilde{z}'\tilde{z}}, \qquad \hat{\rho}_{RF} = \frac{\tilde{z}'\tilde{y}}{\tilde{z}'\tilde{z}}.
+\]
+The Wald IV estimate is their ratio:
+\[
+\hat{\beta}^{IV}_{Wald} = \frac{\hat{\rho}_{RF}}{\hat{\pi}_{FS}} = \frac{\tilde{z}'\tilde{y}/\tilde{z}'\tilde{z}}{\tilde{z}'\tilde{d}/\tilde{z}'\tilde{z}} = \frac{\tilde{z}'\tilde{y}}{\tilde{z}'\tilde{d}}.
+\]
+Using the Card (1995) data, the Wald estimate is approximately $\hat{\beta}^{IV}_{Wald} \approx 0.132$, implying that an additional year of education induced by college proximity raises log wages by roughly 13.2\%. Students should report the exact value obtained from their STATA output and verify that it matches the 2SLS estimate from part (b), as the two are algebraically equivalent when there is a single instrument and a single endogenous variable.
+
+\medskip
+\textbf{(iv) First-stage $F$-statistic and instrument relevance.}
+
+Run the first-stage regression explicitly:
+\begin{verbatim}
+reg educ nearc4 exper expersq black south smsa reg662-reg669
+test nearc4
+\end{verbatim}
+The $F$-statistic on \texttt{nearc4} in the Card (1995) data is approximately $F \approx 15$--$20$, exceeding the conventional threshold of $10$ (Stock, Wright, and Yogo, 2002). We therefore \textbf{do not} classify \texttt{nearc4} as a weak instrument: the first stage is sufficiently strong for 2SLS to have reliable size and low bias relative to OLS. A weak instrument would require reporting weak-instrument-robust inference (e.g., Anderson--Rubin confidence sets).
+
+%--- Part (b) ---
+\item \textbf{(10 points) 2SLS replication of Table 57 (Mixtape, p.\ 355).}
+
+\medskip
+The OLS and 2SLS estimates can be obtained in STATA as follows:
+\begin{verbatim}
+* OLS
+reg lwage educ exper expersq black south smsa reg662-reg669, robust
+
+* 2SLS
+ivregress 2sls lwage (educ = nearc4) exper expersq black south smsa ///
+    reg662-reg669, robust first
+\end{verbatim}
+
+\medskip
+Table~\ref{tab:card} replicates the key columns of Mixtape Table 57. The full set of control variables (experience, experience$^2$, \texttt{black}, \texttt{south}, \texttt{smsa}, region dummies) is included in both specifications.
+
+\begin{table}[H]
+\begin{center}
+\caption{OLS and 2SLS Estimates of Returns to Schooling (Card, 1995)}
+\label{tab:card}
+\begin{tabular}{lcc}
+\toprule
+ & OLS & 2SLS \\
+\midrule
+Education (\texttt{educ}) & 0.0747 & 0.1315 \\
+ & (0.0035) & (0.0493) \\
+\midrule
+Instrument & --- & \texttt{nearc4} \\
+Observations & 3,010 & 3,010 \\
+\bottomrule
+\end{tabular}
+\end{center}
+\captionsetup{font={scriptsize},width=0.80\textwidth}
+\caption*{Notes: Heteroscedasticity-robust standard errors in parentheses. Controls included in both columns: \texttt{exper}, \texttt{exper}$^2$, \texttt{black}, \texttt{south}, \texttt{smsa}, region dummies, and a constant. Students should report the exact values from their own STATA output.}
+\end{table}
+
+\textbf{Interpretation and comparison.}
+
+\begin{itemize}
+    \item The OLS estimate ($\approx 0.075$) implies that an additional year of schooling is associated with a 7.5\% increase in wages. However, OLS is likely biased due to omitted ability: individuals with higher unobserved ability (higher $\alpha_i$) both complete more schooling \emph{and} earn higher wages, causing OLS to overstate the causal return to schooling --- or in classical ability bias: $\hat{\beta}^{OLS} \xrightarrow{p} \beta + \frac{\text{Cov}(\text{educ}_i, \text{ability}_i)}{\text{Var}(\text{educ}_i)} \cdot \gamma > \beta$.
+
+    \item The 2SLS estimate ($\approx 0.132$) is notably \emph{larger} than OLS, not smaller. This is the opposite of the classical ability-bias story. Two explanations are consistent with this pattern: (1) \textbf{Measurement error attenuation bias} in OLS --- reported years of education contains classical measurement error, attenuating OLS toward zero; 2SLS uses predicted education (which averages out measurement error), recovering a larger estimate. (2) \textbf{LATE heterogeneity} --- compliers (individuals induced to attend college by proximity) are on the margin of attending and may have higher returns to schooling than the average (e.g., compliers are credit-constrained students who would benefit greatly from a college degree but cannot afford to travel). Under this interpretation, 2SLS consistently recovers the LATE for compliers, which exceeds the ATE.
+
+    \item The 2SLS standard error ($\approx 0.049$) is substantially larger than the OLS standard error ($\approx 0.004$), reflecting the cost of IV: using only the exogenous variation in \texttt{nearc4} discards much of the variation in \texttt{educ}, reducing precision.
+
+    \item The Wald estimate from part (a)(iii) ($\approx 0.132$) should be numerically identical to the 2SLS estimate when there is a single binary instrument and a single endogenous variable. This is a direct application of the FWL theorem: 2SLS with one instrument reduces to the ratio of the reduced-form slope to the first-stage slope after partialling out controls.
+\end{itemize}
+
+%--- Part (c) ---
+\item \textbf{(8 points) Conditions under which \texttt{nearc4} is not a valid instrument.}
+
+\medskip
+For \texttt{nearc4} to be a valid instrument for \texttt{educ} in the wage equation, it must satisfy:
+\begin{enumerate}
+    \item \textbf{Relevance:} $\text{Cov}(\texttt{nearc4}_i, \texttt{educ}_i) \neq 0$ (assessed via the first stage).
+    \item \textbf{Exclusion restriction:} $\texttt{nearc4}_i$ affects $\texttt{lwage}_i$ \emph{only through} \texttt{educ}$_i$ --- i.e., $\text{Cov}(\texttt{nearc4}_i, u_i) = 0$ where $u_i$ is the structural error in the wage equation.
+\end{enumerate}
+The exclusion restriction is untestable from the data alone. The following two channels represent plausible violations:
+
+\medskip
+\textbf{Channel 1: Local labor market quality.} Areas that have four-year colleges tend to be larger, more urbanized labor markets with a denser set of employers, higher demand for skilled workers, and higher average wages across all education levels. If \texttt{nearc4} proxies for living in a high-wage metropolitan area, it would have a \emph{direct positive effect on wages} independent of any schooling it induces. This would cause the reduced form to overstate the schooling effect, biasing $\hat{\beta}^{2SLS}$ \textbf{upward}. Indeed, a partial remedy is to control for \texttt{smsa} (standard metropolitan statistical area), as Card (1995) does --- but this may not fully absorb local labor market quality differentials.
+
+\medskip
+\textbf{Channel 2: Neighborhood human capital and peer effects.} Growing up near a college may increase exposure to college-educated adults, peer groups that value education, and social networks that improve labor market outcomes regardless of own schooling. A child raised in a college town may benefit from higher neighborhood quality, better primary and secondary schools, and social capital that translates into higher wages through channels other than completed years of schooling (e.g., vocabulary, professionalism, networks). This represents a direct effect of \texttt{nearc4} on earnings via human capital spillovers, which would again bias $\hat{\beta}^{2SLS}$ \textbf{upward}. This is sometimes called the \emph{neighborhood effects} or \emph{residential sorting} violation of the exclusion restriction.
+
+\medskip
+In both cases the direction of bias is the same: the instrument is positively correlated with the wage residual $u_i$, so $\hat{\beta}^{2SLS}$ overstates the causal return to schooling. Formally, under endogeneity of the instrument:
+\[
+\mathrm{plim}\;\hat{\beta}^{2SLS} = \beta + \frac{\text{Cov}(\texttt{nearc4}_i,\, u_i)}{\text{Cov}(\texttt{nearc4}_i,\, \texttt{educ}_i)}.
+\]
+If $\text{Cov}(\texttt{nearc4}_i, u_i) > 0$ (upward bias in the numerator) and the first stage is positive, then $\hat{\beta}^{2SLS} > \beta$.
+
+%--- Part (d) ---
+\item \textbf{(8 points) What does 2SLS identify under heterogeneous treatment effects?}
+
+\medskip
+When the treatment effect of education on wages varies across individuals --- so that $\beta_i = y_i(d+1) - y_i(d)$ differs from person to person --- the 2SLS estimator no longer identifies a single population-wide parameter. Instead, under the standard IV assumptions (relevance, independence, exclusion restriction, and \textbf{monotonicity}), it identifies the \textbf{Local Average Treatment Effect (LATE)}:
+\[
+\hat{\beta}^{2SLS} \xrightarrow{p} LATE \equiv \mathbb{E}[\beta_i \mid \text{compliers}] = \mathbb{E}[y_i(1) - y_i(0) \mid D_i(1) > D_i(0)],
+\]
+where $D_i(z)$ denotes the years of schooling individual $i$ would complete if the instrument $Z_i = z$.
+
+\medskip
+\textbf{Who are the compliers?} The monotonicity assumption ($D_i(1) \geq D_i(0)$ for all $i$) rules out defiers and implies four types:
+\begin{itemize}
+    \item \textbf{Always-takers:} attend college regardless of proximity (wealthy families unaffected by distance).
+    \item \textbf{Never-takers:} do not attend college regardless of proximity (e.g., those with strong preferences against college or extremely low ability).
+    \item \textbf{Compliers:} attend college \emph{only because} they grew up near one --- the group whose schooling decision is changed by the instrument. These are likely credit-constrained or geographically limited individuals for whom proximity lowers the effective cost of attending college.
+    \item \textbf{Defiers:} ruled out by monotonicity.
+\end{itemize}
+
+\medskip
+\textbf{Why does the LATE differ from the ATE and ATT?}
+\begin{itemize}
+    \item The \textbf{ATE} $= \mathbb{E}[\beta_i]$ is the average treatment effect for a randomly selected person in the population. 2SLS does not identify this unless treatment effects are homogeneous.
+    \item The \textbf{ATT} $= \mathbb{E}[\beta_i \mid D_i = 1]$ is the average effect for those who actually attend college. Again, 2SLS does not recover this in general.
+    \item The \textbf{LATE} is specific to the complier subpopulation defined by the chosen instrument. Using a different instrument (e.g., distance to a two-year college) identifies a different LATE for a different set of compliers. This is the \emph{instrument-dependent} nature of LATE.
+\end{itemize}
+
+\medskip
+\textbf{Economic interpretation for Card (1995).} The compliers here are individuals who would not have attended a four-year college had they grown up away from one, but did because they lived nearby. This group plausibly consists of lower-income or first-generation college students facing geographic and financial barriers. If these students have particularly high returns to schooling --- perhaps because they are systematically underinvested in human capital --- the LATE could substantially exceed the ATE, consistent with the finding that $\hat{\beta}^{2SLS} > \hat{\beta}^{OLS}$. This illustrates a general lesson: IV does not recover the average return to schooling for a hypothetical policy that randomly assigns everyone more education; it recovers the return for the specific subpopulation moved by the instrument.
+
+\end{enumerate}
+
+\end{document}

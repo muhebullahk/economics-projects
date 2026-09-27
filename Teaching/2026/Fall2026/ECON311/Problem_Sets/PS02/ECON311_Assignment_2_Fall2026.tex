@@ -1,0 +1,210 @@
+\documentclass[letterpaper,12pt]{article}
+%\usepackage{harvard}
+%\usepackage{subfigure}
+%\usepackage[active]{srcltx}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{grffile}
+\usepackage{relsize}
+\usepackage{tablefootnote}
+\usepackage{footnote}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[multiple]{footmisc}
+\usepackage{appendix}
+\usepackage{times}
+\usepackage{relsize}
+\usepackage{caption}
+\usepackage{newtxtext,newtxmath}
+\usepackage{enumitem}
+\usepackage{booktabs}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Title Page Information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace{-.8in}ECON311: Assignment II}
+\author{}
+\date{Due date: TBD, Fall 2026}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Double and Single Space Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]{\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{1\defbaselineskip}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\newtheoremstyle{dotlessS}{}{}{\itshape}{}{\bfseries}{}{ }{}
+\theoremstyle{dotlessS}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand\Pitem{%
+  \addtocounter{enumi}{-1}%
+  \renewcommand\theenumi{\arabic{\enumi}'}%
+  \item%
+  \renewcommand\theenumi{\arabic{enumi}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Set Margins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textwidth=6.5in
+\textheight=9in
+\oddsidemargin=0.10in
+\evensidemargin=0.10in
+\topmargin=-0.5in
+%\parskip=3pt
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Actual Document Begins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\pagenumbering{arabic}
+\maketitle
+\vspace{-.2in}
+
+
+%----------------------------------------------------------------------
+\section*{Question I: Long-Run Growth}
+%----------------------------------------------------------------------
+Consider the following Romer economy without capital:
+\begin{eqnarray*}
+\begin{array}{ll}
+\text{Production Function:} & Y_t = A_t \: L_{Y_t} \\[1.4ex]
+\text{Law of Motion for Productivity:} & A_{t+1} = A_t + \overline{z}\: A_t\: L_{A_t}  \\[1.4ex]
+\text{Allocation of Labour:} & L_{A_t} = \overline{\ell}\:\overline{L}, \qquad L_{Y_t} = (1-\overline{\ell})\:\overline{L}  \\[1.4ex]
+\end{array}
+\end{eqnarray*}
+\begin{enumerate}[label=(\alph*)]
+\item (6 points) Derive the long-run growth rate of output per person, $g_y$ (where $y_t = Y_t/\overline{L}$). Suppose the government permanently increases the fraction of workers devoted to R\&D from $\overline{\ell}$ to $\overline{\ell}' > \overline{\ell}$ at time $t_0$. The economy was on its balanced growth path before $t_0$.
+\begin{enumerate}[label=\roman*.]
+    \item What happens to $g_y$ immediately after the policy change? Is the change in $g_y$ temporary or permanent?
+    \item Does the \emph{level} of output per person jump at $t_0$, or does it change only over time? What is the long-run effect on the \emph{level} of $y_t$ relative to the old balanced growth path?
+    \item On a graph with $\ln y_t$ on the vertical axis and time on the horizontal axis, carefully illustrate the evolution of output per person before and after the policy change. Clearly label the \textbf{growth rate effect} and the \textbf{level effect}.
+\end{enumerate}
+\item (6 points) Now consider two countries that are identical in all respects in the year 1980, including their initial output per person, \textbf{except} that country~1 has a strictly higher R\&D productivity: $\overline{z}^{\,1} > \overline{z}^{\,2}$. Both countries have the same $\overline{\ell}$ and $\overline{L}$.
+\begin{enumerate}[label=\roman*.]
+    \item On the same graph (using a ratio scale, i.e., $\ln y_t$ on the vertical axis), draw the evolution of output per person for both countries starting from 1980. Which country has higher output per person in the long run?
+    \item Does the gap in output per person between the two countries widen, narrow, or stabilize over time? What does this result imply about income inequality across countries that differ only in their capacity to innovate? Contrast this prediction with what the Solow model would predict.
+\end{enumerate}
+\end{enumerate}
+
+
+%----------------------------------------------------------------------
+\section*{Question II: The IS-MP Model and the Lower Bound on Interest Rates (10 points)}
+%----------------------------------------------------------------------
+Consider the standard IS-MP model. The central bank follows the policy rule $R_t - \overline{r} = \overline{m}(\pi_t - \overline{\pi})$ to set the real interest rate. Because the nominal interest rate cannot be negative, however, the real interest rate is bounded below: it cannot fall below $R_{\min} = -\pi_t$. The economy begins at its long-run equilibrium ($\widetilde{Y} = 0$, $\pi = \overline{\pi}$, $R = \overline{r}$).
+
+A sudden, severe negative aggregate demand shock hits the economy (autonomous spending falls sharply), shifting the IS curve far to the left.
+\begin{enumerate}[label=(\alph*)]
+\item (5 points) Show the situation on an IS-MP diagram with $\widetilde{Y}$ on the horizontal axis and $R$ on the vertical axis. The central bank attempts to reduce $R$ to offset the shock and restore $\widetilde{Y}=0$, but the required interest rate falls below $R_{\min}$. Clearly illustrate: (i)~the pre-shock equilibrium, (ii)~the new IS curve, (iii)~the $R_{\min}$ floor, and (iv)~the output gap that remains even when the CB sets $R = R_{\min}$. Explain intuitively why the lower bound prevents the CB from fully stabilising the economy. What does this situation imply about the effectiveness of monetary policy during a severe recession?
+
+\item (5 points) With the CB constrained at $R = R_{\min}$, the government increases expenditure by $\Delta\overline{G} > 0$. Show the effect on the IS-MP diagram. Using the IS equilibrium condition, explain why the government-expenditure multiplier may be \textbf{larger} when the interest rate is stuck at $R_{\min}$ than it is in normal times when the CB adjusts $R$ freely. What is the economic mechanism that makes fiscal policy more powerful in this situation?
+\end{enumerate}
+
+
+%----------------------------------------------------------------------
+\section*{Question III: The Investment Accelerator, IS-MP and Automatic Stabilisers}
+%----------------------------------------------------------------------
+Consider the following economy. Investment depends not only on the real interest rate but also on current output (the \emph{investment accelerator}):
+\begin{eqnarray*}
+\begin{array}{ll}
+\text{Aggregate Expenditure} & E_t = C_t + I_t + G_t + X_t - M_t \\[1.4ex]
+\text{Consumption} & C_t = a_c + b_c(Y_t - T_t) \\[1.4ex]
+\text{Investment} & I_t = a_i + b_a\,Y_t - b_i\,R_t \\[1.4ex]
+\text{Taxes} & T_t = b_T\,Y_t \\[1.4ex]
+\text{Inflation} & \pi_t = \pi_{t-1} + \overline{v}\,\widetilde{Y}_t + \overline{o}_t \\[1.4ex]
+\text{Government Expenditure and Trade} & G_t = \overline{G}, \quad X_t = \overline{X}, \quad M_t = \overline{M}
+\end{array}
+\end{eqnarray*}
+The parameter $b_a > 0$ captures the accelerator: when output rises, firms expect stronger future demand and increase investment spending. All other notation is the same as in class.
+\begin{enumerate}[label=(\alph*)]
+\item (4 points) Solve for the goods-market equilibrium. What is the expenditure multiplier? Write down the parameter restriction that must hold for the equilibrium to exist and be stable. How does the accelerator change the multiplier relative to the standard model with $b_a = 0$?
+
+\item (6 points) Use the Keynesian Cross to carefully illustrate the effect of a positive shock to autonomous investment ($a_i$ rises by $\Delta a_i > 0$) for two cases: \textbf{i.}~$b_a > 0$ (with accelerator) and \textbf{ii.}~$b_a = 0$ (without). Label both diagrams carefully, including the slopes of the expenditure line. Explain the economic mechanism by which the accelerator amplifies the initial investment shock.
+
+\item (5 points) Derive the IS curve using deviations from potential output $\widetilde{Y}$ as the endogenous variable. How does the slope of the IS curve change when $b_a$ increases? What is the economic interpretation?
+
+\item (9 points) Suppose the economy is at its long-run equilibrium with a constant $3\%$ inflation rate. An autonomous investment boom raises $a_i$ for exactly \textbf{two consecutive periods}. Using the full short-run model (IS-MP and Phillips Curve), explain what happens to the economy \textbf{over time}. Include graphs showing: i.~the IS-MP, ii.~the Phillips Curve, and iii.~time paths of $\widetilde{Y}$ and $\pi$.\\
+\end{enumerate}
+
+\noindent The following parameter values apply to parts~(e) and~(f): $b_c = 0.6$,\; $b_T = 0.25$,\; $b_a = 0.1$,\; $b_i = 400$ (billions of dollars per percentage point of $R$).
+
+\begin{enumerate}[label=(\alph*)]
+\setcounter{enumi}{4}
+\item (5 points) Using the parameter values above, compute: (i)~the expenditure multiplier, and (ii)~the change in equilibrium output $Y$ when the real interest rate rises by 2 percentage points ($\Delta R = 0.02$). Redo both calculations for the case without the accelerator ($b_a = 0$). What do you conclude about how the investment accelerator affects the interest-rate sensitivity of aggregate output?
+
+\item (6 points) \textbf{Automatic stabilisers.} Define the government's primary fiscal balance as $PB_t = b_T\,Y_t - \overline{G}$. Assume the budget is balanced when output equals its potential level ($\widetilde{Y}_t = 0$), so that $\overline{G} = b_T\,\overline{Y}$. (i)~Derive the expression for $PB_t$ as a function of the output gap $\widetilde{Y}_t$, the tax rate $b_T$, and potential output $\overline{Y}$. Does the government run a surplus or a deficit during an investment boom ($\widetilde{Y}_t > 0$)? (ii)~Using the time path of $\widetilde{Y}_t$ from part~(d), sketch how the primary fiscal balance evolves over time following the investment boom. Explain the economic intuition behind \textbf{automatic fiscal stabilisers}: how does the tax system dampen cyclical fluctuations without any deliberate policy change?
+\end{enumerate}
+
+
+%----------------------------------------------------------------------
+\section*{Question IV: The Phillips Curve and the Credibility of Monetary Policy}
+%----------------------------------------------------------------------
+Suppose that inflation is given by the following \emph{hybrid} Phillips Curve:
+\begin{eqnarray*}
+\pi_t = \lambda\,\overline{\pi} + (1-\lambda)\,\pi_{t-1} + \overline{v}\:\widetilde{Y}_t + \overline{o}_t
+\end{eqnarray*}
+where $0 \leq \lambda \leq 1$ measures the degree to which inflation expectations are anchored to the central bank's target $\overline{\pi}$: $\lambda = 0$ corresponds to purely adaptive expectations ($\pi^e_t = \pi_{t-1}$); $\lambda = 1$ corresponds to fully credible, target-anchored expectations ($\pi^e_t = \overline{\pi}$); and $0 < \lambda < 1$ yields a weighted average.
+\begin{enumerate}[label=(\alph*)]
+\item (10 points) The economy is at long-run equilibrium ($\widetilde{Y} = 0$, $\pi = \overline{\pi}$) when a one-time positive price shock $\overline{o}_t = \overline{o} > 0$ hits in period $t$. The shock then disappears ($\overline{o}_{t+s} = 0$ for $s \geq 1$). Assume the central bank does not adjust monetary policy and the output gap remains zero in all periods after the shock. Using this version of the Phillips Curve with $(\pi_t - \overline{\pi})$ on the vertical axis and time on the horizontal axis:
+\begin{enumerate}[label=\roman*.]
+    \item For each of the three cases $\lambda = 0$, $\lambda = 1$, and $0 < \lambda < 1$, derive an expression for the inflation gap $(\pi_{t+s} - \overline{\pi})$ in period $t+s$ (for $s \geq 0$). What happens to inflation in each case as $s \to \infty$?
+    \item On a single graph, draw the time path of inflation for all three cases. What is the key qualitative difference between the case $\lambda = 0$ and the case $\lambda > 0$?
+\end{enumerate}
+\item (5 points) The Bank of Canada operates under a mandate to keep inflation near $2\%$. Based on your analysis in part~(a), explain why \emph{credibility} — not merely an announced target — is essential for this mandate to be effective. In terms of the model, what does a higher value of $\lambda$ represent in practice? What factors might cause $\lambda$ to be low, and what can a central bank do to raise it?
+\end{enumerate}
+
+
+%----------------------------------------------------------------------
+\section*{Question V: The AS-AD Model and Monetary Policy Trade-offs}
+%----------------------------------------------------------------------
+Consider the following economy:
+\begin{eqnarray*}
+\begin{array}{ll}
+\text{Aggregate Expenditure} & E_t = C_t + I_t + G_t + X_t - M_t \\[1.4ex]
+\text{Consumption} & C_t = a_c + b_c\,Y_t \\[1.4ex]
+\text{Investment} & I_t = a_i - b_i\,R_t \\[1.4ex]
+\text{Inflation} & \pi_t = \pi^e_t + \overline{v}\:\widetilde{Y}_t + \overline{o}_t  \\[1.4ex]
+\text{Policy Rule} & R_t - \overline{r} = \overline{m}(\pi_t - \overline{\pi})  \\[1.4ex]
+\text{Government Expenditure and Trade} & G_t = \overline{G}, \quad M_t = \overline{M}, \quad X_t = \overline{X}
+\end{array}
+\end{eqnarray*}
+\begin{enumerate}[label=(\alph*)]
+\item (5 points) Assuming $\pi^e_t = \pi_{t-1}$, derive the AD curve expressing $\widetilde{Y}$ as a function of $\pi_t$ and $\pi_{t-1}$. Explain the economic mechanism that gives the AD curve its negative slope.
+
+\item (10 points) The economy is at long-run equilibrium with $\pi = \overline{\pi}$ when a one-period positive supply shock $\overline{o}_t = \overline{o} > 0$ hits in period $t$. Consider the following three possible central bank responses to the shock:
+\begin{enumerate}[label=\roman*.]
+    \item \textbf{Follow the rule}: The CB makes no discretionary adjustment and simply follows $R_t = \overline{r} + \overline{m}(\pi_t - \overline{\pi})$.
+    \item \textbf{Prioritise price stability}: The CB tightens monetary policy beyond the rule, raising $R_t$ enough to keep inflation at $\pi_t = \overline{\pi}$ in period $t$.
+    \item \textbf{Prioritise output}: The CB eases monetary policy beyond the rule, cutting $R_t$ enough to keep $\widetilde{Y}_t = 0$ in period $t$.
+\end{enumerate}
+On a \textbf{single} AS-AD diagram, show the three resulting equilibrium points corresponding to responses (i), (ii), and (iii). For each case, indicate whether $\widetilde{Y}$ is above, below, or at zero, and whether $\pi$ is above, below, or at $\overline{\pi}$.
+
+Now contrast the supply-shock scenario with a one-period \textbf{demand shock}: if aggregate demand fell temporarily below potential, could the CB simultaneously restore $\widetilde{Y} = 0$ and $\pi = \overline{\pi}$ using a single policy action? Explain why the supply shock confronts the CB with a \textbf{trade-off} that the demand shock does not. What term is used to describe the simultaneous occurrence of a recession and above-target inflation?
+\end{enumerate}
+
+
+\end{document}

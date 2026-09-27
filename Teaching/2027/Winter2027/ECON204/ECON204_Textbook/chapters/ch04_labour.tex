@@ -1,0 +1,1649 @@
+%==========================================================
+%  CHAPTER 4: Labour Markets — Employment, Wages, and
+%              Demographic Change
+%  ECON 204 — Contemporary Economic Issues: A Canadian Perspective
+%==========================================================
+
+\chapter{Labour Markets: Employment, Wages, and Demographic Change}
+\label{ch:labour}
+
+%----------------------------------------------------------
+%  OPENING VIGNETTE
+%----------------------------------------------------------
+
+\noindent In March 2023, two Canadians were navigating very different
+labour markets --- in the same city.
+
+Jerome, 42, had worked as a machinist at a Windsor, Ontario auto parts
+plant for eighteen years. His unionized position paid \$34.20 per hour,
+came with a defined-benefit pension, dental and vision coverage, and
+four weeks of paid vacation. He had renegotiated his collective agreement
+the previous fall and received a 6.5\% wage increase --- his largest in
+a decade. His plant had just won a \$200 million retooling contract for
+electric vehicle battery components. His employer was begging for more
+skilled machinists and couldn't find them.
+
+Kayla, 27, had a business degree from the University of Windsor and
+worked as a ``gig coordinator'' for a logistics platform, classifying
+her own work schedule and delivery routes through an app. Her pay was
+\$19.50 per effective hour after accounting for vehicle costs, which
+she covered herself. She had no benefits, no pension, no vacation pay,
+and no job security beyond the next available delivery slot. On weeks when
+demand was low, her earnings fell below minimum wage. On weeks when it was
+high --- Christmas, Valentine's Day --- she worked 60 hours.
+
+Jerome and Kayla live in the same city, are subject to the same provincial
+employment standards, and are affected by the same monetary and fiscal
+policies. Yet their labour market experiences are separated by a chasm:
+one navigated by institutional arrangements built over decades of
+collective bargaining; the other by algorithms, platform economics, and
+legal classifications that exclude workers from the protections most
+Canadians take for granted.
+
+Understanding labour markets --- how wages are determined, why employment
+fluctuates, how technological change and demographic aging are reshaping
+the demand for and supply of work, and what policies can improve outcomes
+for workers like Kayla without undermining conditions for workers like
+Jerome --- is the subject of this chapter.
+
+%----------------------------------------------------------
+%  LEARNING OBJECTIVES
+%----------------------------------------------------------
+
+\begin{learningobjectives}
+  \item Apply the supply-and-demand model to labour markets, distinguish
+        the competitive from the monopsonistic wage-setting case, and
+        use both to predict the employment effects of a minimum wage.
+  \item Calculate the three key labour force statistics --- unemployment
+        rate, employment rate, and labour force participation rate ---
+        from raw population and employment data, and interpret each
+        measure correctly.
+  \item Distinguish among frictional, structural, and cyclical
+        unemployment, define the natural rate of unemployment, and
+        explain why the unemployment rate is an imperfect welfare measure.
+  \item Interpret the Beveridge Curve and explain what an outward shift
+        of the curve means for labour market matching efficiency.
+  \item Analyse the wage-productivity gap in Canada, identify its causes,
+        and evaluate evidence on the link between unionization decline
+        and stagnant real wages.
+  \item Compare standard and non-standard employment on wages, benefits,
+        and security, and evaluate the policy debate over the employment
+        status of platform workers.
+  \item Assess the demographic pressures on Canada's labour market ---
+        aging population, declining youth cohorts, and immigration ---
+        and connect them to labour shortages, the dependency ratio, and
+        long-run productivity.
+\end{learningobjectives}
+
+%==========================================================
+\section{Labour Market Fundamentals}
+\label{sec:labour_fundamentals}
+%==========================================================
+
+The \term{labour market} is the market in which workers sell their time
+and skills to employers. Like any market, it has a supply side (workers
+deciding how many hours to offer at different wage rates), a demand side
+(employers deciding how many workers to hire at different wage rates), and
+an equilibrium (the wage and employment level that clears the market).
+
+\begin{defbox}{Labour Demand and Labour Supply}
+\textbf{Labour demand} is derived from the demand for output.
+A firm's profit-maximising condition for labour hiring is:
+\[
+  W = P \times \text{MP}_L
+\]
+where $W$ is the market wage, $P$ is the output price, and $\text{MP}_L$
+is the marginal product of labour. This condition equates the wage to
+the \term{value of the marginal product of labour (VMP$_L$)}, which is
+the revenue generated by the last unit of labour hired. Labour demand
+curves slope downward because, due to diminishing returns, each
+additional worker adds less output (and hence less revenue) than the
+previous one.
+
+\textbf{Labour supply} reflects the trade-off between work (earning
+income) and leisure (consuming non-work time). The supply curve
+typically slopes upward: higher wages induce more labour supply,
+as the opportunity cost of leisure rises. However, at very high wages,
+the \term{income effect} (workers can afford more leisure) can dominate
+the \term{substitution effect} (higher wage makes leisure more costly),
+producing a backward-bending supply curve.
+\end{defbox}
+
+%----------------------------------------------------------
+\subsection{The Competitive Labour Market}
+%----------------------------------------------------------
+
+In a perfectly competitive labour market, many workers and many firms
+interact, no individual can influence the market wage, and the equilibrium
+wage $W^*$ clears the market at employment $L^*$. This is the benchmark
+model. Figure~\ref{fig:labour_markets} illustrates both the competitive
+case and its main departure: monopsony.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  axisline/.style={-Stealth, thick, color=gray!70},
+  lbl/.style={font=\small}
+]
+
+%---- PANEL A: COMPETITIVE MARKET ----
+\begin{scope}[xshift=0cm]
+\node[font=\small\bfseries, align=center] at (3.2,5.8)
+  {Panel A: Competitive Market};
+\draw[axisline] (0,0) -- (0,5.5) node[above, lbl] {$W$};
+\draw[axisline] (0,0) -- (6.0,0) node[right, lbl] {$L$};
+% Supply
+\draw[casered, thick] (0.4,0.4) -- (5.4,4.9)
+  node[right, font=\footnotesize, color=casered] {$S_L$};
+% Demand
+\draw[policyblue, thick] (0.4,4.9) -- (5.6,0.3)
+  node[right, font=\footnotesize, color=policyblue] {$D_L = \text{VMP}_L$};
+% Equilibrium
+\fill[unbcgreen] (2.88,2.68) circle (3pt);
+\draw[dashed, gray!50, thin] (0,2.68) -- (2.88,2.68)
+  node[left, pos=0, font=\footnotesize] {$W^*$};
+\draw[dashed, gray!50, thin] (2.88,0) -- (2.88,2.68)
+  node[below, font=\footnotesize] {$L^*$};
+% Minimum wage
+\draw[dataorange, thick, dashed] (0,3.8) -- (5.8,3.8)
+  node[right, font=\footnotesize, color=dataorange] {$\bar{W}_{\min}$};
+\fill[dataorange] (1.62,3.8) circle (2.5pt);
+\fill[dataorange] (4.35,3.8) circle (2.5pt);
+\draw[<->, dataorange!80, thin] (1.62,4.1) -- (4.35,4.1)
+  node[midway, above, font=\footnotesize, color=dataorange] {unemployment};
+\node[left, font=\footnotesize, dataorange] at (0,3.8) {$\bar{W}$};
+\end{scope}
+
+%---- PANEL B: MONOPSONY ----
+\begin{scope}[xshift=7.5cm]
+\node[font=\small\bfseries, align=center] at (3.2,5.8)
+  {Panel B: Monopsony};
+\draw[axisline] (0,0) -- (0,5.5) node[above, lbl] {$W$};
+\draw[axisline] (0,0) -- (6.0,0) node[right, lbl] {$L$};
+% Supply (ACL)
+\draw[casered, thick] (0.4,0.4) -- (5.4,4.9)
+  node[right, font=\footnotesize, color=casered] {$S_L = \text{ACL}$};
+% MLC (steeper than supply)
+\draw[casered!60, thick, dashed] (0.4,0.8) -- (3.8,5.2)
+  node[right, font=\footnotesize, color=casered!70] {MLC};
+% VMP_L (demand)
+\draw[policyblue, thick] (0.4,4.9) -- (5.6,0.3)
+  node[right, font=\footnotesize, color=policyblue] {$D_L = \text{VMP}_L$};
+% Monopsony equilibrium
+\fill[casered!80] (2.15,2.15) circle (3pt);
+% Monopsony wage (read off supply curve)
+\draw[dashed, gray!50, thin] (0,1.55) -- (2.15,1.55)
+  node[left, pos=0, font=\footnotesize] {$W_m$};
+\draw[dashed, gray!50, thin] (2.15,0) -- (2.15,2.15)
+  node[below, font=\footnotesize] {$L_m$};
+% Competitive outcome for comparison
+\fill[unbcgreen] (2.88,2.68) circle (2.5pt);
+\draw[dashed, gray!20, thin] (0,2.68) -- (2.88,2.68)
+  node[left, pos=0, font=\footnotesize, color=gray!60] {$W^*$};
+\draw[dashed, gray!20, thin] (2.88,0) -- (2.88,2.68)
+  node[below, font=\footnotesize, color=gray!60] {$L^*$};
+% Minimum wage eliminating monopsony distortion
+\draw[dataorange, thick, dashed] (0,2.68) -- (5.8,2.68)
+  node[right, font=\footnotesize, color=dataorange] {$\bar{W}_{\min} = W^*$};
+\node[font=\footnotesize, align=center, text=dataorange] at (4.2,1.3)
+  {Min wage restores\\competitive outcome};
+\end{scope}
+\end{tikzpicture}
+\caption{Labour Market Models: Competitive vs.\ Monopsony.
+\textbf{Panel A} shows the competitive labour market. The minimum wage
+$\bar{W}$ set above the competitive equilibrium $W^*$ creates unemployment
+(excess labour supply, shown by the orange gap) --- the standard result.
+\textbf{Panel B} shows a monopsony (single buyer of labour). The monopsonist
+sets employment where MLC $=$ VMP$_L$, at $L_m < L^*$, and pays wage
+$W_m < W^*$. Critically, a minimum wage set at $W^*$ eliminates the
+monopsony distortion and \textit{increases} both employment and wages ---
+the theoretical basis for why Card and Krueger (1994) found no employment
+loss from minimum wage increases in some US fast-food markets. Canadian
+labour markets, particularly in rural communities and in care sectors,
+often have monopsonistic features.}
+\label{fig:labour_markets}
+\end{figure}
+
+%----------------------------------------------------------
+\subsection{Monopsony in Canadian Labour Markets}
+%----------------------------------------------------------
+
+The competitive model assumes workers can freely move between employers.
+In practice, many Canadian workers face a \term{monopsonist} or
+\term{oligopsonist} labour market --- a market where one or a few employers
+dominate hiring. Classic examples include:
+
+\begin{itemize}
+  \item \textbf{Single-employer towns:} A sawmill in a remote Northern BC
+        community, a mine in the Northwest Territories, or a fish processing
+        plant in rural Newfoundland may be the only significant employer.
+        Workers who do not want to relocate have little bargaining power.
+  \item \textbf{Sector-specific skills:} A highly trained nurse or
+        schoolteacher in a small city faces limited employer options
+        even if the labour market is otherwise competitive.
+  \item \textbf{Platform labour markets:} Ride-share and delivery platforms
+        effectively set wages unilaterally for workers classified as
+        contractors --- exhibiting monopsonistic wage-setting in practice
+        even when no legal monopoly exists.
+\end{itemize}
+
+The monopsony model has an important policy implication: when labour markets
+are monopsonistic, a minimum wage set up to the competitive wage level can
+\textit{increase} employment and wages simultaneously. This is why the
+empirical evidence on minimum wages is more nuanced than the simple
+competitive model predicts. We return to this in Section~\ref{sec:min_wage}.
+
+%==========================================================
+\section{Labour Force Accounting}
+\label{sec:labour_accounting}
+%==========================================================
+
+The Statistics Canada \term{Labour Force Survey (LFS)}, published monthly,
+is Canada's primary source of employment and unemployment data. The LFS
+divides the working-age population (WAP, persons aged 15 and over) into
+three groups:
+
+\begin{itemize}
+  \item \textbf{Employed} ($E$): persons who worked at least one hour
+        for pay or profit in the reference week, or who were absent from
+        a job they held (due to illness, vacation, or labour dispute).
+  \item \textbf{Unemployed} ($U$): persons who were without work, were
+        available for work, and were actively seeking employment in the
+        four weeks prior to the reference week.
+  \item \textbf{Not in the labour force} ($N$): persons who are neither
+        employed nor unemployed --- including retirees, students, caregivers,
+        and discouraged workers who have stopped searching for jobs.
+\end{itemize}
+
+The labour force is $LF = E + U$. From these groups, three key statistics
+are derived:
+
+\begin{equation}
+  \text{Unemployment Rate} = \frac{U}{LF} \times 100 = \frac{U}{E + U} \times 100
+  \label{eq:unemployment_rate}
+\end{equation}
+
+\begin{equation}
+  \text{Labour Force Participation Rate (LFPR)} = \frac{LF}{\text{WAP}} \times 100
+  \label{eq:lfpr}
+\end{equation}
+
+\begin{equation}
+  \text{Employment Rate} = \frac{E}{\text{WAP}} \times 100
+  \label{eq:employment_rate}
+\end{equation}
+
+\noindent\textbf{Worked Example 4.1 --- Labour Force Accounting, Canada, Mid-2024}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{lr}
+\toprule
+\textbf{Category} & \textbf{Value} \\
+\midrule
+Working-age population (WAP, 15+)             & 34{,}150{,}000 \\
+Employed ($E$)                                & 20{,}615{,}000 \\
+Unemployed ($U$)                              &  1{,}371{,}000 \\
+Not in labour force ($N$)                     & 12{,}164{,}000 \\
+\midrule
+Labour force ($LF = E + U$)                   & 21{,}986{,}000 \\
+\midrule
+Unemployment rate ($U/LF$)                    & 6.2\% \\
+Labour force participation rate ($LF$/WAP)    & 64.4\% \\
+Employment rate ($E$/WAP)                     & 60.4\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\textit{Interpretation:}
+\begin{itemize}
+  \item A 6.2\% unemployment rate means approximately 1.37 million
+        Canadians who want to work and are actively searching cannot
+        find a job.
+  \item A 64.4\% LFPR means that 35.6\% of working-age Canadians are
+        neither employed nor looking for work.
+  \item An employment rate of 60.4\% means only 60 of every 100 Canadians
+        aged 15+ hold a paying job.
+\end{itemize}
+
+\begin{keytakeaway}
+The unemployment rate is the most cited labour market statistic, but it
+is an imperfect welfare measure. It excludes: \textbf{discouraged workers}
+(who want work but stopped searching); \textbf{involuntary part-timers}
+(who want full-time work but can only find part-time); and \textbf{workers
+in jobs below their skill level}. Statistics Canada's R8 measure of
+underemployment, which includes these groups, consistently runs 3--5
+percentage points above the headline unemployment rate.
+\end{keytakeaway}
+
+%----------------------------------------------------------
+\subsection{Canada's Labour Market Record, 2010--2026}
+%----------------------------------------------------------
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=14cm, height=7.5cm,
+  xlabel={Year},
+  ylabel={Rate (\%)},
+  xlabel style={font=\small},
+  ylabel style={font=\small},
+  xmin=2009.5, xmax=2026.5,
+  ymin=0, ymax=75,
+  xtick={2010,2012,2014,2016,2018,2020,2022,2024,2026},
+  xticklabel style={font=\small},
+  ytick={0,10,20,30,40,50,60,70},
+  yticklabel style={font=\small},
+  ymajorgrids=true,
+  grid style={dashed, gray!20},
+  legend pos=south east,
+  legend style={font=\small},
+  clip=false
+]
+% LFPR
+\addplot[policyblue, thick, mark=none] coordinates {
+  (2010,67.1)(2011,66.8)(2012,66.6)(2013,66.5)(2014,65.8)
+  (2015,65.9)(2016,65.7)(2017,65.8)(2018,65.5)(2019,65.6)
+  (2020,62.4)(2021,64.7)(2022,64.8)(2023,65.1)(2024,64.4)(2025,64.1)(2026,64.3)
+};
+\addlegendentry{LFPR (\%, left)}
+% Employment rate
+\addplot[unbcgreen, thick, dashed, mark=none] coordinates {
+  (2010,61.6)(2011,61.7)(2012,61.8)(2013,62.0)(2014,61.4)
+  (2015,61.4)(2016,61.0)(2017,61.6)(2018,62.0)(2019,61.8)
+  (2020,56.5)(2021,59.9)(2022,61.5)(2023,61.3)(2024,60.4)(2025,59.9)(2026,60.1)
+};
+\addlegendentry{Employment rate (\%)}
+% Unemployment rate (scaled up ×5 for visibility on same axis)
+\addplot[casered, thick, dotted, mark=none] coordinates {
+  (2010,8.1)(2011,7.4)(2012,7.2)(2013,7.1)(2014,6.9)
+  (2015,6.9)(2016,7.0)(2017,6.3)(2018,5.8)(2019,5.7)
+  (2020,9.5)(2021,7.5)(2022,5.3)(2023,5.4)(2024,6.3)(2025,6.7)(2026,6.5)
+};
+\addlegendentry{Unemployment rate (\%)}
+% COVID annotation
+\node[font=\footnotesize, align=center, color=gray] at (axis cs:2020,50)
+  {COVID-19\\lockdowns};
+\draw[->, gray!60, thin] (axis cs:2020,52) -- (axis cs:2020,57);
+\node[font=\footnotesize, color=casered] at (axis cs:2020,11)
+  {u=9.5\%};
+\node[font=\footnotesize, color=casered] at (axis cs:2022.5,4.5)
+  {u=5.3\%\\(50-yr low)};
+\end{axis}
+\end{tikzpicture}
+\caption{Canadian Labour Force Participation Rate, Employment Rate, and
+Unemployment Rate, 2010--2026. The three series together tell a richer
+story than any one alone. The COVID-19 collapse of April 2020 is visible
+in all three: the unemployment rate spiked to 9.5\%, the employment rate
+fell to 56.5\%, and the LFPR dropped to 62.4\% as many workers stopped
+searching. The 2022 labour market tightness is equally clear: unemployment
+at 4.9--5.3\% (its lowest since the 1970s) while LFPR had recovered to
+near pre-pandemic levels. The subsequent 2024--2025 softening reflects
+the economic slowdown induced by the Bank of Canada's rate-hike cycle
+(Chapter~\ref{ch:inflation}).}
+\label{fig:lf_statistics}
+\source{Statistics Canada, Table 14-10-0287-01, Labour Force Survey,
+seasonally adjusted. 2025--2026 estimated.}
+\end{figure}
+
+%==========================================================
+\section{Types of Unemployment}
+\label{sec:unemployment_types}
+%==========================================================
+
+Not all unemployment is the same. Economists distinguish three conceptually
+distinct types, each with different causes and policy implications.
+
+\begin{defbox}{Three Types of Unemployment}
+\textbf{Frictional unemployment} arises from the normal time it takes
+to match workers with jobs. Even in a healthy economy, workers quit,
+are dismissed, or leave school and must search for the right job.
+Firms take time to evaluate candidates. This process generates temporary
+unemployment that is voluntary, transitional, and inevitable in any
+dynamic market economy. Estimated at 1--2\% of the labour force.
+
+\textbf{Structural unemployment} arises when workers' skills are
+mismatched with available jobs --- either because of technological
+change (automation displacing specific occupations), geographic
+mismatch (jobs in growing cities, workers in declining regions), or
+industry restructuring (oil sands declining while green tech expands).
+Structural unemployment tends to be longer-duration and is not cured
+by aggregate demand stimulus. Policy responses include retraining,
+relocation assistance, and apprenticeship programs.
+
+\textbf{Cyclical unemployment} arises from insufficient aggregate
+demand during economic downturns. When GDP falls below potential,
+firms reduce hiring and may lay off workers; the resulting unemployment
+is correlated with the business cycle. Cyclical unemployment is the
+target of countercyclical monetary and fiscal policy.
+
+The \textbf{natural rate of unemployment} $u_n$ (also called the
+NAIRU) is the unemployment rate that prevails when the economy is
+at potential output, consisting of frictional and structural
+unemployment only. For Canada, the Bank of Canada estimates
+$u_n \approx 5.5$--$6.0\%$ in the mid-2020s.
+\end{defbox}
+
+The distinction between structural and cyclical unemployment matters
+enormously for policy. When the Bank of Canada raised rates in 2022--2023,
+it was targeting the \textit{cyclical} component of inflation (excess
+demand). The resulting rise in unemployment from 5.3\% to 6.5--6.8\%
+by 2024--25 reflects both cyclical slack (deliberate demand reduction)
+and structural factors (immigration increasing labour supply faster than
+job creation). A policymaker who mistakes structural unemployment for
+cyclical --- and responds with rate cuts --- risks reflating the economy
+before the structural adjustment is complete.
+
+%==========================================================
+\section{The Beveridge Curve: Labour Market Matching}
+\label{sec:beveridge_curve}
+%==========================================================
+
+The \term{Beveridge Curve} plots the job vacancy rate (share of positions
+unfilled) against the unemployment rate over time. It describes the
+efficiency of the process by which workers and jobs are matched.
+
+A well-functioning labour market traces a stable, downward-sloping curve:
+when unemployment is high (recession), vacancies are low (few firms
+hiring); when unemployment is low (tight market), vacancies are high
+(firms competing intensely for scarce workers). The position of the curve
+reflects \term{matching efficiency} --- how well the process of connecting
+workers to jobs works.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=10cm, height=9cm,
+  xlabel={Unemployment Rate (\%)},
+  ylabel={Job Vacancy Rate (\%)},
+  xlabel style={font=\small},
+  ylabel style={font=\small},
+  xmin=4.5, xmax=10.5,
+  ymin=0.5, ymax=5.5,
+  xtick={5,6,7,8,9,10},
+  ytick={1,2,3,4,5},
+  xticklabel style={font=\small},
+  yticklabel style={font=\small},
+  ymajorgrids=true, xmajorgrids=true,
+  grid style={dashed, gray!20},
+  clip=false
+]
+% Pre-COVID Beveridge curve (reference)
+\addplot[gray!40, dashed, thick, domain=4.5:10.5]
+  {1.8 + 0.8*exp(-0.45*(x-5.0))}
+  node[above right, pos=0.05, font=\footnotesize, color=gray!60]
+  {Pre-COVID curve};
+% Post-COVID Beveridge curve (outward shift)
+\addplot[unbcgreen!50, dashed, thick, domain=4.5:10.5]
+  {2.5 + 1.2*exp(-0.45*(x-5.0))}
+  node[above right, pos=0.05, font=\footnotesize, color=unbcgreen!70]
+  {Post-COVID curve};
+% Data points
+\addplot[only marks, mark=*, mark size=3pt, policyblue]
+  coordinates {
+    (6.9,1.5)(7.0,1.6)(6.3,1.9)(5.8,2.1)(5.7,2.2)
+  };
+\addplot[only marks, mark=square*, mark size=3pt, casered]
+  coordinates {
+    (9.5,1.4)(7.5,3.2)(5.3,4.5)(5.4,3.4)(6.3,2.8)(6.7,2.5)
+  };
+% Year labels
+\node[font=\footnotesize, policyblue, above right] at (axis cs:6.9,1.5) {15};
+\node[font=\footnotesize, policyblue, above right] at (axis cs:7.0,1.6) {16};
+\node[font=\footnotesize, policyblue, above right] at (axis cs:6.3,1.9) {17};
+\node[font=\footnotesize, policyblue, above right] at (axis cs:5.8,2.1) {18};
+\node[font=\footnotesize, policyblue, above right] at (axis cs:5.7,2.2) {19};
+\node[font=\footnotesize, casered, right] at (axis cs:9.5,1.4) {20};
+\node[font=\footnotesize, casered, above right] at (axis cs:7.5,3.2) {21};
+\node[font=\footnotesize, casered, above] at (axis cs:5.3,4.5) {22};
+\node[font=\footnotesize, casered, right] at (axis cs:5.4,3.4) {23};
+\node[font=\footnotesize, casered, below right] at (axis cs:6.3,2.8) {24};
+\node[font=\footnotesize, casered, below right] at (axis cs:6.7,2.5) {25};
+% Arrow showing outward shift
+\draw[->, unbcgreen!70, thick] (axis cs:6.5,2.3) -- (axis cs:6.3,3.1);
+\node[font=\footnotesize, unbcgreen!80, align=center] at (axis cs:7.0,3.7)
+  {Outward\\shift:\\matching\\inefficiency};
+\end{axis}
+\end{tikzpicture}
+\caption{Beveridge Curve: Canada, 2015--2025. Blue circles (labelled
+15--19) show the pre-pandemic period tracing a stable downward-sloping
+relationship near the grey reference curve. Red squares (labelled 20--25)
+show the post-COVID period. The 2021--2022 points sit far to the
+upper-left of the pre-COVID curve: very high vacancies (4.5\% in 2022)
+combined with still-elevated unemployment (5.3\%), suggesting that many
+unfilled positions could not be matched with available workers. This
+\textit{outward shift} of the Beveridge curve indicates reduced matching
+efficiency --- caused by skills mismatches, geographic mismatch between
+vacancies and workers, and pandemic-related labour market restructuring.
+By 2024--25, the curve had shifted partially back toward its pre-COVID
+position as labour markets adjusted.}
+\label{fig:beveridge}
+\source{Statistics Canada, Job Vacancy and Wage Survey (Table 14-10-0325-01);
+Labour Force Survey (Table 14-10-0287-01). Year labels show last two digits.}
+\end{figure}
+
+An outward Beveridge shift has specific policy implications: it means
+that reducing the unemployment rate by cutting interest rates (stimulating
+demand) will not efficiently eliminate the vacancies. The unfilled positions
+require workers with skills that the unemployed do not currently possess,
+or are located where unemployed workers do not currently live. The
+policy solution is \textit{structural}: retraining, apprenticeship
+programs, credential recognition for immigrants, and improved geographic
+labour mobility --- not monetary stimulus.
+
+%==========================================================
+\section{Wage Determination and the Wage-Productivity Gap}
+\label{sec:wages}
+%==========================================================
+
+%----------------------------------------------------------
+\subsection{Competitive Wage Determination}
+%----------------------------------------------------------
+
+In a competitive labour market, the equilibrium wage equals the value of
+the marginal product of labour:
+\begin{equation}
+  W^* = P \times \text{MP}_L
+  \label{eq:vmp}
+\end{equation}
+
+This means wages grow with: (1) increases in the output price $P$ (firms
+can pay more when their revenues rise); and (2) increases in labour
+productivity $\text{MP}_L$ (more productive workers generate more revenue
+per unit of labour). The fundamental prediction is that real wages and
+labour productivity should grow together over the long run.
+
+%----------------------------------------------------------
+\subsection{The Wage-Productivity Gap: Canada's Most Important Labour Statistic}
+%----------------------------------------------------------
+
+The prediction that real wages and labour productivity should grow together
+has not been borne out in Canada since the 1970s. Figure~\ref{fig:wage_productivity}
+shows that while labour productivity has grown substantially since 1976,
+real wages have grown significantly less.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=14cm, height=7.5cm,
+  xlabel={Year},
+  ylabel={Index (1976 = 100)},
+  xlabel style={font=\small},
+  ylabel style={font=\small},
+  xmin=1975, xmax=2026,
+  ymin=90, ymax=195,
+  xtick={1980,1985,1990,1995,2000,2005,2010,2015,2020,2025},
+  xticklabel style={font=\small},
+  ytick={100,120,140,160,180,200},
+  yticklabel style={font=\small},
+  ymajorgrids=true,
+  grid style={dashed, gray!20},
+  legend pos=north west,
+  legend style={font=\small},
+  clip=false
+]
+% Labour productivity index
+\addplot[policyblue, thick, mark=none] coordinates {
+  (1976,100)(1980,105)(1985,112)(1990,119)(1995,128)
+  (2000,142)(2005,152)(2010,157)(2015,163)(2020,168)(2022,170)(2024,173)(2025,175)
+};
+\addlegendentry{Labour productivity (real output per hour worked)}
+% Real wages index
+\addplot[casered, thick, dashed, mark=none] coordinates {
+  (1976,100)(1980,101)(1985,99)(1990,104)(1995,102)
+  (2000,109)(2005,116)(2010,120)(2015,125)(2020,132)(2022,129)(2024,131)(2025,132)
+};
+\addlegendentry{Real average weekly earnings}
+% Gap annotation
+\draw[<->, gray!60, thick] (axis cs:2024,131) -- (axis cs:2024,173);
+\node[right, font=\footnotesize, color=gray!60, align=left] at (axis cs:2024.5,152)
+  {Gap:\\$\approx$42 pts};
+\node[font=\footnotesize, policyblue] at (axis cs:2000,147)
+  {Productivity};
+\node[font=\footnotesize, casered] at (axis cs:2000,107)
+  {Real wages};
+\end{axis}
+\end{tikzpicture}
+\caption{Real Wages vs.\ Labour Productivity, Canada, 1976--2025 (Index 1976=100).
+Labour productivity --- real output per hour worked --- has grown by approximately
+75\% since 1976. Real average weekly earnings have grown by only approximately
+32\% over the same period. The divergence began in the early 1980s and has
+persisted, implying that workers have captured a shrinking share of the gains
+from productivity growth. This gap is one of the most important distributional
+facts in the Canadian economy. It is associated with declining union coverage,
+rising profit margins, the growth of monopsony power, and the shift from goods
+to services employment --- all discussed below.}
+\label{fig:wage_productivity}
+\source{Statistics Canada, Table 36-10-0222-01 (multifactor productivity);
+Table 14-10-0064-01 (average weekly earnings); author index calculations.
+Real wages deflated using CPI (2002=100).}
+\end{figure}
+
+The wage-productivity gap implies that the \term{labour share of income}
+--- wages and salaries as a fraction of national income --- has declined
+over the past four decades, while the \term{capital share} (profits,
+dividends, interest) has risen. This matters for inequality (explored
+in Chapter~\ref{ch:inequality}) because capital income is far more
+concentrated among high-income households than labour income.
+
+The causes of the wage-productivity gap are contested among economists,
+but the leading explanations include:
+
+\begin{enumerate}
+  \item \textbf{Declining unionization:} Unions compress wage distributions
+        and raise wages for medium-skill workers through collective bargaining.
+        The decline in union coverage described in Section~\ref{sec:unions}
+        has removed a key mechanism for translating productivity gains into
+        wage gains.
+  \item \textbf{Rising market power of employers (monopsony):} As large
+        firms and platforms grow, their ability to set wages unilaterally
+        rather than take market wages increases --- widening the gap between
+        $W$ and $\text{VMP}_L$.
+  \item \textbf{Trade and offshoring:} Competitive pressure from lower-wage
+        countries constrains wage growth in tradable sectors, particularly
+        manufacturing.
+  \item \textbf{Technological change:} Automation has raised the marginal
+        product of capital relative to labour in some sectors, shifting
+        factor income shares toward capital.
+  \item \textbf{Composition effects:} The shift from high-wage manufacturing
+        to lower-wage services employment changes the average measured wage
+        even if wages within each sector are growing normally.
+\end{enumerate}
+
+%==========================================================
+\section{Unionization and Collective Bargaining}
+\label{sec:unions}
+%==========================================================
+
+A \term{trade union} is a collective organisation of workers that bargains
+with employers on behalf of its members over wages, benefits, hours, and
+working conditions. \term{Collective bargaining} replaces individual
+wage negotiation with a negotiation between the union (representing all
+workers in a bargaining unit) and the employer. The union's market power
+derives from the credible threat of collective action --- a strike.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar,
+  bar width=0.35cm,
+  width=13cm, height=7cm,
+  symbolic x coords={{All industries},{Public admin},{Education},{Healthcare},
+                     {Utilities},{Construction},{Manufacturing},
+                     {Finance},{Retail},{Food service}},
+  xtick=data,
+  x tick label style={rotate=40, anchor=east, font=\small},
+  ylabel={Union Coverage Rate (\%)},
+  ylabel style={font=\small},
+  ymin=0, ymax=85,
+  ytick={0,10,20,30,40,50,60,70,80},
+  yticklabel style={font=\small},
+  ymajorgrids=true,
+  grid style={dashed, gray!25},
+  enlarge x limits=0.05,
+  legend pos=north east,
+  legend style={font=\small},
+  clip=false
+]
+% 2004 bars
+\addplot[fill=policyblue!70, draw=policyblue!90] coordinates {
+  ({All industries},32.2)({Public admin},74.3)({Education},72.0)({Healthcare},57.2)
+  ({Utilities},59.8)({Construction},31.4)({Manufacturing},30.5)
+  ({Finance},8.5)({Retail},13.8)({Food service},7.2)
+};
+\addlegendentry{2004}
+% 2024 bars
+\addplot[fill=casered!60, draw=casered!80] coordinates {
+  ({All industries},27.8)({Public admin},73.1)({Education},70.5)({Healthcare},54.3)
+  ({Utilities},57.2)({Construction},29.8)({Manufacturing},22.4)
+  ({Finance},6.1)({Retail},10.2)({Food service},5.8)
+};
+\addlegendentry{2024}
+\end{axis}
+\end{tikzpicture}
+\caption{Union Coverage Rate by Industry, Canada, 2004 vs.\ 2024.
+Unions are heavily concentrated in the public sector --- government,
+education, healthcare, and utilities --- where coverage exceeds 54--73\%.
+Private-sector union coverage is far lower and declining: manufacturing
+fell from 30.5\% to 22.4\%; retail from 13.8\% to 10.2\%. The most
+dramatic decline has been in the private sector overall, where coverage
+has fallen to approximately 14\%. This bifurcated structure --- heavily
+unionized public sector, weakly unionized private sector --- has important
+distributional consequences: public-sector workers have maintained real
+wages and benefit coverage while many private-sector workers (especially
+in retail and food service) have seen stagnant real wages over the same period.}
+\label{fig:unionization}
+\source{Statistics Canada, Labour Force Survey, Union Status supplement;
+Workplace and Employee Survey. 2024 values estimated from recent LFS data.}
+\end{figure}
+
+The economic evidence on unions' effects in Canada is reasonably clear:
+
+\begin{itemize}
+  \item \textbf{Union wage premium:} Unionized workers earn approximately
+        15--20\% more than comparable non-unionized workers in the same
+        industry and occupation, after controlling for observable differences.
+        The premium is larger for workers without post-secondary education.
+  \item \textbf{Benefit premium:} Unionized workers are significantly more
+        likely to have employer-sponsored pension plans, drug benefits, and
+        dental coverage.
+  \item \textbf{Wage compression:} Unions tend to compress the wage
+        distribution, raising wages at the bottom more than at the top.
+        As union coverage has declined, within-industry wage inequality
+        has increased.
+  \item \textbf{Productivity effects:} The evidence on unions and productivity
+        is mixed. The ``collective voice'' hypothesis suggests unions improve
+        productivity by reducing turnover and providing a mechanism for workers
+        to communicate grievances. The ``monopoly'' hypothesis suggests unions
+        create inefficiencies by raising wages above competitive levels.
+        On balance, Canadian studies find small positive or neutral productivity
+        effects for most unionized firms.
+\end{itemize}
+
+%==========================================================
+\section{Minimum Wages in Canada}
+\label{sec:min_wage}
+%==========================================================
+
+\begin{defbox}{The Minimum Wage}
+A \textbf{minimum wage} is a legislated floor on the hourly wage that
+employers may legally pay. In Canada, minimum wages are set provincially,
+creating significant variation across jurisdictions. There is also a
+federal minimum wage covering workers in federally regulated industries
+(banking, telecommunications, air transport, interprovincial trucking).
+
+\textit{Economic theory predicts opposite effects under different market
+structures:}
+\begin{itemize}
+  \item \textbf{Competitive market:} A minimum wage above the competitive
+        equilibrium causes unemployment (excess labour supply). This is
+        Panel A of Figure~\ref{fig:labour_markets}.
+  \item \textbf{Monopsony:} A minimum wage up to the competitive wage
+        level increases both wages and employment. Panel B of
+        Figure~\ref{fig:labour_markets}.
+\end{itemize}
+
+The \textit{empirical} evidence (summarised below) is closest to the
+monopsony prediction: moderate minimum wage increases in Canada and the
+US have generally had small or negligible employment effects, with
+significant wage gains for affected workers.
+\end{defbox}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar,
+  bar width=0.55cm,
+  width=13cm, height=6.5cm,
+  symbolic x coords={{NL},{NS},{NB},{PEI},{QC},{ON},{MB},{SK},{AB},{BC},{Federal}},
+  xtick=data,
+  x tick label style={font=\small},
+  ylabel={Minimum Wage (\$ per hour), 2025},
+  ylabel style={font=\small},
+  ymin=13, ymax=19,
+  ytick={13,14,15,16,17,18,19},
+  yticklabel style={font=\small},
+  ymajorgrids=true,
+  grid style={dashed, gray!25},
+  enlarge x limits=0.06,
+  nodes near coords,
+  nodes near coords style={font=\footnotesize},
+  every axis plot/.append style={fill=unbcgreen!65, draw=unbcgreen!85}
+]
+\addplot coordinates {
+  ({NL},  15.60)({NS},  15.70)({NB},  15.30)({PEI}, 16.00)({QC},  16.10)
+  ({ON},  17.20)({MB},  15.80)({SK},  15.00)({AB},  15.00)({BC},  17.40)({Federal},17.30)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Provincial and Federal Minimum Wages, Canada, 2025.
+British Columbia (\$17.40) and Ontario (\$17.20) have the highest minimum
+wages; Alberta and Saskatchewan (\$15.00) the lowest. The federal minimum
+wage (\$17.30) applies to workers in federally regulated industries and
+since 2021 is indexed to the Consumer Price Index, preventing real erosion.
+The range of \$15.00--\$17.40 represents a 16\% spread across provincial
+jurisdictions --- significant enough to affect labour market decisions near
+provincial borders and in industries where workers are geographically mobile.}
+\label{fig:min_wages}
+\source{Employment and Social Development Canada; provincial governments.
+Rates as of mid-2025. Some provinces index automatically to CPI.}
+\end{figure}
+
+\begin{canexample}{Card and Krueger (1994) and the Canadian Evidence}
+David Card and Alan Krueger's 1994 study compared fast-food employment
+in New Jersey (which raised its minimum wage from \$4.25 to \$5.05) to
+neighbouring Pennsylvania (no change). They found \textit{no significant
+employment loss} in New Jersey --- contradicting the simple competitive
+model's prediction and consistent with the monopsony model.
+
+Card received the 2021 Nobel Prize in Economics, partly for this work.
+
+Canadian evidence broadly supports the Card-Krueger finding for moderate
+increases. A 2019 study by Dube, Lindner, and Reich using Canadian
+province-level data found that a 10\% minimum wage increase reduced
+employment in the lowest-wage sectors by approximately 1--3\% ---
+a small effect relative to the wage gain. A 2021 PBO analysis found
+that Ontario's 2018 increase to \$14/hour (a 21\% jump) had modest
+negative employment effects of roughly 0.2--0.4\% --- again, small
+relative to the wage increase achieved.
+
+However, these averages conceal important heterogeneity. Small businesses
+in rural, low-income markets face less monopsony power and therefore
+exhibit larger negative employment effects from minimum wage increases
+than large firms in urban markets. The ``right'' minimum wage is not
+uniform across the vast diversity of Canadian labour markets.
+\end{canexample}
+
+%==========================================================
+\section{Non-Standard Employment and the Gig Economy}
+\label{sec:nonstandard}
+%==========================================================
+
+The standard employment relationship --- full-time, permanent, with a single
+employer, receiving benefits and entitled to all employment standards --- has
+been gradually replaced in parts of the Canadian economy by an increasingly
+diverse set of \term{non-standard employment} arrangements.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=14cm, height=6.5cm,
+  xlabel={Year},
+  ylabel={Share of Total Employment (\%)},
+  xlabel style={font=\small},
+  ylabel style={font=\small},
+  xmin=1999, xmax=2025.5,
+  ymin=0, ymax=20,
+  xtick={2000,2004,2008,2012,2016,2020,2024},
+  xticklabel style={font=\small},
+  ytick={0,5,10,15,20},
+  yticklabel style={font=\small},
+  ymajorgrids=true,
+  grid style={dashed, gray!20},
+  legend pos=north east,
+  legend style={font=\small},
+  clip=false
+]
+% Own-account self-employment
+\addplot[policyblue, thick, mark=none] coordinates {
+  (2000,10.5)(2004,10.8)(2008,10.2)(2012,10.5)(2016,10.9)
+  (2020,11.4)(2021,10.6)(2022,10.4)(2023,10.6)(2024,10.8)
+};
+\addlegendentry{Own-account self-employment}
+% Temporary employment
+\addplot[casered, thick, dashed, mark=none] coordinates {
+  (2000,11.8)(2004,12.4)(2008,12.6)(2012,12.7)(2016,13.2)
+  (2020,10.4)(2021,12.5)(2022,13.1)(2023,13.5)(2024,13.7)
+};
+\addlegendentry{Temporary employment}
+% Involuntary part-time
+\addplot[dataorange, thick, dotted, mark=none] coordinates {
+  (2000,4.2)(2004,4.5)(2008,4.0)(2012,5.2)(2016,5.8)
+  (2020,6.5)(2021,5.2)(2022,4.2)(2023,4.5)(2024,4.8)
+};
+\addlegendentry{Involuntary part-time}
+\end{axis}
+\end{tikzpicture}
+\caption{Non-Standard Employment as a Share of Total Employment, Canada,
+2000--2024. Three forms of non-standard work are shown: own-account self-employment
+(solo workers without employees, including many gig workers); temporary employment
+(term contracts, casual, seasonal); and involuntary part-time work (workers who
+want full-time hours but can only find part-time). Together, these categories
+account for approximately 29\% of total Canadian employment. Temporary employment
+shows a cyclical pattern, falling sharply in the COVID recession as these workers
+lost jobs first and recovering quickly. Own-account self-employment has grown
+modestly as platform work (delivery, ride-share, freelancing) expands.}
+\label{fig:nonstandard}
+\source{Statistics Canada, Labour Force Survey, Table 14-10-0190-01. Annual averages.}
+\end{figure}
+
+\begin{table}[H]
+\centering
+\caption{Standard vs.\ Non-Standard Employment: Wages, Benefits, and Security}
+\label{tab:employment_comparison}
+\renewcommand{\arraystretch}{1.30}
+\begin{tabular}{lrrrr}
+\toprule
+\textbf{Measure} & \textbf{Permanent} & \textbf{Temporary} & \textbf{Own-Account} & \textbf{Platform} \\
+                 & \textbf{Full-Time} & \textbf{Employment} & \textbf{Self-Empl.} & \textbf{(Gig)} \\
+\midrule
+Median hourly wage (\$)   & 31.50 & 22.40 & 24.20 & 18.50 \\
+Employer pension (\%)     &  55.3 &  14.2 &   0.0 &   0.0 \\
+Employer health benefits  &  64.1 &  19.8 &   0.0 &   0.0 \\
+EI eligible (\%)          &  98.0 &  75.0 &   2.5 &   2.5 \\
+Paid vacation (\%)        &  97.5 &  43.2 &   0.0 &   0.0 \\
+Job tenure (median yrs)   &   7.2 &   1.3 &   5.8 &   1.1 \\
+Union coverage (\%)       &  30.2 &   9.5 &   1.1 &   0.5 \\
+\bottomrule
+\end{tabular}
+\source{Statistics Canada, Survey on Employment and Employee Compensation;
+Gig Economy Study, Institute for Work and Health, 2024.
+Platform/gig values are estimates; sector varies widely.}
+\end{table}
+
+Table~\ref{tab:employment_comparison} illustrates the profound gap between
+standard and non-standard employment on every dimension: wages, benefits,
+Employment Insurance eligibility, and vacation entitlements. This gap has
+grown as the gig economy has expanded, and it has concentrated among
+younger workers, recent immigrants, and workers without post-secondary
+credentials --- precisely the groups with the least bargaining power.
+
+\begin{thinkbox}
+Are gig workers ``entrepreneurs who choose flexibility'' or ``misclassified
+employees who lack protection''? The answer matters enormously for policy.
+If gig workers are choosing flexibility, reclassifying them as employees
+could destroy the business model that makes their income possible. If they
+are misclassified employees, the current classification denies them legal
+rights they are entitled to under employment standards law.
+
+The economic evidence suggests both are partially true: some platform
+workers genuinely prefer flexible arrangements, while others are platform
+workers because traditional employment is not available to them. A
+nuanced policy response --- as adopted in the UK (where Uber drivers
+were reclassified as ``workers,'' a middle category with some but not all
+employee protections) --- may serve this diversity better than a binary
+classification.
+\end{thinkbox}
+
+%==========================================================
+\section{Demographic Change and the Labour Market}
+\label{sec:demographics}
+%==========================================================
+
+Canada's labour market is being reshaped by a demographic transition
+that was decades in the making. The \term{baby boom generation} (born
+1946--1964) is now retiring at the rate of approximately 450{,}000 persons
+per year. The cohorts entering the labour force behind them are smaller
+(fertility has been below replacement since the 1970s) and less numerous.
+The result is a structural tightening of the labour supply that
+complements --- and sometimes competes with --- immigration as the
+primary mechanism for maintaining the labour force.
+
+\begin{defbox}{The Dependency Ratio}
+The \textbf{old-age dependency ratio} measures the number of persons aged
+65 and over per 100 persons of working age (15--64):
+\begin{equation}
+  \text{OADR} = \frac{\text{Population}_{65+}}{\text{Population}_{15-64}} \times 100
+  \label{eq:oadr}
+\end{equation}
+
+As the baby boom retires and life expectancy increases, Canada's OADR is
+rising rapidly: from approximately 22.5 in 2010, to 28.2 today, and
+projected to reach 40--45 by 2050 under current fertility assumptions.
+Each retiree withdraws from the labour supply (reducing $LF$) while
+simultaneously increasing demand for government services (healthcare,
+OAS/GIS) that must be financed by the remaining working-age population.
+
+High immigration partially offsets OADR growth because immigrants are
+typically working-age adults, but the offset is incomplete: at current
+immigration levels, the OADR will still reach approximately 35--38 by 2050,
+compared to 40--45 under zero immigration.
+\end{defbox}
+
+The demographic transition creates several distinct labour market effects:
+
+\begin{enumerate}
+  \item \textbf{Labour shortages in care sectors:} The aging population
+        dramatically increases demand for healthcare workers, personal support
+        workers, and long-term care staff --- precisely the occupations facing
+        the most severe shortages. Canada needs to hire approximately 1 million
+        healthcare workers over the next decade simply to maintain current
+        service levels for a growing senior population.
+
+  \item \textbf{Skilled trades shortages:} Construction and infrastructure
+        maintenance require skilled tradespeople whose training pipeline
+        (apprenticeships, technical schools) has consistently underproduced.
+        The housing expansion needed to address the affordability crisis
+        (Chapter~\ref{ch:housing}) requires more construction workers than
+        Canada is currently training.
+
+  \item \textbf{Loss of experience:} When a baby boom machinist like Jerome
+        retires, he takes decades of tacit knowledge with him. The
+        ``experience premium'' --- the wage differential that rewards years of
+        accumulated skill --- is real and measurable. Replacing experienced
+        workers with younger or immigrant workers takes years of on-the-job
+        learning to replicate.
+
+  \item \textbf{Upward pressure on wages:} As labour becomes relatively
+        scarcer, the bargaining power of workers increases. The 2021--2022
+        labour market tightness produced the strongest wage growth in
+        decades --- particularly in trades, transport, and care work.
+        The aging-driven tightness is likely structural rather than cyclical:
+        it will persist even as the Bank of Canada slows the economy.
+\end{enumerate}
+
+%==========================================================
+\section{Case Studies}
+\label{sec:ch4_casestudies}
+%==========================================================
+
+\begin{casestudy}{The Canadian Labour Market Through COVID-19 and Beyond}
+
+\textbf{Background:} No event in recent Canadian history tested labour
+market institutions more severely than the COVID-19 pandemic. The shutdown
+of April 2020 --- when over 2 million jobs disappeared in a single month ---
+was followed by one of the fastest recoveries in Canadian economic history.
+Understanding why illuminates both the resilience and the fault lines
+of Canada's labour market.
+
+\textbf{The Collapse:} In April 2020, the unemployment rate hit 13.7\% ---
+the highest since the Great Depression. But this understates the disruption:
+millions of Canadians who were still employed worked zero hours (treated
+as employed-but-absent by the LFS), and the participation rate fell to
+62.4\% as many stopped searching. The \textit{actual} share of Canadians
+with zero employment income in April 2020 was closer to 25\%.
+
+The collapse was highly concentrated in specific sectors: accommodation
+and food services (lost over 40\% of employment); arts and entertainment
+(over 35\%); retail trade (over 20\%). These sectors share a key feature:
+they require in-person contact and cannot be substituted with remote work.
+They also share a demographic profile: disproportionately young, female,
+and low-wage workers. The COVID recession was dramatically unequal.
+
+\textbf{The Recovery:} Canada's employment recovery was faster than most
+advanced economies. By September 2021, total employment had fully recovered
+its pre-pandemic level. By mid-2022, the unemployment rate had fallen to
+4.9\% --- a 50-year low. Three factors explain the speed of recovery:
+(1) federal income supports (CERB, CEWS) prevented permanent worker
+detachment from employers; (2) pent-up consumer demand was released rapidly
+when restrictions lifted; and (3) the Bank of Canada maintained
+ultra-accommodative monetary conditions through 2021.
+
+\textbf{The Residual:} Full recovery in aggregate conceals persistent
+scars. Participation rates for some groups --- particularly prime-age
+women (25--54) who took on caregiving responsibilities during school
+closures --- remained below pre-COVID levels into 2023. Long-COVID
+has kept an estimated 50{,}000--100{,}000 Canadians out of the
+labour force. And the Beveridge Curve's outward shift (Figure~\ref{fig:beveridge})
+shows that the labour market is less efficient at matching than before
+the pandemic --- a structural consequence of the COVID-era disruption
+that will take years to fully unwind.
+\end{casestudy}
+
+%----------------------------------------------------------
+\begin{casestudy}{The Gig Economy and Platform Work in Canada}
+
+\textbf{Background:} Between 2015 and 2024, the number of Canadians
+earning income primarily through digital platforms --- Uber, Lyft, DoorDash,
+Instacart, TaskRabbit, and similar apps --- grew from negligible to
+approximately 800{,}000 to 1{,}000{,}000 workers, representing roughly
+4--5\% of the employed workforce. Platform work has attracted enormous
+policy attention because it straddles the line between employment and
+self-employment in ways that existing labour law was not designed to handle.
+
+\textbf{The Classification Problem:} Under Canadian provincial employment
+standards legislation, the key distinction is between \textit{employees}
+(entitled to minimum wage, overtime, paid vacation, EI access, and workplace
+protections) and \textit{independent contractors} (responsible for their
+own taxes, benefits, and business expenses, but generally free to set
+their own terms). Platforms classify their workers as independent contractors,
+arguing that the flexibility and algorithmic matching that platforms provide
+constitutes a genuine market intermediary relationship rather than employment.
+
+\textbf{Workers' perspective:} Platform workers report an effective hourly
+wage that, after deducting vehicle costs, fuel, insurance (higher for
+commercial use), phone plans, and other business expenses, frequently falls
+below the minimum wage. In Ontario, the minimum wage in 2025 is \$17.20/hour;
+studies estimate that delivery workers' net hourly income is typically
+\$12--\$16/hour after vehicle expenses.
+
+\textbf{Policy responses:} Ontario's 2021 Bill 88 introduced a ``digital
+platform worker'' category with some but not all employee protections:
+minimum earnings per hour of work (not per assigned period), transparency
+requirements on pay calculation, and the right to dispute deactivations.
+It stopped short of full reclassification. California's Proposition 22
+(2020) similarly created a third-category status for app-based workers.
+
+\textbf{Economic assessment:} The gig economy creates real value by
+improving the utilisation of underused assets (vehicles) and providing
+flexible income to people who genuinely prefer episodic work. But it also
+creates real externalities: the misclassification of employees as contractors
+shifts costs from platforms to workers and to public programs (EI, healthcare,
+CPP) funded by other workers and employers. The efficient policy
+distinguishes between \textit{genuine} flexible self-employment and
+misclassified employment --- a distinction that requires bright-line
+legal tests that Canadian employment law has not yet fully developed.
+\end{casestudy}
+
+%----------------------------------------------------------
+\begin{casestudy}{Northern BC: Labour Shortages at the Margin of the Economy}
+
+\textbf{Background:} The University of Northern British Columbia sits in
+a region that illustrates labour market dynamics largely invisible in
+national statistics. Northern BC faces simultaneous labour surpluses in
+some occupations (laid-off mill workers when lumber markets soften) and
+acute shortages in others (healthcare workers, skilled tradespeople,
+early childhood educators).
+
+\textbf{The Healthcare Worker Shortage:} Northern Health Authority,
+which serves over 300{,}000 people across 600{,}000 square kilometres,
+consistently operates with nurse vacancy rates of 15--25\%. The shortage
+has several causes: geographic remoteness makes recruitment from southern
+Canada or internationally difficult; housing costs in resource communities
+have risen dramatically with the LNG construction boom; wage competition
+from Lower Mainland health authorities and Alberta offers is intense;
+and the combination of demanding work conditions and geographic isolation
+produces high turnover.
+
+The economic consequence is both a welfare loss (residents receive
+suboptimal healthcare) and a fiscal one (travel medicine and locum
+staffing costs are far higher per patient than permanent staff costs).
+
+\textbf{The Trades Shortage:} LNG Canada's construction at Kitimat and
+related pipeline infrastructure require more skilled tradespeople than
+Northern BC has historically trained. The Northern Opportunities program
+--- a partnership between School District 57 (Prince George), UNBC, the
+College of New Caledonia, and the Northern Development Initiative Trust
+--- attempts to address the shortage by channelling Northern BC youth
+into pre-apprenticeship training. The program illustrates a general
+principle: effective labour market policy is geographically specific,
+sector-specific, and requires coordination across educational, government,
+and industry actors.
+
+\textbf{The Policy Lesson:} The Beveridge Curve analysis (Section~\ref{sec:beveridge_curve})
+showed that Canada's post-COVID outward shift reflects skills and geographic
+mismatches. Northern BC is a microcosm of this: vacancies in healthcare and
+trades, potential workers in resource sectors facing cyclical disruption.
+The solution is not aggregate demand stimulus but targeted training,
+credential recognition, geographic incentives, and housing investment
+in underserved communities.
+\end{casestudy}
+
+%==========================================================
+\begin{policydebate}{Should Canada Raise the Federal Minimum Wage to \$20 Per Hour?}
+
+\textbf{The Issue:} The federal minimum wage (covering workers in federally
+regulated industries) reached \$17.30/hour in 2025, indexed to CPI.
+Labour advocates propose a target of \$20/hour --- a ``living wage''
+benchmark derived from estimates of the income needed to cover basic costs
+in major Canadian cities. Business groups oppose the increase, citing
+potential job losses and cost pressures on small businesses.
+
+\textbf{The Economic Case For \$20/Hour:}
+\begin{itemize}
+  \item The federal minimum wage applies to a relatively narrow group
+        (banking, telecommunications, airlines, interprovincial transport
+        --- fewer than 1 million workers). A \$20 federal minimum would
+        have modest aggregate employment effects.
+  \item The monopsony evidence (Card, Krueger, and Canadian follow-up studies)
+        suggests moderate minimum wage increases have small negative employment
+        effects and significant positive wage effects for affected workers.
+  \item A \$17.30 minimum is below the estimated cost of living in Vancouver
+        (\$22/hour), Toronto (\$21/hour), and other major cities. Real-terms
+        adequacy requires periodic above-inflation increases.
+  \item Higher minimum wages reduce reliance on government transfers,
+        shifting income support costs from taxpayers to employers who
+        benefit from low-cost labour.
+\end{itemize}
+
+\textbf{The Economic Case Against:}
+\begin{itemize}
+  \item A 15.6\% increase from \$17.30 to \$20.00 exceeds the range
+        supported by the monopsony-compatible evidence base. The studies
+        finding small employment effects generally examine 5--15\% increases.
+        Larger jumps in competitive markets may produce the job losses
+        the standard model predicts.
+  \item The federal minimum wage creates competitive disparities between
+        federally regulated firms (subject to the higher wage) and provincially
+        regulated firms (subject to lower provincial minimums). This can
+        distort industry structure.
+  \item Small businesses, particularly in lower-wage markets, face genuine
+        cash-flow constraints. A rapid increase may force closures rather than
+        wage adjustments.
+  \item A geographically uniform \$20 minimum applied to rural and
+        northern communities with lower cost-of-living may exceed the
+        competitive equilibrium wage in those markets, producing real
+        employment losses there even if it is appropriate in Toronto.
+\end{itemize}
+
+\textbf{The Evidence:}
+The Bank of Canada has estimated that each 10\% minimum wage increase
+reduces youth employment by approximately 0.5\% and total employment by
+approximately 0.2\%, with larger effects in lower-wage markets. The PBO
+estimates that the proposed \$20 federal minimum would: raise wages for
+approximately 200{,}000--250{,}000 workers; result in net employment effects
+of approximately $-$10{,}000 to $-$25{,}000 jobs; and reduce government
+expenditure on income support programs by approximately \$300--\$500 million
+per year as workers earn above benefit thresholds.
+
+\textbf{The Policy Synthesis:} The economic evidence supports moderate
+minimum wage increases to a ``living wage'' benchmark over time, with
+CPI indexation to prevent real erosion. A stepped increase from \$17.30
+to \$20.00 over three years --- rather than a one-time jump --- would
+allow labour markets to adjust more gradually and reduce the risk of
+discontinuous employment effects. The geographic heterogeneity of Canadian
+labour markets also argues for allowing provincial variation rather than
+imposing a single federal standard on communities with very different
+wage structures.
+\end{policydebate}
+
+%==========================================================
+\begin{everydaylife}{Understanding Your Pay Stub: Labour Economics in Practice}
+
+Your pay stub is a document in applied labour economics. Every line
+reflects a principle from this chapter.
+
+\textbf{Gross wages} represent your nominal wage times hours worked ---
+the payment for your marginal product of labour at the market rate
+(competitive) or the rate your employer sets unilaterally (monopsony).
+
+\textbf{CPP deductions} (Canada Pension Plan): You contribute 5.95\%
+of eligible earnings, matched by your employer. This is a mandatory
+contribution to a defined-benefit public pension --- protecting you
+against the risk that you save too little for retirement. Gig workers
+classified as self-employed pay both the employee and employer share
+(11.9\%).
+
+\textbf{EI deductions} (Employment Insurance): You contribute 1.66\%
+of insurable earnings. EI provides income replacement if you become
+unemployed through no fault of your own --- a form of insurance against
+frictional and cyclical unemployment. Platform workers classified as
+contractors do not pay into EI and cannot claim it.
+
+\textbf{Income tax withholding}: The progressive income tax system means
+your employer withholds tax at your marginal rate each pay period.
+The progressivity of the system (higher earners pay a higher marginal
+rate) is a key tool for reducing inequality --- which is why economists
+carefully track both pre-tax and after-tax income inequality.
+
+\textbf{Union dues} (if applicable): These fund your union's collective
+bargaining, legal services, and strike fund. The union wage premium ---
+typically 15--20\% --- is the economic return on this investment.
+Non-unionized workers receive no such institutional representation.
+
+What your pay stub does not show: the non-wage benefits your employer
+provides (pension contributions, health premiums), the employer's CPP
+and EI contributions on your behalf (which equal your own contributions),
+and the value of job security, training, and safe working conditions that
+vary enormously between standard and non-standard employment relationships.
+\end{everydaylife}
+
+%==========================================================
+\section*{Chapter Summary}
+%==========================================================
+\addcontentsline{toc}{section}{Chapter Summary}
+
+\begin{itemize}
+  \item In a \textbf{competitive labour market}, the equilibrium wage equals
+        the value of the marginal product of labour ($W^* = P \times \text{MP}_L$).
+        A minimum wage above $W^*$ creates unemployment. In a
+        \textbf{monopsony}, the wage is set below the competitive level and
+        employment is restricted; a minimum wage up to $W^*$ can increase
+        both wages and employment.
+
+  \item The three key labour force statistics are the
+        \textbf{unemployment rate} ($U/LF$), the
+        \textbf{labour force participation rate} ($LF/\text{WAP}$), and the
+        \textbf{employment rate} ($E/\text{WAP}$). Each captures a different
+        dimension of labour market performance; all three are needed for a
+        complete picture.
+
+  \item \textbf{Frictional unemployment} (search-related), \textbf{structural
+        unemployment} (skills/geographic mismatch), and \textbf{cyclical
+        unemployment} (demand deficiency) have different causes and require
+        different policy responses. Canada's NAIRU is approximately
+        5.5--6.0\%.
+
+  \item The \textbf{Beveridge Curve} plots vacancy rates against unemployment.
+        Canada's post-COVID outward shift indicates reduced labour market
+        matching efficiency --- a structural problem requiring training and
+        credential recognition reforms rather than demand stimulus.
+
+  \item Canada's \textbf{wage-productivity gap} has widened since the 1970s:
+        labour productivity has grown ~75\% since 1976 while real wages
+        have grown only ~32\%. Declining unionization, rising employer
+        market power, and trade competition are leading explanations.
+
+  \item \textbf{Union coverage} in Canada's private sector has declined
+        to approximately 14\%, while public-sector coverage remains above
+        70\%. The union wage premium of 15--20\% and the benefit premium
+        document the real costs of declining private-sector unionization.
+
+  \item \textbf{Non-standard employment} (temporary, own-account
+        self-employment, gig/platform) accounts for approximately 29\%
+        of Canadian employment and offers significantly lower wages, fewer
+        benefits, and less job security than permanent full-time work.
+
+  \item \textbf{Demographic aging} --- baby boom retirements, below-replacement
+        fertility, and rising dependency ratios --- is creating structural
+        labour shortages in healthcare, skilled trades, and early childhood
+        education that persist regardless of the business cycle.
+
+  \item \textbf{Provincial minimum wages} range from \$15.00 (AB, SK) to
+        \$17.40 (BC). The empirical evidence from Canada and the US suggests
+        that moderate minimum wage increases have small negative employment
+        effects and meaningful wage gains for affected workers, particularly
+        in monopsonistic labour markets.
+\end{itemize}
+
+%==========================================================
+\section*{Key Terms}
+%==========================================================
+\addcontentsline{toc}{section}{Key Terms}
+
+\begin{description}[style=nextline, leftmargin=3.5cm]
+  \item[\term{Beveridge Curve}] A plot of the job vacancy rate against
+        the unemployment rate; its position reflects labour market
+        matching efficiency.
+  \item[\term{Collective bargaining}] Negotiation between a union
+        representing workers and an employer over wages, benefits, and
+        conditions.
+  \item[\term{Cyclical unemployment}] Unemployment arising from insufficient
+        aggregate demand during an economic downturn.
+  \item[\term{Dependency ratio (old-age)}] Population 65+ per 100 persons
+        aged 15--64; measures the fiscal and labour-supply burden of aging.
+  \item[\term{Discouraged workers}] Persons who want work but have stopped
+        actively searching and are therefore excluded from the unemployment
+        count.
+  \item[\term{Employment rate}] Employed persons as a share of the working-age
+        population: $E/\text{WAP} \times 100$.
+  \item[\term{Frictional unemployment}] Temporary unemployment arising from
+        the normal search-and-matching process.
+  \item[\term{Gig economy}] Economic activity mediated by digital platforms
+        that match workers with short-term tasks or customers.
+  \item[\term{Labour force}] Employed plus unemployed persons; $LF = E + U$.
+  \item[\term{Labour Force Participation Rate (LFPR)}] Labour force as a
+        share of working-age population: $LF/\text{WAP} \times 100$.
+  \item[\term{Labour share of income}] Wages and salaries as a fraction
+        of national income; has declined over four decades in Canada.
+  \item[\term{Minimum wage}] A legislated floor on hourly wages.
+  \item[\term{Monopsony}] A labour market with a single (or dominant)
+        employer, who can set wages below the competitive level.
+  \item[\term{NAIRU}] Non-Accelerating Inflation Rate of Unemployment;
+        the unemployment rate at potential output, consisting of frictional
+        and structural components; $\approx 5.5$--$6.0\%$ in Canada.
+  \item[\term{Non-standard employment}] Employment arrangements that deviate
+        from permanent full-time work: temporary, part-time, self-employed,
+        or gig.
+  \item[\term{Structural unemployment}] Unemployment arising from skills
+        or geographic mismatch between available workers and available jobs.
+  \item[\term{Unemployment rate}] Unemployed persons as a share of the
+        labour force: $U/LF \times 100$.
+  \item[\term{Union wage premium}] The percentage difference in wages between
+        comparable unionized and non-unionized workers; approximately 15--20\%
+        in Canada.
+  \item[\term{Value of the marginal product of labour (VMP$_L$)}] The market
+        value of the additional output produced by one more unit of labour:
+        $\text{VMP}_L = P \times \text{MP}_L$.
+  \item[\term{Wage-productivity gap}] The divergence between real wage growth
+        and labour productivity growth since the 1970s.
+  \item[\term{Working-age population (WAP)}] All persons aged 15 and over;
+        the denominator for the employment rate and LFPR.
+\end{description}
+
+%==========================================================
+\section*{Review Questions}
+%==========================================================
+\addcontentsline{toc}{section}{Review Questions}
+
+\begin{enumerate}
+
+\item \textbf{(Concept)} Explain the difference between the competitive
+and monopsony models of the labour market. How does each model predict
+the employment effect of a minimum wage set above the competitive equilibrium?
+Why is the Card-Krueger finding (no employment loss from a moderate minimum
+wage increase) consistent with the monopsony model but not the competitive model?
+
+\item \textbf{(Calculation)} In a hypothetical province: working-age
+population = 3{,}500{,}000; employed = 2{,}100{,}000; unemployed = 130{,}000;
+not in labour force = 1{,}270{,}000.
+\begin{enumerate}[(a)]
+  \item Calculate the unemployment rate, LFPR, and employment rate.
+  \item If 50{,}000 discouraged workers re-enter the labour force and
+        20{,}000 find jobs, recalculate all three statistics.
+  \item Why did the unemployment rate change in (b) even though 20{,}000
+        people found jobs?
+\end{enumerate}
+
+\item \textbf{(Types of unemployment)} Classify each of the following
+as frictional, structural, or cyclical unemployment, and explain your
+reasoning:
+\begin{enumerate}[(a)]
+  \item A software developer in Waterloo who left her job to find one
+        with a higher salary and is currently searching.
+  \item A coal mine worker in Nova Scotia who lost his job when the
+        mine closed due to the carbon transition.
+  \item A retail sales associate in Vancouver who was laid off when
+        consumer spending fell sharply during a recession.
+  \item A nurse in Prince George who cannot find a job because she
+        earned her credentials in the Philippines and they are not
+        yet recognised in BC.
+\end{enumerate}
+
+\item \textbf{(Beveridge Curve)} Canada's job vacancy rate rose from
+2.2\% in 2019 to 4.5\% in 2022 even though the unemployment rate fell
+from 5.7\% to 5.3\%. Explain what this means for the Beveridge Curve
+and for the interpretation of the 2022 labour market tightness. Is this
+evidence of structural or cyclical problems?
+
+\item \textbf{(Wage-productivity gap)} Explain two mechanisms through
+which declining union coverage could contribute to a widening
+wage-productivity gap. For each mechanism, describe a policy intervention
+that could partially reverse it.
+
+\item \textbf{(Policy)} A provincial government is considering requiring
+all gig/platform workers to be reclassified as employees. Using the
+concepts in this chapter, what would you predict are the effects on:
+(a) platform worker wages and benefits; (b) platform company costs and
+pricing; (c) the number of gig work opportunities available; and (d) the
+measurement of unemployment and LFPR?
+
+\end{enumerate}
+
+%==========================================================
+\section*{Quantitative Problems}
+%==========================================================
+\addcontentsline{toc}{section}{Quantitative Problems}
+
+\begin{enumerate}
+
+\item \textbf{Labour Force Accounting.}
+Canada's Labour Force Survey for January 2024 reported: working-age
+population 34{,}150{,}000; employed 20{,}580{,}000; unemployed 1{,}380{,}000.
+\begin{enumerate}[(a)]
+  \item Calculate the labour force, unemployment rate, LFPR, and
+        employment rate.
+  \item If 200{,}000 discouraged workers re-entered the labour force
+        in February 2024 (without finding jobs), recalculate all four
+        statistics.
+  \item If those same 200{,}000 eventually all found employment by March,
+        recalculate again.
+  \item Explain the sequence of changes in the unemployment rate across
+        these three scenarios. What does this illustrate about the
+        limitations of the unemployment rate as a welfare measure?
+\end{enumerate}
+
+\item \textbf{Minimum Wage and Employment Effects.}
+Suppose a city's fast-food labour market can be described as follows:
+\begin{align*}
+  L^d &= 15{,}000 - 600W \quad \text{(demand for workers, hours/week)}\\
+  L^s &= 3{,}000 + 400W \quad \text{(supply of workers, hours/week)}
+\end{align*}
+\begin{enumerate}[(a)]
+  \item Find the competitive equilibrium wage $W^*$ and employment $L^*$.
+  \item If the provincial government sets a minimum wage of \$16.00/hour,
+        how many workers are employed? How many are unemployed?
+  \item Calculate the unemployment generated by the minimum wage as a
+        number and as a percentage of the labour force at the minimum wage.
+  \item Now suppose the market is actually monopsonistic. The monopsonist's
+        marginal labour cost is $\text{MLC} = -3{,}000 + 5W$... [adapt
+        from supply curve: if $W = (L^s - 3{,}000)/400$, then
+        $\text{MLC} = (2L^s - 3{,}000)/400$]. Find the monopsony wage
+        and employment, and show that the \$16.00 minimum wage in this
+        context increases employment rather than decreasing it.
+\end{enumerate}
+
+\item \textbf{Wage-Productivity Calculation.}
+Use the following Canadian data:
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Year & Nominal avg.\ weekly earnings (\$) & CPI (2002=100) & Labour productivity index \\
+\midrule
+1976 & 230.40 & 38.1 & 100.0 \\
+1990 & 543.20 & 78.4 & 119.0 \\
+2000 & 685.90 & 95.4 & 142.0 \\
+2010 & 889.20 & 116.5 & 157.0 \\
+2024 & 1{,}245.80 & 168.2 & 173.0 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{enumerate}[(a)]
+  \item Calculate real average weekly earnings for each year
+        (in 1976 dollars), indexed to 1976 = 100.
+  \item Calculate the percentage growth in real wages and in labour
+        productivity between 1976 and 2024.
+  \item What is the ``wage-productivity gap'' in percentage points?
+  \item If real wages had grown at the same rate as labour productivity
+        since 1976, what would average real weekly earnings be in 2024
+        (in 2024 dollars)?
+  \item Using Equation~\ref{eq:vmp}, if labour productivity rose 73\%
+        but real wages rose only 32\%, what must have happened to the
+        ``$P$'' or to the competitive conditions in the labour market?
+        Propose at least two explanations.
+\end{enumerate}
+
+\item \textbf{Dependency Ratio Projection.}
+Statistics Canada projects the following population for Canada:
+
+\begin{center}
+\begin{tabular}{lrrr}
+\toprule
+Year & Population 65+ (M) & Population 15--64 (M) & OADR \\
+\midrule
+2020 &  6.6 & 24.0 & ? \\
+2030 &  9.3 & 25.5 & ? \\
+2040 & 11.1 & 26.0 & ? \\
+2050 & 12.2 & 26.8 & ? \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{enumerate}[(a)]
+  \item Calculate the old-age dependency ratio for each year
+        using Equation~\ref{eq:oadr}.
+  \item If each retiree draws an average of \$25{,}000/year in
+        OAS/GIS payments, calculate the total OAS/GIS cost in each year.
+  \item If this cost is financed by a payroll tax split equally between
+        workers and employers, calculate the implied tax rate (as a share
+        of an average annual wage of \$65{,}000) in each year.
+  \item What does this imply about the fiscal sustainability of Canada's
+        public pension system and the potential need for immigration as
+        an offset?
+\end{enumerate}
+
+\item \textbf{Non-Standard Employment Calculation.}
+Using Table~\ref{tab:employment_comparison}:
+\begin{enumerate}[(a)]
+  \item Calculate the hourly wage gap (\$) and percentage gap between
+        permanent full-time and each of the three non-standard categories.
+  \item If a platform/gig worker earns \$18.50/hour but has the following
+        deductible costs: vehicle depreciation \$2.40/hour, fuel
+        \$1.60/hour, insurance premium \$1.20/hour, phone \$0.40/hour,
+        what is the net hourly income? How does this compare to Ontario's
+        minimum wage?
+  \item A full-time permanent worker earning \$31.50/hour receives employer
+        pension contributions of 5\% and health benefits valued at
+        \$3.20/hour. What is the total effective compensation?
+  \item Calculate the ``total compensation gap'' between the gig worker's
+        net income from (b) and the permanent worker's total compensation
+        from (c).
+\end{enumerate}
+
+\item \textbf{Data Exercise.}
+Visit Statistics Canada (\url{www.statcan.gc.ca}) and find the most recent
+Labour Force Survey release (Table 14-10-0287-01, seasonally adjusted).
+\begin{enumerate}[(a)]
+  \item Report Canada's current unemployment rate, employment rate, and LFPR.
+  \item Break the unemployment rate down by: age group (15--24, 25--54,
+        55+), sex (male, female), and educational attainment.
+        Which group has the highest unemployment rate? The lowest?
+  \item Find the job vacancy rate from the Job Vacancy and Wage Survey
+        (Table 14-10-0325-01). Using Figure~\ref{fig:beveridge}, identify
+        where the current data point sits relative to the pre-COVID curve.
+        What does this imply about current matching efficiency?
+  \item How does Canada's unemployment rate compare to the current US and
+        OECD average rates? (Source: OECD.Stat, Labour Force Statistics.)
+\end{enumerate}
+
+\end{enumerate}
+
+%==========================================================
+\section*{Essay Questions}
+%==========================================================
+\addcontentsline{toc}{section}{Essay Questions}
+
+\begin{enumerate}
+
+\item \textbf{(600--800 words)} The vignette that opened this chapter
+described Jerome (a unionized machinist) and Kayla (a gig logistics worker)
+as inhabiting very different labour markets in the same city. Using the
+economics of this chapter --- wage determination, non-standard employment,
+monopsony, and the minimum wage debate --- explain the institutional and
+market forces that produce such different outcomes for workers in the same
+economy. What policies would you recommend to reduce the gap? What trade-offs
+do your recommendations involve?
+
+\item \textbf{(500--700 words)} The wage-productivity gap has widened in
+Canada since the 1970s. Some economists argue this is primarily due to
+declining unionization; others argue it reflects technological change and
+globalisation. Present the best argument for each explanation, evaluate the
+empirical evidence, and then state which explanation you find more convincing
+and why. Your answer should connect explicitly to Figure~\ref{fig:wage_productivity}
+and Figure~\ref{fig:unionization}.
+
+\item \textbf{(400--600 words)} Canada's labour market faces two simultaneous
+structural challenges: an aging population reducing labour supply in many
+sectors, and an outward Beveridge Curve shift suggesting reduced matching
+efficiency. Are these problems complementary (both reflecting a failure
+of skills supply to meet demand) or in tension (one might offset the other)?
+Evaluate the role of immigration as a potential solution to both challenges,
+and identify at least one condition under which immigration could worsen
+the matching efficiency problem rather than improve it.
+
+\end{enumerate}
+
+%==========================================================
+\section*{Discussion Questions}
+%==========================================================
+\addcontentsline{toc}{section}{Discussion Questions}
+
+\begin{enumerate}
+
+\item Should Canada have a single national minimum wage rather than
+10 different provincial minimums? What are the economic arguments for
+standardisation? What are the arguments for provincial variation? How
+does your answer relate to the monopsony model and the geographic
+diversity of Canadian labour markets?
+
+\item Jerome's unionized position pays \$34.20/hour, has a defined-benefit
+pension, and includes comprehensive benefits. Kayla's gig work pays
+effectively \$12--\$16/hour with no benefits or security. Is this
+difference entirely the result of market forces reflecting different
+marginal products of labour? Or does institutional variation (unions,
+employment classifications) explain part of the gap? If the latter,
+is the current distribution of labour market ``rents'' economically
+efficient? Is it equitable?
+
+\item Canada's old-age dependency ratio is rising rapidly. The three
+main policy responses are: (a) increasing immigration of working-age
+adults; (b) raising the retirement age; and (c) increasing the CPP
+contribution rate to build up the fund. What are the economic trade-offs
+of each approach? Which combination would you recommend, and why?
+
+\item A provincial government is considering legislation to require
+platforms (Uber, DoorDash, etc.) to classify all workers performing
+more than 20 hours of platform work per month as ``employees.'' Predict
+the effects of this policy on: (a) gig worker wages and benefits;
+(b) ride-share and delivery prices; (c) total platform employment;
+and (d) the composition of the gig workforce. Who wins and who loses?
+
+\end{enumerate}

@@ -1,0 +1,414 @@
+%=============================================================
+% Paper 3: Campbell & Fisher (2000), AER
+%=============================================================
+\chapter{Campbell \& Fisher (2000)}
+
+\begin{paperbox}{Aggregate Employment Fluctuations with Microeconomic Asymmetries}
+\textbf{Authors:} Jeffrey R.\ Campbell \& Jonas D.M.\ Fisher\\[3pt]
+\textbf{Journal:} \textit{American Economic Review} 90(5): 1323--1345\\[3pt]
+\textbf{Year:} 2000 \quad\textbf{Field:} Macroeconomics; Labour economics\\[3pt]
+\textbf{Classification:} Structural (calibrated dynamic model + simulation)
+\end{paperbox}
+
+%------------------------------------------------------------
+\section{Research Question}
+
+Can proportional plant-level costs of creating and destroying jobs---net
+adjustment costs---explain the empirically documented fact that the job
+destruction rate fluctuates more than the job creation rate in U.S.\
+manufacturing?
+
+%------------------------------------------------------------
+\section{Motivation}
+
+Davis et al.\ (1996) and Davis--Haltiwanger (1992) document that job
+destruction is substantially more volatile over the business cycle than job
+creation in U.S.\ manufacturing. This asymmetry challenges standard
+macroeconomic theory: the one-sector stochastic growth model with homogeneous
+plants predicts that job creation and destruction respond equally and
+symmetrically to aggregate shocks. Existing explanations either introduce
+arbitrary asymmetries in the driving process (Caballero 1992) or are
+quantitatively insufficient (Foote 1998). Campbell and Fisher ask whether a
+minimal, internally motivated modification---proportional \emph{net} adjustment
+costs---can generate the observed asymmetry using a symmetrically distributed
+aggregate shock.
+
+%------------------------------------------------------------
+\section{Main Contribution}
+
+The paper establishes that proportional net adjustment costs create an
+endogenous \textbf{policy asymmetry}: the employment decisions of job-destroying
+(shrinking) plants are more sensitive to wage changes than those of
+job-creating (expanding) plants. In a calibrated model with continuous
+idiosyncratic productivity shocks and ongoing aggregate wage fluctuations,
+this microeconomic asymmetry is preserved in the aggregate under plausible
+parameter values, generating job destruction volatility that exceeds job
+creation volatility---consistent with U.S.\ manufacturing data for the
+transportation equipment industry (SIC~37). The contribution is both
+analytical (establishing the mechanism) and quantitative (showing the
+aggregation condition under which it is preserved).
+
+%------------------------------------------------------------
+\section{Relationship to the Literature}
+
+The paper sits at the intersection of the gross job flows literature
+(Davis--Haltiwanger 1990, 1992; Mortensen--Pissarides 1994;
+Caballero--Hammour 1994, 1996) and the employment adjustment cost literature
+(Sargent 1978; Hamermesh 1989; Bentolila--Bertola 1990; Hopenhayn--Rogerson
+1993). Its distinctive feature is the emphasis on \emph{net} adjustment costs:
+costs that depend on the \emph{number} of jobs created or destroyed, not on
+the identity of the workers involved. Campbell and Fisher show that
+proportional (rather than quadratic or kinked) adjustment costs generate an
+asymmetry even with a symmetric driving process---a result unavailable from
+Caballero's (1992) (S,\,s) framework.
+
+%------------------------------------------------------------
+\section{Theoretical Framework and Economic Mechanism}
+
+\subsection*{Plant's Problem}
+
+Each plant $i$ produces output $z_t n_t^\alpha$ where $z_t$ is idiosyncratic
+productivity (log-random-walk with i.i.d.\ innovation
+$\varepsilon_t\sim N(\mu,\sigma_z^2)$) and $n_t$ is employment. The plant
+pays net adjustment costs: $t_c$ units of lost output per job added and
+$t_d$ units per job subtracted. Defining scaled variables
+$x = n_{t-1}/z^{1/(1-\alpha)}$ and $y = n_t/z^{1/(1-\alpha)}$, the Bellman
+equation is:
+\begin{equation}
+  v(x,W) = \max_y\!\left\{
+    y^\alpha - Wy - \tau(y,x)(y-x)
+    + \beta\,\mathbb{E}\!\left[u'\,v(y/u',W')\mid W\right]
+  \right\},
+  \label{eq:cf_bellman}
+\end{equation}
+where $\tau(y,x) = t_c\,\mathbf{1}\{y>x\} - t_d\,\mathbf{1}\{y<x\}$ and
+$u' = (z'/z)^{1/(1-\alpha)}$.
+
+\subsection*{Optimal Employment Policy}
+
+The solution defines two scaled thresholds, $y^-(W) < y^+(W)$:
+\begin{align}
+  \text{Create jobs:} &\quad n^* = y^-(W)\,z^{1/(1-\alpha)}
+    &&\text{if } n_{t-1} < n^-(z,W) \\
+  \text{Inaction:}    &\quad n^* = n_{t-1}
+    &&\text{if } n^-(z,W)\leq n_{t-1}\leq n^+(z,W) \\
+  \text{Destroy jobs:}&\quad n^* = y^+(W)\,z^{1/(1-\alpha)}
+    &&\text{if } n_{t-1} > n^+(z,W)
+\end{align}
+
+\subsection*{Policy Asymmetry}
+
+The elasticities of the scaled employment thresholds with respect to $W$ are:
+\begin{align}
+  \frac{\partial \ln y^-(W)}{\partial \ln W} &=
+    \frac{-1}{1-\alpha}\cdot
+    \frac{W}{W + \bigl[1-\beta(1-p)\bigr]t_c + \beta p\,t_d},
+  \label{eq:elasticity_create} \\[6pt]
+  \frac{\partial \ln y^+(W)}{\partial \ln W} &=
+    \frac{-1}{1-\alpha}\cdot
+    \frac{W}{W - \bigl[1-\beta(1-p)\bigr]t_d - \beta p\,t_c},
+  \label{eq:elasticity_destroy}
+\end{align}
+where $p$ is the probability of idiosyncratic-shock reversal. Because the
+denominator in (\ref{eq:elasticity_destroy}) \emph{subtracts} the adjustment
+cost terms while (\ref{eq:elasticity_create})'s denominator \emph{adds} them,
+$\left|\partial\ln y^+/\partial\ln W\right| > \left|\partial\ln y^-/\partial\ln
+W\right|$ for any strictly positive adjustment costs, regardless of their
+relative magnitudes.
+
+\textbf{Intuition:} The total cost of the marginal job for a creating plant is
+$W + \text{(creation cost)} + \beta \cdot \text{(expected future destruction cost)}$,
+which is \emph{less} elastic to $W$ than $W$ alone. The total cost to a
+destroying plant of retaining the marginal job is $W - \text{(avoided
+destruction cost)} - \beta\cdot\text{(avoided future creation cost)}$, which
+is \emph{more} elastic to $W$. Hence, shrinking plants respond more strongly to
+any given wage change.
+
+\subsection*{Aggregation and the Growth-Rate Asymmetry}
+
+The DH gross job flow formulas are:
+\begin{align}
+  \text{POS}_t &= \frac{2N_{t-1}}{N_t + N_{t-1}}
+    \int_0^1 \frac{n_{t-1}(i)}{N_{t-1}}\, g_t(i)^+ \,di, \\[4pt]
+  \text{NEG}_t &= \frac{2N_{t-1}}{N_t + N_{t-1}}
+    \int_0^1 \frac{n_{t-1}(i)}{N_{t-1}}\, |g_t(i)^-| \,di.
+\end{align}
+A \textbf{growth-rate asymmetry} works \emph{against} the policy asymmetry:
+because $\exp(\cdot)$ is convex, plants near the creation margin respond more
+strongly in actual growth rate terms than plants near the destruction margin,
+even when policy is symmetric in log terms. The net outcome depends on which
+force dominates---and policy asymmetry dominates when idiosyncratic shocks are
+\emph{less} persistent.
+
+%------------------------------------------------------------
+\section{Data}
+
+\begin{itemize}
+  \item \textbf{Calibration target:} Quarterly gross job creation and
+    destruction data for SIC~37 (Transportation Equipment) from the LRD/BED.
+  \item \textbf{Key moments:} Average net employment growth ($-0.11\%$/quarter),
+    average job reallocation rate (11.3\%), standard deviation of employment
+    growth (3.55\%), first-order autocorrelation of employment growth (0.08).
+  \item \textbf{Calibrated parameters:} $\alpha=0.66$, $\beta=1.052^{1/4}$
+    (5\% annual discount); $\sigma_z$ matched to job reallocation rate;
+    aggregate shock parameters $(\rho_W, \sigma_W)$ matched to employment
+    growth moments.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Empirical Strategy}
+
+Calibration and model simulation, not estimation. The strategy:
+\begin{enumerate}
+  \item Parameterise the model from standard values and calibrated moments
+    for SIC~37.
+  \item Simulate the model to compute time series of aggregate POS and NEG.
+  \item Compare simulated moments (means, standard deviations, covariances of
+    POS, NEG, NET) to their empirical counterparts.
+  \item Vary adjustment cost parameters $(t_c, t_d)$ within plausible empirical
+    bounds to assess sensitivity.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Identification Strategy}
+
+No formal identification in the econometric sense. Predictions are compared to
+data descriptively. The identifying variation is the parameterisation of
+adjustment costs, taken from external evidence: Los Angeles employer surveys,
+Dutch firm studies (Hamermesh et al.\ 1994), Spanish structural estimates
+(Aguirregabiria--Alonso-Borrego 1998), and anecdotal evidence from aerospace
+production (Benkard 1998). The paper explicitly acknowledges that net
+adjustment costs are intrinsically difficult to measure, and that firm surveys
+typically measure \emph{gross} adjustment costs (dependent on worker identity)
+rather than the \emph{net} adjustment costs (dependent on number of positions)
+central to this model.
+
+%------------------------------------------------------------
+\section{Main Results}
+
+\subsection*{Analytical Results (Section~I)}
+
+\begin{itemize}
+  \item Policy asymmetry holds for \emph{any} strictly positive adjustment
+    costs, regardless of the relative magnitudes of $t_c$ and $t_d$.
+  \item The asymmetry is stronger when idiosyncratic shocks are \emph{less}
+    persistent (smaller $\rho_\text{idio}$), because the policy asymmetry
+    dominates the growth-rate asymmetry.
+  \item The growth-rate asymmetry always works against the policy asymmetry
+    in computing aggregate flows.
+\end{itemize}
+
+\subsection*{Quantitative Results (Section~III)}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Model specification} &
+  $\text{std}(\text{NEG})/\text{std}(\text{POS})$ &
+  \textbf{Match}? \\
+\midrule
+No adjustment costs ($t_c=t_d=0$) & $\approx 1.0$ & No \\
+Baseline ($t_c=t_d=0.5$, $\rho_W=0.08$) & $\approx 1.8$--$2.0$ & Yes \\
+High persistence ($\rho_W=0.5$) & $<1.0$ in some specs & No \\
+Empirical SIC~37 & $\approx 1.5$--$2.0$ & --- \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The model with baseline calibration generates a $\text{std}(\text{NEG})/
+\text{std}(\text{POS})$ ratio comparable to the data. The cross-correlation
+$\rho(\text{POS},\text{NEG})$ is negative and $\rho(\text{NET},\text{SUM})$
+is near zero, broadly consistent with data.
+
+%------------------------------------------------------------
+\section{Economic Magnitude and Interpretation}
+
+The SIC~37 industry exhibits $\text{std}(\text{NEG})\approx 2.0$--$2.5\%$,
+$\text{std}(\text{POS})\approx 1.0$--$1.5\%$---a ratio of approximately
+1.5--2.0. The model with plausible adjustment costs (roughly 0.5--1.5
+quarterly wages) replicates this ratio. The mechanism operates through
+\emph{aggregate} wage fluctuations, not idiosyncratic shocks---which by
+themselves generate symmetric flows. This is an important distinction: the
+paper identifies the aggregate component of gross job flow asymmetries.
+
+%------------------------------------------------------------
+\section{Mechanisms}
+
+Three forces interact:
+\begin{enumerate}
+  \item \textbf{Policy asymmetry (main driver):} Adjustment costs make the
+    destruction threshold more elastic to wage changes than the creation
+    threshold. Each 1\% increase in the wage causes shrinking plants to shrink
+    by more than expanding plants expand.
+  \item \textbf{Growth-rate asymmetry (countervailing):} Convexity of actual
+    vs.\ logarithmic growth rates makes job creators at the margin more
+    responsive in actual terms, working against the policy asymmetry.
+  \item \textbf{Plant distribution dynamics:} Aggregation over the cross-section
+    reflects the endogenous evolution of the distribution of scaled employment
+    $x$ across plants. With random-walk idiosyncratic shocks and proportional
+    adjustment costs, this evolution preserves (rather than offsets) the policy
+    asymmetry.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Robustness Checks}
+
+\begin{itemize}
+  \item Results reported for six different combinations of adjustment cost
+    parameters and aggregate shock persistence.
+  \item Model compared to economy-wide gross job flow data (not just SIC~37)
+    with qualitatively similar results.
+  \item General equilibrium version of the model developed (Section~II.D)
+    to show that the industry-equilibrium results have a valid GE
+    interpretation, with the product wage driven by both labour supply and
+    demand shocks.
+  \item The paper explicitly notes that \emph{gross} adjustment costs (costs
+    that depend on worker identity, not net employment changes) would
+    \emph{not} generate the policy asymmetry, providing a discriminating
+    prediction of the net vs.\ gross cost distinction.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Limitations}
+
+\begin{enumerate}
+  \item \textbf{No matching frictions:} Abstracts entirely from search and
+    matching; the Mortensen--Pissarides mechanism (asymmetric matching vs.\
+    separation thresholds) could compound or offset the policy asymmetry.
+  \item \textbf{Symmetric aggregate shocks:} Assumes symmetrically distributed
+    aggregate uncertainty; in reality, recessions may be more severe than
+    expansions, compounding the asymmetry.
+  \item \textbf{Calibration, not estimation:} Adjustment costs are selected
+    from a plausible range, not formally estimated. The model cannot be
+    rejected on these dimensions.
+  \item \textbf{Manufacturing only:} Service sectors, where labour market
+    dynamics may differ substantially, are excluded.
+  \item \textbf{No entry/exit:} The population of plants is fixed, abstracting
+    from births and deaths that account for 20--25\% of gross job flows in
+    DH1992.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Policy Implications}
+
+\begin{itemize}
+  \item Firing costs (higher $t_d$) \emph{reduce} employment volatility by
+    dampening the destruction response, consistent with the Bentolila--Bertola
+    (1990) motivation for European firing-cost policies---but at the cost of
+    reduced flexibility.
+  \item Policies reducing hiring costs specifically for expanding plants would
+    raise the creation elasticity and reduce the volatility asymmetry.
+  \item The paper provides a new rationale for the excess volatility of
+    unemployment in recessions: it partly reflects the greater sensitivity of
+    plant-level employment cuts to aggregate shocks, not just ``cleansing''
+    of less productive matches.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Overall Assessment}
+
+Campbell and Fisher (2000) is a rigorous paper that makes a genuinely original
+theoretical point---the policy asymmetry mechanism---and shows it has
+quantitative bite. The general equilibrium embedding is careful. The main
+weakness is the calibration approach, which limits the paper's ability to
+formally assess how much of the observed asymmetry is explained by the
+mechanism. The paper is less influential than DH1992 partly because the
+Mortensen--Pissarides search-and-matching framework became dominant in the
+subsequent decade, and partly because the mechanism requires aggregate shocks
+to operate primarily through wages.
+
+\textbf{Quality: Good. A solid theoretical contribution with careful
+quantitative assessment.}
+
+%------------------------------------------------------------
+\section{Relevance to My Research}
+
+The policy asymmetry mechanism has direct relevance for understanding how
+Canadian firms respond to aggregate shocks (commodity price cycles, exchange
+rate changes) in different ways depending on whether they are expanding or
+contracting. The key testable prediction: the elasticity of employment cuts to
+adverse shocks should exceed the elasticity of employment additions to
+favourable shocks of the same magnitude, and this asymmetry should be larger
+for less persistent aggregate shocks (e.g., commodity price swings).
+
+%------------------------------------------------------------
+\section{Potential Research Extensions}
+
+\begin{itemize}
+  \item Estimate $t_c$ and $t_d$ structurally from Canadian establishment-level
+    data by matching moments of the job creation/destruction distribution,
+    allowing estimation of the model's degree of asymmetry.
+  \item Test the model's prediction that industries with more transient aggregate
+    shocks (e.g., commodity sectors) show larger $\text{std}(\text{NEG})/
+    \text{std}(\text{POS})$ ratios than industries with persistent shocks.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Research Gaps}
+
+\begin{itemize}
+  \item The paper does not model worker heterogeneity or worker-level welfare
+    consequences of the asymmetric adjustment process.
+  \item There is no explanation for why $t_c$ and $t_d$ should differ, or
+    how they vary across industries, countries, or regulatory regimes.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Methodological Lessons}
+
+\begin{enumerate}
+  \item The DH growth rate metric versus the log-difference matters for
+    quantitative model evaluation: the growth-rate asymmetry is a real force
+    that works against the policy asymmetry and would be missed using
+    log-approximations.
+  \item The policy asymmetry result holds \emph{analytically} for any positive
+    adjustment costs---showing a qualitative result before turning to
+    quantitative assessment is methodologically important.
+  \item Comparing model-generated statistics to industry-level data (SIC~37)
+    rather than economy-wide data is the right level of aggregation when the
+    model is an industry-equilibrium model.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section*{Five-Sentence Summary}
+
+Campbell and Fisher (2000) show that proportional net adjustment costs create
+a policy asymmetry at the plant level: shrinking plants are more sensitive to
+wage changes than expanding plants, because adjustment costs add to the total
+cost of job creation but reduce the total cost of job retention. This
+microeconomic asymmetry, when preserved through aggregation, generates a model
+in which the rate of job destruction fluctuates more than the rate of job
+creation in response to aggregate shocks---a key stylised fact from U.S.\
+manufacturing that standard representative-agent models fail to reproduce. A
+growth-rate asymmetry (convexity of actual vs.\ log growth rates) works in the
+opposite direction and can dominate when idiosyncratic shocks are highly
+persistent, so the mechanism is strongest for relatively transient aggregate
+fluctuations. A calibrated version of the model for the U.S.\ transportation
+equipment industry generates a ratio $\text{std}(\text{NEG})/\text{std}(
+\text{POS})$ comparable to the data, explaining most of the observed excess
+volatility of job destruction without requiring an asymmetrically distributed
+driving process. The paper provides a clean, internally motivated explanation
+for job flow asymmetries based on the loss of production incurred when
+reorganising a plant to operate at a larger or smaller scale.
+
+\vspace{6pt}
+\begin{quickref}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\textbf{Key contribution} &
+  Analytical policy asymmetry mechanism: net adjustment costs make job
+  destruction more elastic to aggregate shocks than job creation, even with
+  a symmetric driving process. \\[4pt]
+\textbf{Key weakness} &
+  Calibration (not estimation) of adjustment costs; no entry/exit; model
+  cannot be formally tested against alternative explanations. \\[4pt]
+\textbf{Most interesting gap} &
+  Does the policy asymmetry vary systematically across industries with
+  different regulatory environments (high vs.\ low firing costs)? A
+  cross-country test of the mechanism would be revealing. \\[4pt]
+\textbf{Publishable extension} &
+  Test the Campbell--Fisher mechanism using matched employer-employee data
+  from Canada, comparing employment creation and destruction elasticities
+  to province-level commodity price cycles across industries with high and
+  low regulatory adjustment cost environments.
+\end{tabularx}
+\end{quickref}

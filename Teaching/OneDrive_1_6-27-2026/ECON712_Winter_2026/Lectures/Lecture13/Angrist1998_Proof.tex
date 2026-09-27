@@ -1,0 +1,393 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{lmodern}
+\usepackage{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage[parfill]{parskip}
+
+\geometry{margin=1.2in}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\title{%
+  \textbf{Matching Estimators and Linear Regression}\\[6pt]
+  \large Angrist (1998): Proof for the Saturated and General Linear Cases\\[4pt]
+  \normalsize ECON 712 --- Supplementary Notes
+}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\bigskip
+
+%--------------------------------------------------------------------
+\section{Setup and Notation}
+%--------------------------------------------------------------------
+
+Let $D_i \in \{0,1\}$ be a binary treatment, $X_i$ a vector of pre-treatment covariates,
+and $\{Y_{0i}, Y_{1i}\}$ the potential outcomes.  The observed outcome is
+$Y_i = Y_{0i} + (Y_{1i} - Y_{0i})D_i$.
+
+Define the following population objects:
+\begin{align*}
+  p(x)      &\;=\; E[D_i \mid X_i = x]               &&\text{(propensity score)}\\
+  \mu_0(x)  &\;=\; E[Y_{0i} \mid X_i = x]             &&\text{(baseline outcome CEF)}\\
+  \delta(x) &\;=\; E[Y_{1i} - Y_{0i} \mid X_i = x]   &&\text{(conditional ATE)}
+\end{align*}
+
+The true data-generating process can therefore be written as
+\begin{equation}\label{eq:dgp}
+  Y_i \;=\; \mu_0(X_i) \;+\; \delta(X_i)\,D_i \;+\; u_i,
+  \qquad E[u_i \mid D_i, X_i] = 0,
+\end{equation}
+where the zero-mean condition on $u_i$ follows from the \textbf{Conditional Independence
+Assumption (CIA)}: $(Y_{0i},Y_{1i}) \perp\!\!\!\perp D_i \mid X_i$.
+
+\bigskip
+
+\textbf{What we want to know.}  We run a regression that \emph{linearly controls} for
+$X_i$ --- either a fully saturated specification or a plain linear-in-$X$ specification.
+In both cases we use the Frisch--Waugh--Lovell (FWL) theorem to isolate the coefficient
+on $D_i$.  The question is: what causal parameter does that coefficient identify under CIA?
+
+%--------------------------------------------------------------------
+\section{The Frisch--Waugh--Lovell Starting Point}
+%--------------------------------------------------------------------
+
+Consider any regression of the form
+\[
+  Y_i \;=\; \alpha \;+\; \delta\,D_i \;+\; g(X_i) \;+\; \varepsilon_i
+\]
+for some control function $g(\cdot)$.  By FWL, the population coefficient on $D_i$ is
+\begin{equation}\label{eq:fwl}
+  \operatorname{plim} \hat\delta
+  \;=\; \frac{E[\tilde D_i\, Y_i]}{E[\tilde D_i^{\,2}]},
+\end{equation}
+where $\tilde D_i = D_i - \hat p(X_i)$ and $\hat p(X_i) = L[D_i \mid g(X_i)]$ is the
+linear projection of $D_i$ on the control function.
+
+The two cases we study differ \emph{only} in what $\hat p$ is:
+\begin{itemize}
+  \item \textbf{Saturated regression}: $g(X_i)$ includes a dummy for every cell of
+        $X_i$, so the projection is the conditional expectation:
+        $\hat p^{\mathrm{sat}}(X_i) = p(X_i)$ exactly.
+  \item \textbf{Linear regression}: $g(X_i) = \bm\beta' X_i$, so
+        $\hat p^{\mathrm{lin}}(X_i) = \Pi_0 + \bm\Pi' X_i$ is only the best linear
+        approximation to $p(X_i)$; in general $\hat p^{\mathrm{lin}} \neq p$.
+\end{itemize}
+
+%--------------------------------------------------------------------
+\section{The Saturated Case}
+%--------------------------------------------------------------------
+
+This is the proof given (implicitly) by Angrist (1998) and made explicit in
+Angrist and Pischke (2009, Ch.\ 3).
+
+When the regression is saturated, $\tilde D_i^{\mathrm{sat}} = D_i - p(X_i)$.
+
+\subsection*{Denominator}
+
+\[
+  E\!\left[(\tilde D_i^{\mathrm{sat}})^2\right]
+  = E\!\left[(D_i - p(X_i))^2\right]
+  \stackrel{\mathrm{LIE}}{=} E\!\left[\operatorname{Var}(D_i \mid X_i)\right].
+\]
+
+\subsection*{Numerator: Term A --- baseline outcomes}
+
+\[
+  E[\tilde D_i^{\mathrm{sat}}\, Y_{0i}]
+  = E\!\left[E\!\left[(D_i - p(X_i))\,Y_{0i} \mid X_i\right]\right].
+\]
+Under CIA, $Y_{0i} \perp D_i \mid X_i$, so
+\[
+  E[(D_i - p(X_i))\,Y_{0i} \mid X_i]
+  = \underbrace{E[D_i - p(X_i)\mid X_i]}_{=\;0} \cdot E[Y_{0i}\mid X_i] \;=\; 0.
+\]
+
+\subsection*{Numerator: Term B --- treatment effect heterogeneity}
+
+Under CIA $E[\delta_i \mid D_i, X_i] = \delta(X_i)$, so the $(\delta_i-\delta(X_i))D_i$
+residual satisfies $E[\tilde D_i \cdot (\delta_i - \delta(X_i))D_i \mid D_i,X_i] = 0$.
+Thus we only need:
+\[
+  E[\tilde D_i^{\mathrm{sat}}\,\delta(X_i)\,D_i]
+  = E\!\left[\delta(X_i)\,E[(D_i - p(X_i))\,D_i \mid X_i]\right].
+\]
+For binary $D_i$, $D_i^2 = D_i$, so
+\[
+  E[(D_i - p(X_i))\,D_i \mid X_i] = p(X_i) - p(X_i)^2
+  = p(X_i)(1-p(X_i)) = \operatorname{Var}(D_i\mid X_i).
+\]
+Hence
+\[
+  E[\tilde D_i^{\mathrm{sat}}\,\delta(X_i)\,D_i]
+  = E\!\left[\delta(X_i)\operatorname{Var}(D_i\mid X_i)\right].
+\]
+
+\subsection*{Result}
+
+Assembling \eqref{eq:fwl}:
+
+\begin{proposition}[Angrist 1998 --- saturated regression]\label{prop:sat}
+Under CIA and a fully saturated regression,
+\[
+  \operatorname{plim}\,\hat\delta^{\mathrm{sat}}
+  \;=\;
+  \frac{E\!\left[\delta(X_i)\operatorname{Var}(D_i\mid X_i)\right]}
+       {E\!\left[\operatorname{Var}(D_i\mid X_i)\right]}
+  \;=\;
+  \int \delta(x)\,\omega(x)\,dx,
+\]
+where the variance weights are
+\[
+  \omega(x) \;=\;
+  \frac{\operatorname{Var}(D_i\mid X_i=x)\cdot f(x)}
+       {E[\operatorname{Var}(D_i\mid X_i)]}, \qquad \int\omega(x)\,dx = 1.
+\]
+\end{proposition}
+
+\begin{remark}
+The weights $\omega(x)$ are largest where the propensity score is closest to $\tfrac12$,
+i.e.\ where treatment varies most.  Under CIA, ATT$(x)=$ATU$(x)=$ATE$(x)=\delta(x)$,
+so $\hat\delta^{\mathrm{sat}}$ is a weighted average of the ATE across covariate cells.
+\end{remark}
+
+%--------------------------------------------------------------------
+\section{The General Linear Case}
+%--------------------------------------------------------------------
+
+Now suppose we only control linearly: $Y_i = \alpha + \delta D_i + \bm\beta'X_i +
+\varepsilon_i$.  The projected propensity score is $\hat p^L(X_i) = \Pi_0 + \bm\Pi'X_i$,
+the best linear predictor of $D_i$ given $(1, X_i)$.
+
+\textbf{Key object.}  Define the \emph{propensity-score misspecification residual}
+\begin{equation}\label{eq:lambda}
+  \lambda(X_i) \;\equiv\; p(X_i) - \hat p^L(X_i).
+\end{equation}
+This is the component of the propensity score that the linear regression \emph{cannot
+capture} --- the nonlinearity in $p(\cdot)$.  The OLS normal equations imply
+$E[\lambda(X_i)] = 0$ and $E[\lambda(X_i)\,X_i] = \bm 0$.
+
+The linear regression residual decomposes as
+\[
+  \tilde D_i^{\mathrm{lin}}
+  = D_i - \hat p^L(X_i)
+  = \underbrace{(D_i - p(X_i))}_{\displaystyle e_i} + \lambda(X_i),
+  \qquad E[e_i\mid X_i]=0.
+\]
+
+\subsection{Denominator}
+
+\begin{align*}
+  E\!\left[(\tilde D_i^{\mathrm{lin}})^2\right]
+  &= E[e_i^2] + 2\,E[e_i\,\lambda(X_i)] + E[\lambda(X_i)^2] \\
+  &= E\!\left[\operatorname{Var}(D_i\mid X_i)\right]
+     + 2\,E\!\left[\underbrace{E[e_i\mid X_i]}_{=\,0}\lambda(X_i)\right]
+     + E[\lambda(X_i)^2] \\[4pt]
+  &= E\!\left[\operatorname{Var}(D_i\mid X_i)\right] + \operatorname{Var}(\lambda(X_i)).
+\end{align*}
+The denominator is \emph{strictly larger} than in the saturated case whenever
+$\lambda \not\equiv 0$.
+
+\subsection{Numerator}
+
+From \eqref{eq:dgp}, $Y_i = \mu_0(X_i) + \delta(X_i)D_i + u_i$.
+
+\medskip\noindent\textbf{Term A: baseline outcomes.}
+\begin{align*}
+  E[\tilde D_i^{\mathrm{lin}}\,Y_{0i}]
+  &= E\!\left[E[(D_i - \hat p^L(X_i))\,Y_{0i}\mid X_i]\right]\\
+  &= E\!\left[(E[D_i\mid X_i] - \hat p^L(X_i))\,\mu_0(X_i)\right]
+     \quad\text{(CIA: }Y_{0i}\perp D_i\mid X_i\text{)}\\
+  &= E[\lambda(X_i)\,\mu_0(X_i)].
+\end{align*}
+Unlike the saturated case, this is \emph{not} zero unless $\lambda \equiv 0$.
+
+\medskip\noindent\textbf{Term B: treatment effects.}
+
+The residual $(\delta_i-\delta(X_i))D_i$ contributes zero by the same CIA argument
+as before.  For the systematic part:
+\begin{align*}
+  E[\tilde D_i^{\mathrm{lin}}\,\delta(X_i)\,D_i]
+  &= E\!\left[\delta(X_i)\,E[(D_i-\hat p^L(X_i))\,D_i\mid X_i]\right] \\
+  &= E\!\left[\delta(X_i)\,p(X_i)(1-\hat p^L(X_i))\right].
+\end{align*}
+Decompose $1-\hat p^L = (1-p)+\lambda$:
+\[
+  = E\!\left[\delta(X_i)\operatorname{Var}(D_i\mid X_i)\right]
+    + E\!\left[\delta(X_i)\,p(X_i)\,\lambda(X_i)\right].
+\]
+
+\medskip\noindent\textbf{Combining.}  Adding Terms A and B:
+\[
+  E[\tilde D_i^{\mathrm{lin}}\,Y_i]
+  = E\!\left[\delta(X_i)\operatorname{Var}(D_i\mid X_i)\right]
+  + E\!\left[\lambda(X_i)\!\underbrace{\bigl(\mu_0(X_i)+\delta(X_i)p(X_i)\bigr)}_{
+    =\;E[Y_i\mid X_i]}\right].
+\]
+
+\medskip\noindent\textbf{Simplifying the bias term.}
+Decompose $E[Y_i\mid X_i] = L[E[Y_i\mid X_i]\mid 1,X_i] + \rho(X_i)$, where
+$\rho(X_i)$ is the \emph{nonlinear residual of the outcome CEF}.  Since $\lambda(X_i)$
+is orthogonal to all linear functions of $(1,X_i)$ (by the normal equations),
+\[
+  E[\lambda(X_i)\,E[Y_i\mid X_i]]
+  = \underbrace{E[\lambda(X_i)\,L[E[Y_i\mid X_i]\mid 1,X_i]]}_{=\;0}
+  + E[\lambda(X_i)\,\rho(X_i)]
+  = \operatorname{Cov}(\lambda(X_i),\,\rho(X_i)).
+\]
+
+\subsection{Result}
+
+\begin{proposition}[Linear regression --- general case]\label{prop:lin}
+Under CIA and the linear regression $Y_i = \alpha + \delta D_i + \bm\beta'X_i +
+\varepsilon_i$,
+\begin{equation}\label{eq:main}
+  \operatorname{plim}\,\hat\delta^{\mathrm{lin}}
+  \;=\;
+  \frac{%
+    E\!\left[\delta(X_i)\operatorname{Var}(D_i\mid X_i)\right]
+    \;+\;
+    \operatorname{Cov}\!\bigl(\lambda(X_i),\,\rho(X_i)\bigr)
+  }{%
+    E\!\left[\operatorname{Var}(D_i\mid X_i)\right]
+    \;+\;
+    \operatorname{Var}(\lambda(X_i))
+  },
+\end{equation}
+where
+\begin{align*}
+  \lambda(X_i) &\;=\; p(X_i) - L[p(X_i)\mid 1,X_i]
+    &&\text{(nonlinear part of propensity score),}\\
+  \rho(X_i)   &\;=\; E[Y_i\mid X_i] - L[E[Y_i\mid X_i]\mid 1,X_i]
+    &&\text{(nonlinear part of outcome CEF).}
+\end{align*}
+\end{proposition}
+
+%--------------------------------------------------------------------
+\section{Comparing the Two Cases}
+%--------------------------------------------------------------------
+
+\subsection{Structural comparison}
+
+\begin{center}
+\begin{tabular}{lcc}
+  \toprule
+  & \textbf{Saturated} & \textbf{Linear} \\
+  \midrule
+  $\hat p(X_i)$ & $p(X_i)$ & $L[p(X_i)\mid 1,X_i]$ \\
+  $\lambda(X_i)$ & $0$ & $p(X_i)-\hat p^L(X_i)$ \\[3pt]
+  Denominator & $E[\operatorname{Var}(D_i\mid X_i)]$
+              & $E[\operatorname{Var}(D_i\mid X_i)] + \operatorname{Var}(\lambda)$ \\[3pt]
+  Numerator bias & $0$
+                 & $\operatorname{Cov}(\lambda(X_i),\rho(X_i))$ \\[3pt]
+  Weights sum to 1? & Yes & Not in general \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{When does the linear case recover the variance-weighted formula?}
+
+Setting $\lambda \equiv 0$ in \eqref{eq:main} immediately yields Proposition~\ref{prop:sat}.
+Three sufficient conditions for $\lambda \equiv 0$ (or for the bias terms to vanish) are:
+
+\begin{enumerate}
+  \item \textbf{The propensity score is linear in $X_i$.}  Then
+        $\hat p^L(X_i) = p(X_i)$ exactly and $\lambda \equiv 0$.
+        The linear regression gives the same result as the saturated regression
+        \emph{regardless} of whether $\mu_0(X_i)$ is linear.
+
+  \item \textbf{The outcome CEF is linear in $X_i$.}  Then $\rho \equiv 0$, so
+        $\operatorname{Cov}(\lambda,\rho)=0$.  \emph{But} the denominator is still
+        inflated by $\operatorname{Var}(\lambda)\geq 0$ unless $\lambda\equiv 0$ as well.
+        The pure linear-outcome case does \emph{not} by itself recover the
+        variance-weighted formula.
+
+  \item \textbf{Constant treatment effects and linear outcome.}  If
+        $\delta(x)=\delta$ for all $x$ and $E[Y_i\mid X_i]$ is linear, a
+        calculation shows that the numerator bias equals
+        $\delta\,\operatorname{Var}(\lambda)$, so the denominator inflation and
+        numerator bias exactly cancel:
+        \[
+          \operatorname{plim}\,\hat\delta^{\mathrm{lin}}
+          = \frac{\delta\,E[\operatorname{Var}(D_i\mid X_i)] + \delta\,\operatorname{Var}(\lambda)}
+                 {E[\operatorname{Var}(D_i\mid X_i)] + \operatorname{Var}(\lambda)}
+          = \delta.
+        \]
+        This is why a (correctly specified) linear regression with linear controls is
+        consistent for the constant ATE even when the propensity score is nonlinear.
+\end{enumerate}
+
+\subsection{Interpreting the bias}
+
+The bias term $\operatorname{Cov}(\lambda(X_i), \rho(X_i))$ has an intuitive reading:
+
+\begin{itemize}
+  \item $\lambda(X_i)$ is the part of the propensity score the linear regression
+        \emph{fails to absorb} --- cells where the true treatment probability curves
+        away from the fitted linear index.
+  \item $\rho(X_i)$ is the part of the outcome function the linear regression
+        \emph{fails to absorb} --- cells where $E[Y_i\mid X_i]$ is curved.
+  \item The bias arises when these two forms of misspecification are
+        \emph{correlated}: the cells where the linear regression gets the propensity
+        score wrong tend to be the same cells where it also gets the outcome function
+        wrong.  OLS then conflates the two, distorting the treatment-effect estimate.
+\end{itemize}
+
+\subsection{Why the saturated case avoids the problem}
+
+In the saturated case, $g(X_i)$ contains a dummy for every cell of $X_i$, so the
+linear projection of $D_i$ on $g(X_i)$ \emph{is} the cell mean $p(X_i)$.  The
+regression is therefore also saturating the propensity-score model.  By construction
+$\lambda \equiv 0$, which kills both the numerator bias and the denominator inflation.
+There is no residual nonlinearity for $\rho$ to correlate with.
+
+%--------------------------------------------------------------------
+\section{Summary}
+%--------------------------------------------------------------------
+
+\begin{theorem}[Regression--Matching equivalence]\label{thm:main}
+Under CIA:
+\begin{enumerate}
+  \item[(a)] \textbf{Saturated regression} always identifies the variance-weighted ATE
+             of Proposition~\ref{prop:sat}, with weights proportional to the
+             conditional variance of treatment.
+
+  \item[(b)] \textbf{Linear regression} identifies the same quantity if and only if
+             $\lambda(X_i) \equiv 0$, i.e.\ the true propensity score $p(X_i)$ is
+             linear in $X_i$.  Otherwise, the estimand differs by the correction terms
+             in Proposition~\ref{prop:lin}.
+
+  \item[(c)] In either case, if treatment effects are constant ($\delta(x)=\delta$)
+             \emph{and} the outcome equation is correctly specified, the regression
+             identifies the constant ATE $=$ ATT $=$ ATU $= \delta$.
+\end{enumerate}
+\end{theorem}
+
+\noindent The practical implication is that with heterogeneous treatment effects and
+an unknown propensity score, a saturated regression (or a matching estimator using the
+nonparametric $p(X_i)$) gives a cleaner and more interpretable weighted average than a
+plain linear regression, which may produce weights that are difficult to characterize
+and that can even be negative when $p(X_i)$ is strongly nonlinear.
+
+\bigskip
+\noindent\textbf{Reference.}
+Angrist, J.D.\ (1998). ``Estimating the Labor Market Impact of Voluntary Military
+Service Using Social Security Data on Military Applicants.'' \textit{Econometrica},
+66(2), 249--288.\\[2pt]
+Angrist, J.D.\ and Pischke, J.S.\ (2009). \textit{Mostly Harmless Econometrics}.
+Princeton University Press.
+
+\end{document}

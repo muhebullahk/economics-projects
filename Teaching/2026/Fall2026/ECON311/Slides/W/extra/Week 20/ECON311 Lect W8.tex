@@ -1,0 +1,609 @@
+% !TeX spellcheck = en_US
+\documentclass[aspectratio=1610]{beamer}
+\usetheme{Madrid}
+\setbeamercovered{transparent}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+\makeatletter
+\define@key{beamerframe}{wide}[10pt]{%
+	\def\beamer@cramped{\itemsep #1\topsep0.5pt\relax}}
+\makeatother
+	
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{booktabs}
+
+\title[Winter - Lecture 8] % (optional, use only with long paper titles)
+{Intermediate Macroeconomics: Lecture  W8 (Ch.14)}
+\subtitle{ECON 311 -- Intermediate Macroeconomics}
+
+\author{Muhebullah Karimzada}
+\institute{School of Economics \\\ University of Northern British Columbia}
+\date{Fall 2026}
+
+
+% ---------- UNBC COLORS ----------
+\usepackage{xcolor}
+\definecolor{UNBCGreen}{RGB}{0,102,51}
+\definecolor{UNBCDark}{RGB}{0,74,37}
+\definecolor{UNBCGold}{RGB}{189,155,96}
+\definecolor{SoftCream}{RGB}{249,247,242}
+\definecolor{SoftGray}{RGB}{244,246,248}
+\definecolor{AccentBlue}{RGB}{41,98,255}
+\definecolor{AccentOrange}{RGB}{230,126,34}
+\definecolor{AccentTeal}{RGB}{0,150,136}
+\definecolor{AccentRed}{RGB}{192,57,43}
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{structure}{fg=UNBCDark}
+\setbeamercolor{title}{fg=white,bg=UNBCDark}
+\setbeamercolor{subtitle}{fg=UNBCGold}
+\setbeamercolor{frametitle}{fg=white,bg=UNBCDark}
+\setbeamercolor{block title}{fg=white,bg=UNBCDark}
+\setbeamercolor{block body}{fg=black,bg=SoftGray}
+\setbeamercolor{block title alerted}{fg=white,bg=AccentRed}
+\setbeamercolor{block body alerted}{fg=black,bg=SoftGray}
+\setbeamercolor{item}{fg=UNBCDark}
+\setbeamercolor{section in toc}{fg=UNBCDark}
+\setbeamercolor{alerted text}{fg=AccentRed}
+\setbeamercolor{author in head/foot}{fg=white,bg=UNBCDark}
+\setbeamercolor{date in head/foot}{fg=white,bg=UNBCDark}
+% ---------- UNBC BRANDING ----------
+\usepackage{graphicx}
+\usepackage{lmodern}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning,calc}
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.78\paperwidth,ht=2.8ex,dp=1.2ex,leftskip=1em]{author in head/foot}%
+  \color{white}\textbf{ECON 311} \hspace{0.5em} \textcolor{UNBCGold}{|} \hspace{0.5em} Intermediate Macroeconomics%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.22\paperwidth,ht=2.8ex,dp=1.2ex,rightskip=1em plus1fil]{date in head/foot}%
+  \color{white}\insertframenumber/\inserttotalframenumber%
+  \end{beamercolorbox}}%
+}
+
+\newtcolorbox{mybox}[2][]{
+  colback=#2!8,
+  colframe=#2,
+  boxrule=0.8pt,
+  arc=2mm,
+  left=2mm,right=2mm,top=1.5mm,bottom=1.5mm,
+  #1
+}
+
+\newcommand{\topbanner}[1]{%
+\begin{tikzpicture}[remember picture,overlay]
+\fill[UNBCGold] ([yshift=-0.65cm]current page.north west) rectangle ([yshift=-0.48cm]current page.north east);
+\node[anchor=north west,font=\small\bfseries,text=UNBCDark] at ([xshift=0.35cm,yshift=-0.78cm]current page.north west) {#1};
+\end{tikzpicture}%
+}
+\begin{document}
+
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+\begin{frame}[wide]{What are You Going to Learn (Ch. 14)}
+	\begin{itemize}
+		\item Various policy responses to the financial crisis
+		\item The Fed’s balance sheet
+		\item Contributors to a very large negative shock in AD
+		\begin{itemize}
+			\item Gap between the fed funds rate and market interest rates
+			\item A household balance  sheet crisis
+			\item Substantial uncertainty
+		\end{itemize}
+		\item Unconventional actions of the Fed
+		
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Policy Responses to the Financial Crisis}
+	\begin{itemize}
+		\item Simple policy rule: the central bank rate as a function of the gap between the current inflation rate and target rate
+		\item The Taylor rule expands upon this: allows the current level of short-run output to influence the fed funds rate
+		\begin{itemize}
+			\item e.g., $i_t= 1\% + 1.5 \pi_t + 0.5 \widetilde{Y_t}$
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Fed Funds Rate and the Taylor Rule}
+	\begin{itemize}
+		\item Some people argue that leading up to the crisis, the fed funds rate may have been too low for too long
+		\item But, during the crisis, the actual interest rate that firms faced was high
+		\begin{itemize}
+			\item from 2002 to 2006 the fed funds rate was lower than the Taylor rule suggested
+		\end{itemize}
+		\item After the crisis, Taylor rule suggests a higher interest rate than the Fed Rate
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{"Figures/fig 14_04"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{The Fed Funds Rate and the Taylor Rule}
+	\begin{itemize}
+		\item Output was below potential throughout 2002 and into 2003
+		\begin{itemize}
+			\item led to inflation being well below its target, and contributed to the federal funds rate remaining low
+		\end{itemize}
+		\item Short run output has since grown beyond potential, and contributed to the increase in the fed funds rate
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{"Figures/fig 14_05"}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[wide]{The Fed Funds Rate and the Taylor Rule}
+	\begin{itemize}
+		\item Decline in inflation in 2002 up to the end of 2003
+		\item Fed was concerned about the possibility of deflation at that time
+		\item The decline of inflation	was not nearly as sharp as a standard Phillips curve would have predicted during the crisis 
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{"Figures/fig 14_06"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{How Large is the Output Gap?}
+	\begin{itemize}
+		\item The closing of the gap happened because of revised potential GDP, not from a return to the previous GDP trend
+		\item Why has potential GDP fallen? Low investment rates and TFP growth slowed
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{"Figures/fig 14_07"}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[wide]{The Money Supply}
+	\begin{itemize}
+		\item Friedman and Schwartz claim that excessively tight monetary policy by the Federal Reserve and the ensuing deflation was the principal cause of the Great Depression
+		\vspace{1mm}
+		\begin{itemize}
+			\item They cite that the money supply declined sharply between 1929 and 1933
+		\end{itemize}
+		\item Fed is currently focused on stimulating the economy and preventing deflation
+		\vspace{1mm}
+		\begin{itemize}
+			\item Expanded the money supply at the end of 2008
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Great Depression in the IS/MP Framework}
+	\begin{itemize}
+		\item 
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{"Figures/fig 14_13"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{The Phillips Curve and the Great Depression}
+	\begin{itemize}
+		\item 
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{"Figures/fig 14_14"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{The Growth Rate of Various Money Supply Measures}
+	\begin{itemize}
+		\item Currency is the narrowest measure, followed by M1 and M2
+		\item All exhibit rapid growth by the end of 2008
+		\item From the end of 2008 to 2009, the Fed was focused on increasing the money supply, stimulating the economy, and avoiding deflation
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{"Figures/fig 14_08"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{The Fed’s Balance Sheet}
+	\begin{itemize}
+		\item When conventional monetary policy failed, central bank adopt a set of unconventional monetary policy
+		\begin{itemize}
+			\item Allowed these institutions to swap less liquid financial instruments for Treasury securities
+			\item The provision of liquidity to the large government-sponsored mortgage companies Fannie Mae and Freddie Mac
+			\item Direct capital injections through the Troubled Asset Relief Program (TARP) 
+		\end{itemize} 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Fed’s Balance Sheet}
+	\begin{itemize}
+		\item These unconventional monetary policy dramatically change the Fed’s balance sheet
+		\begin{itemize}
+			\item Most assets were U.S. Treasury securities while most liabilities were currency held by the public
+		\end{itemize}
+		\item The composition of assets and liabilities also changed
+		\begin{itemize}
+			\item On the asset side: the Fed expanded its assets to include lending (through loans or securities) to the rest of the economy, not only to financial institutions but also to nonfinancial corporations
+			\item On the liability side: additional lending was not financed by printing money.
+			The Fed borrowed from the Treasury and bank excess reserves
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Federal Reserve’s Balance Sheet (billions of dollars)}
+	\begin{itemize}
+		\item Various programs are combined into Mortgage-Backed Securities and Other
+		\item The increase are mostly financed by an increase in commercial bank's reserve
+		\begin{itemize}
+			\item Fed bought commercial paper or securitized loans from financial institutions and paid for these purchases by crediting their reserve accounts
+		\end{itemize}
+		\item But banks kept reserves with the Fed instead of loaning them out
+		\begin{itemize}
+			\item Beside that bank were reluctant to make risky loans,the Fed began paying interest on excess reserves -- Central bank can adjust this interest rate and control the money flow
+		\end{itemize}
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{"Figures/fig 14_09"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{Financial Assets of the Federal Reserve}
+	\begin{itemize}
+		\item Purchased a range of securities and made a large volume of loans 
+		\item Quantitative easing: central bank purchases of assets other than short-term government bonds
+		\item Initially, the Fed acts as the ``lender of last resort''. Then, bought only MBS in QE1 and bought long-term U.S. Treasuries in QE2. During QE3, they bought both
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{"Figures/fig 14_12"}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[wide]{Should Monetary Policy Respond to Asset Prices?}
+	\begin{itemize}
+		\item It is now evident that there was a housing bubble in the mid-2000s
+		\item Should the Fed attempt to curtail asset price bubbles when they occur? The Fed Chairman at that time Bernanke argued in 2000
+		\begin{itemize}
+			\item Bubbles are difficult to identify in real time
+			\item Monetary policy is too imprecise to deal with bubbles
+			\item Policymakers should use more refined instruments:
+			\begin{itemize}
+				\item capital requirements
+				\item regulation of lending standards
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Price–Earnings Ratio in the Stock Market}
+	\begin{itemize}
+		\item Often serve as a measure of bubbles
+		\item In asset pricing models, stock prices should be equal to the present discounted value of future profits
+		\item Whenever the ratio of stock prices to company earnings gets too far away from its mean, it tends to revert back
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{"Figures/fig 14_10"}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[wide]{Real Home Prices in the United States}
+	\begin{itemize}
+		\item By nearly any measure, the appreciation of home prices between 2000 and 2006 was unusual
+		\item Moreover, previous episodes of rapidly rising real home prices were often followed by real declines
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.6\linewidth]{"Figures/fig 14_11"}
+	\end{figure}
+\end{frame}
+
+\begin{frame}[wide]{The Troubled Asset Relief Program}
+	\begin{itemize}
+		\item Economists agree on the importance of restoring the financial system, but debate surrounds the most effective policy
+		
+		\item Policies such as the Troubled Asset Relief Program (TARP) have been implemented by the Federal Reserve and Department of the Treasury
+
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}[wide]{The Troubled Asset Relief Program}
+	\begin{itemize}
+		\item TARP included measures like purchasing toxic assets and injecting capital into financial institutions
+		\begin{itemize}
+			\item Purchases of ``toxic" assets:	Banks possess bad assets, which limits lending
+			\item Capital injections into financial institutions: Original TARP invested \$25 billion in each large financial institution
+		\end{itemize}
+		\item In the fall of 2008, TARP established a \$700 billion fund for the Treasury to purchase toxic assets
+		\begin{itemize}
+			\item purchase equity in banks and other financial institutions, to guarantee loans to those institutions, and even to bail out some U.S. automakers
+		\end{itemize}
+		\item Complete reorganization of financial institutions: reorganize debt into new equity claims for the former debt holders
+		\item The program did not actually incur large losses; as of the end of 2012, about 97 percent of the disbursements had been returned to the Treasury 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Fiscal Stimulus}
+	\begin{itemize}
+		\item American Recovery and Reinvestment Act (ARRA) 2009
+		\begin{itemize}
+			\item Tax cuts and new government spending -- More than \$250 billion in tax cuts and More than \$500 billion in new government spending			
+			\item Increased the deficit to 10 percent of GDP in 2009 (was 3\% of the GDP in 2008)
+		\end{itemize}
+		\item Most economists believed there should be a fiscal stimulus
+		\item Disagreement stemmed from the type of spending and weight of tax cuts
+		\begin{itemize}
+			\item The Ricardian equivalence argument was also a factor
+			\begin{itemize}
+				\item High spending must be financed by higher taxes in the future
+				\item The prospect of these taxes may reduce the current impact of the stimulus package
+			\end{itemize}
+			\item Temporary measures that seek to change the timing of production may overcome these concerns (e.g., investment tax credit, etc)
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Forward Guidance}
+	\begin{itemize}
+		\item The dashed lines are the market expectations about the future fed funds rate
+		\item The market seems to believe the interest rate would stay low for sometime after Jan 2012
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.7\linewidth]{"Figures/fig 14_15"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{The European Debt Crisis}
+	\begin{itemize}
+		\item Financial crisis was not a U.S. phenomenon
+		\item Sovereign debt crisis in Europe
+		\begin{itemize}
+			\item Government debt of countries like Greece, Ireland, Italy, and Spain came under pressure 
+			\item Interest rates on the debt rising as high as 7 percent
+			\item Severe problems in the banking sector 
+			\item High unemployment
+			
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Financial Reform}
+	\begin{itemize}
+		\item A key downside to the way in which the financial crisis was handled by policymakers is that it has made problems of moral hazard more severe
+		\begin{itemize}
+			\item Many of these institutions were deemed too systemically important to fail or too big to fail
+			\item Bankers would expect the banking sector will be bailed and would take any risk
+		\end{itemize}
+		\item How do we prevent major problems in the financial system?
+		\begin{itemize}
+			\item Gain greater understanding of volatile prices (e.g., housing, stocks, bubbles)
+			\item Acknowledge costs with the benefits of financial intervention
+			\item Understand the downside of moral hazard -- minimize incentive for bankers to take ``heads, I win; tails, the economy loses" types of bets
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Financial Reform}
+	\begin{itemize}
+		\item How do firms fail under normal circumstances?
+		\begin{itemize}
+			\item A common solution when a firm's liabilities surpass its assets is to declare bankruptcy
+			\item A judge or some other government entity steps in and reorganizes the firm if possible so that it can resume its business
+			\item Equity (net worth) is already zero or even negative, so the stockholders have lost their entire investment
+			\item Debt is written down to zero, and the former debtholders are given equity claims in the newly reorganized firm
+			\item The value of the debt at the time of the reorganization becomes the new equity in the new firm
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Financial Reform}
+	\begin{itemize}
+		\item This approach has a number of appealing features for financial sector as well
+		\begin{itemize}
+			\item Stockholders and bondholders bear the brunt of the burden, not taxpayers
+			\item With the bank recapitalized, it should emerge with the ability to lend
+		\end{itemize} 
+		\item Potential problem with this approach
+		\begin{itemize}
+			\item Severely interferes with the functioning of financial markets if not handled carefully
+			\item Liquidity problem in the short run
+			\item The panic following the collapse of Lehman Brothers in September 2008 is a reminder of what can go wrong
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Financial Reform}
+	Squam Lake Group suggested guidelines for financial reform:
+	\begin{itemize}
+		\item Create a systemic regulator
+		\begin{itemize}
+			\item Each country should have one primary regulator charged with monitoring systemic risk in financial markets
+			\item Responsible for enforcing the other elements of financial reform
+		\end{itemize}
+		\item Enhance capital requirements
+		\begin{itemize}
+			\item The minimum percentage of capital requirements (equity/capital to asset ratio) should be raised so that financial institutions have a larger “cushion” in case the value of their assets declines suddenly
+			\item Also, larger or more complex financial institutions should face higher capital requirements
+		\end{itemize}
+		\item Main cost of bailouts
+		\begin{itemize}
+			\item Borne by people outside of the finance industry
+			\item Measured by lost jobs and forgone GDP
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Financial Reform}
+	\begin{itemize}
+		\item Link executive compensation to long-term performance
+		\begin{itemize}
+			\item The compensation of senior management in systemically important financial institutions should be tied, at least in part, to the long-term performance of the firms
+		\end{itemize}
+		\item Require “living wills.” 
+		\begin{itemize}
+			\item Some important financial institutions will inevitably fail
+			\item A living will—a set of instructions for how this failure should be carried out to keep to a low level the disruption to financial markets—would minimize the effects of such a failure
+%			\item The direct cost of bailing out financial institutions was only a small portion of the overall cost of the global financial crisis
+%			\item The bulk of these costs was borne by people outside the finance industry
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Financial Reform}
+	\begin{itemize}
+		\item Require convertible debt
+		\begin{itemize}
+			\item Systemically important financial institutions might also be required to issue a significant amount of a new, hybrid debt instrument that converts to equity when certain prespecified crisis conditions arise
+			\begin{itemize}
+				\item This hybrid is called convertible debt
+			\end{itemize}
+			\item When the value of equity in such a firm falls significantly, this debt would convert to equity, recapitalizing banks at no cost to taxpayers
+			\item Bondholders and shareholders would themselves bear the costs of financial problems, minimizing the likelihood of taxpayer bailouts
+			\item This convertible debt functions like an automated, limited version of the reorganization that occurs in bankruptcy, but it should lesser effect on the financial markets that a more formal reorganization would 
+		\end{itemize} 
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The Aftermath of the Great Recession}
+	The slow recovery following the Great Recession has prompted two proposed explanations:
+	\begin{itemize}
+		\item Secular stagnation, characterized by sluggish economic growth, persistently low inflation, and negative real interest rates
+		\begin{itemize}
+			\item Japan has experienced with this phenomenon since the 1990s
+		\end{itemize}
+		\item The combination of secular stagnation and a "global saving glut" has depressed investment demand while simultaneously increasing the supply of saving, resulting in negative real interest rates
+		\item The presence of the zero lower bound does not allow the market to be cleared
+		\item Reduced investment leads to less capital accumulation. As indicated in the Solow model, the economic grow slower
+	\end{itemize}
+	
+\end{frame}
+
+\begin{frame}[wide]{The Aftermath of the Great Recession}
+	\begin{itemize}
+		\item TFP growth has been slow since 2004
+		\item R\& D spending remains strong. But, it may be because the financial crisis increased the misallocation of resources
+	\end{itemize}
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\linewidth]{"Figures/fig 14_16"}
+	\end{figure}
+	
+\end{frame}
+
+\begin{frame}[wide]{Macroeconomic Research after the Financial Crisis}
+	\begin{itemize}
+		\item Did macroeconomists fail? 
+		\begin{itemize}
+			\item Research was not available to provide guidelines
+			\item Research has been limited by computational power and data availability
+		\end{itemize}
+		\item New models are more advanced and include
+		\begin{itemize}
+			\item Frictions: sticky inflation and limited financial markets
+			\item Heterogeneous consumers -- some are rich, some are poor; some are more willing to save than the other, etc
+			\item Imperfect financial markets -- agents cannot buy any asset or combination of asset such that it would cancel out all negative shock
+			\item Allowing for more roles of government
+		\end{itemize}
+		\item Economist response with a sharp increase in macroeconomic research focused on economic fluctuations and financial imperfections
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Conclusion}
+	\begin{itemize}
+		\item The global financial crisis will likely go down in history as the largest recession since the Great Depression
+		\item The “Great Recession” was a balance sheet crisis for
+		\begin{itemize}
+			\item Financial institutions
+			\item Households
+			\item The Federal Reserve
+			\item The government
+		\end{itemize}
+		\item As we recover from the crisis, the question remain, is the productivity slow down temporary?
+		\begin{itemize}
+			\item The experience from Great Depression would suggest no...
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}[wide]{An Increase in the Investment Rate}
+%	\begin{columns} 
+%			% Column 1
+%			\begin{column}{.5\textwidth}
+%				\begin{itemize}
+%					\item Suppose the investment rate increases permanently for exogenous reasons ($s'>s$)
+%					\begin{itemize}
+%						\item The investment curve rotates upward ($\bar{s}'\bar{A}  \bar{L}^{1-\alpha} K_t^\alpha > \bar{s}\bar{A}  \bar{L}^{1-\alpha} K_t^\alpha$)
+%						\item The depreciation curve remains unchanged ($\delta K_t$)
+%						\item The capital stock increases by transition dynamics to reach the new steady state
+%						\begin{itemize}
+%							\item This happens because investment exceeds depreciation ($sY_t>\delta K_t$)
+%						\end{itemize}
+%						\item The new steady state is located to the right
+%					\end{itemize}
+%				\end{itemize}
+%			\end{column}
+%			% Column 2    
+%			\begin{column}{.5\textwidth}			
+%				\begin{figure}
+%					\centering
+%					\includegraphics[width=1\linewidth]{"Figures/An Increase in the Investment Rate"}
+%				\end{figure}
+%			\end{column}%
+%		\end{columns}
+%\end{frame}
+
+%\begin{frame}[wide]{Measuring the State of the Economy}
+%	\begin{columns} 
+%		% Column 1
+%		\begin{column}{.5\textwidth}
+%			\begin{table}[htbp]
+%				\centering
+%				\begin{tabular}{lrrrr}
+%					& 2005  & 2006  & 2007  & 2008 \\
+%					\hline
+%					GDP   & 12.6  & 13.4  & 14.0    & 14.3 \\
+%					(in trillions of \$) &       &       &       &  \\
+%					Growth rate GDP &       & 0.063 & 0.045 & 0.021 \\
+%					\hline
+%				\end{tabular}%
+%				\label{tab:addlabel}%
+%			\end{table}%
+%		\end{column}
+%		% Column 2    
+%		\begin{column}{.5\textwidth}			
+%			
+%			
+%		\end{column}%
+%	\end{columns}
+%\end{frame}
+
+\begin{frame}[wide]{Next Lecture}
+	\begin{itemize}
+		\item Next lecture will cover Ch.15
+	\end{itemize}
+\end{frame}
+
+\end{document}

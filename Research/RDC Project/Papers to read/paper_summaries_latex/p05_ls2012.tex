@@ -1,0 +1,420 @@
+%=============================================================
+% Paper 5: Lazear & Spletzer (2012), AER P&P
+%=============================================================
+\chapter{Lazear \& Spletzer (2012)}
+
+\begin{paperbox}{Hiring, Churn, and the Business Cycle}
+\textbf{Authors:} Edward P.\ Lazear \& James R.\ Spletzer\\[3pt]
+\textbf{Journal:} \textit{American Economic Review: Papers \& Proceedings}
+102(3): 575--579\\[3pt]
+\textbf{Year:} 2012 \quad\textbf{Field:} Labour economics; Macroeconomics\\[3pt]
+\textbf{Classification:} Empirical (descriptive accounting decomposition)
+\end{paperbox}
+
+%------------------------------------------------------------
+\section{Research Question}
+
+How does employment churn---the simultaneous hiring and separation within a
+business that offsets each other without changing net employment---vary over
+the business cycle, and what role did changes in churn play in the collapse
+of hiring during the 2007--09 Great Recession?
+
+%------------------------------------------------------------
+\section{Motivation}
+
+Standard analyses of the Great Recession focused on net employment (the
+dramatic fall in payrolls) and on job creation and destruction. But these
+net measures obscure a potentially important channel: the cessation of
+\emph{churn}. Even businesses that are not changing their employment level
+engage in substantial ongoing hiring and separation activity---workers quit,
+are hired as replacements, transfer, or retire. This churn is intrinsically
+valuable: it enables workers to move to more productive jobs and enables firms
+to replace mismatched workers. If churn collapses during recessions, labour
+market efficiency losses may substantially exceed what net employment changes
+alone reveal. Lazear and Spletzer construct the first explicit churn
+decomposition from JOLTS microdata to quantify this channel.
+
+%------------------------------------------------------------
+\section{Main Contribution}
+
+The paper introduces an explicit accounting decomposition of total hires and
+separations into four components---growth hires ($H^G_E$), replacement hires
+(churn in expanding firms), replacement separations (churn in contracting
+firms), and employment-decreasing separations---and uses JOLTS microdata to
+estimate each component quarterly. Key findings: churn is (i) procyclical
+($\rho(\text{churn},u) = -0.96$); (ii) quantitatively enormous (65\% of all
+hires in normal times were churn); and (iii) the dominant component of the
+hiring collapse during the 2007--09 recession (\textbf{79\%} of the decline
+in hires was due to reduced churn, not reduced job creation).
+
+%------------------------------------------------------------
+\section{Relationship to the Literature}
+
+The paper fits into the wider gross flows literature initiated by DH1992 but
+focuses on within-firm turnover (churn) rather than across-firm flows (job
+creation/destruction). It is related to Anderson--Meyer (1994),
+Burgess--Lane--Stevens (2000), and Davis--Faberman--Haltiwanger (2006), who
+had estimated that 42--70\% of hiring was churn using various data sources.
+The paper's contribution is to use JOLTS \emph{microdata}---enabling the
+within-establishment decomposition---and to examine the business-cycle
+variation directly. Churn is distinct from, but related to, the ``excess
+reallocation'' concept in DH1992.
+
+%------------------------------------------------------------
+\section{Theoretical Framework and Economic Mechanism}
+
+\subsection*{Accounting Framework}
+
+For an establishment in period $t$, define hires $H$ and separations $S$ in
+business of type $j\in\{E=\text{expanding},\;C=\text{contracting},\;
+Z=\text{zero-growth}\}$. Total hires and separations decompose as:
+\begin{align}
+  H &= H^G_E + \text{CH}, \label{eq:hires_decomp} \\
+  S &= S^D_C + \text{CH}, \label{eq:seps_decomp}
+\end{align}
+where $\text{CH}=\text{CH}_E+\text{CH}_C+\text{CH}_Z$ is total churn:
+\begin{align}
+  \text{CH}_E &= H^R_E = S_E
+    &&\text{(replacement hires in expanding firms)} \\
+  \text{CH}_C &= H_C = S^R_C
+    &&\text{(replacement separations in contracting firms)} \\
+  \text{CH}_Z &= H_Z = S_Z
+    &&\text{(all hires/seps in zero-growth firms)}
+\end{align}
+Net employment change follows directly:
+\begin{equation}
+  H - S = H^G_E - S^D_C.
+  \label{eq:net_change}
+\end{equation}
+\textbf{Crucially, total churn CH cancels exactly from the net change
+equation.} Churn has no direct effect on net employment---but it determines
+the \emph{level} of total hiring activity.
+
+\subsection*{Two Cyclical Mechanisms}
+
+\begin{enumerate}
+  \item \textbf{Demand side:} In downturns, businesses decrease their hiring
+    and separations that would have been matched by replacement hires remain
+    unfilled $\Rightarrow$ churn falls as unfilled separations become
+    employment-decreasing separations.
+  \item \textbf{Supply side:} Workers become reluctant to quit in recessions
+    (fear of unemployment) $\Rightarrow$ quit rate falls $\Rightarrow$ fewer
+    replacement hires needed $\Rightarrow$ churn falls through a different
+    channel.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Data}
+
+\begin{itemize}
+  \item \textbf{Dataset:} JOLTS (Job Openings and Labour Turnover Survey)
+    microdata, U.S.\ Bureau of Labour Statistics.
+  \item \textbf{Coverage:} Random sample of $\approx$16,000 nonfarm business
+    establishments; $\approx$10,500 provide data regularly.
+  \item \textbf{Period:} December 2000 -- June 2011; estimated at quarterly
+    frequency.
+  \item \textbf{Key feature:} JOLTS microdata allow classification of each
+    establishment by its net employment change each quarter (expanding,
+    contracting, zero-growth), enabling the within-establishment decomposition.
+  \item \textbf{Limitation:} Excludes imputed hires and separations for
+    unobserved births and deaths; quarterly estimates ($\approx$12\,m hires in
+    mid-2000s) are below published monthly statistics ($\approx$15\,m) partly
+    for this reason.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Empirical Strategy}
+
+Pure descriptive decomposition. The strategy:
+\begin{enumerate}
+  \item Classify each JOLTS establishment in each quarter as expanding
+    ($\Delta E>0$), contracting ($\Delta E<0$), or zero-growth ($\Delta E=0$).
+  \item Within each category, compute hires and separations from JOLTS
+    microdata.
+  \item Apply the churn accounting identities
+    (\ref{eq:hires_decomp})--(\ref{eq:net_change}) to decompose total hires
+    and separations.
+  \item Compute seasonally adjusted time series for each component (Figure~1).
+  \item Formally decompose the change in churn from 2007:Q4 to 2009:Q1 into:
+    (a) change in the number of establishments with churn; (b) change in
+    average size of churn conditional on having churn (Table~1).
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Identification Strategy}
+
+\textbf{No causal identification.} This is a descriptive accounting exercise.
+The decomposition is an identity, not a regression. The paper makes no claim
+that churn \emph{causes} employment changes or that the recession \emph{caused}
+the decline in churn---it documents the accounting fact that 79\% of the
+decline in hires during 2007--09 was attributable to a decline in churn. The
+welfare implications (cost $\approx0.4$ pp of GDP annually) rely on auxiliary
+assumptions about the productivity value of worker reallocation via churn, not
+on causal identification.
+
+%------------------------------------------------------------
+\section{Main Results}
+
+\subsection*{Stylised Facts about Churn}
+
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+\textbf{Statistic} & \textbf{Value} \\
+\midrule
+Share of hires that is churn (mid-2000s) & 65\% \\
+$\rho(\text{churn},\,u)$ & $-0.96$ \\
+$\rho(\text{churn},\,\text{NET})$ & $+0.43$ (2001--2011:Q2) \\
+$\rho(\text{churn},\,\text{NET})$ & $+0.79$ (2001--2009:Q2) \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Great Recession Decomposition}
+
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Component} & \textbf{2007:Q4} & \textbf{2009:Q2} \\
+\midrule
+Total churn (millions) & 8.3 & 5.3 \\
+Total hires (millions) & $\approx$12 & $\approx$8.2 \\
+\midrule
+\multicolumn{3}{l}{\textit{Decomposition of the 3.0\,m decline in churn}} \\
+Fewer establishments with churn & 1.9\,m $\to$ 1.6\,m & 52\% \\
+Smaller average churn size & 4.44 $\to$ 3.78 per estab. & 48\% \\
+\midrule
+Share of hiring decline due to churn & \multicolumn{2}{c}{\textbf{79\%}} \\
+Share due to lower job creation ($H^G_E$) & \multicolumn{2}{c}{$\approx25\%$} \\
+\bottomrule
+\multicolumn{3}{l}{\small Source: JOLTS microdata, seasonally adjusted.}
+\end{tabular}
+\end{center}
+
+%------------------------------------------------------------
+\section{Economic Magnitude and Interpretation}
+
+The finding that 79\% of the Great Recession's hiring collapse was churn-driven
+is the headline result and represents a major reframing of what happened in
+the 2007--09 recession. Standard analyses focused on job creation collapsing
+and job destruction rising. Lazear--Spletzer show that these forces, while
+real, were quantitatively swamped by the simultaneous collapse of the
+replacement-hire/quit mechanism. The economy became \emph{frozen} rather than
+simply contracting in the traditional sense.
+
+The welfare cost estimate:
+\begin{itemize}
+  \item Reduced churn $\approx 0.4$ percentage points of GDP \emph{annually}
+    over the 3.5 years following the recession onset.
+  \item This estimate uses the auxiliary assumption that churn-driven worker
+    reallocation raises productivity by observed average productivity differences
+    between gaining and losing firms.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Mechanisms}
+
+Two mechanisms are empirically consistent but the paper cannot distinguish
+between them:
+
+\begin{enumerate}
+  \item \textbf{Supply side (worker reluctance):} Workers become reluctant to
+    quit in recessions (fear of being unable to find new employment), so the
+    quit rate falls. This reduces replacement hiring even at firms that would
+    gladly replace a quitter.
+
+  \item \textbf{Demand side (employer frugality):} Employers, when a worker
+    separates, choose not to replace them---tolerating temporary staffing
+    gaps. This mechanism is the paper's preferred interpretation: ``separations
+    that would have been matched by hiring during good times remain unfilled.''
+    The causal chain runs: aggregate shock $\to$ employer decision not to
+    replace $\to$ reduced churn.
+\end{enumerate}
+
+The 52/48 extensive/intensive margin split of the churn decline is consistent
+with both mechanisms.
+
+%------------------------------------------------------------
+\section{Robustness Checks}
+
+\begin{itemize}
+  \item Validation of JOLTS microdata estimates against published JOLTS
+    statistics (hires and separations track published series).
+  \item Validation of job creation/destruction estimates against BLS Business
+    Employment Dynamics (BED) data.
+  \item Consistency of the 65\% churn share with prior estimates (Anderson--Meyer
+    1994: 69\%; Burgess--Lane--Stevens 2000: $\approx$70\%; Davis et al.\ 2006:
+    42--72\%).
+\end{itemize}
+
+Note that exclusion of births/deaths imputation is a consistent understatement
+and does not affect the proportional decomposition.
+
+%------------------------------------------------------------
+\section{Limitations}
+
+\begin{enumerate}
+  \item \textbf{JOLTS sample:} $\approx$10,500 establishments, disproportionately
+    large businesses. Small businesses, which tend to have higher churn rates,
+    may be underrepresented.
+  \item \textbf{Short time series:} JOLTS microdata begin in December 2000;
+    only one full business cycle is available, with the 2001 recession only
+    partially captured.
+  \item \textbf{No worker-level data:} Churn is measured at the establishment
+    level. It is impossible to identify whether replacement hires are the same
+    or different workers from those who separated---which matters for
+    productivity analysis.
+  \item \textbf{Nonfarm private sector only:} Government employment is
+    excluded; education and health services differ substantially in quit
+    behaviour.
+  \item \textbf{No causal identification:} The paper documents the accounting
+    fact that churn declined. Whether this represents an efficiency loss or
+    a rational adjustment to changed incentives is not answered.
+  \item \textbf{P\&P format:} As a 5-page Papers \& Proceedings paper, many
+    analytical details are necessarily compressed. This is a short report of
+    findings rather than a full research paper.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section{Policy Implications}
+
+\begin{itemize}
+  \item If 79\% of the Great Recession's hiring collapse was churn-related,
+    then policies designed to stimulate job creation (investment tax credits,
+    hiring subsidies) would have addressed only $\approx$25\% of the hiring
+    shortfall.
+  \item Policies that encourage worker mobility (portable benefits, reductions
+    in non-wage costs of switching jobs) would target the mechanism directly.
+  \item The $\approx$0.4\% of GDP welfare cost from reduced churn provides a
+    rough benchmark for evaluating policies that restore labour market
+    fluidity.
+  \item Aggregate demand stimulus might restore churn partly by restoring
+    worker confidence to quit---a labour supply channel distinct from the job
+    creation/destruction channel.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Overall Assessment}
+
+This is an insightful, well-executed descriptive paper that reframes a key
+fact about the Great Recession. The accounting decomposition is clean and the
+empirical finding is striking. Its limitations as a short P\&P paper are
+acknowledged: it establishes a stylised fact rather than a causal mechanism,
+and the welfare calculation rests on auxiliary assumptions that are not formally
+derived. The paper raises more questions than it answers---the mechanisms
+behind the churn collapse, the welfare implications, the heterogeneity across
+industries and workers---which is entirely appropriate for a conference
+proceedings contribution that motivates a more complete follow-up.
+
+\textbf{Quality: Good for its format. Concise, clear, empirically novel,
+and policy-relevant.}
+
+%------------------------------------------------------------
+\section{Relevance to My Research}
+
+Very relevant for RDC work on Canadian labour dynamics. The JOLTS-based
+decomposition could be replicated using Canadian administrative data (LEED or
+the Longitudinal Worker File), which allows similar classification of
+establishments by their employment direction. The hypothesis that churn is
+procyclical and was severely disrupted during the 2008--09 recession and the
+COVID-19 pandemic in Canada could be tested directly. Of particular interest
+would be whether the sectoral composition of churn collapse differs in Canada:
+given the resource sector's sensitivity to commodity cycles, churn dynamics in
+Alberta and Saskatchewan would likely differ sharply from Ontario and
+Qu\'{e}bec during commodity busts.
+
+%------------------------------------------------------------
+\section{Potential Research Extensions}
+
+\begin{itemize}
+  \item Replicate the Lazear--Spletzer decomposition for Canada using
+    LWF/LEED data for 2000--2024, covering the 2008--09 recession and the
+    COVID-19 shock.
+  \item Disaggregate churn by industry, province, worker age, and occupation
+    to identify which segments of the Canadian labour market experienced the
+    largest efficiency losses from churn collapse.
+  \item Estimate a structural model of the quit/hire decision to formally
+    identify whether the churn collapse in Canada was supply-driven (workers
+    reluctant to quit) or demand-driven (employers declining to replace
+    quitters), using variation in provincial unemployment insurance generosity
+    as an instrument for worker quit behaviour.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Research Gaps}
+
+\begin{itemize}
+  \item The paper uses establishment-level data but cannot identify whether
+    churn involves high-to-low or low-to-high productivity transitions. A key
+    question is whether \emph{efficient} churn collapsed during the recession
+    or whether the decline was concentrated in inefficient (mismatch-correcting)
+    turnover.
+  \item The cost estimate (0.4\% of GDP/year) is rough and does not account
+    for the possibility that some churn during booms was excessive
+    (overhiring/overquitting driven by optimism), so not all lost churn
+    represents an efficiency loss.
+\end{itemize}
+
+%------------------------------------------------------------
+\section{Methodological Lessons}
+
+\begin{enumerate}
+  \item A simple accounting decomposition can reveal economically important
+    facts invisible in aggregate statistics---the 79\% finding emerges directly
+    from the churn identity applied to microdata and would be invisible in
+    aggregate employment or JOLTS-level statistics.
+  \item Classifying establishments by employment \emph{direction}
+    (expanding/contracting/zero-growth) within each period, rather than by
+    long-run growth status, is essential for implementing the churn
+    decomposition correctly.
+  \item Validating microdata-based estimates against published aggregate
+    statistics (BED, published JOLTS) provides reassurance that microdata
+    classifications are consistent with external benchmarks.
+\end{enumerate}
+
+%------------------------------------------------------------
+\section*{Five-Sentence Summary}
+
+Lazear and Spletzer (2012) use JOLTS establishment microdata to decompose
+total hires and separations into four components: growth hires (job creation),
+employment-decreasing separations (job destruction), and churn (replacement
+hires and separations that offset each other within a firm without changing
+net employment). They show that churn accounts for approximately 65\% of all
+hiring in normal times and is strongly procyclical, with a correlation of
+$-0.96$ with the unemployment rate over 2001--2011. During the 2007--09 Great
+Recession, churn fell by 3.0 million workers per quarter (36\% decline), and
+this churn collapse accounts for 79\% of the total decline in hiring---far
+larger than the decline in job creation. The decline in churn was evenly split
+between fewer establishments experiencing any churn (52\%) and smaller average
+churn among those that did (48\%), consistent with a combination of worker
+reluctance to quit and employer decisions to leave separations unfilled. The
+welfare cost of this reduced churn---lost productivity from foregone efficient
+worker reallocation---is estimated at roughly 0.4 percentage points of GDP
+annually over the post-recession period, highlighting that the efficiency costs
+of recessions substantially exceed those revealed by net employment changes
+alone.
+
+\vspace{6pt}
+\begin{quickref}
+\begin{tabularx}{\linewidth}{@{}lX@{}}
+\textbf{Key contribution} &
+  First explicit churn decomposition from JOLTS microdata; documents that
+  79\% of the Great Recession's hiring collapse was churn-driven rather than
+  job-creation-driven---fundamentally reframing the labour market contraction. \\[4pt]
+\textbf{Key weakness} &
+  Short P\&P format; no causal identification; cannot distinguish supply-side
+  (reluctant quitters) from demand-side (non-replacing employers) mechanisms;
+  no worker-level data to identify productivity effects of churn. \\[4pt]
+\textbf{Most interesting gap} &
+  Whether the churn collapse was efficient (eliminating mismatch-driven
+  excessive turnover) or inefficient (preventing productive reallocation)---the
+  answer determines whether recession-period policy should try to restore churn
+  or accept it as rational adjustment. \\[4pt]
+\textbf{Publishable extension} &
+  A full-length paper using Canadian LWF/LEED data to replicate the churn
+  decomposition over 2000--2024, disaggregating by province, industry, age,
+  and occupation, and formally testing the supply vs.\ demand mechanism using
+  provincial unemployment insurance generosity as an instrument for worker
+  quit behaviour.
+\end{tabularx}
+\end{quickref}

@@ -1,0 +1,541 @@
+%==========================================================
+%  CHAPTER 6: Technology, Automation, and Artificial Intelligence
+%==========================================================
+
+\chapter{Technology, Automation, and Artificial Intelligence}
+\label{ch:technology}
+
+\begin{learningobjectives}
+\item Explain the concept of a general-purpose technology and describe how AI fits within historical waves of technological change.
+\item Apply the task-based model of automation to classify occupations by automation risk and explain the mechanism of wage polarization.
+\item Analyze the relationship between artificial intelligence and productivity growth, including the productivity paradox and adoption lags.
+\item Explain network effects, winner-take-all dynamics, and market power in platform economies.
+\item Describe Canada's position in the global AI ecosystem---its research strengths, adoption challenges, and productivity gap.
+\item Evaluate the range of policy responses to AI and automation, including competition law, labour market adjustment, and AI regulation.
+\end{learningobjectives}
+
+%----------------------------------------------------------
+\section{Technology and the Economy: A Historical Perspective}
+%----------------------------------------------------------
+
+The anxiety about technological unemployment is as old as technology itself. In 19th-century England, Luddite textile workers smashed the power looms they feared would replace them. In the 1930s, Keynes wrote of a ``technological unemployment'' that would leave humanity struggling to fill leisure time by the century's end. Today, the question resurfaces around artificial intelligence: will machines this time finally displace human workers on a significant scale?
+
+History offers a useful perspective. Every major wave of technological change has eliminated jobs---and created new ones, often unimaginable before the technology arrived. The steam engine displaced hand-spinning workers but created the factory system that employed millions more. The automobile eliminated stable hands and buggy-whip manufacturers but created assembly-line workers, mechanics, and suburban commuters who created entirely new service industries.
+
+But history also warns against complacency. Disruption has real costs concentrated on specific workers and communities. The towns of Northern Ontario and BC that lost their sawmills and paper mills have not fully recovered even decades later. The question is not whether AI will change the economy---it will---but how fast, for whom, and whether the gains are broadly shared.
+
+Economists classify technologies like steam power, electricity, the internet, and AI as \term{general-purpose technologies (GPTs)}: innovations that are:
+\begin{enumerate}
+  \item Pervasive across many sectors of the economy.
+  \item Capable of continuous improvement over time.
+  \item Able to generate complementary innovations (new products, processes, and business models that were not previously possible).
+\end{enumerate}
+
+\begin{defbox}{General-Purpose Technology (GPT)}
+A \textbf{general-purpose technology} is an innovation that transforms production across many sectors of the economy and enables the development of new complementary innovations.
+
+\textit{Historical examples:} Steam power (1780s), electricity (1880s), information technology/computers (1970s--), the internet (1990s--).
+
+\textit{Economic significance:} GPTs typically produce an initial period of disruption (where the technology destroys old routines but has not yet reorganized production) before generating large productivity gains. The lag between GPT adoption and full productivity impact can be a decade or more.
+
+\textit{AI as GPT:} AI---particularly large language models, machine vision, and autonomous systems---exhibits all three GPT characteristics and is increasingly recognized as the next major GPT cycle.
+\end{defbox}
+
+%----------------------------------------------------------
+\section{The Task-Based Model of Automation}
+%----------------------------------------------------------
+
+\subsection{Tasks, Not Jobs}
+
+A crucial insight from David Autor, Frank Levy, and Richard Murnane (2003) is that automation replaces \textit{tasks}, not whole \textit{jobs}. Most jobs consist of many different tasks. Some of those tasks are easily automated; others are not. As automation replaces the automatable tasks within a job, the remaining (non-automated) tasks change in value---some become more valuable (as complements to technology), others less so.
+
+\begin{defbox}{Task-Based Model of Automation}
+The \textbf{task-based model} classifies tasks along two dimensions: (1) cognitive vs.\ manual, and (2) routine vs.\ non-routine. Automation technology tends to replace tasks that are:
+\begin{itemize}
+  \item \textbf{Routine}: Governed by explicit, codifiable rules or procedures.
+  \item Either cognitive (e.g., bookkeeping, data entry, form processing) or manual (e.g., repetitive assembly, sorting, packaging).
+\end{itemize}
+Tasks that are difficult to automate are those that are:
+\begin{itemize}
+  \item \textbf{Non-routine cognitive}: Require judgment, creativity, communication, complex problem-solving.
+  \item \textbf{Non-routine manual}: Require physical dexterity in unpredictable environments (plumbing, eldercare, electricians).
+\end{itemize}
+\end{defbox}
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  width=12cm, height=9cm,
+  xmin=0, xmax=10, ymin=0, ymax=10,
+  xtick=\empty, ytick=\empty,
+  axis line style={thick},
+  axis lines=center,
+  xlabel={Cognitive $\longleftrightarrow$ Manual},
+  ylabel={Non-routine $\longleftrightarrow$ Routine},
+  xlabel style={at={(1.0,0.5)}, anchor=west, font=\small},
+  ylabel style={at={(0.5,1.05)}, anchor=south, font=\small, rotate=0},
+  clip=false
+]
+% Quadrant labels
+\node[font=\small\bfseries, color=unbcgreen, text width=4cm, align=center]
+  at (axis cs:7.5,8) {Non-routine Cognitive\\{\footnotesize \textit{Lawyers, doctors, managers,}}\\{\footnotesize \textit{researchers, designers}}};
+\node[font=\small\bfseries, color=policyblue, text width=4cm, align=center]
+  at (axis cs:2.5,8) {Non-routine Manual\\{\footnotesize \textit{Plumbers, nurses' aides,}}\\{\footnotesize \textit{electricians, childcare workers}}};
+\node[font=\small\bfseries, color=dataorange, text width=4cm, align=center]
+  at (axis cs:7.5,2.5) {Routine Cognitive\\{\footnotesize \textit{Bookkeepers, data entry,}}\\{\footnotesize \textit{call centre workers, clerks}}};
+\node[font=\small\bfseries, color=dataorange, text width=4cm, align=center]
+  at (axis cs:2.5,2.5) {Routine Manual\\{\footnotesize \textit{Assembly line, packaging,}}\\{\footnotesize \textit{machine operators}}};
+% Automation risk shading indication
+\node[font=\scriptsize, color=dataorange] at (axis cs:5, 1)
+  {\textbf{HIGH AUTOMATION RISK}};
+\node[font=\scriptsize, color=unbcgreen] at (axis cs:5, 9.3)
+  {\textbf{LOW AUTOMATION RISK}};
+% Axis labels
+\node[font=\small] at (axis cs:9.5,0) {Cognitive};
+\node[font=\small] at (axis cs:0.5,0) {Manual};
+\node[font=\small, rotate=90] at (axis cs:0,2.5) {Routine};
+\node[font=\small, rotate=90] at (axis cs:0,7.5) {Non-routine};
+\end{axis}
+\end{tikzpicture}
+\caption{The Task-Based Automation Framework. Tasks are classified by their cognitive/manual
+  character and their routine/non-routine character. Automation technology has historically
+  been most effective at replacing routine tasks---both cognitive (bookkeeping, data processing)
+  and manual (assembly line, repetitive packaging). Non-routine tasks, particularly those
+  requiring judgment, social intelligence, or physical dexterity in unstructured environments,
+  have been more resistant to automation.}
+\label{fig:task_model}
+\end{figure}
+
+\subsection{Wage Polarization}
+
+The task-based model predicts, and data confirm, that technological change since the 1980s has produced \term{wage polarization}: growth in employment and wages at the top of the skill distribution (non-routine cognitive work, complemented by technology) and the bottom (non-routine manual work, difficult to automate), with a hollowing out of middle-skill occupations (routine work, most easily automated).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  ybar,
+  bar width=0.6cm,
+  width=11cm, height=7cm,
+  symbolic x coords={Low wage (bottom third), Middle wage (middle third), High wage (top third)},
+  xtick=data,
+  x tick label style={font=\small, rotate=20, anchor=east},
+  ylabel={Employment Share Change (percentage points)},
+  ylabel style={font=\small},
+  ymin=-8, ymax=10,
+  ytick={-8,-6,-4,-2,0,2,4,6,8,10},
+  yticklabel style={font=\small},
+  ymajorgrids=true, grid style={dashed, gray!25},
+  enlarge x limits=0.25,
+  legend entries={Canada, approx. 1985--2015},
+  legend style={at={(0.98,0.98)}, anchor=north east, font=\small}
+]
+\addplot[fill=unbcgreen!65, draw=unbcgreen] coordinates {
+  (Low wage (bottom third), 4.2)
+  (Middle wage (middle third), -6.8)
+  (High wage (top third), 8.1)
+};
+\addplot[only marks, mark=none] coordinates {(Low wage (bottom third), 0)};
+% Zero line annotation
+\addplot[thick, color=chaptergray, domain=0:3] coordinates {};
+\end{axis}
+\end{tikzpicture}
+\caption{Wage Polarization in Canada: Employment Share Changes by Wage Tercile,
+  Approximate 1985--2015. Middle-wage (routine) occupations have declined as a share of
+  employment, while high-wage and, to a lesser extent, low-wage occupations have grown.
+  This ``hollowing out'' of the wage distribution is consistent with the task-based
+  model's prediction that routine tasks are most susceptible to automation.}
+\label{fig:polarization}
+\source{Approximate values based on Statistics Canada, Labour Force Survey custom tabulations.}
+\end{figure}
+
+\begin{keytakeaway}
+Automation does not simply ``destroy jobs.'' It destroys specific tasks, transforming job content. The economic consequence is wage polarization: growth at the top (high-skill work complemented by technology) and bottom (non-automatable manual work), with decline in the middle (routine work replaced by technology). This pattern is a significant driver of rising income inequality in Canada and other advanced economies.
+\end{keytakeaway}
+
+%----------------------------------------------------------
+\section{Artificial Intelligence and Productivity Growth}
+%----------------------------------------------------------
+
+\subsection{What AI Can and Cannot Do}
+
+Artificial intelligence, and particularly \term{machine learning} and \term{large language models (LLMs)}, represents a new technological frontier. Unlike previous automation technologies that were programmed to follow explicit rules, modern AI systems learn patterns from data without being explicitly programmed.
+
+Key AI capabilities:
+\begin{itemize}
+  \item \textbf{Pattern recognition:} Image classification, speech recognition, medical diagnosis from scans.
+  \item \textbf{Language tasks:} Translation, summarization, code generation, customer service, drafting documents.
+  \item \textbf{Prediction:} Credit scoring, demand forecasting, preventive maintenance scheduling.
+  \item \textbf{Autonomous action:} Self-driving vehicles (partially), robot-guided logistics, automated trading.
+\end{itemize}
+
+AI's limitations are also important for economic analysis:
+\begin{itemize}
+  \item AI can generate plausible-sounding outputs but ``hallucinate'' (confidently assert false claims).
+  \item AI struggles with genuine reasoning about novel situations not well represented in training data.
+  \item AI lacks embodied understanding, common sense, and contextual judgment in complex real-world environments.
+  \item AI systems often require massive computational resources, limiting accessibility for small firms.
+\end{itemize}
+
+\subsection{AI and the Productivity Paradox}
+
+If AI is as powerful as claimed, why hasn't it yet produced a visible surge in measured productivity? This is a 21st-century version of the \term{productivity paradox}---a phrase coined by Robert Solow in 1987 when he quipped, ``You can see the computer age everywhere but in the productivity statistics.''
+
+Several explanations have been offered:
+
+\textbf{Adoption lags.} The full productivity gains from GPTs historically emerge only after widespread adoption, complementary organizational changes, and new business models. Electricity, adopted by American industry from the 1890s, did not produce measurable factory productivity gains until the 1920s---when factories were reorganized around electricity's continuous-flow potential. AI adoption and organizational restructuring may similarly take a decade.
+
+\textbf{Measurement problems.} GDP and productivity statistics measure market transactions at market prices. Many AI benefits (improved search, faster communication, better-matched products) appear as consumer surplus that is not priced and therefore not measured in GDP. Economists are developing better methods to capture these unmeasured benefits.
+
+\textbf{Concentrated benefits.} Productivity gains may be real but concentrated in specific firms (early adopters) and sectors. Aggregate statistics average over many lagging firms, masking productivity leadership at the frontier.
+
+\begin{databox}{Canada's Productivity Gap}
+\begin{itemize}
+  \item Canadian labour productivity growth, 2000--2023: approximately \textbf{1.1\%} per year
+  \item U.S.\ labour productivity growth, 2000--2023: approximately \textbf{1.8\%} per year
+  \item OECD average: approximately \textbf{1.3\%} per year
+  \item Canada's labour productivity level (output per hour worked) is approximately \textbf{72--75\%} of the U.S.\ level
+  \item This gap has persisted for decades and represents one of Canada's most significant long-run economic challenges
+\end{itemize}
+\source{Statistics Canada, Productivity Accounts; OECD Productivity Statistics.}
+\end{databox}
+
+Canada's productivity gap with the United States predates AI and reflects structural factors: lower capital intensity per worker, lower R\&D investment as a share of GDP, a smaller high-tech sector, and a business culture that has been slower to adopt management practices that leverage technology. These structural weaknesses mean Canada must work harder than the U.S.\ to realize AI productivity gains.
+
+\subsection{The Role of Complementary Investments}
+
+AI does not improve productivity automatically. It requires \term{complementary investments}: new software, new business processes, worker retraining, data infrastructure, and organizational redesign. Research suggests that the payoff from IT and AI investment depends critically on whether firms simultaneously restructure their organizations to take advantage of the technology. Firms that invest in AI but maintain traditional hierarchical structures and processes see smaller gains than those that reorganize around AI capabilities.
+
+This has important implications for Canadian policy. Investment tax credits for AI equipment and software are valuable, but unless accompanied by support for organizational change, training, and digital infrastructure, they will not fully close Canada's productivity gap.
+
+%----------------------------------------------------------
+\section{Platform Monopolies and Market Power}
+%----------------------------------------------------------
+
+\subsection{Network Effects and Winner-Take-All Markets}
+
+Alongside the direct productivity effects of digital technology, the digital economy has produced a new form of market concentration driven by \term{network effects}.
+
+\begin{defbox}{Network Effects}
+A \textbf{network effect} (or network externality) exists when the value of a product or service to one user increases as more other users adopt it.
+
+\textit{Examples:} Telephone networks (useless with one phone; valuable when everyone has one); social media (Facebook is more valuable with 3 billion users than with 100); payment platforms (useful only if merchants and consumers are both on it).
+
+\textit{Economic consequence:} Network effects create a tendency toward \textbf{winner-take-all} outcomes. If users prefer whichever platform has more other users, one platform tends to pull ahead and capture most of the market---even if a competitor has marginally better technology. Market tipping is fast and hard to reverse.
+\end{defbox}
+
+In markets with strong network effects, large existing platforms enjoy a self-reinforcing competitive advantage: more users $\to$ more valuable network $\to$ more users join $\to$ even more valuable. This dynamic supports monopoly or near-monopoly outcomes in:
+\begin{itemize}
+  \item Search (Google: approximately 90\% global market share)
+  \item Social media (Meta: Facebook + Instagram + WhatsApp)
+  \item E-commerce marketplace (Amazon: approximately 40\% of U.S.\ e-commerce)
+  \item Smartphone operating systems (Apple iOS + Google Android: approximately 99\% combined)
+\end{itemize}
+
+\subsection{Data as a Competitive Moat}
+
+Beyond network effects, dominant digital platforms benefit from \term{data network effects}: as more users generate more data, the platform's AI models improve, making the service better, attracting even more users, and generating even more data. This creates a virtuous cycle that is extremely difficult for new entrants to replicate.
+
+The economic significance: data is a \textit{non-rival} good (multiple users can use the same data simultaneously) but its value is \textit{excludable} (firms can prevent competitors from accessing their proprietary data). Incumbent platforms with years of user data can train models that smaller competitors cannot match, even with technically equivalent algorithms. This ``data moat'' functions as a new form of barrier to entry.
+
+\begin{canexample}{Canadian Data and the FAANG Economy}
+Canada's internet economy is heavily shaped by large U.S.\ platforms (the so-called
+FAANG companies: Facebook/Meta, Apple, Amazon, Netflix, Google/Alphabet). Canadian
+users generate enormous amounts of data that flows to U.S.\ servers, where it is
+processed to train models and sold as targeted advertising or platform services.
+Canadian firms largely pay to access these platforms rather than competing with them.
+
+Notable exceptions: Shopify (Ottawa) is a rare Canadian success story---a global
+e-commerce platform with approximately 15 million active merchants. Shopify competes
+in a different niche from Amazon (it enables merchants rather than competing with them
+for consumers), but its success demonstrates that Canadian tech firms can build globally
+competitive platforms. Shopify's market capitalization briefly exceeded \$200 billion
+in 2021, surpassing Canada's major banks.
+\end{canexample}
+
+\subsection{Competition Policy Challenges}
+
+Traditional competition (antitrust) law was designed for physical markets where dominance could be measured by market share in a defined product market. Digital platform markets pose challenges:
+
+\begin{itemize}
+  \item \textbf{Multi-sided markets:} Platforms serve multiple distinct user groups simultaneously (Google serves both searchers and advertisers). Traditional market definition applies poorly.
+  \item \textbf{Zero-price goods:} Users receive search, social media, and email ``for free.'' Traditional antitrust harm---rising consumer prices---is not visible. The harm is instead in privacy, data extraction, and reduced innovation.
+  \item \textbf{Acquisitions as strategies:} Facebook's acquisitions of Instagram (2012) and WhatsApp (2014) were approved by regulators who did not perceive them as competitive threats. In retrospect, they may have been acquisition of nascent competitive threats.
+\end{itemize}
+
+Canada's Competition Bureau has modernized its approach: Bill C-56 (2024) and the broader Competition Act amendments allow the Bureau to investigate acquisitions that harm innovation and competition even without immediate price effects, and permit class action lawsuits by consumers harmed by anti-competitive conduct.
+
+%----------------------------------------------------------
+\section{Canada's AI Ecosystem}
+%----------------------------------------------------------
+
+\subsection{Research Strengths}
+
+Canada has significant strengths in artificial intelligence research that are globally recognized. The foundational work on \term{deep learning}---the technology underlying modern AI systems---was developed largely by Canadian researchers.
+
+\begin{itemize}
+  \item \textbf{Geoffrey Hinton} (University of Toronto): Pioneer of deep learning and neural networks. Co-winner of the 2024 Nobel Prize in Physics for foundational AI research. (Joined Google in 2013; resigned in 2023 to speak more freely about AI risks.)
+  \item \textbf{Yoshua Bengio} (Université de Montréal / Mila): Co-winner of the 2018 Turing Award (computing's Nobel Prize) for deep learning contributions. Leads Mila, the largest academic deep learning research institute in the world.
+  \item \textbf{Richard Sutton} (University of Alberta / DeepMind): Pioneer of reinforcement learning (the technology behind AlphaGo and AlphaZero).
+\end{itemize}
+
+Canada's three national AI institutes---the \textbf{Vector Institute} (Toronto, focused on AI applications in industry and health), \textbf{Mila} (Montreal, fundamental AI research), and \textbf{Amii} (Edmonton, Alberta Machine Intelligence Institute)---form the backbone of the Pan-Canadian AI Strategy, which invested \$443 million in 2017 and added further funding in 2022 to support AI research, talent attraction, and commercialization.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+  node distance=1.8cm and 3cm,
+  inst/.style={rectangle, rounded corners=5pt, draw=unbcgreen, fill=unbcgreenlight,
+               minimum width=3.5cm, minimum height=1.1cm, text centered,
+               font=\small\bfseries, text width=3.3cm},
+  detail/.style={rectangle, rounded corners=3pt, draw=gray!50, fill=lightgray,
+                 minimum width=3.5cm, minimum height=0.9cm, text centered,
+                 font=\scriptsize, text width=3.3cm}
+]
+\node[inst] (mila) {Mila\\{\scriptsize Montréal}};
+\node[inst, right=4.5cm of mila] (vector) {Vector Institute\\{\scriptsize Toronto}};
+\node[inst, below=1.2cm of $(mila)!0.5!(vector)$] (amii) {Amii\\{\scriptsize Edmonton}};
+\node[detail, below=0.8cm of mila] (mila_d)
+  {\footnotesize Fundamental research\\ LLMs, GAN, RL\\ 650+ researchers};
+\node[detail, below=0.8cm of vector] (vector_d)
+  {\footnotesize Industry partnerships\\ Health AI, Finance\\ 700+ researchers};
+\node[detail, below=0.8cm of amii] (amii_d)
+  {\footnotesize Reinforcement learning\\ Resource sector AI\\ 450+ researchers};
+% Central node
+\node[rectangle, rounded corners=4pt, draw=policyblue, fill=policyblulight,
+      minimum width=4cm, minimum height=1cm, text centered, font=\small\bfseries,
+      text width=3.8cm, above=0.9cm of $(mila)!0.5!(vector)$] (pcai)
+  {Pan-Canadian AI Strategy\\ \footnotesize \$443M + (2017,2022)};
+\draw[->, thick, color=unbcgreen] (pcai) -- (mila);
+\draw[->, thick, color=unbcgreen] (pcai) -- (vector);
+\draw[->, thick, color=unbcgreen] (pcai) -- (amii);
+\end{tikzpicture}
+\caption{Canada's National AI Research Ecosystem. The Pan-Canadian Artificial Intelligence
+  Strategy funds three national institutes: Mila in Montreal, the Vector Institute in Toronto,
+  and Amii in Edmonton. Together they form one of the largest concentrations of academic
+  AI research talent in the world.}
+\label{fig:ai_canada}
+\end{figure}
+
+\subsection{The Commercialization Gap}
+
+Despite research leadership, Canada faces a persistent gap in translating AI research into commercial productivity gains. Key challenges:
+
+\textbf{Brain drain:} Canada trains world-class AI talent, but many researchers are recruited by large U.S.\ tech firms (Google, Microsoft, Meta, OpenAI) offering compensation that Canadian universities and startups cannot match.
+
+\textbf{Firm size:} Canada has relatively few large firms with the capital and organizational capacity to deploy AI at scale. The Canadian business sector is dominated by small and medium enterprises (SMEs), which face higher barriers to AI adoption (cost, skill requirements, risk).
+
+\textbf{Venture capital ecosystem:} Canada's venture capital sector, while growing, remains smaller than the U.S.\ sector relative to GDP. AI startups that achieve early success often relocate to Silicon Valley or accept acquisition by U.S.\ platforms.
+
+\textbf{Sector mix:} Canada's resource-heavy economy (oil and gas, mining, forestry) is more capital-intensive in physical assets than in software. AI applications in resource extraction (predictive maintenance, autonomous vehicles in mines) are valuable but different from the consumer-facing AI products that have attracted the most attention and investment.
+
+\begin{canexample}{Automation in BC's Forestry Sector}
+The BC forestry sector---a major employer in communities like Prince George---has been
+adopting automation technologies for decades. Modern sawmills use computer-controlled
+scanning and grading systems, automated log handling, and AI-based optimization of
+timber recovery from each log. These technologies have increased output per worker
+substantially while reducing employment in routine operator roles.
+
+The automation of forestry has contributed to the restructuring of Northern BC communities:
+fewer, higher-skilled jobs remain in the mills, while the volume of sawmill closures over
+2007--2020 (often driven by a combination of automation, trade competition from U.S.\ mills,
+and the mountain pine beetle epidemic) displaced thousands of workers in towns like
+Mackenzie, Houston, and even Prince George itself.
+\end{canexample}
+
+%----------------------------------------------------------
+\section{Automation Risk and Canadian Occupations}
+%----------------------------------------------------------
+
+Economists Frey and Osborne (2017) famously estimated that approximately 47\% of U.S.\ occupations faced ``high risk'' of automation within 20 years. Canadian studies applying similar methodology find comparable results for Canada---approximately 40--42\% of Canadian jobs have high automation risk based on task content.
+
+However, the Frey-Osborne methodology has been criticized for overstating risk: it asks whether a job \textit{could} be automated in principle, not whether it \textit{will} be given adoption costs, regulatory constraints, consumer preferences, and social resistance to automation in human-contact roles. More nuanced estimates suggest approximately 10--15\% of current jobs face substantial risk of transformation in the near term (10--15 years), with a much larger share facing partial automation (where some tasks are automated but the job is transformed rather than eliminated).
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+  xbar,
+  bar width=0.45cm,
+  width=12cm, height=9cm,
+  symbolic y coords={Healthcare professionals, Senior managers, Teachers, Engineers, Skilled trades, Office administrators, Retail workers, Truck drivers, Food service workers, Data entry workers},
+  ytick=data,
+  y tick label style={font=\small, text width=5cm, align=right},
+  xlabel={Estimated Automation Risk (\%)},
+  xlabel style={font=\small},
+  xmin=0, xmax=100,
+  xtick={0,20,40,60,80,100},
+  xticklabel style={font=\small},
+  xmajorgrids=true, grid style={dashed, gray!25}
+]
+\addplot[fill=unbcgreen!60, draw=unbcgreen] coordinates {
+  (5,Healthcare professionals)(8,Senior managers)(9,Teachers)
+  (11,Engineers)(25,Skilled trades)(52,Office administrators)
+  (67,Retail workers)(76,Truck drivers)(78,Food service workers)
+  (93,Data entry workers)
+};
+\end{axis}
+\end{tikzpicture}
+\caption{Estimated Automation Risk by Occupation, Canada (Approximate). Occupations
+  involving non-routine tasks (professional judgment, interpersonal interaction, complex
+  manual dexterity) face low automation risk. Routine cognitive and manual occupations
+  face higher risk. These estimates are illustrative and based on task content analysis.}
+\label{fig:automation_risk}
+\source{Adapted from Frey and Osborne (2017) methodology applied to Canadian occupational data.
+  For illustrative purposes.}
+\end{figure}
+
+%----------------------------------------------------------
+\section{Policy Responses to AI and Automation}
+%----------------------------------------------------------
+
+\subsection{Labour Market Adjustment Policies}
+
+The disruption of automation creates a case for policies that support worker adjustment:
+
+\textbf{Employment Insurance reform:} Current EI coverage for workers displaced by automation is inadequate---EI was designed for cyclical unemployment, not structural transitions that require retraining. An extended retraining support period (similar to Germany's short-time work scheme, \textit{Kurzarbeit}) could smooth automation-related transitions.
+
+\textbf{Education and retraining:} Investments in skills that complement AI (critical thinking, complex communication, non-routine problem-solving) at all education levels. Canada's apprenticeship system, which serves skilled trades, is particularly important given the low automation risk of many trades occupations.
+
+\textbf{Sectoral transition support:} Community-level support for regions dependent on automatable industries. Northern BC's experience with forestry restructuring is instructive: successful communities tend to be those that diversified their economic base (education, healthcare, services) before the manufacturing job losses arrived.
+
+\subsection{Competition Policy for Digital Markets}
+
+As discussed in Section~6.4, traditional competition law requires updating for digital markets. Key reforms underway or proposed in Canada include:
+
+\begin{itemize}
+  \item \textbf{Competition Act modernization (Bills C-56 and C-59, 2024):} Expanded merger review for acquisitions of nascent competitors; abuse of dominance provisions strengthened; class action access for consumers.
+  \item \textbf{Interoperability requirements:} Requiring dominant platforms to allow users to move their data to competitor platforms (data portability) reduces switching costs and enables competition.
+  \item \textbf{Digital markets unit:} A specialized team within the Competition Bureau with technical AI expertise.
+\end{itemize}
+
+\subsection{AI Governance and Regulation}
+
+Canada was among the first countries to propose AI-specific regulation. The proposed \textbf{Artificial Intelligence and Data Act (AIDA)}, introduced as part of Bill C-27 in 2022, would:
+
+\begin{itemize}
+  \item Require ``impact assessments'' for high-impact AI systems before deployment.
+  \item Mandate transparency and disclosure for certain AI-generated content.
+  \item Prohibit AI systems that cause serious physical, psychological, or financial harm.
+  \item Establish a new AI and Data Commissioner to oversee compliance.
+\end{itemize}
+
+As of 2024--2025, Bill C-27 has been the subject of extensive consultation and revision; final passage is expected to take several years. The EU AI Act (adopted 2024) has moved faster and serves as a partial model, though the EU's prescriptive, risk-tiered approach is more detailed than what Canada has proposed.
+
+%----------------------------------------------------------
+\section{Policy Debate}
+%----------------------------------------------------------
+
+\begin{policydebate}{How Should Canada Regulate Artificial Intelligence?}
+
+\textbf{The Issue}
+
+AI presents both enormous economic opportunities (productivity, health breakthroughs,
+scientific discovery) and genuine risks (job displacement, algorithmic discrimination,
+privacy erosion, misinformation, concentration of power). How governments regulate AI
+will shape its distribution of benefits and harms.
+
+\vspace{8pt}
+\textbf{Side A: Light-Touch, Innovation-First Regulation}
+
+\begin{itemize}
+  \item \textbf{Competitiveness risk:} Overly prescriptive regulation will discourage AI development in Canada and cede ground to less-regulated jurisdictions (the U.S., China). Canada's AI research leadership could be squandered.
+  \item \textbf{Regulatory uncertainty:} Rules designed for today's AI may be poorly suited to tomorrow's. Flexible, principles-based regulation or reliance on existing sector-specific rules (healthcare, financial services) is preferable to new prescriptive AI-specific law.
+  \item \textbf{Pace mismatch:} Regulatory processes take years; AI development cycles are months. Mandatory impact assessments and approvals will delay beneficial AI deployment in healthcare, climate modelling, and scientific research.
+  \item \textbf{International alignment:} Canada should coordinate with the U.S.\ (its largest trading partner) rather than adopting divergent rules that fragment North American AI markets.
+\end{itemize}
+
+\textbf{Side B: Proactive, Rights-Based Regulation}
+
+\begin{itemize}
+  \item \textbf{Demonstrated harms:} AI systems have already produced documented harms: hiring algorithms that discriminate on race and gender, facial recognition with high error rates for racialized Canadians, credit scoring that perpetuates historical bias, deepfakes used to harass. Waiting for market solutions has not prevented these harms.
+  \item \textbf{Accountability gap:} Without regulation, those harmed by AI decisions have no effective recourse. Individuals refused jobs, bail, or credit by opaque AI systems cannot challenge the decision.
+  \item \textbf{Democratic values:} AI systems that make decisions affecting people's lives should be subject to the same democratic scrutiny as other decisions with public impact. Market self-regulation is insufficient when harms are diffuse and technical expertise is concentrated.
+  \item \textbf{Power concentration:} Without regulatory intervention, AI will further entrench the dominance of large tech platforms, accelerating the market power concerns discussed in Section~6.4.
+\end{itemize}
+
+\textbf{Synthesis: The Risk-Tiered Approach}
+
+Both the Canadian AIDA proposal and the EU AI Act adopt a risk-tiered approach: light or no regulation for low-risk AI (recommendation systems, spam filters), sector-specific requirements for medium-risk AI, and strict requirements or outright prohibitions for high-risk AI (automated hiring, credit scoring, biometric surveillance).
+
+The key economic trade-off: tighter regulation reduces harmful uses of AI but also increases compliance costs that disproportionately burden smaller Canadian AI firms relative to large U.S.\ platforms. A thoughtful approach would: (1) apply requirements proportional to risk; (2) focus on outcomes (non-discrimination, transparency, accountability) rather than specific techniques; (3) ensure regulators have the technical capacity to evaluate AI systems; and (4) coordinate internationally to avoid fragmentation while preserving distinctly Canadian values (privacy, equity, democratic process).
+\end{policydebate}
+
+%----------------------------------------------------------
+\section*{Chapter Summary}
+%----------------------------------------------------------
+
+\begin{itemize}
+  \item \textbf{AI is a general-purpose technology}---pervasive, improving over time, and enabling complementary innovations. Like previous GPTs (steam, electricity, computers), it will transform the economy, but full productivity gains may emerge slowly as complementary organizational changes accumulate.
+  \item The \textbf{task-based model} distinguishes routine from non-routine tasks and cognitive from manual tasks. Automation has historically replaced routine tasks---causing wage polarization (growth at the top and bottom of the skill distribution, hollowing of the middle).
+  \item The \textbf{productivity paradox} refers to the apparent lag between AI adoption and measured productivity gains. Explanations include adoption lags, measurement problems, and the need for complementary organizational investments.
+  \item \textbf{Canada has a persistent productivity gap} relative to the U.S.---approximately 25--28\% lower output per hour---reflecting lower capital intensity, R\&D, and technology adoption. Fully realizing AI's productivity potential is especially important for Canada.
+  \item \textbf{Network effects} and data-driven economies tend toward winner-take-all outcomes and dominant platforms. Data functions as a competitive moat. Competition policy must adapt to regulate digital markets effectively.
+  \item \textbf{Canada has world-leading AI research institutions} (Vector, Mila, Amii) and foundational researchers (Hinton, Bengio, Sutton). However, Canada faces a commercialization gap---difficulty translating research into commercial AI deployment and productivity gains.
+  \item \textbf{Automation risk varies substantially by occupation}: routine cognitive and manual tasks face the highest risk; non-routine professional and trades work face lower risk. Approximately 40\% of Canadian jobs have high automation risk by task content, though near-term displacement will be more limited.
+  \item \textbf{Policy responses} to AI and automation include labour market adjustment programs, EI reform, digital competition policy, and AI governance frameworks. Canada's proposed AIDA takes a risk-tiered approach to AI regulation.
+\end{itemize}
+
+%----------------------------------------------------------
+\section*{Review Questions}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item \textbf{(Concept)} Define a general-purpose technology. What characteristics distinguish a GPT from an ordinary innovation? Explain why AI is considered a GPT. What historical evidence suggests that GPTs typically take decades to produce their full productivity effects?
+
+\item \textbf{(Application)} Using the task-based model, classify the following occupations by automation risk. For each, identify which tasks within the occupation are most vulnerable and which are most resistant to automation: (a) tax accountant; (b) nurse; (c) high school teacher; (d) long-haul truck driver; (e) software engineer.
+
+\item \textbf{(Critical Thinking)} Figure~\ref{fig:polarization} shows employment share growth at both the top and bottom of the wage distribution, with decline in the middle. This is called wage polarization. If polarization is occurring, why is income inequality primarily associated with growth at the \textit{top} (not the bottom) of the distribution?
+
+\item \textbf{(Concept)} Explain network effects and why they tend to produce winner-take-all market outcomes. Give a specific example from the Canadian digital economy. What does this imply for the ability of new firms to compete against established platforms?
+
+\item \textbf{(Application)} Canada spends significantly on AI research (Vector Institute, Mila, Amii) but lags the U.S.\ in AI commercialization and productivity. What economic factors explain this ``commercialization gap''? What policies might reduce it?
+
+\item \textbf{(Policy)} Compare the ``light-touch regulation'' and ``proactive rights-based regulation'' approaches to AI governance (from the Policy Debate section). What are the main economic trade-offs between these approaches? Which would you recommend for Canada, and why?
+
+\item \textbf{(Application)} BC's forestry sector has experienced decades of automation, reducing employment per unit of output significantly. Using the task-based model and the concept of wage polarization, describe how automation has reshaped the distribution of jobs in Northern BC's forestry-dependent communities.
+
+\end{enumerate}
+
+%----------------------------------------------------------
+\section*{Discussion Questions}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item Geoffrey Hinton, the ``Godfather of AI'' who did much of his foundational work at the University of Toronto, resigned from Google in 2023 partly to speak more freely about AI risks. Should governments slow AI development to better understand and mitigate potential harms? What are the economic arguments for and against a regulatory pause on frontier AI development?
+
+\item Data generated by Canadian users flows primarily to U.S.\ platforms. Should Canada require that data generated within Canada be stored and processed in Canada (``data localization'')? What would be the economic costs and benefits of such a policy?
+
+\item AI is expected to automate a significant share of routine knowledge work (legal research, accounting, data analysis). Does this mean fewer jobs for university graduates, or does it mean graduates will need to develop different skills? How should post-secondary education respond?
+
+\end{enumerate}
+
+%----------------------------------------------------------
+\section*{Exercises}
+%----------------------------------------------------------
+
+\begin{enumerate}
+
+\item \textbf{Task Analysis Exercise.} Interview a family member, neighbour, or campus worker about their job. List the five most time-consuming tasks in their role. Using the task-based framework (routine/non-routine, cognitive/manual), classify each task. Based on this analysis, estimate the automation risk facing their occupation over the next 10 years. What tasks within their job might become more valuable as a result of automation?
+
+\item \textbf{Competition Policy Exercise.} Suppose a dominant Canadian social media platform acquires a small Canadian startup that is developing an alternative social media app popular with teenagers. The startup has 200,000 users and \$2 million in revenue.
+  \begin{enumerate}[(a)]
+    \item Under traditional competition law (focused on market share and price effects), would this acquisition likely raise concerns? Why or why not?
+    \item Under the updated Competition Act (Bill C-56), what additional factors could the Competition Bureau consider?
+    \item Using the concept of network effects, explain why this acquisition might have anti-competitive effects even if the startup is small today.
+  \end{enumerate}
+
+\item \textbf{Productivity Calculation Exercise.} Country A has a GDP of \$2 trillion and employs 15 million workers who work an average of 1,800 hours per year. Country B has a GDP of \$1.5 trillion with 12 million workers working 1,900 hours per year.
+  \begin{enumerate}[(a)]
+    \item Calculate GDP per worker for each country.
+    \item Calculate GDP per hour worked (labour productivity) for each country.
+    \item Which measure better captures productive efficiency? Why might GDP per worker and GDP per hour worked differ?
+    \item If AI enables Country A to increase labour productivity growth from 1\% to 2\% per year, how much larger will its economy be in 20 years, compared to the baseline?
+  \end{enumerate}
+
+\item \textbf{Short Essay (500 words).} Suppose the Canadian government is considering mandating that all large employers provide ``AI impact assessments'' before deploying AI in hiring, performance evaluation, or compensation decisions. Using economic reasoning, evaluate: (a) the types of harm this policy is designed to prevent; (b) the likely compliance costs and who bears them; (c) whether mandatory impact assessments are likely to be effective; and (d) whether a different policy instrument (e.g., outcome-based anti-discrimination rules) would be preferable.
+
+\end{enumerate}

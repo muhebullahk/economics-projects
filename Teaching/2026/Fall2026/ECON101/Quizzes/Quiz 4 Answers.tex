@@ -1,0 +1,171 @@
+\documentclass[12pt]{article}
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath,amssymb,booktabs}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.2em}
+\setlist[enumerate]{leftmargin=1.5em}
+
+\title{ECON 101: Macroeconomics \\ Solutions -- Quiz 4}
+\author{Instructor: Muhebullah Karimzada}
+\date{October 29,  2025}
+
+\begin{document}
+\maketitle
+
+\section*{Multiple Choice (1 mark each)}
+
+\subsection*{1. Rule of 70}
+\textbf{Correct: A.} The rule of 70 is a shorthand for doubling time under constant growth: 
+\[
+\text{Years to double}\approx \frac{70}{g} \quad (\text{$g$ in percent}).
+\]
+\textit{Why:} Starting from $Y_0$, with constant percentage growth $g$, $Y_t=Y_0(1+g)^{t}$. ``Doubling'' means $Y_t=2Y_0$, so $(1+g)^t=2$. Taking natural logs gives $t=\ln 2/\ln(1+g)\approx 0.693/g$, and $0.693\times 100\approx 69.3\approx 70$ when $g$ is in percent.
+\begin{itemize}
+    \item B is false (confuses a heuristic with an actual annual growth rate).
+    \item C refers to the price level, not output; unrelated to the rule.
+    \item D confuses productivity with input scaling; not the rule's content.
+\end{itemize}
+
+\subsection*{2. Long-run labour productivity}
+\textbf{Correct: B.} Training and education raise \emph{human capital}, shifting the per-worker production function upward and increasing output per hour in the long run.
+\begin{itemize}
+    \item A (temporary tax rebate) mainly affects short-run consumption, not long-run productivity.
+    \item C (higher nominal wage) is a price of labour; by itself it doesn't raise productivity.
+    \item D (higher money supply) is a nominal change; long-run productivity is real and driven by technology, human/physical capital, and institutions.
+\end{itemize}
+\newpage
+\subsection*{3. Higher national saving (policy) and long-run effects}
+\textbf{Correct: B.} More national saving increases the supply of loanable funds, lowers the real interest rate, and \emph{raises investment}. Higher capital deepening (and often technology adoption) increases the growth rate of potential output.
+\begin{itemize}
+    \item A is the opposite of the standard loanable-funds channel.
+    \item C is false: the capital stock and potential output shift upward as investment accumulates.
+    \item D is ambiguous and typically incorrect in the long run: higher saving implies lower current consumption and higher investment.
+\end{itemize}
+
+\subsection*{4. When planned AE $<$ actual $Y$}
+\textbf{Correct: C.} If planned spending is below current output, unsold goods accumulate as \textit{unplanned inventory investment}. Firms respond by \emph{cutting production}.
+\begin{itemize}
+    \item A is the opposite of what firms do when inventories rise unexpectedly.
+    \item B is wrong: inventories \emph{increase}, not decrease.
+    \item D (raising prices) does not resolve an excess supply of goods in this simple AE framework.
+\end{itemize}
+
+\subsection*{5. What lowers planned investment?}
+\textbf{Correct: C.} A deterioration in business confidence reduces expected future profitability, lowering planned investment even at a given real interest rate.
+\begin{itemize}
+    \item A: a decline in the real interest rate \emph{raises} investment (cheaper financing).
+    \item B: higher expected profitability \emph{raises} investment.
+    \item D: technology improvements typically \emph{raise} investment (new profitable projects).
+\end{itemize}
+
+\hrule
+\vspace{10pt}
+
+\newpage
+\subsection*{Problem 1 (Growth and doubling time)}
+\textbf{Given:} Real GDP per capita $= \$50{,}000$ initially. Consider two constant annual growth rates.
+
+\paragraph{(a) Doubling time at 2\% per year.}
+We use both the exact formula and the rule of 70 for clarity.
+\[
+(1+g)^t=2 \quad \Rightarrow \quad t=\frac{\ln 2}{\ln(1+g)}.
+\]
+With $g=0.02$,
+\[
+t=\frac{\ln 2}{\ln(1.02)}\approx \frac{0.6931}{0.01980}\approx 35.0\ \text{years}.
+\]
+Rule of 70: $70/2=35$ years, confirming the exact calculation.
+
+\paragraph{(b) Doubling time at 3\% per year.}
+\[
+t=\frac{\ln 2}{\ln(1.03)}\approx \frac{0.6931}{0.02956}\approx 23.5\ \text{years}.
+\]
+Rule of 70: $70/3\approx 23.3$ years (very close).
+
+\paragraph{(c) Why small growth-rate differences matter.}
+Because growth compounds, a 1~percentage point increase in $g$ cuts the doubling time by roughly a third (from $\sim 35$ to $\sim 23.5$ years). Over generations, the level of income per person diverges dramatically: with $g=2\%$, after 70 years,
+\[
+\frac{Y_{70}}{Y_0}=(1.02)^{70}\approx 4.0,
+\]
+whereas with $g=3\%$,
+\[
+\frac{Y_{70}}{Y_0}=(1.03)^{70}\approx 7.6.
+\]
+Thus, small changes in $g$ produce large differences in living standards over time.
+
+\bigskip
+\subsection*{Problem 2 (Aggregate Expenditure equilibrium without using the multiplier)}
+\textbf{Given components (billions):}
+\[
+\begin{aligned}
+& C = 250 + 0.8Y_d,\quad Y_d=Y-T, \\
+& I = 150,\quad G = 200,\quad NX=-50,\quad T=100.
+\end{aligned}
+\]
+
+\paragraph{(a) Planned AE as a function of $Y$.}
+By definition,
+\[
+AE = C + I + G + NX.
+\]
+Substitute $C$ and $Y_d$:
+\[
+\begin{aligned}
+AE &= \left[250 + 0.8(Y - T)\right] + 150 + 200 + (-50)\\
+   &= 250 + 0.8(Y-100) + 150 + 200 - 50 \\
+   &= 250 + 0.8Y - 80 + 150 + 200 - 50 \\
+   &= (250-80+150+200-50) + 0.8Y \\
+   &= 470 + 0.8Y.
+\end{aligned}
+\]
+\textit{(If you obtained $440+0.8Y$, you subtracted $80$ twice; the correct constant term is $470$.)}
+
+\paragraph{(b) Equilibrium output $Y$ where $AE=Y$.}
+Set $Y=AE(Y)$:
+\[
+Y = 470 + 0.8Y \quad \Rightarrow \quad Y - 0.8Y = 470 \quad \Rightarrow \quad 0.2Y=470
+\]
+\[
+\Rightarrow \quad Y = \frac{470}{0.2} = 2350.
+\]
+
+\paragraph{(c) Household saving at equilibrium.}
+First compute disposable income and consumption:
+\[
+Y_d = Y - T = 2350 - 100 = 2250,
+\]
+\[
+C = 250 + 0.8Y_d = 250 + 0.8(2250) = 250 + 1800 = 2050.
+\]
+Household saving $S$ is disposable income minus consumption:
+\[
+S = Y_d - C = 2250 - 2050 = 200.
+\]
+
+\paragraph{(d) Government budget balance at equilibrium.}
+Budget balance $= T - G = 100 - 200 = -100$ (a deficit of \$100 billion).
+\medskip
+
+\noindent\textbf{Consistency checks:}
+\begin{itemize}
+    \item National income identity in an open economy:
+    \[
+    Y = C + I + G + NX = 2050 + 150 + 200 - 50 = 2350 \quad \checkmark
+    \]
+    \item Leakages $=$ injections:
+    \[
+    \underbrace{S}_{200} + \underbrace{T}_{100} + \underbrace{(-NX)}_{50} 
+    = 200 + 100 + 50 = 350
+    \]
+    \[
+    \underbrace{I}_{150} + \underbrace{G}_{200} = 350 \quad \checkmark
+    \]
+    Both conditions hold at the computed equilibrium $Y=2350$.
+\end{itemize}
+
+\hrule
+\vspace{6pt}
+\noindent\textit{Instructor note:} The equilibrium constant term is $470$, yielding $Y=2350$. This aligns all sectoral balances and avoids the arithmetic slip that leads to $Y=2200$.
+
+\end{document}

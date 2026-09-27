@@ -1,0 +1,553 @@
+\chapter{Chapter 9: Heterogeneous Treatment Effects and the Local Average Treatment Effect}
+
+\medskip\hrule\medskip
+
+\section{Chapter Overview}
+
+Chapter 8 presented IV as a solution to endogeneity when the exclusion restriction holds. But what does IV actually estimate when treatment effects are heterogeneous --- when the effect of the treatment varies across individuals? This chapter answers that question using the \textbf{potential outcomes framework} developed in Chapter 1.
+
+The central result --- the \textbf{LATE Theorem} of Imbens and Angrist (1994) --- shows that IV with a binary instrument estimates the \textbf{Local Average Treatment Effect}: the average causal effect for a specific subpopulation called \textbf{compliers} --- individuals whose treatment status is affected by the instrument. This has profound implications for interpreting IV estimates and designing empirical research.
+
+\medskip\hrule\medskip
+
+\section{Learning Objectives}
+
+After completing this chapter, students will be able to:
+
+\begin{enumerate}
+\item Explain the limitations of the \textbf{constant-effects model} and why heterogeneous effects matter.
+\item Define \textbf{potential outcomes} for both the outcome and the treatment.
+\item Define the four \textbf{compliance types} (always-takers, never-takers, compliers, defiers).
+\item State the four \textbf{LATE assumptions} (independence, exclusion, first stage, monotonicity).
+\item State and prove the \textbf{LATE Theorem} (Imbens and Angrist, 1994).
+\item Interpret IV estimates as LATE, and understand when LATE differs from ATE.
+\item Explain the relationship between the \textbf{Wald estimator} and LATE.
+\item Apply the LATE framework to canonical examples (Vietnam draft lottery, compulsory schooling).
+\end{enumerate}
+
+\medskip\hrule\medskip
+
+\section{9.1 The Constant-Effects Model and Its Limitations}
+
+In Chapter 8 (and Chapter 1), we wrote the structural equation as:
+
+\[
+Y_i = \alpha + \rho D_i + u_i
+\]
+
+where $\rho = Y_{1i} - Y_{0i}$ is the same for everyone --- the \textbf{constant-effects model}.
+
+This assumption is convenient but unrealistic. In labour economics, the return to education varies by individual ability, occupation, and timing. In health economics, the effect of a treatment varies by disease severity. In program evaluation, training program effects vary by background and motivation.
+
+\textbf{The question this chapter answers:} When effects are heterogeneous and we use an IV estimator, what causal parameter does it recover?
+
+\medskip\hrule\medskip
+
+\section{9.2 The Potential Outcomes Framework Revisited}
+
+We now have potential outcomes for \textbf{both} the treatment and the outcome.
+
+\textbf{Potential treatments:} For each individual $i$ and each possible value of the instrument $Z_i \in \{0,1\}$:
+
+\[
+D_{0i} = \text{treatment status individual } i \text{ would take if } Z_i = 0
+\]
+\[
+D_{1i} = \text{treatment status individual } i \text{ would take if } Z_i = 1
+\]
+
+\textbf{Potential outcomes:} Given treatment $d \in \{0,1\}$:
+
+\[
+Y_{di} = \text{outcome individual } i \text{ would experience if } D_i = d
+\]
+
+\textbf{Observed outcomes} (via the switching equations):
+
+\[
+D_i = D_{0i} + (D_{1i} - D_{0i})Z_i
+\]
+\[
+Y_i = Y_{0i} + (Y_{1i} - Y_{0i})D_i
+\]
+
+\medskip\hrule\medskip
+
+\section{9.3 SUTVA}
+
+A key background assumption is \textbf{Stable Unit Treatment Value Assumption (SUTVA)}:
+
+\textbf{Assumption 9.1 (SUTVA):} 
+\begin{enumerate}
+\item \textbf{No interference:} One unit's treatment does not affect another's outcomes.
+\item \textbf{No hidden versions of treatment:} There is only one version of each treatment level.
+\end{enumerate}
+
+SUTVA allows us to write individual potential outcomes without conditioning on others' treatments. It fails in settings with spillovers (e.g., vaccination programs that create herd immunity) or when there are multiple treatment variants (e.g., different types of job training).
+
+\medskip\hrule\medskip
+
+\section{9.4 Compliance Types: Always-Takers, Never-Takers, Compliers, Defiers}
+
+Given the instrument $Z_i$ and potential treatments $D_{0i}, D_{1i}$, we can classify all individuals into four compliance types:
+
+\begin{center}
+\begin{tabular}{@{} l l l l @{}}
+\toprule
+\textbf{Type} & \textbf{$D_{0i}$} & \textbf{$D_{1i}$} & \textbf{Behavior} \\
+\midrule
+\textbf{Always-takers} & 1 & 1 & Take treatment regardless of $Z$ \\
+\textbf{Never-takers} & 0 & 0 & Never take treatment regardless of $Z$ \\
+\textbf{Compliers} & 0 & 1 & Take treatment when $Z=1$, not when $Z=0$ \\
+\textbf{Defiers} & 1 & 0 & Take treatment when $Z=0$, not when $Z=1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{figure}[htbp]
+  \centering
+  \begin{tikzpicture}[
+    cell/.style={draw=econblue!30, minimum width=3.5cm, minimum height=1.3cm, align=center, font=\small},
+    header/.style={draw=econblue, fill=econblue!20, minimum width=3.5cm, minimum height=0.9cm, align=center, font=\small\bfseries},
+    scale=1.0
+  ]
+    % Top-left corner label
+    \node[font=\footnotesize, gray] at (-0.5, 0.5) {};
+
+    % Column headers
+    \node[header] at (2.0, 0) {$D_i(1) = 1$\\(take if offered)};
+    \node[header] at (5.5, 0) {$D_i(1) = 0$\\(refuse if offered)};
+
+    % Row headers
+    \node[header, minimum width=2.5cm, minimum height=1.3cm] at (-0.8, -1.5) {$D_i(0)=0$\\(don't take\\if not offered)};
+    \node[header, minimum width=2.5cm, minimum height=1.3cm] at (-0.8, -3.2) {$D_i(0)=1$\\(take even\\if not offered)};
+
+    % Inner cells
+    \node[cell, fill=green!15] at (2.0, -1.5) {\textbf{Complier}\\follows instrument};
+    \node[cell, fill=red!10] at (5.5, -1.5) {\textbf{Never-taker}\\never treated};
+    \node[cell, fill=orange!12] at (2.0, -3.2) {\textbf{Always-taker}\\always treated};
+    \node[cell, fill=gray!15] at (5.5, -3.2) {\textbf{Defier}\\(monotonicity rules out)};
+
+    % LATE annotation
+    \node[draw=green!50!black, fill=green!8, rounded corners, font=\footnotesize, align=center] at (3.75, -4.5)
+      {IV/2SLS identifies LATE = causal effect for \textbf{Compliers} only};
+  \end{tikzpicture}
+  \caption{The four compliance types, defined by potential treatment status under each instrument value. IV estimates the Local Average Treatment Effect (LATE): the average causal effect for \emph{compliers} --- units whose treatment status is switched by the instrument. Under monotonicity (no defiers), LATE is point identified.}
+  \label{fig:ch09_compliance_types}
+\end{figure}
+
+\textbf{Key insight:}
+\begin{itemize}
+\item We can \textbf{never directly observe} which type an individual is, because we observe only one of $D_{0i}$ or $D_{1i}$.
+\item Always-takers and never-takers are "uninformative" about the causal effect --- their treatment status doesn't change with the instrument.
+\item The instrument only affects the treatment of \textbf{compliers} (and defiers).
+\end{itemize}
+
+\textbf{Example 9.1 (Vietnam Draft Lottery):} Consider a lottery that drafts men into military service. 
+\begin{itemize}
+\item Always-takers: men who volunteer regardless of whether they're drafted.
+\item Never-takers: men who avoid service regardless (flee the country, obtain exemptions).
+\item Compliers: men who serve if drafted and don't serve if not drafted.
+\item Defiers: men who serve only when NOT drafted (unlikely to exist).
+\end{itemize}
+
+\medskip\hrule\medskip
+
+\section{9.5 The Four LATE Assumptions}
+
+\textbf{Assumption 9.2 (Independence / Random Assignment):}
+
+\[
+(Y_{0i}, Y_{1i}, D_{0i}, D_{1i}) \perp\!\!\!\perp Z_i
+\]
+
+The instrument $Z_i$ is independent of all potential outcomes and potential treatments. This is satisfied by random assignment.
+
+\textbf{Assumption 9.3 (Exclusion Restriction):}
+
+\[
+Y_{di} = Y_{di}(Z_i) \text{ for } d \in \{0,1\}
+\]
+
+Or more precisely: the instrument affects outcomes only through the treatment channel. $Z_i$ has no direct effect on $Y_i$ given $D_i$.
+
+\textbf{Assumption 9.4 (First Stage / Relevance):}
+
+\[
+E[D_{1i} - D_{0i}] \neq 0
+\]
+
+The instrument has a non-zero (on average) effect on the treatment. 
+
+\textbf{Assumption 9.5 (Monotonicity):}
+
+\[
+D_{1i} \geq D_{0i} \text{ for all } i \quad \text{(or } D_{1i} \leq D_{0i} \text{ for all } i)
+\]
+
+The instrument shifts treatment in the same direction for everyone. This rules out defiers: if $Z = 1$ increases treatment for some, it does not decrease treatment for others.
+
+The combination of the first-stage and monotonicity assumptions implies that the complier fraction is positive: $P(D_{1i} > D_{0i}) > 0$.
+
+\medskip\hrule\medskip
+
+\section{9.6 The LATE Theorem}
+
+\textbf{Theorem 9.1 (Imbens and Angrist, 1994):} Under Assumptions 9.2--9.5, the IV/Wald estimator identifies the \textbf{Local Average Treatment Effect}:
+
+\[
+\text{LATE} \equiv E[Y_{1i} - Y_{0i} \mid D_{1i} > D_{0i}] = \frac{E[Y_i \mid Z_i = 1] - E[Y_i \mid Z_i = 0]}{E[D_i \mid Z_i = 1] - E[D_i \mid Z_i = 0]}
+\]
+
+The LATE is the average treatment effect for the subpopulation of \textbf{compliers} --- those individuals for whom $D_{1i} > D_{0i}$ (who are induced into treatment by the instrument).
+
+\textbf{Proof:}
+
+\textbf{Denominator (First Stage):}
+
+\[
+E[D_i \mid Z_i = 1] - E[D_i \mid Z_i = 0]
+\]
+
+By independence (Assumption 9.2): $E[D_i \mid Z_i = z] = E[D_{zi}]$.
+
+\[
+= E[D_{1i}] - E[D_{0i}] = E[D_{1i} - D_{0i}]
+\]
+
+By monotonicity: $D_{1i} - D_{0i} \in \{0, 1\}$ (no defiers means the difference is either 0 or 1). So:
+
+\[
+= P(D_{1i} > D_{0i}) = P(\text{Complier})
+\]
+
+\textbf{Numerator (Reduced Form):}
+
+\[
+E[Y_i \mid Z_i = 1] - E[Y_i \mid Z_i = 0]
+\]
+
+By independence and the switching equation:
+
+\[
+= E[Y_{D_{1i}, i}] - E[Y_{D_{0i}, i}]
+\]
+
+\[
+= E[Y_{1i} D_{1i} + Y_{0i}(1-D_{1i})] - E[Y_{1i} D_{0i} + Y_{0i}(1-D_{0i})]
+\]
+
+\[
+= E[(Y_{1i} - Y_{0i})(D_{1i} - D_{0i})]
+\]
+
+By monotonicity, $D_{1i} - D_{0i} \geq 0$, so:
+
+\[
+= E[(Y_{1i} - Y_{0i})(D_{1i} - D_{0i})]
+\]
+
+\[
+= E[Y_{1i} - Y_{0i} \mid D_{1i} > D_{0i}] \cdot P(D_{1i} > D_{0i})
+\]
+
+(the always-takers and never-takers have $D_{1i} = D_{0i}$, so they contribute zero to the sum).
+
+\textbf{Combining:}
+
+\[
+\frac{\text{Numerator}}{\text{Denominator}} = \frac{E[Y_{1i} - Y_{0i} \mid D_{1i} > D_{0i}] \cdot P(\text{Complier})}{P(\text{Complier})} = E[Y_{1i} - Y_{0i} \mid D_{1i} > D_{0i}] = \text{LATE} \quad \square
+\]
+
+\medskip\hrule\medskip
+
+\section{9.7 Interpreting LATE}
+
+\subsection{9.7.1 Who Are Compliers?}
+
+Compliers are the people "on the margin" between treatment and control who are moved by the instrument. Their identity depends on what the instrument is:
+
+\begin{itemize}
+\item \textbf{Vietnam draft lottery (Angrist, 1990):} Compliers are men who served in the military because they were drafted, but would not have served voluntarily.
+\item \textbf{Compulsory schooling (Angrist-Krueger, 1991):} Compliers are individuals who stayed in school because they weren't old enough to drop out by the end of the term, and would have dropped out otherwise.
+\item \textbf{College proximity (Card, 1995):} Compliers are individuals who attended college because a college was nearby, and would not have attended otherwise.
+\end{itemize}
+
+\subsection{9.7.2 LATE vs. ATE vs. ATT}
+
+In general, \textbf{LATE $\neq$ ATE $\neq$ ATT} when:
+
+\begin{enumerate}
+\item Treatment effects are heterogeneous (vary across individuals).
+\item The complier group differs systematically from the full population.
+\end{enumerate}
+
+\begin{center}
+\begin{tabular}{@{} l l l @{}}
+\toprule
+\textbf{Parameter} & \textbf{Population} & \textbf{Method of identification} \\
+\midrule
+ATE & Full population & Random assignment to all \\
+ATT & Treated units & Selection on observables (CIA) \\
+LATE & Compliers & Instrumental variable \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{When does LATE $\approx$ ATE?}
+\begin{itemize}
+\item When treatment effects are homogeneous.
+\item When compliers are representative of the full population.
+\end{itemize}
+
+\textbf{When does LATE $\neq$ ATE?}
+\begin{itemize}
+\item When the instrument selects a non-representative subset. The Vietnam draft lottery compliers are men who didn't volunteer --- possibly those with lower "returns" to military service.
+\end{itemize}
+
+\subsection{9.7.3 LATE and External Validity}
+
+The LATE from one instrument is not necessarily the same as the LATE from another instrument --- even when both instruments are valid. Different instruments define different complier populations.
+
+\textbf{Example:} Two valid instruments for education:
+\begin{enumerate}
+\item Quarter of birth (Angrist-Krueger): compliers are people who wanted to drop out as soon as legally allowed.
+\item College proximity (Card): compliers are people who would have attended college if it were nearby.
+\end{enumerate}
+
+These two groups likely have very different returns to education. This means the two IV estimates can legitimately differ --- not because one is wrong, but because they estimate different parameters for different populations.
+
+This has profound implications for \textbf{external validity}: an IV estimate tells you the causal effect for the compliers defined by that specific instrument, not necessarily the effect for the average person or for a new policy context.
+
+\medskip\hrule\medskip
+
+\section{9.8 2SLS as LATE with Multiple Instruments}
+
+When there are multiple instruments $Z_1, Z_2, \ldots, Z_\ell$ for a single endogenous variable, 2SLS combines them. Under the LATE framework:
+
+\[
+\hat{\rho}^{2SLS} \xrightarrow{p} \sum_{j=1}^\ell \omega_j \cdot \text{LATE}_j
+\]
+
+where $\text{LATE}_j$ is the LATE defined by instrument $Z_j$ (the effect for compliers of instrument $j$) and $\omega_j$ are weights that sum to one. The weights are proportional to the variance of the first-stage predictions from each instrument.
+
+This means 2SLS with multiple instruments estimates a \textbf{weighted average of LATEs} --- a complex estimand whose interpretation requires care.
+
+\medskip\hrule\medskip
+
+\section{9.9 Empirical Applications}
+
+\subsection{9.9.1 Application 1: Vietnam Draft Lottery (Angrist, 1990)}
+
+\textbf{Research question:} What is the effect of military service on lifetime earnings?
+
+\textbf{Identification problem:} Veterans and non-veterans differ systematically in many ways (selection into service). OLS estimates of the effect of veteran status are confounded by these differences.
+
+\textbf{Instrument:} Vietnam-era draft lottery. Men born in years 1950--1953 were assigned draft lottery numbers 1--365 based on birthday. Low lottery numbers were called first; men with numbers below a threshold were drafted.
+
+\textbf{Validity:}
+\begin{itemize}
+\item \textbf{Independence:} Lottery numbers were randomly assigned (approximately).
+\item \textbf{Exclusion:} Lottery number affects earnings only through military service (no direct effect of knowing your lottery number on future earnings).
+\item \textbf{First stage:} Being assigned a low lottery number significantly increases the probability of military service.
+\item \textbf{Monotonicity:} Low numbers increase service (no defiers expected).
+\end{itemize}
+
+\textbf{Results:} IV (Wald) estimates suggest military service reduced civilian earnings by approximately 15\% for compliers (white veterans), with effects persisting for at least 15 years. The OLS estimate was biased upward because veterans tend to come from lower-income backgrounds (attenuation by selection).
+
+\textbf{Who are the compliers?} Men who were called up by the draft lottery and served. These are NOT representative of all veterans (who also include volunteers) and NOT representative of all men (since many draft-eligible men found other ways to avoid service).
+
+\subsection{9.9.2 Application 2: Compulsory Schooling (Angrist and Krueger, 1991)}
+
+As discussed in Chapter 8:
+
+\textbf{Compliers:} Men who would have dropped out of school as soon as legally permitted (when they turned 16 or after completing the grade they were enrolled in at age 16), but who in fact had to stay in school longer because they started school at a younger age (and were thus younger than the dropout cutoff when they reached certain grades).
+
+\textbf{LATE interpretation:} The Angrist-Krueger estimates measure the return to education for this specific group of marginal students --- those constrained by compulsory schooling laws. The returns for this group may be higher or lower than for the average student.
+
+\medskip\hrule\medskip
+
+\section{Chapter Summary}
+
+\begin{itemize}
+\item With heterogeneous treatment effects, the question "what does IV estimate?" is non-trivial.
+\item The \textbf{LATE Theorem} shows that IV identifies the average treatment effect for \textbf{compliers} --- those whose treatment is affected by the instrument.
+\item The four LATE assumptions are: independence, exclusion restriction, first stage, and monotonicity.
+\item \textbf{Always-takers} and \textbf{never-takers} contribute no information to the IV estimate; their effects are "washed out."
+\item \textbf{LATE $\neq$ ATE} when compliers are not representative of the full population.
+\item Different instruments define different complier populations and may give different (but all valid) estimates.
+\item The LATE framework forces us to be explicit about \textit{which population} our IV estimate describes --- crucial for policy relevance.
+\end{itemize}
+
+\medskip\hrule\medskip
+
+\section{Key Terms}
+
+\textbf{SUTVA} --- Stable Unit Treatment Value Assumption; no interference between units, no hidden treatment versions.
+
+\textbf{Potential treatments} --- $D_{0i}$ and $D_{1i}$: treatment under $Z_i = 0$ and $Z_i = 1$.
+
+\textbf{Compliance types} --- always-takers, never-takers, compliers, defiers.
+
+\textbf{Compliers} --- individuals with $D_{1i} > D_{0i}$; treatment is affected by the instrument.
+
+\textbf{Monotonicity} --- no defiers: $D_{1i} \geq D_{0i}$ for all $i$.
+
+\textbf{LATE (Local Average Treatment Effect)} --- $E[Y_{1i} - Y_{0i} \mid D_{1i} > D_{0i}]$; average effect for compliers.
+
+\textbf{ATE} --- $E[Y_{1i} - Y_{0i}]$; average effect for the full population.
+
+\textbf{External validity} --- whether an estimate from one context generalizes to another.
+
+\medskip\hrule\medskip
+
+\section{Exercises}
+
+\subsection{Conceptual Questions}
+
+\textbf{9.1} Explain in your own words why IV estimates LATE rather than ATE.
+
+\textbf{9.2} A researcher uses random assignment of a health insurance subsidy as an instrument for health insurance take-up, to estimate the effect of insurance on health outcomes. Who are the compliers in this setting? Who are the always-takers and never-takers? Does LATE have a meaningful policy interpretation?
+
+\textbf{9.3} Why is monotonicity an important assumption for the LATE theorem? What would happen if defiers existed?
+
+\textbf{9.4} Two researchers use different instruments to estimate the return to education. Researcher A uses college proximity; Researcher B uses compulsory schooling laws. Both produce valid IV estimates. Explain why the two estimates might differ even though both are valid.
+
+\textbf{9.5} Evaluate this statement: "Since IV estimates LATE for compliers, and compliers are a small fraction of the population, IV estimates are not useful for policy."
+
+\subsection{Analytical Questions}
+
+\textbf{9.6} Prove the LATE Theorem carefully. Specifically, show that:
+(a) The denominator of the Wald estimator equals $P(\text{Complier})$.
+(b) The numerator equals $E[Y_{1i} - Y_{0i} \mid \text{Complier}] \times P(\text{Complier})$.
+
+\textbf{9.7} Suppose the population is 20\% always-takers (TE = $\tau_{AT}$), 50\% never-takers (TE = $\tau_{NT}$), and 30\% compliers (TE = $\tau_C$). Express the ATE in terms of $\tau_{AT}$, $\tau_{NT}$, $\tau_C$. Under what conditions does LATE = ATE?
+
+\textbf{9.8} In the draft lottery example, suppose:
+\begin{itemize}
+\item $P(\text{Complier}) = 0.16$ (16\% of eligible men were induced to serve by the lottery).
+\item $E[Y_i \mid Z_i = 1] - E[Y_i \mid Z_i = 0] = -0.024$ (2.4\% reduction in earnings from being in a low-lottery cohort).
+\item $E[D_i \mid Z_i = 1] - E[D_i \mid Z_i = 0] = 0.16$.
+\end{itemize}
+
+Compute the LATE. Interpret it.
+
+\subsection{Applied Questions}
+
+\textbf{9.9} In R, simulate the LATE framework:
+\begin{itemize}
+\item Create a population of 10,000 with 4 compliance types.
+\item Assign a binary instrument $Z_i$ randomly.
+\item Compute the Wald estimator and show it equals the average treatment effect for compliers.
+\end{itemize}
+
+\medskip\hrule\medskip
+
+\section{R Lab 9: Simulating the LATE Framework}
+
+\subsection{Exercise 9.1: Simulating Compliance Types}
+
+\begin{lstlisting}
+library(tidyverse)
+set.seed(2024)
+n <- 10000
+
+# Define compliance types (known only to God!)
+type <- sample(c("always_taker", "never_taker", "complier", "defier"),
+               n, replace = TRUE,
+               prob = c(0.20, 0.30, 0.45, 0.05))
+
+# Potential treatment under Z=0 and Z=1
+D0 <- ifelse(type %in% c("always_taker", "defier"), 1, 0)
+D1 <- ifelse(type %in% c("always_taker", "complier"), 1, 0)
+
+# True heterogeneous treatment effects by type
+te <- case_when(
+  type == "always_taker" ~ rnorm(n, 5, 2),
+  type == "never_taker"  ~ rnorm(n, 3, 2),
+  type == "complier"     ~ rnorm(n, 8, 2),  # compliers have higher returns
+  type == "defier"       ~ rnorm(n, 1, 2)
+)
+
+# Potential outcomes
+Y0 <- rnorm(n, 10, 3)         # baseline untreated outcome
+Y1 <- Y0 + te                  # treated outcome
+
+# Randomly assign instrument
+Z  <- rbinom(n, 1, 0.5)
+
+# Observed treatment and outcome
+D  <- ifelse(Z == 1, D1, D0)
+Y  <- ifelse(D == 1, Y1, Y0)
+
+df_late <- data.frame(Z, D, Y, type, te, D0, D1)
+\end{lstlisting}
+
+\subsection{Exercise 9.2: Computing the LATE}
+
+\begin{lstlisting}
+# True LATE (average treatment effect for compliers)
+true_LATE <- mean(te[type == "complier"])
+cat("True LATE (compliers only):", round(true_LATE, 4), "\n")
+
+# True ATE
+true_ATE <- mean(te)
+cat("True ATE:", round(true_ATE, 4), "\n")
+
+# Wald estimator (IV)
+Y_Z1 <- mean(Y[Z == 1])
+Y_Z0 <- mean(Y[Z == 0])
+D_Z1 <- mean(D[Z == 1])
+D_Z0 <- mean(D[Z == 0])
+
+wald_est <- (Y_Z1 - Y_Z0) / (D_Z1 - D_Z0)
+cat("Wald (IV) estimate:", round(wald_est, 4), "\n")
+cat("Complier share:", round(D_Z1 - D_Z0, 4), "\n")
+\end{lstlisting}
+
+\subsection{Exercise 9.3: IV Regression via ivreg}
+
+\begin{lstlisting}
+library(ivreg)
+iv_model <- ivreg(Y ~ D | Z, data = df_late)
+summary(iv_model)
+cat("ivreg IV estimate:", round(coef(iv_model)["D"], 4), "\n")
+\end{lstlisting}
+
+\subsection{Exercise 9.4: Distribution of Treatment Effects by Type}
+
+\begin{lstlisting}
+df_late %>%
+  ggplot(aes(x = te, fill = type)) +
+  geom_density(alpha = 0.5) +
+  geom_vline(xintercept = true_LATE, linetype = "dashed", color = "red") +
+  geom_vline(xintercept = true_ATE, linetype = "dotted", color = "blue") +
+  labs(
+    title = "Heterogeneous Treatment Effects by Compliance Type",
+    subtitle = "Red: LATE (complier mean); Blue: ATE (population mean)",
+    x = "Individual Treatment Effect",
+    y = "Density",
+    fill = "Compliance Type"
+  ) +
+  theme_minimal()
+\end{lstlisting}
+
+\medskip\hrule\medskip
+
+\textit{End of Chapter 9}
+
+\medskip\hrule\medskip
+
+\textbf{References}
+
+Imbens, G. W., and Angrist, J. D. (1994). Identification and estimation of local average treatment effects. \textit{Econometrica}, 62(2), 467--475.
+
+Angrist, J. D. (1990). Lifetime earnings and the Vietnam era draft lottery: Evidence from social security administrative records. \textit{American Economic Review}, 80(3), 313--336.
+
+Angrist, J. D., and Krueger, A. B. (1991). Does compulsory school attendance affect schooling and earnings? \textit{Quarterly Journal of Economics}, 106(4), 979--1014.
+
+Card, D. (1995). Using geographic variation in college proximity to estimate the return to schooling. University of Toronto Press.
+
+Angrist, J. D., and Pischke, J. (2009). \textit{Mostly Harmless Econometrics}. Chapter 4.
+
+Cunningham, S. (2021). \textit{Causal Inference: The Mixtape}. Chapter 7.

@@ -1,0 +1,185 @@
+\documentclass[letterpaper,12pt]{article}
+%\usepackage{harvard}
+%\usepackage{subfigure}
+%\usepackage[active]{srcltx}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{lscape}
+\usepackage{enumerate}
+\usepackage{float}
+\usepackage{grffile}
+\usepackage{relsize}
+\usepackage{tablefootnote}
+\usepackage{footnote}
+\usepackage{sectsty}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage{multirow}
+\usepackage{bbm}
+\usepackage[T1]{fontenc}
+\usepackage[multiple]{footmisc}
+\usepackage{appendix}
+\usepackage{times}
+\usepackage{relsize}
+\usepackage{caption}
+\usepackage{newtxtext,newtxmath}
+\usepackage{enumitem}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Title Page Information
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\vspace{-.8in}ECON311: Assignment II}
+\author{Leandro Freylejer}
+\date{Due date: April 7th, 2026 in class}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Double and Single Space Commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]{\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+\newcommand{\singlespacing}{\setlength{\baselineskip}{1\defbaselineskip}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\newtheoremstyle{dotlessS}{}{}{\itshape}{}{\color{dg}\bfseries}{}{ }{}
+\theoremstyle{dotlessS}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newenvironment{example}[1][Example]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+\newenvironment{remark}[1][Remark]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}]}{\end{trivlist}}
+
+\newcommand\Pitem{%
+  \addtocounter{enumi}{-1}%
+  \renewcommand\theenumi{\arabic{\enumi}'}%
+  \item%
+  \renewcommand\theenumi{\arabic{enumi}}%
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Set Margins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\textwidth=6.5in
+\textheight=9in
+\oddsidemargin=0.10in
+\evensidemargin=0.10in
+\topmargin=-0.5in
+%\parskip=3pt
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%   Actual Document Begins Here
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+\pagenumbering{arabic}
+\maketitle
+\vspace{-.2in}
+
+\section*{Question I: Long-Run Growth}
+Consider the following Romer economy without capital: 
+\begin{eqnarray*}
+\begin{array}{ll}
+\text{Production Function:} & Y_t=A_t \: L_{Y_t} \\[1.4ex]
+\text{Law of Motion for Productivity:} & A_{t+1}=A_t+\overline{z} \: A_t \: L_{A_{t}}  \\[1.4ex]
+\text{Allocation of labour:} & L_{A_{t}}=\overline{I} \: \overline{L}, \: \: \:  \: \: L_{Y_{t}}=(1-\overline{I}) \: \overline{L}  \\[1.4ex]
+\end{array}
+\end{eqnarray*}
+\begin{enumerate}[label=(\alph*)]
+\item (6 points) Derive the rate of growth of output per person ($g_{y}$, where $y=\frac{Y}{\overline{L}}$).
+\item (6 points) Assume two countries, country $1$ and country $2$, that are the same in every respect, except across two dimensions. First, assume that in the year $1950$, country $1$ has a larger level of output productivity ($A_{1950}^{\text{country 1}}> A_{1950}^{\text{country 2}}$). Second, assume that country $2$ is more productive in generating ideas ($\overline{z}^{\text{country 1}}<\overline{z}^{\text{country 2}}$). On the same graph draw the evolution of output per person over time for these two countries using a ratio scale and starting in the year 1950. Which country do you think will have larger output per person in the long run? Explain.      
+\end{enumerate}  
+
+
+\section*{Question II: IS-MP and Phillips Curve (10 points)}
+Consider the following economy, which is the same economy as the one presented in class:
+\begin{eqnarray*}
+\begin{array}{ll}
+\text{Aggregate Expenditure} &E_t=C_t+I_t+G_t+X_t-M_t \\[1.4ex]
+\text{Consumption} &C_t=a_c+b_c Y_t \\[1.4ex]
+\text{Investment} & I_t=a_i-b_i \: \: \: R_t \\[1.4ex]
+\text{Inflation} &\pi_t=\pi_{t-1}+\overline{v} \: \: \: \widetilde{Y}_t+\overline{o}_t  \\[1.4ex]
+\text{Government Expenditure and Trade} & G_t=\overline{G}, \: \: \: \: \: \: M_t=\overline{M}, \: \: \: \: \: \: X_t=\overline{X}
+\end{array}
+\end{eqnarray*}
+Suppose that this economy is at its long-run equilibrium, with $\overline{o}_t=0 $ and $\pi_t=0.06$. Assume that the government wants to decrease the level of inflation to $\pi_{t+3}=0.03$. To do that they decided to use Monetary Policy ($R_t$) to reduce $\pi$ by 0.01 each year for three years. Using the full short-run model (IS-MP and Phillips curve), explain what happens to the economy \textbf{over time}. Be sure to include graphs showing: i. the IS-MP, ii. the Phillips Curve, and iii. how deviations from potential output and the level of inflation respond over time. Carefully label all graphs (including the level of potential output as a  function of parameters and the change in inflation in each period). 
+
+\section*{Question III: Keynesian Cross, IS-MP and Phillips Curve}
+Consider the following economy:
+\begin{eqnarray*}
+\begin{array}{ll}
+\text{Aggregate Expenditure} &E_t=C_t+I_t+G_t+X_t-M_t \\[1.4ex]
+\text{Consumption} &C_t=a_c+b_c (Y_t-T_t) \\[1.4ex]
+\text{Investment} & I_t=a_i-b_i \: \: \: R_t \\[1.4ex]
+\text{Taxes} &T_t=b_T \: \: \: Y_t  \\[1.4ex]
+\text{Inflation} &\pi_t=\pi_{t-1}+\overline{v} \: \: \: \widetilde{Y}_t+\overline{o}_t  \\[1.4ex]
+\text{Government Expenditure and Trade} & G_t=\overline{G}, \: \: \: \: \: \: M_t=\overline{M}, \: \: \: \: \: \: X_t=\overline{X}
+\end{array}
+\end{eqnarray*}
+In this economy, taxes depend on the level of income. Moreover, consumption depends on disposable income (income net of taxes) and not just on the level of income as we assumed in class. Use the previous equations to answer the following questions:
+\begin{enumerate}[label=(\alph*)]
+\item (4 points) Solve for the equilibrium in the goods market. What is the expenditure multiplier? 
+\item (7 points) Use the Keynesian Cross to carefully explain the effect of a positive shock to the government expenditure, $\overline{G}$, for two cases: i. $b_T<1$, ii. $b_T=1$  (carefully label both graphs, including the slope of the expenditure function).  What is the assumption we need to make to guarantee an equilibrium exists?
+\item (4 points) Derive the IS curve using deviations from potential output as the endogenous variable.
+\item (9 points) Suppose the economy is at its potential output equilibrium with a constant $2\%$ inflation rate. Using the full short-run model (IS-MP and Phillips curve), explain what happens to the economy \textbf{over time} if the government decides to increase the level of expenditure for two periods. Be sure to include graphs showing how deviations from potential output and inflation respond over time.\\
+\end{enumerate}
+\vspace{0.1in}
+\noindent Assume that $b_T<1$.  If we assume that the government budget is balanced when output is at its potential level (i.e. $\widetilde{Y}_t=0$), we can write the fiscal surplus that results from government expenditure changes as follows ($S<0$ is a deficit):
+\begin{eqnarray*}
+S=b_T \: (Y_t-\overline{Y})-(\overline{G}'-\overline{G})  
+\end{eqnarray*}
+\begin{enumerate}[label=(\alph*)]
+\setcounter{enumi}{4}
+\item (4 points) Solve for government budget surplus as a function of $b_T$, $\overline{G}$, $\overline{G}'$ and the multiplier [\textbf{Hint:} The only difference between $Y_t$ and $\overline{Y}$, is that $Y_t$ is a function of $\overline{G}'$ and $\overline{Y}$ is a function of $\overline{G}$] .
+\item (7 points) Using graphs showing how the government fiscal surplus responds over time, analyze how the shock in part $d$ affects the government budget. 
+\end{enumerate}   
+
+
+\section*{Question IV: IS-MP and Phillips Curve}
+Suppose that inflation at time $t$ is given by the following equation:
+\begin{eqnarray*}
+\pi_t=\pi^e_t+\overline{v} \: \: \: \widetilde{Y}_t+\overline{o}_t
+\end{eqnarray*} 
+where all the variables are the same as in the lectures. However, unlike in lectures, assume that $\pi^e_t=0.02$. That is, people expect the inflation rate to equal $2\%$ in every period.
+\begin{enumerate}[label=(\alph*)]
+\item (10 points) Using a version of the Phillips curve with $(\pi_t-\pi^e_t)$ on the vertical axis and a graph showing how inflation responds over time, analyze the effect of a one time price shock to the economy.
+\item (5 points) The Bank of Canada has a specific mandate to keep inflation around $2\%$. Given your answer to part a) and our discussion in class, explain the importance that this mandate is a credible commitment.
+ 
+\end{enumerate}
+
+
+\section*{Question V: The AS-AD Model}
+Consider the following economy:
+\begin{eqnarray*}
+\begin{array}{ll}
+\text{Aggregate Expenditure} & E_t=C_t+I_t+G_t+X_t-M_t \\[1.4ex]
+\text{Consumption} & C_t=a_c+b_c Y_t \\[1.4ex]
+\text{Investment} & I_t=a_i-b_i \: \: \: R_t \\[1.4ex]
+\text{Inflation} & \pi_t=\pi^e_t+\overline{v} \: \: \: \widetilde{Y}_t+\overline{o}_t  \\[1.4ex]
+\text{Policy Rule} & R_t-\overline{r}=\overline{m}(\pi_t-\overline{\pi})  \\[1.4ex]
+\text{Government Expenditure and Trade} & G_t=\overline{G}, \: \: \: \: \: \: M_t=\overline{M}, \: \: \: \: \: \: X_t=\overline{X}
+\end{array}
+\end{eqnarray*}
+Use the previous equations to answer the following questions:
+\begin{enumerate}[label=(\alph*)]
+\item (5 points) Derive the AD curve.
+\item (10 points) Assume that $\pi^e_t=\pi_{t-1}$. Suppose the economy is at its potential output equilibrium with a constant $\overline{\pi}$ inflation rate. Using the AS-AD model, carefully explain what happens to the economy \textbf{over time} if there is a one-period positive demand shock.
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+\end{document}

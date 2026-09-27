@@ -1,0 +1,358 @@
+% !TeX spellcheck = en_US
+\documentclass[aspectratio=1610]{beamer}
+\mode<presentation>
+{
+  \usetheme{Boadilla}
+  \setbeamercovered{transparent}
+  
+  \definecolor{cobalt}{rgb}{0.0, 0.20, 0.50}
+  
+  \usecolortheme[named=cobalt]{structure}
+  %\usecolortheme{lily}
+  %\setbeamercolor{headline}{fg=cyan!80!black}
+  % \setbeamercolor{frametitle}{bg=white}.
+}
+
+\makeatletter
+\define@key{beamerframe}{wide}[10pt]{%
+	\def\beamer@cramped{\itemsep #1\topsep0.5pt\relax}}
+\makeatother
+	
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{times}
+\usepackage[T1]{fontenc}
+\usepackage{array}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{booktabs}
+
+\title[Winter - Lecture 2] % (optional, use only with long paper titles)
+{Macroeconomic Theory and Policy: Lecture  W2 (Ch.17)}
+
+\author[University of Toronto] % (optional, use only with lots of authors)
+{}
+\date[] % (optional, should be abbreviation of conference name)
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+\begin{frame}[wide]{What are You Going to Learn (Ch. 17)}
+	\begin{itemize}
+		\item How firms determine investment in physical capital
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Investment in Macroeconomics}
+	\begin{itemize}
+		\item Rather than thinking of investment in the everyday sense (e.g., stock, bond, etc), investment in macroeconomics refers to investment in the context of national income accounting
+		\vspace{1mm}
+		\begin{itemize}
+			\item e.g., Roads, houses, warehouses, tools
+		\end{itemize}
+		\vspace{3mm}
+		\item Today’s investment influences future opportunities through the accumulation of physical capital
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Investment in Macroeconomics}
+	There are two main reasons to study physical investment more closely:
+	\vspace{2mm}
+	\begin{itemize}
+		\item Investment fluctuates much more than consumption
+		\begin{itemize}
+			\item In year 2006, nearly 20 percent of GDP
+			\item In year 2009, less than 13 percent of GDP
+		\end{itemize}
+		\item It is the key economic link between the present and the future
+		\begin{itemize}
+			\item Investment in physical capital, human capital, and ideas are key for economic growth
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{How Do Firms Make Investment Decisions}
+	\begin{itemize}
+		\item How much should a business invest?
+		\begin{itemize}
+			\item Should Amazon build a new distribution center? 
+			\item Should Walmart open a store in downtown Toronto? 
+		\end{itemize}
+		\vspace{2mm}
+		\item Based on firm's profit-maximization problem (Ch.4), a business should keep investing in physical capital until 
+		\[MPK = R\]
+		MPK equals the rental price of capital
+		\vspace{2mm}
+		\item In the simple model, the rental rate of capital equals the interest rate
+		\begin{itemize}
+			\item Capital comes from the decision by households to forgo consumption and save instead
+			\item saving = investment = supply of capital
+			
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Arbitrage Equation}
+	\begin{itemize}
+		\item First, imagine a person can either save or buy a pizza oven
+		\begin{itemize}
+			\item The price of the oven is $p_k$ -- invest $p_k$ or spend $p_k$ on oven
+		\end{itemize}
+		\item Saving in a bank account would yield return:
+		\[Rp_k\]
+		\item Buying an oven would yield
+		\[MPK + \Delta p_k\]
+		\begin{itemize}
+			\item[] where $\Delta p_K = p_{K,t+1} - p_{K,t}$ -- the price of the oven may go up
+		\end{itemize}
+		\item Since investor can switch between the two options at anytime (and no cost), the two returns must be the same
+		\[R p_k = MPK + \Delta p_K\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Arbitrage Equation}
+	\begin{itemize}
+		\item Rearrange the equation:
+		\[\frac{MPK}{p_K} = R-\frac{\Delta p_K}{p_K}\]
+		\vspace{2mm}
+		\item Invest in ovens until the MPK of ovens equals the difference between the interest rate and the growth rate of the price of ovens
+		\vspace{2mm}
+		\item The left hand side tells how much of the MPK for each dollar spend on oven and it must equal to the rate of return from saving account minus the growth rate in price
+		\vspace{2mm}
+		\item The variables on the LHS can be control by the firm but they cannot change the variables on the RHS (in a competitive market)
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The User Cost of Capital}
+	\begin{itemize}
+		\item The growth rate in price $=\frac{\Delta p_K}{p_K}$
+		\vspace{1mm}
+		\begin{itemize}
+			\item When it is positive, there is capital gain
+			\item When it is negative, there is capital loss
+		\end{itemize}
+		\vspace{3mm}
+		\item Price of capital changes because of
+		\vspace{1mm}
+		\begin{itemize}
+			\item Technological change—for example, the price of computer usually declines over time
+			\item Scarce resources: the price of structures like factories or retail stores, in contrast, usually goes up over time as land is increasingly scarce
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{The User Cost of Capital}
+	\begin{itemize}
+		\item Almost all capital would depreciate (as learn in the Solow model) which is also a cost of holding capital
+		\vspace{2mm}
+		\item Include depreciation in the equation
+		\[\frac{MPK}{p_K} = R+\delta-\frac{\Delta p_K}{p_K}\]
+		\vspace{2mm}
+		\item Firms invest until the marginal product of capital falls to equal the user cost of capital
+		\begin{itemize}
+			\item User cost is the total cost to the firm of using one more unit of capital -- forgone interest, depreciation and forgone capital gain 
+			\item It is in per-dollar term
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{How Much Should a Firm Invest}
+	\begin{itemize}
+		\item 	The blue line shows diminishing MPK -- as the K increases, the MPK falls
+		\item The green line shows the user cost of capital is the same no matter what the level of capital
+	\end{itemize}
+	\begin{center}
+		\includegraphics[width=0.5\linewidth]{"Figures/fig 17_1"}
+	\end{center}
+\end{frame}
+
+\begin{frame}[wide]{Investment and the Corporate Income Tax}
+	\begin{itemize}
+		\item How does corporation income tax would affect investment?
+		\vspace{4mm}
+		\item Adding a constant tax component $\tau$:
+		\[Rp_K = (1-\tau)MPK - p_K\delta +\Delta p_k\]
+		\begin{itemize}
+			\item The additional earning from investing for one unit of capital is MPK, which is $\tau$ proportion is taxed away 
+		\end{itemize}
+		\item Rearrange it:
+		\[\frac{MPK}{p_K} = \left[R +\delta -\frac{\Delta p_K}{p_K}\right]\ / (1-\tau) \]
+		\item Corporate income tax raises the user cost of capital
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{An Increase in the Corporate Income Tax}
+	\begin{itemize}
+		\item An increase in the corporate income tax from zero to some positive rate raises the user cost of capital  
+		\item This requires the MPK to rise, the firm desires a smaller amount of K
+	\end{itemize}
+	\begin{center}
+		\includegraphics[width=0.45\linewidth]{"Figures/fig 17_2"}
+	\end{center}
+\end{frame}
+
+\begin{frame}[wide]{Case Study: Corporate Income Taxes across Countries}
+	\begin{itemize}
+		\item Corporate tax rates vary across countries, implying differences in the user cost of capital
+		\begin{itemize}
+			\item Then, it would affect the investment and the capital stock
+		\end{itemize}
+		\vspace{3mm}
+		\item How large is this variation in corporate income tax?
+		\begin{itemize}
+			\item 34 percent in France
+			\item 8.5 percent in Switzerland
+		\end{itemize}
+		\vspace{2mm}
+		\item But, the implied user cost of capital varies less from country to country
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{Corporate Income Tax Rates and the User Cost of Capital, 2018}
+	\begin{itemize}
+		\item While the simple calculation shows there is positive relationship between tax rate and user cost of capital, the variation is smaller in user cost of capital
+		\item It is because the user cost of capital is determined by other factors (e.g., depreciation rate, etc) as well
+	\end{itemize}
+	\begin{table}[htbp]
+		\centering
+		\begin{tabular}{lcc} \hline \hline
+			Country & Corporate tax rate & User cost of capital \\
+			\midrule
+			France & 34.4  & 12.0 \\
+			Mexico & 30.0    & 11.3 \\
+			Korea & 25.0    & 10.5 \\
+			Italy & 24.0    & 10.4 \\
+			Japan & 23.2  & 10.3 \\
+			USA   & 21.0    & 10.0 \\
+			Germany & 15.8  & 9.4 \\
+			Canada & 15.0    & 9.3 \\
+			Switzerland & 8.5 & 8.6 \\
+			\bottomrule
+		\end{tabular}%
+	\end{table}%
+	
+\end{frame}
+
+\begin{frame}[wide]{From Desired Capital to Investment}
+	\begin{itemize}
+		\item Use the standard production model to pin down relationship between user cost and investment
+		\item Using the standard production function, we can calculate the MPK
+		\[Y=\bar{A}K^{1/3}L^{2/3}\]
+		\[MPK = \frac{1}{3} \frac{Y}{K} = \frac{1}{3} \bar{A} \left(\frac{L}{K}\right)^{2/3}\]
+		when capital increases, the MPK falls according to the equation
+		\item Also, we have the standard capital accumulation
+		\[K_{t+1} = I_t + (1-\delta) K_t\]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{From Desired Capital to Investment}
+	\begin{itemize}
+		\item 	Let $uc =  \left[R +\delta -\frac{\Delta p_K}{p_K}\right] / (1-\tau)$ 
+		\item Use the optimal condition from the firm problem
+		\[uc =  \frac{MPK}{p_K} = \frac{1}{p_K}\frac{1}{3} \frac{Y}{K} \implies \frac{Y}{K} = 3(uc)(P_k) \]
+		\item Rewrite capital accumulation equation and divide both sides by $K_t$:
+		\[\frac{\Delta K_{t+1}}{K_t} = \frac{I_t}{K_t} - \delta\]
+		\item Then, rewrite this equation and use the first equation:
+		\[\frac{\Delta K_{t+1}}{K_t} = \frac{I_t}{K_t} \frac{Y_t}{Y_t} - \delta = \frac{Y_t}{K_t} \frac{I_t}{Y_t} - \delta = 3(uc)(P_k) \frac{ I_t}{Y_t} -\delta \]
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{From Desired Capital to Investment}
+	\begin{itemize}
+		\item Let $g_K = \frac{\Delta K_{t+1}}{K_t}$ and rearrange the equation:
+		\[\frac{I_t}{Y_t} = \frac{g_K + \delta}{3(uc)(P_k)}\]
+		\item The investment rate depends on three terms
+		\begin{itemize}
+			\item The desired growth rate of capital stock ($g_K$)
+			\item The depreciation rate ($\delta$)
+			\item The user cost of capital $\left(uc(R, \delta, \frac{\Delta p_K}{p_K}, \tau)\right)$
+			\item The price of capital: $P_k$
+		\end{itemize}
+		\item A higher user cost of capital leads to a lower investment rate
+	\end{itemize}
+\end{frame}
+
+\begin{frame}[wide]{From Desired Capital to Investment}
+	Key endogenous variables in the macroeconomy:
+	\vspace{3mm}
+	\begin{itemize}
+		\item Growth equations in Chapters 5 and 6
+		\begin{itemize}
+			\item The investment rate in Chapters 5 and 6 was a constant fraction of income.
+			\item This provides microfoundations for the investment rate (and the consumption share)
+		\end{itemize}
+		\vspace{3mm}
+		\item Combine Euler equation (from consumption model)
+		\begin{itemize}
+			\item Pins down long-run interest rate and user cost of capital 
+		\end{itemize}
+%		\item MPK condition
+%		\begin{itemize}
+%			\item Pins down capital-output ratio 
+%		\end{itemize}		
+	\end{itemize}
+\end{frame}
+
+%\begin{frame}[wide]{An Increase in the Investment Rate}
+%	\begin{columns} 
+%			% Column 1
+%			\begin{column}{.5\textwidth}
+%				\begin{itemize}
+%					\item Suppose the investment rate increases permanently for exogenous reasons ($s'>s$)
+%					\begin{itemize}
+%						\item The investment curve rotates upward ($\bar{s}'\bar{A}  \bar{L}^{1-\alpha} K_t^\alpha > \bar{s}\bar{A}  \bar{L}^{1-\alpha} K_t^\alpha$)
+%						\item The depreciation curve remains unchanged ($\delta K_t$)
+%						\item The capital stock increases by transition dynamics to reach the new steady state
+%						\begin{itemize}
+%							\item This happens because investment exceeds depreciation ($sY_t>\delta K_t$)
+%						\end{itemize}
+%						\item The new steady state is located to the right
+%					\end{itemize}
+%				\end{itemize}
+%			\end{column}
+%			% Column 2    
+%			\begin{column}{.5\textwidth}			
+%				\begin{figure}
+%					\centering
+%					\includegraphics[width=1\linewidth]{"Figures/An Increase in the Investment Rate"}
+%				\end{figure}
+%			\end{column}%
+%		\end{columns}
+%\end{frame}
+
+%\begin{frame}[wide]{Measuring the State of the Economy}
+%	\begin{columns} 
+%		% Column 1
+%		\begin{column}{.5\textwidth}
+%			\begin{table}[htbp]
+%				\centering
+%				\begin{tabular}{lrrrr}
+%					& 2005  & 2006  & 2007  & 2008 \\
+%					\hline
+%					GDP   & 12.6  & 13.4  & 14.0    & 14.3 \\
+%					(in trillions of \$) &       &       &       &  \\
+%					Growth rate GDP &       & 0.063 & 0.045 & 0.021 \\
+%					\hline
+%				\end{tabular}%
+%				\label{tab:addlabel}%
+%			\end{table}%
+%		\end{column}
+%		% Column 2    
+%		\begin{column}{.5\textwidth}			
+%			
+%			
+%		\end{column}%
+%	\end{columns}
+%\end{frame}
+
+\begin{frame}[wide]{Next Lecture}
+	\begin{itemize}
+		\item Cover Ch.11 next lecture
+	\end{itemize}
+\end{frame}
+
+\end{document}
