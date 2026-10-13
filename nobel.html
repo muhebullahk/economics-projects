@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nobel Prize in Economics — Karimzada | UNBC</title>
+  <meta name="description" content="Nobel Prize in Economic Sciences winners 2012–2026 with summaries of their contributions, curated for ECON students at UNBC." />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* ── Nobel page-specific styles ── */
+
+    .nobel-intro {
+      background: linear-gradient(135deg, var(--primary) 0%, #00509e 100%);
+      color: #fff;
+      padding: 3rem 1.5rem 2.5rem;
+    }
+    .nobel-intro .page-header-inner p {
+      max-width: 640px;
+      line-height: 1.75;
+    }
+
+    /* Filter bar */
+    .filter-bar {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .filter-btn {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem;
+      border-radius: 20px;
+      border: 2px solid var(--border);
+      background: #fff;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all var(--transition);
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      border-color: var(--primary);
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.6rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .tl-entry {
+      position: relative;
+      margin-bottom: 2rem;
+      padding-left: 2rem;
+    }
+    .tl-entry::before {
+      content: '';
+      position: absolute;
+      left: -1.42rem;
+      top: 1.1rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+    .tl-entry.tba::before {
+      background: var(--border);
+      box-shadow: 0 0 0 2px var(--border);
+    }
+
+    .tl-card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.4rem 1.6rem;
+      box-shadow: var(--shadow);
+      transition: box-shadow var(--transition);
+    }
+    .tl-card:hover {
+      box-shadow: 0 6px 20px rgba(0,0,0,0.11);
+    }
+    .tl-entry.tba .tl-card {
+      background: var(--bg-alt);
+      border-style: dashed;
+    }
+
+    .tl-year {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .tl-names {
+      font-size: 1.08rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin-bottom: 0.2rem;
+      line-height: 1.4;
+    }
+
+    .tl-affil {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 0.55rem;
+    }
+
+    .tl-citation {
+      font-style: italic;
+      font-size: 0.88rem;
+      color: var(--text);
+      border-left: 3px solid var(--accent);
+      padding-left: 0.85rem;
+      margin-bottom: 0.8rem;
+      line-height: 1.6;
+    }
+    .tl-entry.tba .tl-citation {
+      border-color: var(--border);
+      color: var(--text-muted);
+    }
+
+    .tl-body {
+      font-size: 0.92rem;
+      color: var(--text);
+      line-height: 1.8;
+    }
+    .tl-body p + p { margin-top: 0.5rem; }
+
+    .tl-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.85rem;
+    }
+    .tl-tag {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 3px;
+    }
+    .tag-micro      { background: #e3f0ff; color: #1a5db0; }
+    .tag-macro      { background: #d4edda; color: #155724; }
+    .tag-develop    { background: #fff3cd; color: #856404; }
+    .tag-labour     { background: #fde8d8; color: #7a3010; }
+    .tag-finance    { background: #f8d7da; color: #721c24; }
+    .tag-behav      { background: #e8d8f5; color: #5a1a8a; }
+    .tag-methods    { background: #dde8e6; color: #14534a; }
+    .tag-pending    { background: #f0f0f0; color: #888; }
+
+    /* Stat bar */
+    .stat-row {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-num {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1;
+    }
+    .stat-lbl {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 0.25rem;
+    }
+
+    @media (max-width: 600px) {
+      .timeline { padding-left: 1.25rem; }
+      .tl-entry { padding-left: 1.5rem; }
+      .tl-entry::before { left: -1.15rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAV ===== -->
+<nav>
+  <div class="nav-inner">
+    <a class="nav-brand" href="index.html">M. <span>Karimzada</span></a>
+    <button class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="research.html">Research</a></li>
+      <li><a href="publications.html">Publications</a></li>
+      <li><a href="teaching.html">Teaching</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ===== PAGE HEADER ===== -->
+<header class="page-header nobel-intro">
+  <div class="page-header-inner">
+    <p class="breadcrumb">
+      <a href="index.html">Home</a> <span>/</span>
+      <a href="teaching.html">Teaching</a> <span>/</span>
+      Nobel Prize in Economics
+    </p>
+    <h1>Nobel Prize in Economics</h1>
+    <p>
+      The Sveriges Riksbank Prize in Economic Sciences in Memory of Alfred Nobel has been awarded
+      annually since 1969 to economists who have made outstanding contributions to the discipline.
+      This page surveys the laureates from 2012 to 2026, summarising the ideas that earned each
+      award and why they matter for understanding the economy. Curated for students in
+      ECON 101, ECON 204, and ECON 311 at UNBC.
+    </p>
+  </div>
+</header>
+
+<!-- ===== MAIN ===== -->
+<main class="page">
+  <section class="section">
+    <div class="container">
+
+      <!-- Stats -->
+      <div class="stat-row">
+        <div class="stat-item">
+          <div class="stat-num">15</div>
+          <div class="stat-lbl">Years Covered</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">32</div>
+          <div class="stat-lbl">Laureates (2012–2026)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">2</div>
+          <div class="stat-lbl">Women Awarded</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">9</div>
+          <div class="stat-lbl">Fields Represented</div>
+        </div>
+      </div>
+
+      <!-- Filter buttons -->
+      <div class="filter-bar" id="filterBar">
+        <button class="filter-btn active" data-field="all">All Fields</button>
+        <button class="filter-btn" data-field="micro">Microeconomics</button>
+        <button class="filter-btn" data-field="macro">Macroeconomics</button>
+        <button class="filter-btn" data-field="develop">Development</button>
+        <button class="filter-btn" data-field="labour">Labour</button>
+        <button class="filter-btn" data-field="finance">Finance &amp; Banking</button>
+        <button class="filter-btn" data-field="behav">Behavioural</button>
+        <button class="filter-btn" data-field="methods">Methods</button>
+      </div>
+
+      <!-- ── TIMELINE ── -->
+      <div class="timeline">
+
+        <!-- 2026 -->
+        <div class="tl-entry" data-fields="macro">
+          <div class="tl-card">
+            <div class="tl-year">2026</div>
+            <div class="tl-names">Robert E. Hall &nbsp;&middot;&nbsp; Michael Woodford</div>
+            <div class="tl-affil">Stanford University / Hoover Institution &nbsp;&bull;&nbsp; Columbia University</div>
+            <div class="tl-citation">"For their contributions to the microeconomic foundations of macroeconomic stabilization policy."</div>
+            <div class="tl-body">
+              <p>Michael Woodford's landmark treatise <em>Interest and Prices</em> (2003) provided the theoretical architecture that now underlies the practice of modern central banking. By embedding sticky prices, optimising households and firms, and explicit welfare analysis into a coherent general-equilibrium framework, he showed that the appropriate goal of monetary policy is to stabilise a combination of inflation and the output gap, and that a credible commitment to a systematic rule outperforms discretion — because <em>expectations</em> of future policy are themselves a powerful stabilisation tool. His work on <em>forward guidance</em> and the zero lower bound showed that a central bank can stimulate the economy even when it cannot cut rates further, by convincing markets that rates will remain low long after the recovery begins.</p>
+              <p>Robert Hall's contributions span the empirical and theoretical microeconomics of business cycles. His <em>random walk</em> hypothesis for consumption — showing that if households are rational and credit markets are complete, consumption changes should be unpredictable — became a cornerstone test of the permanent income hypothesis. His work on labour market search and matching revealed that standard models generate far too little unemployment volatility relative to the data, pointing to wage rigidity as a central propagation mechanism. Together, Hall's empirical discipline and Woodford's theoretical framework gave central banks the tools to respond systematically to inflation shocks and demand disturbances across the business cycle.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-macro">Monetary Policy</span>
+              <span class="tl-tag tag-macro">Business Cycles</span>
+              <span class="tl-tag tag-macro">New Keynesian</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2025 -->
+        <div class="tl-entry" data-fields="macro develop">
+          <div class="tl-card">
+            <div class="tl-year">2025</div>
+            <div class="tl-names">Joel Mokyr &nbsp;&middot;&nbsp; Philippe Aghion &nbsp;&middot;&nbsp; Peter Howitt</div>
+            <div class="tl-affil">Northwestern University &nbsp;&bull;&nbsp; Collège de France &amp; LSE &nbsp;&bull;&nbsp; Brown University</div>
+            <div class="tl-citation">"For their contributions to the theory of innovation-driven economic growth and creative destruction."</div>
+            <div class="tl-body">
+              <p>Philippe Aghion and Peter Howitt formalised Schumpeter's insight that economic growth proceeds through <em>creative destruction</em>: new technologies do not merely add to the stock of productive capacity, they replace and render obsolete what came before. Their 1992 model embedded this dynamic in a rigorous growth framework, showing how profit-seeking entrepreneurs invest in research to generate innovations that displace incumbents. The model yielded novel predictions — that competition can accelerate growth by preventing incumbents from blocking new entrants, that the relationship between competition and innovation is an inverted U, and that patent policy and market structure jointly determine the pace of technological change.</p>
+              <p>Joel Mokyr brought an economic historian's lens to the same questions. Through meticulous archival work he documented the institutional and intellectual conditions that made the Industrial Revolution possible, arguing in <em>The Lever of Riches</em> and subsequent books that what distinguished Britain was not just its resource endowment but its unique culture of <em>useful knowledge</em> — a commitment, rooted in the Enlightenment, to applying systematic scientific inquiry to practical problems. His concept of the "Republic of Letters" showed that the free circulation of ideas across a pan-European community of scholars was the epistemic infrastructure underpinning industrialisation. Together, the trio established that growth is not a mechanical byproduct of capital accumulation but depends fundamentally on how societies produce, contest, and diffuse knowledge.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-macro">Growth Theory</span>
+              <span class="tl-tag tag-develop">Innovation</span>
+              <span class="tl-tag tag-micro">Creative Destruction</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2024 -->
+        <div class="tl-entry" data-fields="micro develop">
+          <div class="tl-card">
+            <div class="tl-year">2024</div>
+            <div class="tl-names">Daron Acemoglu &nbsp;&middot;&nbsp; Simon Johnson &nbsp;&middot;&nbsp; James A. Robinson</div>
+            <div class="tl-affil">MIT &nbsp;&bull;&nbsp; MIT &nbsp;&bull;&nbsp; University of Chicago</div>
+            <div class="tl-citation">"For studies on how institutions are formed and affect prosperity."</div>
+            <div class="tl-body">
+              <p>Acemoglu, Johnson, and Robinson showed empirically that differences in long-run prosperity across countries are driven primarily by the quality of their institutions — secure property rights, rule of law, and constraints on executive power — rather than by geography or culture alone. Their landmark paper used variation in European settler mortality as an instrument for institutional quality: where disease made colonisation costly, Europeans established extractive institutions; where it was safe, they built inclusive ones that persisted to the present.</p>
+              <p>Their conceptual framework distinguishes <em>inclusive</em> institutions, which distribute economic and political power broadly and foster innovation and investment, from <em>extractive</em> institutions that concentrate power and undermine long-run growth. The framework explains why resource-rich countries often fail to develop and why democracy and economic growth tend to reinforce each other over the long run.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-develop">Development</span>
+              <span class="tl-tag tag-micro">Political Economy</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2023 -->
+        <div class="tl-entry" data-fields="labour">
+          <div class="tl-card">
+            <div class="tl-year">2023</div>
+            <div class="tl-names">Claudia Goldin</div>
+            <div class="tl-affil">Harvard University</div>
+            <div class="tl-citation">"For having advanced our understanding of women's labour market outcomes."</div>
+            <div class="tl-body">
+              <p>Claudia Goldin provided the first comprehensive account of women's earnings and labour force participation across more than two centuries of U.S. history, documenting a U-shaped trajectory: participation fell as economies industrialised, then rose as service-sector jobs expanded. Her historical detective work revealed that much of what was attributed to discrimination or preference actually reflected structural barriers — such as marriage bars that legally excluded married women from employment — and changing norms around motherhood.</p>
+              <p>Her most influential recent finding is that the gender earnings gap is driven mainly not by occupational segregation but by the premium placed on <em>temporal flexibility</em> — the ability to work long, unpredictable hours in high-paying professional roles. Closing the gap, she argues, requires restructuring how work itself is organised, not merely removing entry barriers. Goldin was the third woman ever to receive the prize in its sole-recipient form.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-labour">Labour Economics</span>
+              <span class="tl-tag tag-develop">Gender &amp; Development</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2022 -->
+        <div class="tl-entry" data-fields="finance macro">
+          <div class="tl-card">
+            <div class="tl-year">2022</div>
+            <div class="tl-names">Ben S. Bernanke &nbsp;&middot;&nbsp; Douglas W. Diamond &nbsp;&middot;&nbsp; Philip H. Dybvig</div>
+            <div class="tl-affil">Brookings Institution &nbsp;&bull;&nbsp; University of Chicago &nbsp;&bull;&nbsp; Washington University in St. Louis</div>
+            <div class="tl-citation">"For research on banks and financial crises."</div>
+            <div class="tl-body">
+              <p>Diamond and Dybvig's 1983 model explained why banking is inherently fragile. Banks create value by borrowing short (deposits that can be withdrawn on demand) and lending long (illiquid loans). This maturity transformation funds productive investment but makes banks vulnerable to self-fulfilling runs: if depositors fear a bank will fail, their simultaneous withdrawal makes failure certain — even for a solvent institution. The model provided the economic justification for deposit insurance as a mechanism to eliminate bad equilibria.</p>
+              <p>Ben Bernanke's empirical research on the Great Depression showed that the banking sector collapse amplified and prolonged the downturn far beyond what a simple contraction in money supply could explain. By destroying the accumulated information capital that banks hold about borrowers, failures reduced the supply of credit even to productive firms — a mechanism he called the <em>credit channel</em>. Bernanke applied these insights directly as Federal Reserve Chair during the 2008 financial crisis, using aggressive liquidity provision to prevent a repeat of the 1930s spiral.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-finance">Banking</span>
+              <span class="tl-tag tag-macro">Macroeconomics</span>
+              <span class="tl-tag tag-finance">Financial Crises</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2021 -->
+        <div class="tl-entry" data-fields="labour methods">
+          <div class="tl-card">
+            <div class="tl-year">2021</div>
+            <div class="tl-names">David Card &nbsp;&middot;&nbsp; Joshua D. Angrist &nbsp;&middot;&nbsp; Guido W. Imbens</div>
+            <div class="tl-affil">UC Berkeley &nbsp;&bull;&nbsp; MIT &nbsp;&bull;&nbsp; Stanford University</div>
+            <div class="tl-citation">"For their empirical contributions to labour economics" and "for their methodological contributions to the analysis of causal relationships."</div>
+            <div class="tl-body">
+              <p>David Card used natural experiments — situations where policy changes create quasi-random variation — to answer fundamental questions in labour economics. His most celebrated study compared employment in New Jersey and Pennsylvania around a 1992 minimum wage increase and found no evidence of job losses, contradicting the prediction of a simple supply-and-demand model. He later used similar methods to study immigration, education returns, and health insurance, consistently demonstrating that real labour markets differ substantially from textbook predictions.</p>
+              <p>Joshua Angrist and Guido Imbens formalised what we can actually learn from natural experiments. Their framework for instrumental variables showed that such methods estimate a <em>local average treatment effect</em> — the causal impact for those whose behaviour is changed by the instrument — rather than an average effect for the whole population. This clarified decades of debate about the interpretation of empirical results and established the standard of rigorous causal inference that now defines credible empirical research in economics.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-labour">Labour Economics</span>
+              <span class="tl-tag tag-methods">Causal Inference</span>
+              <span class="tl-tag tag-methods">Natural Experiments</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2020 -->
+        <div class="tl-entry" data-fields="micro">
+          <div class="tl-card">
+            <div class="tl-year">2020</div>
+            <div class="tl-names">Paul R. Milgrom &nbsp;&middot;&nbsp; Robert B. Wilson</div>
+            <div class="tl-affil">Stanford University &nbsp;&bull;&nbsp; Stanford University</div>
+            <div class="tl-citation">"For improvements to auction theory and inventions of new auction formats."</div>
+            <div class="tl-body">
+              <p>Robert Wilson analysed <em>common-value auctions</em> — situations where the object has the same underlying value for all bidders, but each bidder has different private information about that value (such as oil tract auctions). He identified the <em>winner's curse</em>: the winning bidder, by definition, had the most optimistic estimate, so bidding naively leads to systematic overpayment. Rational bidders should shade their bids downward to compensate, a result Wilson formalised into a complete theory of optimal bidding.</p>
+              <p>Paul Milgrom extended auction theory to more general settings where bidders have private values, common values, or both, and developed powerful results about how different auction formats compare. Critically, Milgrom and Wilson applied their theory in practice: they designed the simultaneous multi-round ascending auction used by the U.S. Federal Communications Commission to allocate radio spectrum licenses in the 1990s. This format allowed hundreds of licenses with complex interdependencies to be auctioned efficiently, generating tens of billions of dollars in government revenue while directing spectrum to its highest-value uses.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-micro">Auction Theory</span>
+              <span class="tl-tag tag-micro">Market Design</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2019 -->
+        <div class="tl-entry" data-fields="develop methods">
+          <div class="tl-card">
+            <div class="tl-year">2019</div>
+            <div class="tl-names">Abhijit V. Banerjee &nbsp;&middot;&nbsp; Esther Duflo &nbsp;&middot;&nbsp; Michael Kremer</div>
+            <div class="tl-affil">MIT &nbsp;&bull;&nbsp; MIT &nbsp;&bull;&nbsp; Harvard University</div>
+            <div class="tl-citation">"For their experimental approach to alleviating global poverty."</div>
+            <div class="tl-body">
+              <p>Banerjee, Duflo, and Kremer transformed development economics by introducing <em>randomised controlled trials</em> (RCTs) as a rigorous tool for evaluating poverty interventions. Rather than debating broad theories of development, they asked precise, answerable questions — does deworming raise school attendance? Do teacher incentive schemes improve learning outcomes? Does microfinance reduce poverty? — and answered them with experiments in which villages, schools, or households were randomly assigned to treatment and control groups.</p>
+              <p>Their findings often surprised: some widely-promoted interventions had little effect, while low-cost behavioural interventions (such as pre-commitment savings accounts or chlorine dispensers near wells) worked remarkably well. Their approach has since been adopted by governments, NGOs, and international organisations worldwide, reshaping the evidence base for global development policy and establishing the <em>credibility revolution</em> in the field.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-develop">Development Economics</span>
+              <span class="tl-tag tag-methods">RCT Methods</span>
+              <span class="tl-tag tag-develop">Poverty</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2018 -->
+        <div class="tl-entry" data-fields="macro develop">
+          <div class="tl-card">
+            <div class="tl-year">2018</div>
+            <div class="tl-names">William D. Nordhaus &nbsp;&middot;&nbsp; Paul M. Romer</div>
+            <div class="tl-affil">Yale University &nbsp;&bull;&nbsp; NYU Stern School of Business</div>
+            <div class="tl-citation">"For integrating climate change and technological innovations into long-run macroeconomic analysis."</div>
+            <div class="tl-body">
+              <p>William Nordhaus pioneered the integration of climate science and economics, developing the <em>Dynamic Integrated model of Climate and the Economy</em> (DICE) — the first quantitative framework for estimating the social cost of carbon and evaluating climate policies such as carbon taxes and cap-and-trade schemes. DICE models the feedback between economic activity, greenhouse gas emissions, atmospheric temperatures, and economic damage, enabling economists and policymakers to compare the costs of mitigation against the costs of inaction across long time horizons.</p>
+              <p>Paul Romer developed <em>endogenous growth theory</em>, challenging the Solow model's assumption that technological progress is an unexplained external force. Romer showed that growth is driven by the intentional, profit-motivated production of <em>ideas</em> — which are non-rival (one person's use does not diminish another's) and only partially excludable. His framework explains why research and development spending, education, and intellectual property protection are central to long-run growth, and why growth need not slow as economies mature.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-macro">Growth Theory</span>
+              <span class="tl-tag tag-macro">Climate Economics</span>
+              <span class="tl-tag tag-develop">Innovation</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2017 -->
+        <div class="tl-entry" data-fields="behav micro">
+          <div class="tl-card">
+            <div class="tl-year">2017</div>
+            <div class="tl-names">Richard H. Thaler</div>
+            <div class="tl-affil">University of Chicago Booth School of Business</div>
+            <div class="tl-citation">"For his contributions to behavioural economics."</div>
+            <div class="tl-body">
+              <p>Richard Thaler spent decades documenting systematic departures from rational behaviour that standard economic models could not account for. His work on the <em>endowment effect</em> showed that people value objects more once they own them than before — violating the standard prediction that willingness to accept should equal willingness to pay. <em>Mental accounting</em> explained how people categorise and evaluate money differently depending on its origin or intended purpose, rather than treating all wealth as fungible. His research on <em>present bias</em> formalised why people make plans they later abandon, and why commitment devices can improve welfare.</p>
+              <p>Together with Cass Sunstein, Thaler developed <em>nudge theory</em>, showing that <em>choice architecture</em> — the way options are presented and defaults are set — powerfully shapes decisions without restricting freedom. Automatic enrolment in pension plans (with opt-out rather than opt-in defaults) dramatically increases retirement savings; placing healthier foods at eye level in cafeterias improves diets. Nudge theory has been implemented by governments worldwide through dedicated behavioural insights units.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-behav">Behavioural Economics</span>
+              <span class="tl-tag tag-micro">Decision Theory</span>
+              <span class="tl-tag tag-behav">Nudge Theory</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2016 -->
+        <div class="tl-entry" data-fields="micro">
+          <div class="tl-card">
+            <div class="tl-year">2016</div>
+            <div class="tl-names">Oliver Hart &nbsp;&middot;&nbsp; Bengt Holmström</div>
+            <div class="tl-affil">Harvard University &nbsp;&bull;&nbsp; MIT</div>
+            <div class="tl-citation">"For their contributions to contract theory."</div>
+            <div class="tl-body">
+              <p>Contract theory addresses the fundamental problem of how to design agreements when one party has private information or when actions cannot be directly observed. Bengt Holmström's <em>principal-agent</em> framework formalised the trade-off between incentives and risk-sharing: when an agent (e.g. a manager) is risk-averse, linking pay too tightly to outcomes imposes costly risk; too weak a link reduces effort. His <em>informativeness principle</em> showed that any signal correlated with effort — even imperfectly — should be included in a compensation contract. His work also explained why high-powered incentives in complex jobs can backfire by inducing agents to neglect hard-to-measure tasks.</p>
+              <p>Oliver Hart introduced the theory of <em>incomplete contracts</em>, arguing that real-world contracts cannot specify what to do in every possible contingency, and that the allocation of <em>residual control rights</em> — who decides in situations the contract does not address — is therefore crucial. Ownership matters because it shapes investment incentives: a party that owns an asset will invest more to enhance its value. This framework clarified when firms should make versus buy, why vertical integration sometimes improves efficiency, and how privatisation affects public service quality.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-micro">Contract Theory</span>
+              <span class="tl-tag tag-micro">Principal-Agent</span>
+              <span class="tl-tag tag-micro">Theory of the Firm</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2015 -->
+        <div class="tl-entry" data-fields="develop methods">
+          <div class="tl-card">
+            <div class="tl-year">2015</div>
+            <div class="tl-names">Angus Deaton</div>
+            <div class="tl-affil">Princeton University</div>
+            <div class="tl-citation">"For his analysis of consumption, poverty, and welfare."</div>
+            <div class="tl-body">
+              <p>Angus Deaton's <em>Almost Ideal Demand System</em> (AIDS, with Muellbauer, 1980) provided an empirically tractable framework for estimating how consumers allocate spending across goods as prices and incomes change, consistent with utility maximisation. This became the workhorse model for measuring price index biases and the welfare effects of taxation. His life-cycle model of consumption showed that individuals save not just for retirement but as a buffer against income uncertainty, integrating the permanent income hypothesis with a precautionary saving motive.</p>
+              <p>Deaton's later work focused on measurement in developing countries: he showed that standard household surveys systematically mismeasure poverty and that apparently small methodological choices — how surveys are designed, what reference period is used — can dramatically alter estimates of poverty rates and their trends. He also challenged the mainstream view of foreign aid, arguing that large-scale transfers can weaken the fiscal contract between governments and citizens, undermining accountability and long-run institutional development.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-develop">Development &amp; Welfare</span>
+              <span class="tl-tag tag-micro">Consumer Theory</span>
+              <span class="tl-tag tag-methods">Measurement</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2014 -->
+        <div class="tl-entry" data-fields="micro">
+          <div class="tl-card">
+            <div class="tl-year">2014</div>
+            <div class="tl-names">Jean Tirole</div>
+            <div class="tl-affil">Toulouse School of Economics</div>
+            <div class="tl-citation">"For his analysis of market power and regulation."</div>
+            <div class="tl-body">
+              <p>Jean Tirole transformed industrial organisation from a largely descriptive field into a rigorous, game-theoretic discipline. His work — often with Jean-Jacques Laffont — showed that simple regulatory prescriptions (price-cap regulation, marginal-cost pricing) fail in the presence of asymmetric information and that effective regulation requires careful mechanism design. His <em>two-part tariff</em> and <em>non-linear pricing</em> analyses showed how regulated firms can be induced to reveal their costs and to serve markets efficiently.</p>
+              <p>Tirole's research on <em>multi-sided platforms</em> — markets in which a firm intermediates between distinct groups of customers (credit cards between merchants and consumers; operating systems between developers and users) — showed that standard antitrust tools must be modified when pricing on one side affects demand on the other. His framework has become essential for regulators analysing digital platforms, internet search, media, and payment systems. He also made foundational contributions to the theory of banking regulation, corporate governance, and collective reputations.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-micro">Industrial Organisation</span>
+              <span class="tl-tag tag-micro">Regulation</span>
+              <span class="tl-tag tag-micro">Platform Markets</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2013 -->
+        <div class="tl-entry" data-fields="finance methods">
+          <div class="tl-card">
+            <div class="tl-year">2013</div>
+            <div class="tl-names">Eugene F. Fama &nbsp;&middot;&nbsp; Lars Peter Hansen &nbsp;&middot;&nbsp; Robert J. Shiller</div>
+            <div class="tl-affil">University of Chicago &nbsp;&bull;&nbsp; University of Chicago &nbsp;&bull;&nbsp; Yale University</div>
+            <div class="tl-citation">"For their empirical analysis of asset prices."</div>
+            <div class="tl-body">
+              <p>Eugene Fama formalised the <em>efficient market hypothesis</em> (EMH), showing that in liquid markets asset prices rapidly incorporate all publicly available information. His empirical work demonstrated that short-run stock price changes are nearly impossible to predict, that professional fund managers systematically underperform passive index strategies, and that excess returns should reflect only compensation for risk. The EMH became the foundation of modern portfolio theory and passive investing.</p>
+              <p>Robert Shiller challenged the strong-form EMH by documenting that stock prices are far more volatile than the present value of subsequent dividends — a puzzle inconsistent with rational, fully-informed pricing. He also showed that long-horizon equity and housing returns are predictable from valuation ratios such as the cyclically adjusted price-earnings (CAPE) ratio, implying that investor sentiment plays a systematic role in asset pricing. Lars Peter Hansen resolved the tension between these views methodologically: his <em>Generalised Method of Moments</em> (GMM) allowed economists to test pricing models without fully specifying the data distribution, becoming the standard toolkit for empirical asset pricing and macroeconomics.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-finance">Asset Pricing</span>
+              <span class="tl-tag tag-finance">Financial Markets</span>
+              <span class="tl-tag tag-methods">Econometrics (GMM)</span>
+              <span class="tl-tag tag-behav">Behavioural Finance</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2012 -->
+        <div class="tl-entry" data-fields="micro">
+          <div class="tl-card">
+            <div class="tl-year">2012</div>
+            <div class="tl-names">Alvin E. Roth &nbsp;&middot;&nbsp; Lloyd S. Shapley</div>
+            <div class="tl-affil">Stanford University &nbsp;&bull;&nbsp; UCLA</div>
+            <div class="tl-citation">"For the theory of stable allocations and the practice of market design."</div>
+            <div class="tl-body">
+              <p>Lloyd Shapley, working with David Gale in 1962, developed the <em>deferred acceptance algorithm</em> — a procedure for matching agents on two sides of a market (such as workers and firms, or students and schools) that always produces a <em>stable matching</em>: no pair of agents would both prefer to be matched to each other over their current assignments. Shapley also contributed the cooperative game-theoretic foundations of matching, including the concept of the core and the Shapley value — the unique fair way to distribute the gains from cooperation.</p>
+              <p>Alvin Roth brought this mathematical theory into practice. He redesigned the <em>National Resident Matching Program</em> (which places medical graduates into hospital residency programmes) to eliminate strategic manipulation, and then applied matching theory to the <em>New York City and Boston school choice</em> systems, replacing allocation mechanisms that had perverse incentives with stable, strategy-proof alternatives. Roth also developed a kidney exchange programme that allows patients with incompatible living donors to swap donors in chains, saving thousands of lives annually — demonstrating that economics can design markets where money is socially unacceptable as a clearing mechanism.</p>
+            </div>
+            <div class="tl-tags">
+              <span class="tl-tag tag-micro">Market Design</span>
+              <span class="tl-tag tag-micro">Matching Theory</span>
+              <span class="tl-tag tag-micro">Game Theory</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.timeline -->
+
+      <div class="notice mt-4">
+        Official prize citations and full scientific background papers are available at
+        <a href="https://www.nobelprize.org/prizes/economic-sciences/" target="_blank" rel="noopener">nobelprize.org</a>.
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <strong style="color:#fff;">Muhebullah Karimzada</strong><br />
+      Assistant Professor of Economics &mdash; UNBC
+    </div>
+    <div class="footer-right">
+      University of Northern British Columbia<br />
+      Prince George, BC, Canada &bull;
+      <a href="mailto:muhebullah.karimzada@unbc.ca">muhebullah.karimzada@unbc.ca</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  /* Field filter */
+  const filterBar = document.getElementById('filterBar');
+  const entries   = document.querySelectorAll('.tl-entry');
+
+  filterBar.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+
+    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const field = btn.dataset.field;
+    entries.forEach(entry => {
+      if (field === 'all') {
+        entry.style.display = '';
+      } else {
+        const fields = (entry.dataset.fields || '').split(' ');
+        entry.style.display = fields.includes(field) ? '' : 'none';
+      }
+    });
+  });
+</script>
+</body>
+</html>
